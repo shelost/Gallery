@@ -2,6 +2,8 @@
 	import Counter from './Counter.svelte';
 	import welcome from '$lib/images/svelte-welcome.webp';
 	import welcomeFallback from '$lib/images/svelte-welcome.png';
+	import * as Config from '$lib/config.ts'
+
 </script>
 
 <svelte:head>
@@ -9,51 +11,78 @@
 	<meta name="description" content="Svelte demo app" />
 </svelte:head>
 
-<section>
-	<h1>
-		<span class="welcome">
-			<picture>
-				<source srcset={welcome} type="image/webp" />
-				<img src={welcomeFallback} alt="Welcome" />
-			</picture>
-		</span>
+<section id = 'page'>
 
-		to your new<br />SvelteKit app
-	</h1>
 
-	<h2>
-		try editing <strong>src/routes/+page.svelte</strong>
-	</h2>
+	<section class = 'splash'>
+		<h1> Heewon Ahn </h1>
+		<h2> Design Engineer </h2>
 
-	<Counter />
+		<div id = 'search'>
+			<input placeholder = 'Search...'>
+		</div>
+
+	</section>
+
+
+	{#each Config.SECTIONS as link, i}
+		<section class = 'sec'>
+			<h1> {link.title} </h1>
+			<h2> {link.subtitle} </h2>
+		</section>
+	{/each}
+
+
 </section>
 
-<style>
-	section {
+<style lang="scss">
+
+	input{
+		font-family: 'Inter', sans-serif;
+		font-weight: 500;
+		letter-spacing: -.4px;
+		border: none;
+		background: rgba(white, .8);
+		box-shadow: 8px 12px 24px rgba(#030025, .06);
+		border: 2px solid white;
+		width: 300px;
+		padding: 12px 16px;
+		border-radius: 50px;
+		margin: 28px 0;
+		&:focus{
+			outline: none;
+		}
+	}
+
+
+	.sec{
+		padding: 20px 0;
+	}
+
+	.splash{
+		height: 100vh;
+
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
-		align-items: center;
-		flex: 0.6;
 	}
 
-	h1 {
-		width: 100%;
+
+
+	h1{
+		font-size: 28px;
+		font-weight: 700;
+		letter-spacing: -.9px;
+		text-align: left;
+		margin-bottom: 4px;
 	}
 
-	.welcome {
-		display: block;
-		position: relative;
-		width: 100%;
-		height: 0;
-		padding: 0 0 calc(100% * 495 / 2048) 0;
+	h2{
+		font-size: 18px;
+		font-weight: 500;
+		letter-spacing: -.5px;
+		text-align: left;
 	}
 
-	.welcome img {
-		position: absolute;
-		width: 100%;
-		height: 100%;
-		top: 0;
-		display: block;
-	}
+
 </style>
