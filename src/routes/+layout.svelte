@@ -1,28 +1,41 @@
 <script>
 	import Header from './Header.svelte';
+	import Navbar from './Navbar.svelte';
 	import '../app.css';
 
 	let { children } = $props();
+	// 	<Header />
+
 </script>
 
 <div class="app">
-	<Header />
+
+	<canvas id = 'canvas'>
+	</canvas>
+
+	<Navbar />
 
 	<main>
 		{@render children()}
 	</main>
 
-	<footer>
-		<p>
-			visit <a href="https://svelte.dev/docs/kit">svelte.dev/docs/kit</a> to learn about SvelteKit
-		</p>
-	</footer>
 </div>
 
-<style>
+<style lang="scss">
+
+	#canvas{
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100vw;
+		height: 100vh;
+		z-index: -2;
+	}
+
+
+
 	.app {
 		display: flex;
-		flex-direction: column;
 		min-height: 100vh;
 	}
 
