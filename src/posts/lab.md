@@ -1,7 +1,7 @@
 ---
 series: Canvas — Lesson 1
 type: gallery
-title: Cornell LR Lab
+title: Cornell L+R Lab
 description: Graphic Design
 card: card-lab
 banner: null

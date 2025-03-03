@@ -1,10 +1,66 @@
 <script>
 	import Header from './Header.svelte';
 	import Navbar from './Navbar.svelte';
+	import {onMount} from 'svelte'
 	import '../app.css';
 
 	let { children } = $props();
-	// 	<Header />
+
+	let mouseX = -1000, mouseY = -1000; // Initial off-screen position
+    let intensity = .4; // Control the effect strength
+    let radius = 300; // Control the effect radius
+
+    onMount(() => {
+        let W = window.innerWidth * 2;
+        let H = window.innerHeight * 2;
+
+        let canvas = document.getElementById("canvas");
+        let ctx = canvas.getContext("2d");
+
+        canvas.width = W;
+        canvas.height = H;
+
+        let dotSpacing = 50;
+        let dotSize = 4;
+        let dots = [];
+
+        // Generate the grid of dots
+        for (let i = 0; i < W; i += dotSpacing) {
+            for (let j = 0; j < H; j += dotSpacing) {
+                dots.push({ x: i, y: j });
+            }
+        }
+
+        // Track mouse position
+        window.addEventListener("mousemove", (event) => {
+            const rect = canvas.getBoundingClientRect();
+            mouseX = (event.clientX - rect.left) * 2; // Scale for high-res canvas
+            mouseY = (event.clientY - rect.top) * 2;
+            draw();
+        });
+
+        function draw() {
+            ctx.clearRect(0, 0, W, H);
+
+            dots.forEach(dot => {
+                let dx = dot.x - mouseX;
+                let dy = dot.y - mouseY;
+                let distance = Math.sqrt(dx * dx + dy * dy);
+
+                // Normalize darkness: closer dots are darker
+                let alpha = Math.max(0.15, 1 - (distance / radius)) * intensity;
+
+				console.log(alpha)
+
+                ctx.beginPath();
+                ctx.fillStyle = `rgba(0, 0, 0, ${alpha})`;
+                ctx.arc(dot.x, dot.y, dotSize, 0, Math.PI * 2);
+                ctx.fill();
+            });
+        }
+
+        draw(); // Initial draw
+    });
 
 </script>
 
@@ -13,15 +69,27 @@
 	<canvas id = 'canvas'>
 	</canvas>
 
-	<Navbar />
+
 
 	<main>
 		{@render children()}
 	</main>
 
+	<div id = 'navbar'>
+		<Navbar />
+	</div>
+
+
 </div>
 
 <style lang="scss">
+
+	#navbar{
+		position: sticky;
+		top: 10px;
+		right: 10px;
+		//border: 1px solid red;
+	}
 
 	#canvas{
 		position: fixed;
@@ -29,23 +97,29 @@
 		left: 0;
 		width: 100vw;
 		height: 100vh;
-		z-index: -2;
+		z-index: -4;
 	}
-
-
 
 	.app {
 		display: flex;
-		min-height: 100vh;
+		position: relative;
+		justify-content: flex-start;
+		align-items: flex-start;
+		width: 100%;
+		max-width: 1600px;
+		margin: auto;
 	}
 
 	main {
-		flex: 1;
+		//flex: 1;
 		display: flex;
 		flex-direction: column;
-		padding: 1rem;
-		width: 100%;
-		max-width: 64rem;
+
+		width: calc(100% - 240px);
+		max-width: 1400px;
+		padding-bottom: 120px;
+		padding: 48px;
+
 		margin: 0 auto;
 		box-sizing: border-box;
 	}

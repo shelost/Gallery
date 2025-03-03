@@ -7,5 +7,8 @@ export const hoverCard = writable(false)
 export const themeColor = writable('f0f0f0');
 
 export const activeImage = writable(null)
+export const activeElem = writable(null)
+
+export const Posts = writable([])
 
 // export const screen = { w: 900}

@@ -43,12 +43,12 @@ This entire game was created with **~1600** lines of JavaScript code, all in a s
 
 &nbsp;
 
-```ts
+```js
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 ```
 
-```ts
+```js
 function Squircle(x, y, w, h, r, strokeOnly) {
 
     this.x = x

@@ -14,7 +14,7 @@ categories:
 published: true
 ---
 
-<iframe src = 'https://shelost.github.io/orbiting' class = 'fullscreen'>
+<iframe src = 'https://shelost.github.io/orbiting' class = 'fullscreen'> </iframe>
 
 Well, for now, it's just this blog. But it's gonna be much bigger someday, just you watch!
 
