@@ -9,8 +9,7 @@ color: F3E9F0
 date: '2019-01-27'
 author: 'Dantès'
 categories:
-  - sveltekit
-  - svelte
+  - illustrator
 published: true
 ---
 

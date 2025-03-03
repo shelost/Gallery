@@ -11,9 +11,11 @@ rating: 3.0
 color: 6355FF
 date: '2024-01-27'
 author: 'Dantès'
+tags:
+  - university
 categories:
   - Work
-  - svelte
+  - figma
 published: true
 ---
 

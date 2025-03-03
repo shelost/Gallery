@@ -1,15 +1,18 @@
 ---
 type: game
 title: Rooms
-description: A 2D Platformer Game, with a Twist
+description: Mini RPG
 url: https://shelost.github.io/platformr
 banner: null
 card: card-rooms
+preview: bento-platformr
+rating: 2
 date: '2025-7-21'
 author: 'Dantès'
 categories:
-  - sveltekit
-  - svelte
+  - HTML
+  - JS
+  - canvas
 published: true
 ---
 

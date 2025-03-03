@@ -5,7 +5,8 @@ description: A 2D Platformer Game, with a Twist
 url: https://shelost.github.io/wordchain
 banner: banner-platformr
 card: card-wordchain
-rating: 5
+preview: bento-platformr
+rating: 2
 color: E7F7FF
 date: '2025-7-21'
 author: 'Dantès'

@@ -5,11 +5,14 @@ description: Kind of like Snake
 url: https://shelost.github.io/trails
 banner: null
 card: card-trails
+preview: bento-platformr
+rating: 2
 date: '2025-7-21'
 author: 'Dantès'
 categories:
-  - sveltekit
-  - svelte
+  - HTML
+  - JS
+  - Canvas
 published: true
 ---
 

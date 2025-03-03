@@ -1,9 +1,8 @@
 ---
 type: game
 title: Platformr
-description: A 2D Platformer Game, with a Twist
-blurb: "I was Stan's first UI/UX Designer, working at the company for 2 years.
-Together, we defined the brand's iconic identity."
+description: 2D Platformer Game
+blurb: "My personal favorite game, where you create your own platforms. 18 handcrafted levels."
 url: https://shelost.github.io/platformr
 banner: banner-platformr
 card: card-platformr

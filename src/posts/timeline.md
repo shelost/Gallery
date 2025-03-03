@@ -8,8 +8,7 @@ date: '2023-7-22'
 author: 'Dantès'
 theme: dark
 categories:
-  - sveltekit
-  - svelte
+  - figma
 published: true
 ---
 
