@@ -12,8 +12,8 @@ color: 6355FF
 date: '2024-01-27'
 author: 'Dantès'
 categories:
-  - sveltekit
-  - svelte
+  - figma
+  - illustrator
 published: true
 ---
 

@@ -134,6 +134,30 @@ button:focus:not(:focus-visible) {
   white-space: nowrap;
 }
 
+button {
+  border-radius: 8px;
+  outline: none;
+  border: none;
+  background: #f0f0f0;
+  border: 3px solid rgba(255, 255, 255, 0.5);
+  border-radius: 14px;
+  padding: 8px 12px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2), inset 0 2px 4px rgba(255, 255, 255, 0.9), inset 0 -2px 6px rgba(0, 0, 0, 0.1);
+  transition: 0.2s ease;
+  cursor: pointer;
+}
+button h2 {
+  font-size: 14px;
+  font-weight: 600;
+  transition: 0.2s ease;
+}
+button:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2), inset 0 -2px 4px rgba(255, 255, 255, 0.4), inset -2px 4px 6px rgba(0, 0, 0, 0.1);
+}
+button:hover h2 {
+  transform: translateY(0.5px);
+}
+
 .prose {
   text-align: left;
 }
@@ -197,6 +221,7 @@ button:focus:not(:focus-visible) {
   box-shadow: 0 12px 16px rgba(0, 0, 0, 0.35);
   position: relative;
   transition: 0.2s ease;
+  width: 100%;
   /*
   &::after{
   	content: '#';

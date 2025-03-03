@@ -5,11 +5,14 @@ description: Pong, but with superpowers
 url: https://shelost.github.io/superpong
 banner: null
 card: card-pong
+preview: bento-platformr
+rating: 2
 date: '2025-7-21'
 author: 'Dantès'
 categories:
-  - sveltekit
-  - svelte
+  - HTML
+  - JS
+  - Canvas
 published: true
 ---
 

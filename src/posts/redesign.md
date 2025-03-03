@@ -7,8 +7,7 @@ card: card-redesign
 date: '2022-01-27'
 author: 'Dantès'
 categories:
-  - sveltekit
-  - svelte
+  - illustrator
 published: true
 ---
 

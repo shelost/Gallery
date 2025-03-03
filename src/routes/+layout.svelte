@@ -7,7 +7,7 @@
 	let { children } = $props();
 
 	let mouseX = -1000, mouseY = -1000; // Initial off-screen position
-    let intensity = .4; // Control the effect strength
+    let intensity = .2; // Control the effect strength
     let radius = 300; // Control the effect radius
 
     onMount(() => {
@@ -48,9 +48,7 @@
                 let distance = Math.sqrt(dx * dx + dy * dy);
 
                 // Normalize darkness: closer dots are darker
-                let alpha = Math.max(0.15, 1 - (distance / radius)) * intensity;
-
-				console.log(alpha)
+                let alpha = Math.max(0.25, 1 - (distance / radius)) * intensity;
 
                 ctx.beginPath();
                 ctx.fillStyle = `rgba(0, 0, 0, ${alpha})`;
@@ -68,8 +66,6 @@
 
 	<canvas id = 'canvas'>
 	</canvas>
-
-
 
 	<main>
 		{@render children()}
@@ -115,12 +111,12 @@
 		display: flex;
 		flex-direction: column;
 
-		width: calc(100% - 240px);
-		max-width: 1400px;
+		width: calc(100%);
+		//max-width: 1400px;
 		padding-bottom: 120px;
 		padding: 48px;
 
-		margin: 0 auto;
+		//margin: 0 auto;
 		box-sizing: border-box;
 	}
 
@@ -141,4 +137,23 @@
 			padding: 12px 0;
 		}
 	}
+
+	@media screen and (max-width: 768px){
+
+		.app{
+			overflow-x: hidden;
+		}
+
+		#navbar{
+			display: none;
+		}
+
+		main{
+			width: 100vw;
+			padding: 0;
+		}
+
+
+	}
+
 </style>

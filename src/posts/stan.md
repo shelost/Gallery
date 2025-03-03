@@ -12,9 +12,12 @@ rating: 5
 color: 6355FF
 date: '2024-01-27'
 author: 'Dantès'
+tags:
+  - work
 categories:
-  - paid
-  - svelte
+  - figma
+  - vue
+  - sass
 published: true
 ---
 

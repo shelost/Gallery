@@ -8,8 +8,6 @@
 
 	export let data
 
-	console.log($Posts)
-
 
 </script>
 
@@ -44,9 +42,6 @@
 		display: flex;
 		flex-direction: column;
 		align-items: flex-end;
-
-		//background-image: linear-gradient(to left, rgba(white, 1) 60%, rgba(white, 0));
-		//border: 1px solid blue;
 	}
 
 	h3{
@@ -67,8 +62,8 @@
 		.nav{
 			padding: 4px;
 			//margin: 3px 0;
-			padding-right: 8px;
-			border-right: 1px solid rgba(black, .2);
+			//padding-right: 8px;
+			//border-right: 1px solid rgba(black, .2);
 			cursor: pointer;
 			h2{
 				font-size: 13px;

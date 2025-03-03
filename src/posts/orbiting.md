@@ -1,16 +1,19 @@
 ---
 type: game
 title: Just Orbiting By
-description: A word end game
+description: Orbital Movement
+blurb: "Orbital dodging game."
 url: https://shelost.github.io/orbiting
 card: card-orbiting
-rating: 3
+preview: bento-platformr
+rating: 2
 color: 303030
 date: '2025-7-21'
 author: 'Dantès'
 categories:
-  - sveltekit
-  - svelte
+  - HTML
+  - JS
+  - Canvas
 published: true
 ---
 

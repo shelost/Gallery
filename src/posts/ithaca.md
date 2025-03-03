@@ -9,8 +9,7 @@ color: ffefef
 date: '2021-01-27'
 author: 'Dantès'
 categories:
-  - sveltekit
-  - svelte
+  - illustrator
 published: true
 ---
 
