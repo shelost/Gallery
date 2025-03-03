@@ -4,6 +4,11 @@
 	import github from '$lib/images/github.svg';
 	import { goto } from '$app/navigation';
 	import * as Config from '$lib/config.ts'
+	import { Posts } from '$lib/store'
+
+	export let data
+
+	console.log($Posts)
 
 
 </script>
@@ -15,9 +20,12 @@
 	</div>
 
 	<div id = 'nav'>
-		{#each Config.SECTIONS as link, i}
-			<div class = 'nav'>
-				<h2> {link.title}</h2>
+		{#each $Posts as link, i}
+			<div
+				class = 'nav {link.meta.type}'
+				on:click = {() => {goto('/' + link.slug)}}
+			>
+				<h2> {link.meta.title}</h2>
 			</div>
 		{/each}
 	</div>
@@ -27,20 +35,26 @@
 <style lang="scss">
 
 	#navbar{
-		width: 150px;
+		min-width: 140px;
 		height: calc(100vh - 52px);
 		border-radius: 6px;
-		//background: white;
-		//box-shadow: 0 10px 20px rgba(black, 0.05);
 		padding: 16px;
+		z-index: 3;
 
-		position: fixed;
-		top: 10px;
-		left: 10px;
+		display: flex;
+		flex-direction: column;
+		align-items: flex-end;
+
+		//background-image: linear-gradient(to left, rgba(white, 1) 60%, rgba(white, 0));
+		//border: 1px solid blue;
+	}
+
+	h3{
+		font-size: 10px;
 	}
 
 	#mast{
-		padding: 4px;
+		//padding: 4px;
 		margin-bottom: 32px;
 		cursor: pointer;
 		img{
@@ -52,15 +66,35 @@
 
 		.nav{
 			padding: 4px;
+			//margin: 3px 0;
+			padding-right: 8px;
+			border-right: 1px solid rgba(black, .2);
 			cursor: pointer;
 			h2{
 				font-size: 13px;
-				font-weight: 400;
+				font-weight: 500;
 				letter-spacing: -.24px;
 				margin: 0;
+				color: rgba(#030025, .6);
+				text-align: right;
+				transition: .2s ease;
 			}
 			&:hover{
-				color: black;
+				h2{
+					color: rgba(#030025, .8);
+				}
+			}
+
+			&.header{
+				padding: 0;
+				margin-top: 12px;
+				margin-bottom: 8px;
+				border-left: none;
+				h2{
+					font-size: 14px;
+					font-weight: 700;
+
+				}
 			}
 		}
 	}
@@ -150,4 +184,12 @@
 	a:hover {
 		color: var(--color-theme-1);
 	}
+
+
+	@media screen and (min-width: 1440px){
+
+
+	}
+
+
 </style>

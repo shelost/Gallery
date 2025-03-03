@@ -1,15 +1,19 @@
 ---
 series: Stan
-type: gallery
-title: Stan Icons
-description: UI/UX
+type: design
+title: Stan
+description: All-in-One Creator Store
+blurb: "I was Stan's first UI/UX Designer, working at the company for 2 years.
+Together, we defined the brand's iconic identity."
 card: card-stan
 banner: null
+preview: bento-stan
+rating: 5
 color: 6355FF
 date: '2024-01-27'
 author: 'Dantès'
 categories:
-  - sveltekit
+  - paid
   - svelte
 published: true
 ---

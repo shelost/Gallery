@@ -4,6 +4,7 @@ title: Pandemonium
 description: A one-shot comic
 card: card-pandemonium
 banner: banner-pandemonium
+preview: bento-pandemonium
 date: '2025-01-27'
 author: 'Dantès'
 categories:

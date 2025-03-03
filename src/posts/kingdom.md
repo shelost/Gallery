@@ -2,9 +2,10 @@
 type: gallery
 series: Samhan
 title: Kingdom
-description: Concept Art
+description: Webtoon Concept Art
 card: card-kingdom
 banner: null
+preview: bento-king
 color: FFF7E4
 date: '2025-01-27'
 author: 'Dantès'

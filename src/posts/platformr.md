@@ -2,10 +2,13 @@
 type: game
 title: Platformr
 description: A 2D Platformer Game, with a Twist
+blurb: "I was Stan's first UI/UX Designer, working at the company for 2 years.
+Together, we defined the brand's iconic identity."
 url: https://shelost.github.io/platformr
 banner: banner-platformr
 card: card-platformr
-rating: 5
+preview: bento-platformr
+rating: 2
 color: F7CC60
 date: '2025-7-21'
 author: 'Dantès'
