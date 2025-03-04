@@ -2,8 +2,11 @@
 series: History
 type: blog
 title: The Master Timeline
-description: A historical perspective tool
+description: Research Project
+blurb: "I spent 3+ weeks charting the history of human civilization, by region / country."
 card: null
+preview: bento-timeline
+rating: 4
 date: '2023-7-22'
 author: 'Dantès'
 theme: dark

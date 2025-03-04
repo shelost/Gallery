@@ -16,6 +16,8 @@
 
 	export let data
 
+    console.log(data)
+
  </script>
 
 
@@ -35,6 +37,9 @@
         </hgroup>
 
 
+        {#if data.meta.preview}
+            <img class = 'bento' src = 'bento/{data.meta.preview}.svg'>
+        {/if}
         <div class="prose preview">
             <svelte:component this={data.content} />
         </div>

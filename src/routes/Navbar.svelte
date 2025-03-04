@@ -4,7 +4,7 @@
 	import github from '$lib/images/github.svg';
 	import { goto } from '$app/navigation';
 	import * as Config from '$lib/config.ts'
-	import { Posts } from '$lib/store'
+	import { activeElem, activeObject, Posts } from '$lib/store'
 
 	export let data
 
@@ -33,7 +33,7 @@
 <style lang="scss">
 
 	#navbar{
-		min-width: 140px;
+		width: 180px;
 		height: calc(100vh - 52px);
 		border-radius: 6px;
 		padding: 16px;
@@ -49,7 +49,6 @@
 	}
 
 	#mast{
-		//padding: 4px;
 		margin-bottom: 32px;
 		cursor: pointer;
 		img{
@@ -58,19 +57,15 @@
 	}
 
 	#nav{
-
 		.nav{
-			padding: 4px;
-			//margin: 3px 0;
-			//padding-right: 8px;
-			//border-right: 1px solid rgba(black, .2);
+			padding: 3px;
 			cursor: pointer;
 			h2{
-				font-size: 13px;
+				font-size: 12.5px;
 				font-weight: 500;
 				letter-spacing: -.24px;
 				margin: 0;
-				color: rgba(#030025, .6);
+				color: rgba(#030025, .4);
 				text-align: right;
 				transition: .2s ease;
 			}
@@ -88,7 +83,6 @@
 				h2{
 					font-size: 14px;
 					font-weight: 700;
-
 				}
 			}
 		}

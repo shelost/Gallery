@@ -20,6 +20,24 @@ export function titleCase(val) {
 	return String(val).charAt(0).toUpperCase() + String(val).slice(1);
 }
 
+export function Id(tag) {
+	return document.getElementById(tag)
+}
+
+export function Class(tag) {
+	return document.getElementsByClassName(tag)
+}
+
+export function tagType(val) {
+	const links = [
+		{ text: 'Design', route: '/design', icon: 'palette', color: '#F959FF' },
+		{ text: 'Games', route: '/games', icon: 'sports_esports', color: '#6355FF' },
+		{ text: 'Blog', route: '/blog', icon: 'article', color: '#FF2E65' },
+		{ text: 'Comics', route: '/comics', icon: 'question_answer', color: '#FF7559' },
+		{ text: 'Apps', route: '/apps', icon: 'apps', color: '#0C75ED' }
+	];
+}
+
 export function tagIcon(val) {
 	switch (val.toLowerCase()) {
 		case 'figma':

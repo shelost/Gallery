@@ -24,6 +24,8 @@ body {
   background-image: radial-gradient(50% 50% at 50% 50%, rgba(255, 255, 255, 0.75) 0%, rgba(255, 255, 255, 0) 100%), linear-gradient(180deg, var(--color-bg-0) 0%, var(--color-bg-1) 15%, var(--color-bg-2) 50%);
   background: #eff1f4;
   background: #f3f4f7;
+  background: none;
+  transition: 0.2s ease;
 }
 
 h1,
@@ -134,7 +136,7 @@ button:focus:not(:focus-visible) {
   white-space: nowrap;
 }
 
-button {
+.button {
   border-radius: 8px;
   outline: none;
   border: none;
@@ -146,16 +148,54 @@ button {
   transition: 0.2s ease;
   cursor: pointer;
 }
-button h2 {
+.button h2 {
   font-size: 14px;
   font-weight: 600;
   transition: 0.2s ease;
 }
-button:hover {
+.button:hover {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2), inset 0 -2px 4px rgba(255, 255, 255, 0.4), inset -2px 4px 6px rgba(0, 0, 0, 0.1);
 }
-button:hover h2 {
+.button:hover h2 {
   transform: translateY(0.5px);
+}
+
+button {
+  border-radius: 8px;
+  outline: none;
+  border: none;
+  background: #030025;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 8px;
+  padding: 10px 12px;
+  overflow: hidden;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2), inset -1px 2px 3px rgba(255, 255, 255, 0.5);
+  transition: 0.2s ease;
+  position: relative;
+  cursor: pointer;
+}
+button h2 {
+  color: white;
+  font-size: 14px;
+  font-weight: 500;
+  transition: 0.2s ease;
+}
+button::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.25);
+  z-index: 0;
+  transition: 0.25s ease-in-out;
+}
+button:hover {
+  transform: translateY(0.5px);
+}
+button:hover::before {
+  width: 100%;
 }
 
 .prose {
