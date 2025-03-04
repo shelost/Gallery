@@ -2,11 +2,11 @@
 series: Stan
 type: design
 title: Soteria
-description: Fintech banking app
+description: Fintech Banking App
 blurb: "I was the Lead Designer for Soteria, a banking app concept led by former RBC employees."
 card: card-stan
 banner: null
-preview: bento-stan
+preview: bento-soteria
 rating: 3
 color: 6355FF
 date: '2024-01-27'

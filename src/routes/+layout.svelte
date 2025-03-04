@@ -1,7 +1,8 @@
 <script>
 	import Header from './Header.svelte';
 	import Navbar from './Navbar.svelte';
-	import {onMount} from 'svelte'
+	import { onMount } from 'svelte'
+	import { themeColor } from '$lib/store'
 	import '../app.css';
 
 	let { children } = $props();
@@ -11,6 +12,18 @@
     let radius = 300; // Control the effect radius
 
     onMount(() => {
+
+		if (document){
+			//document.documentElement.style.backgroundColor = '#' + $themeColor
+		}
+
+		themeColor.subscribe((color) => {
+			if (typeof document !== 'undefined') {
+				//document.documentElement.style.backgroundColor = '#' + color;
+			}
+		});
+
+
         let W = window.innerWidth * 2;
         let H = window.innerHeight * 2;
 
@@ -104,6 +117,9 @@
 		width: 100%;
 		max-width: 1600px;
 		margin: auto;
+
+		//height: calc(100vh - 24px);
+		//box-shadow: 0 10px 40px rgba(black, .1);
 	}
 
 	main {
@@ -112,9 +128,8 @@
 		flex-direction: column;
 
 		width: calc(100%);
-		//max-width: 1400px;
 		padding-bottom: 120px;
-		padding: 48px;
+		//padding: 48px;
 
 		//margin: 0 auto;
 		box-sizing: border-box;

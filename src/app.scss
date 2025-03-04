@@ -34,6 +34,8 @@ body {
 
 	background: #eff1f4;
 	background: #f3f4f7;
+	background: none;
+	transition: .2s ease;
 	//background: white;
 	//background: black;
 }
@@ -155,7 +157,7 @@ button:focus:not(:focus-visible) {
 ////
 
 
-button{
+.button{
 	border-radius: 8px;
 	outline: none;
 	border: none;
@@ -175,6 +177,49 @@ button{
 		box-shadow: 0 4px 8px rgba(black, .2), inset 0 -2px 4px rgba(white, .4), inset -2px 4px 6px rgba(black, .1);
 		h2{
 			transform: translateY(.5px);
+		}
+	}
+}
+
+button{
+	border-radius: 8px;
+	outline: none;
+	border: none;
+	background: #030025;
+	border: 1px solid rgba(white, .5);
+	border-radius: 8px;
+	padding: 10px 12px;
+	overflow: hidden;
+	box-shadow: 0 6px 12px rgba(black, .2), inset -1px 2px 3px rgba(white, .5);
+	transition: .2s ease;
+	position: relative;
+	cursor: pointer;
+	h2{
+		color: white;
+		font-size: 14px;
+		font-weight: 500;
+		transition: .2s ease;
+	}
+	&::before{
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 0%;
+		height: 100%;
+		background: rgba(white, .25);
+		z-index: 0;
+		transition: .25s ease-in-out;
+	}
+	&:hover{
+		//background: rgba(#030025, .85);
+		transform: translateY(.5px);
+		h2{
+			//transform: translateY(.5px);
+
+		}
+		&::before{
+			width: 100%;
 		}
 	}
 }

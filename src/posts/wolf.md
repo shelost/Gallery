@@ -3,7 +3,7 @@ series: Stan
 type: design
 title: Wolf Financial
 description: Finance Podcast Brand
-blurb: "I created the 400K+ Followers on Twitter/X."
+blurb: "I created the branding for Wolf Financial, a finance newsletter & podcast with 400K+ Followers on Twitter/X."
 card: card-stan
 banner: null
 preview: bento-wolf
