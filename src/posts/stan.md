@@ -9,7 +9,7 @@ card: card-stan
 banner: null
 preview: bento-stan2
 rating: 5
-color: 6355FF
+color: DADBFF
 date: '2024-01-27'
 author: 'Dantès'
 tags:

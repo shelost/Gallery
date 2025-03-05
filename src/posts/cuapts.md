@@ -7,7 +7,8 @@ blurb: "As part of the Cornell Design & Tech Initiative (DTI), I designed the se
 card: card-stan
 banner: null
 preview: bento-cuapts
-rating: 3.0
+rating: 3
+color: FFD5D5
 date: '2024-01-27'
 author: 'Dantès'
 tags:

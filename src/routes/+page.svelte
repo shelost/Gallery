@@ -26,7 +26,7 @@
 
 			sections.forEach((sec, index) => {
 				const rect = sec.getBoundingClientRect();
-				const distance = Math.abs(rect.top - window.innerHeight * 0);
+				const distance = Math.abs(rect.top + window.innerHeight * .25);
 
 				if (distance < minDistance) {
 					minDistance = distance;
@@ -284,7 +284,7 @@
 	}
 
 	.sec{
-		padding: 20px 20px;
+		padding: 10px 20px;
 		border-radius: 12px;
 		transition: .2s ease;
 		width: 100%;
@@ -309,13 +309,13 @@
 			flex-shrink: 0;
 			overflow: hidden;
 
-			background: rgba(white, .8);
+			background: rgba(white, .9);
 			backdrop-filter: blur(8px);
 			padding: 20px;
 			padding-right: 24px;
 			border-radius: 8px;
 			border: 2px solid white;
-			box-shadow: 4px 8px 28px rgba(#030025, .08), inset 0 -6px 8px rgba(#030025, .03);
+			box-shadow: 2px 8px 36px rgba(#030025, .12), inset 0 -6px 8px rgba(#030025, .03);
 
 
 			.header{
@@ -475,11 +475,41 @@
 			width: 100%;
 		}
 
+		#scroll{
+			margin: 0;
+		}
+
 		.sec{
-			padding: 24px;
+			padding: 0px;
+			display: inline;
 
 			hgroup{
 				display: block;
+				position: sticky;
+				top: 0;
+				align-self: flex-start;
+				width: 100%;
+				padding: 16px;
+
+
+				.header{
+					h1{
+						font-size: 18px;
+						margin-bottom: 6px;
+					}
+					h2{
+						font-size: 14px;
+					}
+				}
+
+				.top{
+					display: none;
+				}
+			}
+
+			.banner{
+				width: 102%;
+				transform: translateX(-1%);
 			}
 		}
 	}

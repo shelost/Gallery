@@ -8,7 +8,7 @@ card: card-stan
 banner: null
 preview: bento-soteria
 rating: 3
-color: 6355FF
+color: c0c0c0
 date: '2024-01-27'
 author: 'Dantès'
 categories:

@@ -39,6 +39,10 @@
 		padding: 16px;
 		z-index: 3;
 
+		height: 100vh;
+
+		background-image: linear-gradient(to left, rgba(white, .6) 20%, rgba(white, 0));
+
 		display: flex;
 		flex-direction: column;
 		align-items: flex-end;
