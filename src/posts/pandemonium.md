@@ -1,10 +1,13 @@
 ---
 type: comic
 title: Pandemonium
-description: A one-shot comic
+description: My First Comic
+blurb: "This was my first full comic chapter, based on various classical novels such as Romance of the Three Kingdoms, the Odyssey, and Journey to the West."
 card: card-pandemonium
 banner: banner-pandemonium
 preview: bento-pandemonium
+rating: 3
+color: FFD5D5
 date: '2025-01-27'
 author: 'Dantès'
 categories:

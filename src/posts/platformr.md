@@ -8,7 +8,7 @@ banner: banner-platformr
 card: card-platformr
 preview: bento-platformr
 rating: 2
-color: F7CC60
+color: FFF0C8
 date: '2025-7-21'
 author: 'Dantès'
 categories:

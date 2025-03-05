@@ -5,7 +5,7 @@ title: Kingdom
 description: Webtoon Concept Art
 card: card-kingdom
 banner: null
-preview: bento-king
+preview: bento-kingdom
 color: FFF7E4
 date: '2025-01-27'
 author: 'Dantès'
