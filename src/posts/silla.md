@@ -12,7 +12,7 @@ story in text form.'
 categories:
   - sveltekit
   - svelte
-published: true
+published: false
 ---
 
 <script>
@@ -32,7 +32,7 @@ Just an ordinary day in the kingdom of Silla.
 
 The Silla kingdom was born on
 
-Meanwhile, her husband [**Kim Chunchu (29)**](chunchu) and young son **Bupmin (6**) and daughter **Gotaso (5)** are preparing
+Meanwhile, her husband [**Kim Chunchu (29)**] and young son **Bupmin (6**) and daughter **Gotaso (5)** are preparing
 
 Silla is a
 

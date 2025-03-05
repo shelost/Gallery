@@ -15,6 +15,14 @@ const config = {
 			extension: '.md',
 		}),
 	],
+	prerender: {
+		handleHttpError: ({ status, path }) => {
+		  if (status === 404) {
+			console.warn(`⚠️ Skipping 404 page during prerender: ${path}`);
+			return { bypass: true };
+		  }
+		}
+	}
 };
 
 export default config;
