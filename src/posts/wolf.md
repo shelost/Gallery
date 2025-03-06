@@ -8,7 +8,7 @@ card: card-stan
 banner: null
 preview: bento-wolf
 rating: 3
-color: 6355FF
+color: DFEAFF
 date: '2024-01-27'
 author: 'Dantès'
 categories:

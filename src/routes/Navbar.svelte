@@ -5,9 +5,36 @@
 	import { goto } from '$app/navigation';
 	import * as Config from '$lib/config.ts'
 	import { activeElem, activeObject, Posts } from '$lib/store'
+	import { onMount } from 'svelte'
 
 	export let data
 
+	let Pill;
+
+	onMount(() => {
+
+		function updateScroll(){
+
+			let nav = document.getElementById('navbar').getBoundingClientRect()
+
+			if ($activeObject){
+
+				let elem = document.querySelectorAll('.active')[0]
+				if (elem && Pill){
+					let rect = elem.getBoundingClientRect()
+					Pill.style.top = rect.top - nav.top + 'px'
+					Pill.style.left = rect.left - nav.left - 4 + 'px'
+					Pill.style.width = rect.width + 8 + 'px'
+				}
+
+			}
+		}
+
+		window.addEventListener('scroll', updateScroll)
+		updateScroll()
+	})
+
+	// 	on:click = {() => {goto('/' + link.slug)}}
 
 </script>
 
@@ -17,11 +44,13 @@
 		<img src = 'ahnheewon3.png' alt = 'Logo'>
 	</div>
 
+	<div id = 'pill' bind:this={Pill}></div>
+
 	<div id = 'nav'>
 		{#each $Posts as link, i}
 			<div
 				class = 'nav {link.meta.type}'
-				on:click = {() => {goto('/' + link.slug)}}
+				class:active = {link.meta.title == $activeObject?.meta.title}
 			>
 				<h2> {link.meta.title}</h2>
 			</div>
@@ -32,11 +61,25 @@
 
 <style lang="scss">
 
+	#pill{
+		position: absolute;
+		background: rgba(black, .8);
+		top: 0;
+		left: 0;
+		height: 28px;
+		width: 200px;
+		border-radius: 6px;
+		z-index: -2;
+		transition: .2s ease;
+	}
+
 	#navbar{
+		position: relative;
 		width: 180px;
 		height: calc(100vh - 52px);
 		border-radius: 6px;
-		padding: 16px;
+		padding: 20px;
+		padding-right: 16px;
 		z-index: 3;
 
 		height: 100vh;
@@ -61,17 +104,31 @@
 	}
 
 	#nav{
+		display: flex;
+		flex-direction: column;
+		align-items: flex-end;
 		.nav{
-			padding: 3px;
+			width: fit-content;
+			padding: 4px;
+			transition: .2s ease;
 			cursor: pointer;
 			h2{
-				font-size: 12.5px;
+				font-size: 13px;
 				font-weight: 500;
 				letter-spacing: -.24px;
 				margin: 0;
-				color: rgba(#030025, .4);
+				color: rgba(#030025, .5);
 				text-align: right;
 				transition: .2s ease;
+			}
+			&.active{
+				padding: 6px;
+				h2{
+
+					color: white;
+					font-weight: 600;
+				}
+
 			}
 			&:hover{
 				h2{

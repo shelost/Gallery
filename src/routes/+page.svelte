@@ -14,6 +14,10 @@
 
 	themeColor.set('f3f4f7')
 
+	//themeColor.set('e0e0e0')
+
+	let view = 1
+
 	onMount(() => {
 		const sections = document.querySelectorAll(".sec");
 
@@ -27,6 +31,22 @@
 			sections.forEach((sec, index) => {
 				const rect = sec.getBoundingClientRect();
 				const distance = Math.abs(rect.top + window.innerHeight * .25);
+				const dist2 = rect.top
+				let height = rect.bottom - rect.top
+
+				const inView = rect.top - 200 < window.innerHeight && rect.top + height > 0
+				const hgroup = document.querySelectorAll('hgroup')[index]
+				//title.innerHTML = rect.top + '<br>' + (rect.top + 100 < window.innerHeight) + '<br>' + (rect.top + height) + '<br>' + inView
+				//sec.style.perspective = '800px'
+				//sec.style.transform = `rotate3d(1, 0, 0,${(Math.max(0, rect.top/window.innerHeight)*90)}deg)`
+
+				if (inView){
+					//sec.style.border = '2px solid red'
+					sec.style.transformOrigin = 'top center'
+					//hgroup.style.transform = `perspective(800px) rotateX(${(Math.max(0, rect.top/window.innerHeight)*40)}deg) scale(1)`
+				}else{
+					sec.style.transform = ''
+				}
 
 				if (distance < minDistance) {
 					minDistance = distance;
@@ -81,22 +101,20 @@
 
 <section id = 'app'>
 	<div id = 'sidebar'>
-		<p> {JSON.stringify($activeElem)} </p>
-		{#if $activeObject}
-		<p> {$activeObject.meta.title} </p>
-		{/if}
-		<p> {typeof $activeElem} </p>
+
 	</div>
+
 	<div id = 'scroll' bind:this={Scroll}>
 		<div id = 'bar' bind:this={Bar}></div>
 	</div>
+
 	<section id = 'page'>
 
 
 		<section class = 'splash'>
 			<img src = 'smiley.png' id = 'logo' alt = 'Logo'>
 			<h1> Heewon </h1>
-			<h2> Design Engineer (+ occasional artist) </h2>
+			<h2> Designer + Webdev </h2>
 
 			<div id = 'search'>
 				<input placeholder = 'Search...'>
@@ -105,6 +123,7 @@
 		</section>
 
 
+		<section id = 'sections' class:list={view == 2}>
 		{#each data.posts as link, i}
 
 			<section
@@ -174,6 +193,7 @@
 			</section>
 
 		{/each}
+		</section>
 
 
 	</section>
@@ -181,27 +201,33 @@
 
 <style lang="scss">
 
+
+
 	#scroll{
 		position: sticky;
-		top: 12px;
-		width: 12px;
+		top: 10px;
+		width: 10px;
 		height: calc(100vh - 24px);
-		height: 500px;
-		margin: 12px;
-		background: rgba(#030025, .2);
+		//height: 500px;
+		margin: 8px;
+		margin-right: 12px;
+		background: rgba(#030025, .3);
+		background: white;
 		border-radius: 20px;
-		border: 1px solid white;
-		//box-shadow: 0 4px 20px rgba(black, .05);
+		//border: 1px solid rgba(white, .2);
+		//box-shadow: -4px 0px 12px 2px rgba(black, .2);
 		margin-top: 90vh;
 		overflow: hidden;
+
+		display: none;
 
 		#bar{
 			position: absolute;
 			top: 0;
 			left: 0;
-			width: 12px;
+			width: 10px;
 			height: 36px;
-			background: #6355FF;
+			background: black;
 			border-radius: 20px;
 			transition: .1s ease;
 
@@ -209,18 +235,19 @@
 				content: '';
 				position: absolute;
 				bottom: 2px;
-				left: 2px;
+				left: 1.5px;
 				background: white;
-				width: 8px;
-				height: 8px;
+				width: 5px;
+				height: 5px;
 				border-radius: 4px;
 			}
 		}
-
 	}
 
 	#app{
 		display: flex;
+		//width: 95vw;
+		//border: 2px solid black;
 	}
 
 	#sidebar{
@@ -235,11 +262,6 @@
 			font-size: 12px;
 			text-wrap: wrap;
 		}
-	}
-
-	#page{
-		//padding-left: 40px;
-		flex: 1;
 	}
 
 	.rating{
@@ -283,39 +305,87 @@
 		display: none;
 	}
 
+	#page{
+		flex: 1;
+		//border: 1px solid red;
+		//transform: perspective(800px) rotateX(2deg);
+	}
+
+	#sections{
+		//transform: rotate3d(10, 2, -2, 20deg);
+		&.list{
+			.sec{
+				padding: 12px;
+				hgroup{
+					display: flex;
+					align-items: flex-start;
+					width: 100%;
+					.header{
+						.title{
+							h1{
+								font-size: 22px;
+							}
+						}
+					}
+					.top{
+						margin: 0;
+						padding: 0 20px;
+					}
+					.tags{
+						margin: 0;
+					}
+				}
+			}
+			.banner{
+				display: none;
+			}
+		}
+	}
+
 	.sec{
-		padding: 10px 20px;
-		border-radius: 12px;
+		padding: 20px 0px 30px 6px;
+		border-radius: 8px;
 		transition: .2s ease;
-		width: 100%;
+		width: clamp(200px, 100%, 1200px);
+		margin: 12px auto;
+
+		//background: rgba(white, .8);
+		//border: 2px solid rgba(white, .5);
+		//box-shadow: -20px 30px 80px rgba(black, .08);
 
 		display: flex;
 		gap: 24px;
 		justify-content: left;
+		transition: .2s ease;
 
 		.banner{
 			border-radius: 0px;
-			width: calc(100% - 300px);
+			width: calc(100% - 240px);
 			margin: auto;
-			filter: drop-shadow(5px 5px 10px rgba(black, .1));
+			filter: drop-shadow(-8px 16px 32px rgba(black, .2));
+			transition: .2s ease;
 		}
 
 		hgroup{
 			position: sticky;
-			top: 20px;
+			top: 12px;
 			align-self: flex-start;
 			width: 180px;
-			//height: 50vh;
+			//height: calc(100vh - 80px);
 			flex-shrink: 0;
 			overflow: hidden;
+			transition: .2s ease;
 
-			background: rgba(white, .9);
-			backdrop-filter: blur(8px);
-			padding: 20px;
+			//backdrop-filter: blur(8px);
+			padding: 24px;
 			padding-right: 24px;
+
+			//border-radius: 4px 12px 12px 12px;
 			border-radius: 8px;
-			border: 2px solid white;
-			box-shadow: 2px 8px 36px rgba(#030025, .12), inset 0 -6px 8px rgba(#030025, .03);
+			//border: 2px solid white;
+
+			background: rgba(white, 1);
+			box-shadow: -4px 12px 36px rgba(#030025, .05), inset 0 -6px 8px rgba(#030025, .02);
 
 
 			.header{

@@ -7,7 +7,7 @@ url: https://shelost.github.io/orbiting
 card: card-orbiting
 preview: bento-platformr
 rating: 2
-color: 303030
+color: d0d0d0
 date: '2025-7-21'
 author: 'Dantès'
 categories:
