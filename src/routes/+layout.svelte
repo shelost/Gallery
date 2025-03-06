@@ -8,8 +8,10 @@
 	let { children } = $props();
 
 	let mouseX = -1000, mouseY = -1000; // Initial off-screen position
-    let intensity = .2; // Control the effect strength
+    let intensity = .25; // Control the effect strength
     let radius = 300; // Control the effect radius
+
+	let Bar, Scroll
 
     onMount(() => {
 
@@ -71,6 +73,20 @@
         }
 
         draw(); // Initial draw
+
+		function updateScroll(){
+			let scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+			let scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+			let percent = (scrollTop / scrollHeight);
+
+			if (Bar && Scroll){
+				Bar.style.height = Scroll.getBoundingClientRect().height * percent + 'px'
+			}
+		}
+
+		window.addEventListener("scroll", updateScroll);
+		updateScroll(); // Initialize on load
+
     });
 
 </script>
@@ -86,6 +102,9 @@
 
 	<div id = 'navbar'>
 		<Navbar />
+		<div id = 'scroll' bind:this={Scroll}>
+			<div id = 'bar' bind:this={Bar}></div>
+		</div>
 	</div>
 
 
@@ -93,10 +112,59 @@
 
 <style lang="scss">
 
+
+	#scroll{
+		position: relative;
+		width: 12px;
+		height: calc(100vh - 28px);
+		//height: 500px;
+		margin: 12px;
+		//margin-right: 48px;
+		background: rgba(#030025, .3);
+		background: white;
+		border-radius: 5px;
+		//border: 1px solid rgba(white, .2);
+		box-shadow: 20px 8px 32px rgba(black, .5);
+		overflow: hidden;
+		display: none;
+
+		#bar{
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 12px;
+			height: 36px;
+			background: rgba(#030025, 1);
+			border-radius: 5px;
+			transition: .1s ease;
+
+			box-shadow: 20px 8px 32px rgba(black, .5), inset 3px 0px 3px rgba(white, .4), inset -2px 0px 2px rgba(white, .9);
+
+			&::after{
+				content: '';
+				position: absolute;
+				bottom: 3px;
+				left: 2.25px;
+				background: white;
+				width: 6px;
+				height: 6px;
+				border-radius: 4px;
+			}
+		}
+	}
+
+
+
+
+
+
 	#navbar{
+		display: flex;
+		align-items: flex-start;
 		position: sticky;
 		top: 0px;
 		right: 0px;
+		height: 100vh;
 		//border: 1px solid red;
 	}
 
@@ -114,12 +182,14 @@
 		position: relative;
 		justify-content: flex-start;
 		align-items: flex-start;
-		width: 100%;
-		max-width: 1600px;
+		width: clamp(400px, 100%, 1600px);
 		margin: auto;
 
+		//background: white;
+		//border-radius: 12px;
 		//height: calc(100vh - 24px);
 		//box-shadow: 0 10px 40px rgba(black, .1);
+
 	}
 
 	main {
