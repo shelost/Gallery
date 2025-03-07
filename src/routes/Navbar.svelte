@@ -75,14 +75,17 @@
 
 	#navbar{
 		position: relative;
-		width: 180px;
-		height: calc(100vh - 52px);
+		width: 150px;
+		height: calc(100vh - 40px);
 		border-radius: 6px;
 		padding: 20px;
-		padding-right: 16px;
+		//padding-right: 16px;
 		z-index: 3;
 
-		height: 100vh;
+		//height: 100vh;
+
+		background: white;
+		border-radius: 8px 0 0 8px;
 
 		//background-image: linear-gradient(to left, rgba(white, .6) 20%, rgba(white, 0));
 

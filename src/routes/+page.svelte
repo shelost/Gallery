@@ -349,13 +349,13 @@
 	}
 
 	.sec{
-		padding: 30px 30px 40px 6px;
+		padding: 0px 30px 0px 0px;
 		border-radius: 8px;
 		transition: .2s ease;
 		width: clamp(200px, 100%, 1200px);
 		margin: 12px auto;
 
-		background: rgba(white, .8);
+		//background: rgba(white, .8);
 		//border: 2px solid rgba(white, .5);
 		//box-shadow: -20px 30px 80px rgba(black, .08);
 
@@ -375,24 +375,22 @@
 
 		hgroup{
 			position: sticky;
-			top: 12px;
+			top: 0px;
+
+
 			align-self: flex-start;
 			width: 180px;
-			//height: calc(100vh - 80px);
 			flex-shrink: 0;
 			overflow: hidden;
 			transition: .2s ease;
 
-			//backdrop-filter: blur(8px);
 			padding: 24px;
 			padding-right: 24px;
-
-			//border-radius: 4px 12px 12px 12px;
 			border-radius: 8px;
 			border: 2px solid white;
 
 			background: rgba(white, 1);
-			box-shadow: -4px 12px 36px rgba(#030025, .08), inset 0 -6px 8px rgba(#030025, .02);
+			//box-shadow: -4px 12px 36px rgba(#030025, .08), inset 0 -6px 8px rgba(#030025, .02);
 
 
 			.header{
