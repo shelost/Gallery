@@ -100,6 +100,8 @@
 </svelte:head>
 
 <section id = 'app'>
+
+	<div id = 'top'> </div>
 	<div id = 'sidebar'>
 
 	</div>
@@ -133,7 +135,11 @@
 
 				<hgroup class = 'hgroup'>
 					<div class = 'header'>
+						{#if link.meta.card}
+								<img src = 'card/{link.meta.card}.png' alt = 'card' class = 'card'>
+							{/if}
 						<div class = 'title'>
+
 							<h1> {link.meta.title} </h1>
 							{#each link.meta.tags as tag, j}
 								<div class = 'tag'>
@@ -343,13 +349,13 @@
 	}
 
 	.sec{
-		padding: 20px 0px 30px 6px;
+		padding: 30px 30px 40px 6px;
 		border-radius: 8px;
 		transition: .2s ease;
 		width: clamp(200px, 100%, 1200px);
 		margin: 12px auto;
 
-		//background: rgba(white, .8);
+		background: rgba(white, .8);
 		//border: 2px solid rgba(white, .5);
 		//box-shadow: -20px 30px 80px rgba(black, .08);
 
@@ -360,9 +366,10 @@
 
 		.banner{
 			border-radius: 0px;
-			width: calc(100% - 240px);
+			width: calc(100% - 320px);
+			//width: 70%;
 			margin: auto;
-			filter: drop-shadow(-8px 16px 32px rgba(black, .2));
+			filter: drop-shadow(-8px 16px 32px rgba(black, .1));
 			transition: .2s ease;
 		}
 
@@ -382,15 +389,21 @@
 
 			//border-radius: 4px 12px 12px 12px;
 			border-radius: 8px;
-			//border: 2px solid white;
+			border: 2px solid white;
 
 			background: rgba(white, 1);
-			box-shadow: -4px 12px 36px rgba(#030025, .05), inset 0 -6px 8px rgba(#030025, .02);
+			box-shadow: -4px 12px 36px rgba(#030025, .08), inset 0 -6px 8px rgba(#030025, .02);
 
 
 			.header{
 				width: 100%;
 				height: 100%;
+
+				img{
+					width: 100%;
+					border-radius: 4px;
+					margin-bottom: 18px;
+				}
 
 				.title{
 					display: flex;
@@ -442,23 +455,29 @@
 					margin: 20px 0;
 					.tag{
 						display: flex;
+						align-items: center;
 						gap: 6px;
 						background: white;
 						padding: 6px 8px;
 						border-radius: 10px;
-						box-shadow: 0 4px 12px rgba(black, .12);
-						align-items: center;
+						box-shadow: 0 4px 12px rgba(black, .1);
+
+						//border: 1px solid rgba(black, .1);
+
 						transition: .2s ease;
 						cursor: pointer;
 						.icon{
-							height: 12px;
+							height: 14px;
+							margin: 0;
+							border-radius: 0;
 						}
 						h2{
-							font-size: 12px;
+							font-size: 13px;
 							font-weight: 700;
-							letter-spacing: -.25px;
-							color: rgba(#030025, .75);
+							letter-spacing: -.2px;
+							color: rgba(#030025, .6);
 							margin: 0;
+							padding: 0;
 						}
 						&:hover{
 							box-shadow: 0 5px 12px rgba(black, .12);
@@ -469,7 +488,7 @@
 			}
 
 			.top{
-				display: flex;
+				display: none;
 				flex-direction: column;
 				//align-items: flex-end;
 				gap: 8px;
