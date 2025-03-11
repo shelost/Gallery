@@ -6,12 +6,15 @@
 	import * as Config from '$lib/config.ts'
 	import { activeElem, activeObject, Posts } from '$lib/store'
 	import { onMount } from 'svelte'
+	import { titleCase } from '$lib/utils'
 
 	export let data
 
 	let Pill;
 
 	onMount(() => {
+
+		let left = 0, top = 0
 
 		function updateScroll(){
 
@@ -22,8 +25,8 @@
 				let elem = document.querySelectorAll('.active')[0]
 				if (elem && Pill){
 					let rect = elem.getBoundingClientRect()
-					Pill.style.top = rect.top - nav.top + 'px'
-					Pill.style.left = rect.left - nav.left - 4 + 'px'
+					Pill.style.top = rect.top - nav.top - left + 'px'
+					Pill.style.left = rect.left - nav.left - 4 - left + 'px'
 					Pill.style.width = rect.width + 8 + 'px'
 				}
 
@@ -33,6 +36,7 @@
 		window.addEventListener('scroll', updateScroll)
 		updateScroll()
 	})
+
 
 	// 	on:click = {() => {goto('/' + link.slug)}}
 
@@ -44,10 +48,16 @@
 		<img src = 'ahnheewon3.png' alt = 'Logo'>
 	</div>
 
-	<div id = 'pill' bind:this={Pill}></div>
+	<div id = 'pill' bind:this={Pill} class:hidden={!$activeObject}></div>
 
 	<div id = 'nav'>
 		{#each $Posts as link, i}
+			{#if i == 0 || i > 0 && link.meta.type != $Posts[i-1].meta.type }
+				<div class = 'title'>
+					<h1> {titleCase(link.meta.type)} </h1>
+				</div>
+			{/if}
+
 			<div
 				class = 'nav {link.meta.type}'
 				class:active = {link.meta.title == $activeObject?.meta.title}
@@ -64,34 +74,35 @@
 	#pill{
 		position: absolute;
 		background: rgba(black, .8);
+		box-shadow: 2px 4px 4px rgba(black, .2);
 		top: 0;
 		left: 0;
 		height: 28px;
 		width: 200px;
-		border-radius: 6px;
+		border-radius: 4px;
 		z-index: -2;
 		transition: .2s ease;
+
+		&.hidden{
+			display: none;
+		}
 	}
 
 	#navbar{
 		position: relative;
-		width: 150px;
-		height: calc(100vh - 40px);
-		border-radius: 6px;
-		padding: 20px;
-		//padding-right: 16px;
+		width: 140px;
+		height: calc(100vh - 50px);
+		height: fit-content;
+		padding: 18px;
 		z-index: 3;
-
-		//height: 100vh;
-
-		background: white;
-		border-radius: 8px 0 0 8px;
-
-		//background-image: linear-gradient(to left, rgba(white, .6) 20%, rgba(white, 0));
-
+		background: rgba(white, .8);
+		border: 2px solid white;
+		margin: 6px;
+		border-radius: 8px;
 		display: flex;
 		flex-direction: column;
 		align-items: flex-end;
+		box-shadow: 10px 20px 40px rgba(#030025, .1);
 	}
 
 	h3{
@@ -99,7 +110,7 @@
 	}
 
 	#mast{
-		margin-bottom: 32px;
+		margin-bottom: 20px;
 		cursor: pointer;
 		img{
 			height: 20px;
@@ -110,24 +121,37 @@
 		display: flex;
 		flex-direction: column;
 		align-items: flex-end;
+		.title{
+			padding: 3px;
+			h1{
+				font-size: 14px;
+				font-weight: 650;
+				letter-spacing: -.3px;
+				margin: 8px 0 0px 0;
+				color: rgba(#030025, .8);
+			}
+		}
 		.nav{
 			width: fit-content;
-			padding: 4px;
+			padding: 3px;
+			padding-left: 8px;
+			//border-right: 1.5px solid rgba(#030025, .25);
 			transition: .2s ease;
 			cursor: pointer;
+
 			h2{
 				font-size: 13px;
 				font-weight: 500;
 				letter-spacing: -.24px;
 				margin: 0;
-				color: rgba(#030025, .5);
+				color: rgba(#030025, .4);
 				text-align: right;
 				transition: .2s ease;
 			}
 			&.active{
 				padding: 6px;
+				//margin-right: 4px;
 				h2{
-
 					color: white;
 					font-weight: 600;
 				}

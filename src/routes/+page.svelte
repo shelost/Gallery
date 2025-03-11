@@ -1,5 +1,6 @@
 <script>
 	import Counter from './Counter.svelte';
+	import Navbar from './Navbar.svelte';
 	import welcome from '$lib/images/svelte-welcome.webp';
 	import welcomeFallback from '$lib/images/svelte-welcome.png';
 	import * as Config from '$lib/config.ts'
@@ -7,19 +8,37 @@
     import { goto } from '$app/navigation';
 	import { titleCase, tagIcon, Class, Id } from '$lib/utils'
 	import { onMount } from 'svelte'
+	import NumberFlow, { continuous } from '@number-flow/svelte'
+	import {
+		blur,
+		crossfade,
+		draw,
+		fade,
+		fly,
+		scale,
+		slide
+	} from 'svelte/transition';
+
 
 	export let data
 
 	let Scroll, Bar;
+	let splash = false
 
 	themeColor.set('f3f4f7')
+	//themeColor.set('ffffff')
 
 	//themeColor.set('e0e0e0')
 
 	let view = 1
+	let val = 0
+
+	setTimeout(() => {
+		val = 17945
+	}, 400);
 
 	onMount(() => {
-		const sections = document.querySelectorAll(".sec");
+		let sections = document.querySelectorAll(".sec");
 
 		function updateActiveSection() {
 
@@ -28,47 +47,62 @@
 			let object = null
 			let minDistance = Infinity;
 
+
 			sections.forEach((sec, index) => {
 				const rect = sec.getBoundingClientRect();
 				const distance = Math.abs(rect.top + window.innerHeight * .25);
-				const dist2 = rect.top
-				let height = rect.bottom - rect.top
+				const dist2 = rect.top;
+				let height = rect.bottom - rect.top;
 
-				const inView = rect.top - 200 < window.innerHeight && rect.top + height > 0
-				const hgroup = document.querySelectorAll('hgroup')[index]
-				//title.innerHTML = rect.top + '<br>' + (rect.top + 100 < window.innerHeight) + '<br>' + (rect.top + height) + '<br>' + inView
-				//sec.style.perspective = '800px'
-				//sec.style.transform = `rotate3d(1, 0, 0,${(Math.max(0, rect.top/window.innerHeight)*90)}deg)`
+				const inView = rect.top - 200 < window.innerHeight && rect.top + height > 0;
+				const hgroup = document.querySelectorAll('hgroup')[index];
 
-				if (inView){
-					//sec.style.border = '2px solid red'
-					sec.style.transformOrigin = 'top center'
-					//hgroup.style.transform = `perspective(800px) rotateX(${(Math.max(0, rect.top/window.innerHeight)*40)}deg) scale(1)`
-				}else{
-					sec.style.transform = ''
+				if (inView) {
+					sec.style.transformOrigin = 'top center';
+
+					// Set sticky positioning on hgroup
+					hgroup.style.position = 'sticky';
+					hgroup.style.top = '0px';
+
+					// Only apply parallax effect before element becomes sticky
+					if (rect.top > 0) {
+						const scrollProgress = rect.top / window.innerHeight;
+						const parallaxOffset = Math.min(0, scrollProgress * 150); // Adjust multiplier for parallax strength
+						hgroup.style.transform = `translateY(${parallaxOffset}px)`;
+					} else {
+						// Once sticky, remove transform to keep it in place
+						hgroup.style.transform = '';
+					}
+
+				} else {
+					sec.style.transform = '';
+					hgroup.style.position = 'relative';
+					hgroup.style.transform = '';
 				}
 
 				if (distance < minDistance) {
 					minDistance = distance;
 					closest = sec;
-					object = data.posts[index]
+					object = data.posts[index];
 				}
 			});
 
 			activeElem.set(closest);
 			activeObject.set(object)
 
-			if ($activeObject.meta.color){
+
+			if ($activeObject && $activeObject.meta.color){
 				themeColor.set(object.meta.color)
-			}else{
-				themeColor.set('f3f4f7')
 			}
-
-			let rect= $activeElem.getBoundingClientRect()
-			let mid = window.innerHeight/2
-			let diff = mid - rect.top
-
-			// Scrollbar
+			else{
+				themeColor.set('f3f4f7')
+				themeColor.set('ffffff')
+			}
+			if (document.documentElement.scrollTop < window.innerHeight*.5){
+				themeColor.set('f3f4f7')
+				themeColor.set('ffffff')
+				activeObject.set(null)
+			}
 
 			let scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
 			let scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
@@ -76,6 +110,37 @@
 
 			if (Bar && Scroll){
 				Bar.style.height = Scroll.getBoundingClientRect().height * percent + 'px'
+			}
+
+			// Parallax
+
+			let pieces = document.querySelectorAll('.piece')
+			pieces.forEach((piece, index) => {
+				piece.style.top = document.documentElement.scrollTop * -.25 + 200 + 'px'
+			})
+			let flex = document.querySelector('#flex')
+			if (flex) {
+				const flexRect = flex.getBoundingClientRect();
+				const viewportHeight = window.innerHeight;
+				const flexVisibleRatio = (viewportHeight - flexRect.top) / viewportHeight;
+				const scale = Math.min(1, 0.8 + (0.2 * Math.max(0, flexVisibleRatio)));
+
+				// Only apply transformations when not fully visible or scrolling back up
+				if (flexVisibleRatio < 1) {
+					// Calculate rotation angle from 45 degrees to 0 degrees based on visibility
+					const rotateX = 45 * (1 - Math.max(0, flexVisibleRatio));
+					// Add slight skew that reduces as the element becomes more visible
+					const skewY = 10 * (1 - Math.max(0, flexVisibleRatio));
+
+					flex.style.transform = `scale(${scale}) rotate3d(1, 0, 0, ${rotateX}deg) skewY(${skewY}deg)`;
+					flex.style.transformOrigin = 'center top';
+					flex.style.perspective = '1000px';
+				} else {
+					// Reset transforms when fully visible
+					flex.style.transform = '';
+					flex.style.transformOrigin = 'center top';
+					flex.style.perspective = 'none';
+				}
 			}
 		}
 
@@ -88,18 +153,31 @@
 			let mid = window.innerHeight/2
 		}
 
+		setTimeout(() => {
+			splash = true
+
+			updateActiveSection()
+		}, 20);
+		setTimeout(() => {
+			sections = document.querySelectorAll(".sec");
+			updateActiveSection()
+		}, 100);
+
 		return () => window.removeEventListener("scroll", updateActiveSection);
 
 	});
+
 
 </script>
 
 <svelte:head>
 	<title>Home</title>
-	<meta name="description" content="Svelte demo app" />
+	<meta name="description" content="Heewon's Portfolio" />
+	<link rel="icon" href="smiley.png" />
 </svelte:head>
 
-<section id = 'app'>
+{#if splash}
+<section id = 'app' in:fade={{duration: 100}}>
 
 	<div id = 'top'> </div>
 	<div id = 'sidebar'>
@@ -110,103 +188,190 @@
 		<div id = 'bar' bind:this={Bar}></div>
 	</div>
 
-	<section id = 'page'>
+	<section class = 'splash'>
+		<img src = 'smiley.svg' id = 'logo' alt = 'Logo'
+			in:fly={{y: 100, duration: 400, delay: 100}}>
+		<img src = 'ahnheewon3.png' id = 'ahw' alt = 'Logo'
+			in:fly={{y: 100, duration: 400, delay: 150}}>
+		<img src = 'bidam.png' id = 'bidam' class = 'piece' alt = 'Logo'
+			in:fly={{y: 100, duration: 400, delay: 300}}>
+		<img src = 'chunchu.png' id = 'chunchu' class = 'piece' alt = 'Logo'>
 
+		<div id = 'card' class = 'piece'>
+			<NumberFlow
+				value={val}
+				format={{ style: 'currency', currency: 'USD', trailingZeroDisplay: 'stripIfInteger' }}
+				plugins={[continuous]}
+				class='number'
+				transformTiming={{
+					// Used for layout-related transforms:
+					duration: 1800,
+					easing: 'linear(0, 0.0012, 0.0048 0.97%, 0.0195 2.03%, 0.0446 3.19%, 0.0806 4.48%, 0.1581 6.77%, 0.3679 12.32%, 0.469 15.16%, 0.5199 16.71%, 0.5665, 0.6097, 0.6496 21.26%, 0.6876, 0.7222 24.42%, 0.7541 26.03%, 0.7833 27.68%, 0.8104 29.39%, 0.8352 31.16%, 0.8575 32.97%, 0.8779 34.87%, 0.897 36.93%, 0.9142 39.13%, 0.9292 41.42%, 0.9424 43.84%, 0.9539 46.42%, 0.9637 49.16%, 0.972 52.13%, 0.979 55.39%, 0.9888 62.39%, 0.995 71.16%, 0.9983 82.61%, 0.9997 100%)'
+				}}
+			/>
+		</div>
 
-		<section class = 'splash'>
-			<img src = 'smiley.png' id = 'logo' alt = 'Logo'>
+		<div class = 'expo'>
 			<h1> Heewon </h1>
-			<h2> Designer + Webdev </h2>
+			<h2 in:fly={{y: 100, duration: 400, delay: 200}}>
+				Designer + Webdev
+			</h2>
+			<p in:fly={{y: 100, duration: 400, delay: 250}}>
+				Hi! I'm a designer / engineer focused on bringing more creative art to the web.
+			</p>
+			<p in:fly={{y: 100, duration: 400, delay: 300}}>
+				I also draw comics & concept art
+			</p>
+		</div>
 
-			<div id = 'search'>
-				<input placeholder = 'Search...'>
-			</div>
+		<button id = 'cta'>
+			<h2> View Projects </h2>
+		</button>
 
-		</section>
+		<div id = 'search'>
+			<input placeholder = 'Search...'>
+		</div>
+
+	</section>
 
 
-		<section id = 'sections' class:list={view == 2}>
-		{#each data.posts as link, i}
+	<div id = 'flex'>
+		<section id = 'page'>
+			<section id = 'sections' class:list={view == 2}>
 
-			<section
-				id = '{link.meta.title}'
-				class = 'sec r{link.meta.rating} {link.meta.type}'
-				>
+			{#each data.posts as link, i}
 
-				<hgroup class = 'hgroup'>
-					<div class = 'header'>
-						{#if link.meta.card}
-								<img src = 'card/{link.meta.card}.png' alt = 'card' class = 'card'>
-							{/if}
-						<div class = 'title'>
-
-							<h1> {link.meta.title} </h1>
-							{#each link.meta.tags as tag, j}
-								<div class = 'tag'>
-									{#if tagIcon(tag)}
-										<img src = 'icon/{tagIcon(tag)}.svg' class = 'icon' alt = 'icon'>
-									{/if}
-									<h2> {titleCase(tag)} </h2>
-								</div>
-							{/each}
-						</div>
-						<h2> {link.meta.description} </h2>
-						<div class = 'type'>
-							<h3> {link.meta.type} </h3>
-						</div>
-						<p> {link.meta.blurb} </p>
-						<div class = 'tags'>
-							{#each link.meta.categories as cat, j}
-								<div class = 'tag'>
-									{#if tagIcon(cat)}
-										<img src = 'icon/{tagIcon(cat)}.svg' class = 'icon' alt = 'icon'>
-									{/if}
-									<h2> {titleCase(cat)} </h2>
-								</div>
-							{/each}
-						</div>
+				{#if i == 0 || i > 0 && link.meta.type != data.posts[i-1].meta.type }
+					<div class = 'head'>
+						<h1> {titleCase(link.meta.type)} </h1>
 					</div>
-
-					<div class = 'top'>
-						<button on:click = {() => {goto('/' + link.slug)}}>
-							<h2>
-								View >
-							</h2>
-						</button>
-						<div class = 'rating'>
-							<h2> {link.meta.rating} </h2>
-							<div class = 'bar'>
-								<div class = 'fill'>
-								</div>
-							</div>
-						</div>
-					</div>
-
-				</hgroup>
-
-				{#if link.meta.preview}
-					<!--
-					<div class = 'banner' style = 'background-image: url(bento/{link.meta.preview}.svg)'></div>
-					-->
-					<img src = 'bento/{link.meta.preview}.svg' class = 'banner' alt = 'banner'>
 				{/if}
 
 
-				<div class="prose preview prose-img">
-					<svelte:component this={link.content} />
-				</div>
+				<section
+					id = '{link.meta.title}'
+					class = 'sec r{link.meta.rating} {link.meta.type}'
+					>
 
+					<hgroup class = 'hgroup'>
+						<div class = 'header'>
+							{#if link.meta.card}
+									<img src = 'card/{link.meta.card}.png' alt = 'card' class = 'card'>
+								{/if}
+							<div class = 'title'>
+
+								<h1> {link.meta.title} </h1>
+								{#each link.meta.tags as tag, j}
+									<div class = 'tag'>
+										{#if tagIcon(tag)}
+											<img src = 'icon/{tagIcon(tag)}.svg' class = 'icon' alt = 'icon'>
+										{/if}
+										<h2> {titleCase(tag)} </h2>
+									</div>
+								{/each}
+							</div>
+							<h2> {link.meta.description} </h2>
+							<div class = 'type'>
+								<h3> {link.meta.type} </h3>
+							</div>
+							<p> {link.meta.blurb} </p>
+							<div class = 'tags'>
+								{#each link.meta.categories as cat, j}
+									<div class = 'tag'>
+										{#if tagIcon(cat)}
+											<img src = 'icon/{tagIcon(cat)}.svg' class = 'icon' alt = 'icon'>
+										{/if}
+										<h2> {titleCase(cat)} </h2>
+									</div>
+								{/each}
+							</div>
+						</div>
+
+						<div class = 'top'>
+							<button on:click = {() => {goto('/' + link.slug)}}>
+								<h2>
+									View >
+								</h2>
+							</button>
+							<div class = 'rating'>
+								<h2> {link.meta.rating} </h2>
+								<div class = 'bar'>
+									<div class = 'fill'>
+									</div>
+								</div>
+							</div>
+						</div>
+
+					</hgroup>
+
+					{#if link.meta.preview}
+						<!--
+						<div class = 'banner' style = 'background-image: url(bento/{link.meta.preview}.svg)'></div>
+						-->
+						<img src = 'bento/{link.meta.preview}.svg' class = 'banner' alt = 'banner'>
+					{/if}
+
+
+					<div class="prose preview prose-img">
+						<svelte:component this={link.content} />
+					</div>
+
+				</section>
+
+			{/each}
 			</section>
 
-		{/each}
+
 		</section>
 
-
-	</section>
+		<div id = 'navbar'>
+			<Navbar />
+			<div id = 'scroll' bind:this={Scroll}>
+				<div id = 'bar' bind:this={Bar}></div>
+			</div>
+		</div>
+	</div>
 </section>
+{/if}
 
 <style lang="scss">
 
+	:global(number-flow-svelte) {
+		--number-flow-char-height: 0.85em;
+		font-size: 44px;
+		font-weight: -4px;
+		font-weight: 800;
+		font-family: 'Inter', sans-serif;
+	}
+
+	#app{
+		//display: flex;
+		width: 100%;
+		width: 99vw;
+		margin: auto;
+	}
+
+	#flex{
+		display: flex;
+		flex-direction: row;
+		justify-content: center;
+		align-items: space-between;
+		width: 95%;
+		margin: auto;
+		border: 3px solid rgba(white, .25);
+
+		background: rgba(white, .5);
+		border-radius: 8px;
+		box-shadow: -20px 10px 100px rgba(#030025, .15);
+		transition: .1s ease;
+		perspective: 800px;
+	}
+
+	#navbar{
+		position: sticky;
+		top: 6px;
+		height: 100vh;
+	}
 
 
 	#scroll{
@@ -214,17 +379,13 @@
 		top: 10px;
 		width: 10px;
 		height: calc(100vh - 24px);
-		//height: 500px;
 		margin: 8px;
 		margin-right: 12px;
 		background: rgba(#030025, .3);
 		background: white;
 		border-radius: 20px;
-		//border: 1px solid rgba(white, .2);
-		//box-shadow: -4px 0px 12px 2px rgba(black, .2);
 		margin-top: 90vh;
 		overflow: hidden;
-
 		display: none;
 
 		#bar{
@@ -250,11 +411,7 @@
 		}
 	}
 
-	#app{
-		display: flex;
-		//width: 95vw;
-		//border: 2px solid black;
-	}
+
 
 	#sidebar{
 		width: 140px;
@@ -298,6 +455,7 @@
 		padding: 12px 16px;
 		border-radius: 50px;
 		margin: 28px 0;
+		display: none;
 		&:focus{
 			outline: none;
 		}
@@ -312,13 +470,13 @@
 	}
 
 	#page{
-		flex: 1;
-		//border: 1px solid red;
-		//transform: perspective(800px) rotateX(2deg);
+
 	}
 
 	#sections{
-		//transform: rotate3d(10, 2, -2, 20deg);
+		flex: 1;
+		margin: auto;
+
 		&.list{
 			.sec{
 				padding: 12px;
@@ -348,55 +506,74 @@
 		}
 	}
 
+	.head{
+		position: sticky;
+		top: 10px;
+		width: 160px;
+		border-radius: 8px;
+		padding: 10px;
+		z-index: -1;
+		margin: 10px 0 0 0px;
+		h1{
+			font-size: 20px;
+			font-weight: 750;
+			letter-spacing: -.5px;
+			margin: 0;
+			text-align: left;
+		}
+	}
+
 	.sec{
-		padding: 0px 30px 0px 0px;
+		padding: 0px 20px 0px 0px;
 		border-radius: 8px;
 		transition: .2s ease;
-		width: clamp(200px, 100%, 1200px);
-		margin: 12px auto;
-
-		//background: rgba(white, .8);
-		//border: 2px solid rgba(white, .5);
-		//box-shadow: -20px 30px 80px rgba(black, .08);
-
+		margin: 20px 40px 0 10px;
 		display: flex;
+		flex-direction: row;
 		gap: 24px;
 		justify-content: left;
 		transition: .2s ease;
 
 		.banner{
 			border-radius: 0px;
-			width: calc(100% - 320px);
-			//width: 70%;
-			margin: auto;
-			filter: drop-shadow(-8px 16px 32px rgba(black, .1));
+			width: calc(100% - 200px);
+			//width: 75%;
+			margin: 20px auto;
+			border-radius: 16px;
 			transition: .2s ease;
+
+			/*
+			background: rgba(white, .5);
+			border: 1px solid rgba(white, .2);
+			border-radius: 18px;
+			padding: 24px;
+			*/
+
+			filter: drop-shadow(-10px 20px 30px rgba(black, .15));
 		}
 
 		hgroup{
 			position: sticky;
-			top: 0px;
-
-
 			align-self: flex-start;
-			width: 180px;
+
+			width: 160px;
+			z-index: 3;
+
+			top: 72px;
 			flex-shrink: 0;
 			overflow: hidden;
-			transition: .2s ease;
-
-			padding: 24px;
-			padding-right: 24px;
+			padding: 20px;
 			border-radius: 8px;
-			border: 2px solid white;
-
 			background: rgba(white, 1);
-			//box-shadow: -4px 12px 36px rgba(#030025, .08), inset 0 -6px 8px rgba(#030025, .02);
-
+			transition: .2s ease;
 
 			.header{
 				width: 100%;
 				height: 100%;
 
+				.card{
+					display: none;
+				}
 				img{
 					width: 100%;
 					border-radius: 4px;
@@ -404,7 +581,6 @@
 				}
 
 				.title{
-					display: flex;
 					align-items: center;
 					gap: 12px;
 					h2{
@@ -415,7 +591,7 @@
 
 				h1{
 					font-size: 24px;
-					font-weight: 700;
+					font-weight: 750;
 					line-height: 100%;
 					letter-spacing: -.7px;
 					text-align: left;
@@ -460,6 +636,8 @@
 						border-radius: 10px;
 						box-shadow: 0 4px 12px rgba(black, .1);
 
+						background:rgb(29, 26, 60);
+
 						//border: 1px solid rgba(black, .1);
 
 						transition: .2s ease;
@@ -470,12 +648,14 @@
 							border-radius: 0;
 						}
 						h2{
-							font-size: 13px;
-							font-weight: 700;
-							letter-spacing: -.2px;
+							font-size: 12px;
+							font-weight: 550;
+							letter-spacing: -.1px;
 							color: rgba(#030025, .6);
 							margin: 0;
 							padding: 0;
+
+							color: white;
 						}
 						&:hover{
 							box-shadow: 0 5px 12px rgba(black, .12);
@@ -495,65 +675,96 @@
 			}
 
 		}
-
-
-
-		/*
-		&.r4{
-			.banner{
-				aspect-ratio: 5/4;
-			}
-		}
-
-		&.r3{
-
-			.banner{
-				aspect-ratio: 5/3;
-			}
-		}
-		&.r2{
-			.banner{
-				aspect-ratio: 5/2;
-			}
-		}
-			*/
-
 	}
 
 	.splash{
-		height: 70vh;
-
+		height: 90vh;
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
+		align-items: center;
+		position: relative;
+		padding: 0px;
 
-		padding: 40px;
+		.piece{
+			height: 400px;
+			position: absolute;
+			top: 50px;
+			z-index: -2;
+			filter: drop-shadow(-10px 20px 30px rgba(#030025, .15));
+		}
+
+		#bidam{
+			right: 30px;
+		}
+
+		#card{
+			left: 20px;
+			background: white;
+			padding: 40px;
+			height: fit-content;
+			width: 220px;
+			border-radius: 8px;
+		}
+
+		#chunchu{
+			right: 25px;
+			display: none;
+		}
+
 
 		#logo{
-			height: 100px;
-			width: 100px;
+			height: 150px;
+			width: 160px;
 			border-radius: 50px;
-			margin-bottom: 20px;
+			margin-bottom: 0px;
+			//display: none;
 		}
 
-		h1{
-			font-size: 60px;
-			font-weight: 800;
-			letter-spacing: -1.8px;
-			text-align: left;
+		#ahw{
+			height: 100px;
 		}
 
-		h3{
-			font-size: 16px;
-			font-weight: 600;
-			letter-spacing: -.5px;
-			text-align: left;
-			padding: 4px 8px;
-			margin: 8px 0;
-			background: white;
-			border-radius: 8px;
-			width: fit-content;
+
+		#cta{
+			margin-top: 40px;
+			border-radius: 18px;
+			padding: 14px 20px;
+			h2{
+				font-size: 18px;
+				font-weight: 600;
+				letter-spacing: -.25px;
+			}
 		}
+
+		.expo{
+
+			h1{
+				font-size: 60px;
+				font-weight: 800;
+				letter-spacing: -1.8px;
+				margin: 0;
+				display: none;
+			}
+			h2{
+				font-size: 24px;
+				font-weight: 600;
+				letter-spacing: -.8px;
+				margin: 8px 0 24px 0;
+				text-align: center;
+			}
+
+			p{
+				font-size: 16px;
+				letter-spacing: -.36px;
+				text-align: center;
+				margin-top: 10px;
+				line-height: 130%;
+				max-width: 400px;
+			}
+		}
+
+
 	}
 
 	@media screen and (max-width: 768px){
