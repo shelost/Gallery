@@ -1,5 +1,5 @@
 ---
-type: gallery
+type: comic
 series: Samhan
 title: Kingdom
 description: Webtoon Concept Art

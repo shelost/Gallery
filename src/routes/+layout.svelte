@@ -8,7 +8,7 @@
 	let { children } = $props();
 
 	let mouseX = -1000, mouseY = -1000; // Initial off-screen position
-    let intensity = .25; // Control the effect strength
+    let intensity = .35; // Control the effect strength
     let radius = 300; // Control the effect radius
 
 	let Bar, Scroll
@@ -72,7 +72,7 @@
             });
         }
 
-        draw(); // Initial draw
+        draw();
 
 		function updateScroll(){
 			let scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
@@ -91,6 +91,7 @@
 
 </script>
 
+
 <div class="app">
 
 	<canvas id = 'canvas'>
@@ -107,8 +108,8 @@
 		</div>
 	</div>
 
-
 </div>
+
 
 <style lang="scss">
 
@@ -153,19 +154,12 @@
 		}
 	}
 
-
-
-
-
-
 	#navbar{
-		display: flex;
-		align-items: flex-start;
 		position: sticky;
 		top: 0px;
-		right: 0px;
 		height: 100vh;
-		//border: 1px solid red;
+		//margin-top: 80vh;
+		display: none;
 	}
 
 	#canvas{
@@ -175,7 +169,6 @@
 		width: 100vw;
 		height: 100vh;
 		z-index: -4;
-		display: none;
 	}
 
 	.app {
@@ -186,24 +179,32 @@
 		width: clamp(400px, 100%, 1600px);
 		margin: auto;
 
-		//background: white;
-		//border-radius: 12px;
-		//height: calc(100vh - 24px);
-		//box-shadow: 0 10px 40px rgba(black, .1);
-
+		/*
+		height: calc(100vh - 50px);
+		width: calc(100vw - 50px);
+		box-shadow: -10px 20px 80px rgba(black, .25);
+		position: sticky;
+		top: 20px;
+		//margin: 20px;
+		border-radius: 10px;
+		//border: 1px solid black;
+		overflow-y: scroll;
+		scroll-snap-type: y mandatory;
+		*/
 	}
 
+
+
 	main {
-		//flex: 1;
-		display: flex;
-		flex-direction: column;
-
-		width: calc(100%);
+		flex: 1;
 		padding-bottom: 120px;
-		//padding: 48px;
-
-		//margin: 0 auto;
-		box-sizing: border-box;
+		width: 100%;
+		/*
+		scroll-snap-align: start;
+		margin-top: 200px;
+		scroll-snap-align: end;
+		margin-bottom: 100px;
+		*/
 	}
 
 	footer {

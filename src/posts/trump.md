@@ -8,7 +8,7 @@ author: 'Dantès'
 categories:
   - sveltekit
   - svelte
-published: true
+published: false
 ---
 
 <script>

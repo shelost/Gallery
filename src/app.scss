@@ -39,6 +39,7 @@ body {
 	background: #f3f4f7;
 	background: none;
 	transition: .2s ease;
+	overflow-x: hidden;
 	//transform: rotateZ(-2deg);
 	//background: white;
 	//background: black;
@@ -55,6 +56,10 @@ p {
 
 ::-webkit-scrollbar{
 	width: 0;
+}
+
+::selection{
+	background: #ffdd00;
 }
 
 

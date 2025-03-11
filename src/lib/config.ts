@@ -12,6 +12,7 @@ export const LINKS =  [
     { text: 'Apps', route: '/apps', icon: 'apps', color: '#0C75ED' }
 ];
 
+/*
 export const SECTIONS = [
     {
         title: 'UX',
@@ -124,3 +125,4 @@ export const SECTIONS = [
         rating: 5.0,
     },
 ]
+*/
