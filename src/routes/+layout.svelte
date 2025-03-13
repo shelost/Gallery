@@ -169,6 +169,7 @@
 		width: 100vw;
 		height: 100vh;
 		z-index: -4;
+		display: none;
 	}
 
 	.app {
@@ -197,7 +198,6 @@
 
 	main {
 		flex: 1;
-		padding-bottom: 120px;
 		width: 100%;
 		/*
 		scroll-snap-align: start;

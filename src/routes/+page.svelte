@@ -22,7 +22,7 @@
 
 	export let data
 
-	let Scroll, Bar;
+	let Scroll, Bar, App, Flex;
 	let splash = false
 
 	themeColor.set('f3f4f7')
@@ -36,6 +36,7 @@
 	setTimeout(() => {
 		val = 17945
 	}, 400);
+
 
 	onMount(() => {
 		let sections = document.querySelectorAll(".sec");
@@ -58,26 +59,8 @@
 				const hgroup = document.querySelectorAll('hgroup')[index];
 
 				if (inView) {
-					sec.style.transformOrigin = 'top center';
-
-					// Set sticky positioning on hgroup
-					hgroup.style.position = 'sticky';
-					hgroup.style.top = '0px';
-
-					// Only apply parallax effect before element becomes sticky
-					if (rect.top > 0) {
-						const scrollProgress = rect.top / window.innerHeight;
-						const parallaxOffset = Math.min(0, scrollProgress * 150); // Adjust multiplier for parallax strength
-						hgroup.style.transform = `translateY(${parallaxOffset}px)`;
-					} else {
-						// Once sticky, remove transform to keep it in place
-						hgroup.style.transform = '';
-					}
 
 				} else {
-					sec.style.transform = '';
-					hgroup.style.position = 'relative';
-					hgroup.style.transform = '';
 				}
 
 				if (distance < minDistance) {
@@ -89,7 +72,6 @@
 
 			activeElem.set(closest);
 			activeObject.set(object)
-
 
 			if ($activeObject && $activeObject.meta.color){
 				themeColor.set(object.meta.color)
@@ -115,8 +97,10 @@
 			// Parallax
 
 			let pieces = document.querySelectorAll('.piece')
+			const parallax = 0.1 // Controls separation between scroll speeds
 			pieces.forEach((piece, index) => {
-				piece.style.top = document.documentElement.scrollTop * -.25 + 200 + 'px'
+				const scrollSpeed = -.2 - (index * parallax) // Each piece scrolls progressively faster
+				piece.style.top = document.documentElement.scrollTop * scrollSpeed + 200 + 'px'
 			})
 			let flex = document.querySelector('#flex')
 			if (flex) {
@@ -128,11 +112,13 @@
 				// Only apply transformations when not fully visible or scrolling back up
 				if (flexVisibleRatio < 1) {
 					// Calculate rotation angle from 45 degrees to 0 degrees based on visibility
-					const rotateX = 45 * (1 - Math.max(0, flexVisibleRatio));
+					const rotateX = 30 * (1 - Math.max(0, flexVisibleRatio));
 					// Add slight skew that reduces as the element becomes more visible
 					const skewY = 10 * (1 - Math.max(0, flexVisibleRatio));
 
-					flex.style.transform = `scale(${scale}) rotate3d(1, 0, 0, ${rotateX}deg) skewY(${skewY}deg)`;
+					// skewY(${skewY}deg
+
+					flex.style.transform = `scale(${scale}) rotate3d(5, 2, -1, ${rotateX}deg) perspective(800px)`;
 					flex.style.transformOrigin = 'center top';
 					flex.style.perspective = '1000px';
 				} else {
@@ -164,9 +150,7 @@
 		}, 100);
 
 		return () => window.removeEventListener("scroll", updateActiveSection);
-
 	});
-
 
 </script>
 
@@ -177,30 +161,26 @@
 </svelte:head>
 
 {#if splash}
-<section id = 'app' in:fade={{duration: 100}}>
+<section id = 'app' bind:this={App}>
 
-	<div id = 'top'> </div>
-	<div id = 'sidebar'>
 
-	</div>
-
-	<div id = 'scroll' bind:this={Scroll}>
-		<div id = 'bar' bind:this={Bar}></div>
-	</div>
 
 	<section class = 'splash'>
-		<img src = 'smiley.svg' id = 'logo' alt = 'Logo'
-			in:fly={{y: 100, duration: 400, delay: 100}}>
-		<img src = 'ahnheewon3.png' id = 'ahw' alt = 'Logo'
-			in:fly={{y: 100, duration: 400, delay: 150}}>
+
+
 		<img src = 'bidam.png' id = 'bidam' class = 'piece' alt = 'Logo'
 			in:fly={{y: 100, duration: 400, delay: 300}}>
-		<img src = 'chunchu.png' id = 'chunchu' class = 'piece' alt = 'Logo'>
+		<img src = 'heewon9.png' id = 'chunchu' class = 'piece' alt = 'Logo'>
+
+		<video id = 'video' class = 'piece' alt = 'Logo' autoplay muted playsinline>
+			<source src = 'bidam.mp4' type = 'video/mp4'>
+		</video>
 
 		<div id = 'card' class = 'piece'>
+			<h2> Total Earned </h2>
 			<NumberFlow
 				value={val}
-				format={{ style: 'currency', currency: 'USD', trailingZeroDisplay: 'stripIfInteger' }}
+				format={{ trailingZeroDisplay: 'stripIfInteger' }}
 				plugins={[continuous]}
 				class='number'
 				transformTiming={{
@@ -211,20 +191,37 @@
 			/>
 		</div>
 
-		<div class = 'expo'>
-			<h1> Heewon </h1>
-			<h2 in:fly={{y: 100, duration: 400, delay: 200}}>
-				Designer + Webdev
-			</h2>
-			<p in:fly={{y: 100, duration: 400, delay: 250}}>
-				Hi! I'm a designer / engineer focused on bringing more creative art to the web.
-			</p>
-			<p in:fly={{y: 100, duration: 400, delay: 300}}>
-				I also draw comics & concept art
-			</p>
+		<div class = 'screen'>
+			<img src = 'smiley.svg' id = 'logo' alt = 'Logo'
+				in:fly={{y: 100, duration: 400, delay: 100}}>
+
+			<img src = 'heewon9.png' id = 'pfp' alt = 'Logo'
+				in:fly={{y: 100, duration: 400, delay: 150}}>
+			<img src = 'ahnheewon3.png' id = 'ahw' alt = 'Logo'
+				in:fly={{y: 100, duration: 400, delay: 150}}>
+			<div class = 'expo'>
+				<h1> Creating Designs and Websites </h1>
+				<div class = 'status' in:fly={{y: 100, duration: 400, delay: 200}}>
+					<div class = 'dot'></div>
+					<h2>
+						Building...
+					</h2>
+				</div>
+				<p in:fly={{y: 100, duration: 400, delay: 250}}>
+					Hi! I'm a Design Engineer who's exploring ways to build more creative web apps.
+				</p>
+				<p in:fly={{y: 100, duration: 400, delay: 300}}>
+					I also work for <a href = 'https://stan.store'>startups</a>, draw <a href = ''>comics</a>, and write <a href = ''>essays</a>.
+				</p>
+				<p in:fly={{y: 100, duration: 400, delay: 350}}>
+					Let's work together! You can reach me at <a href = 'mailto:h@ahnheewon.com'>h@ahnheewon.com</a>.
+				</p>
+
+			</div>
+
 		</div>
 
-		<button id = 'cta'>
+		<button id = 'cta' on:click = { () => {document.documentElement.scrollTo({top: Flex.getBoundingClientRect().top, behavior: 'smooth'})}}>
 			<h2> View Projects </h2>
 		</button>
 
@@ -235,7 +232,48 @@
 	</section>
 
 
-	<div id = 'flex'>
+	<div id = 'flex' bind:this={Flex}>
+
+		<div id = 'top'>
+			<h2> My Projects </h2>
+		</div>
+
+		<div id = 'sidebar'>
+			{#if $activeObject}
+				<div class = 'info'>
+					{#if $activeObject.meta.card}
+							<img src = 'card/{$activeObject.meta.card}.png' alt = 'card' class = 'card'>
+						{/if}
+					<div class = 'title'>
+						<h1> {$activeObject.meta.title} </h1>
+						{#each $activeObject.meta.tags as tag, j}
+							<div class = 'tag'>
+								{#if tagIcon(tag)}
+									<img src = 'icon/{tagIcon(tag)}.svg' class = 'icon' alt = 'icon'>
+								{/if}
+								<h2> {titleCase(tag)} </h2>
+							</div>
+						{/each}
+					</div>
+					<h2> {$activeObject.meta.description} </h2>
+					<div class = 'type'>
+						<h3> {$activeObject.meta.type} </h3>
+					</div>
+					<p> {$activeObject.meta.blurb} </p>
+					<div class = 'tags'>
+						{#each $activeObject.meta.categories as cat, j}
+							<div class = 'tag'>
+								{#if tagIcon(cat)}
+									<img src = 'icon/{tagIcon(cat)}.svg' class = 'icon' alt = 'icon'>
+								{/if}
+								<h2> {titleCase(cat)} </h2>
+							</div>
+						{/each}
+					</div>
+				</div>
+			{/if}
+		</div>
+
 		<section id = 'page'>
 			<section id = 'sections' class:list={view == 2}>
 
@@ -246,7 +284,6 @@
 						<h1> {titleCase(link.meta.type)} </h1>
 					</div>
 				{/if}
-
 
 				<section
 					id = '{link.meta.title}'
@@ -259,7 +296,6 @@
 									<img src = 'card/{link.meta.card}.png' alt = 'card' class = 'card'>
 								{/if}
 							<div class = 'title'>
-
 								<h1> {link.meta.title} </h1>
 								{#each link.meta.tags as tag, j}
 									<div class = 'tag'>
@@ -305,32 +341,34 @@
 					</hgroup>
 
 					{#if link.meta.preview}
-						<!--
-						<div class = 'banner' style = 'background-image: url(bento/{link.meta.preview}.svg)'></div>
-						-->
 						<img src = 'bento/{link.meta.preview}.svg' class = 'banner' alt = 'banner'>
+						<div class = 'gradient'></div>
 					{/if}
-
 
 					<div class="prose preview prose-img">
 						<svelte:component this={link.content} />
 					</div>
-
 				</section>
 
 			{/each}
 			</section>
 
-
 		</section>
 
 		<div id = 'navbar'>
 			<Navbar />
-			<div id = 'scroll' bind:this={Scroll}>
-				<div id = 'bar' bind:this={Bar}></div>
-			</div>
 		</div>
 	</div>
+
+	<div id = 'scroll' bind:this={Scroll}>
+		<div id = 'bar' bind:this={Bar}></div>
+	</div>
+</section>
+
+<section id = 'footer'>
+	<h3>
+		Copyright 2025 ahnheewon. All rights reserved.
+	</h3>
 </section>
 {/if}
 
@@ -346,53 +384,66 @@
 
 	#app{
 		//display: flex;
+		//width: clamp(50vw, 1200px, 99vw);
 		width: 100%;
-		width: 99vw;
 		margin: auto;
 	}
 
 	#flex{
+		position: relative;
 		display: flex;
 		flex-direction: row;
 		justify-content: center;
 		align-items: space-between;
-		width: 95%;
+		width: 100%;
 		margin: auto;
-		border: 3px solid rgba(white, .25);
+		gap: 36px;
 
-		background: rgba(white, .5);
+		//border: 3px solid rgba(white, .25);
+		//background: rgba(white, .8);
+		//box-shadow: -20px 10px 100px rgba(#030025, .15);
 		border-radius: 8px;
-		box-shadow: -20px 10px 100px rgba(#030025, .15);
 		transition: .1s ease;
-		perspective: 800px;
+
+		#top{
+			position: absolute;
+			top: 0;
+			left: 0;
+			height: 60px;
+			width: 100%;
+			background: white;
+			display: none;
+		}
 	}
 
 	#navbar{
 		position: sticky;
 		top: 6px;
 		height: 100vh;
+
+		display: flex;
 	}
 
 
 	#scroll{
 		position: sticky;
-		top: 10px;
-		width: 10px;
+		top: 0px;
+		width: 8px;
 		height: calc(100vh - 24px);
-		margin: 8px;
-		margin-right: 12px;
+		margin: 4px;
 		background: rgba(#030025, .3);
-		background: white;
+		background: rgba(#030025, .15);
 		border-radius: 20px;
-		margin-top: 90vh;
+		display: block;
 		overflow: hidden;
+
 		display: none;
 
 		#bar{
 			position: absolute;
 			top: 0;
 			left: 0;
-			width: 10px;
+			width: 8px;
 			height: 36px;
 			background: black;
 			border-radius: 20px;
@@ -411,8 +462,6 @@
 		}
 	}
 
-
-
 	#sidebar{
 		width: 140px;
 		height: calc(100vh - 52px);
@@ -421,9 +470,26 @@
 		top: 0;
 		display: none;
 
+		.info{
+			transition: .2s ease;
+		}
+
+		.card{
+			width: 100%;
+		}
+
+		#title{
+			font-size: 20px;
+			font-weight: 650;
+			line-height: 105%;
+			margin-bottom: 12px;
+		}
+
 		p{
 			font-size: 12px;
+			letter-spacing: -.2px;
 			text-wrap: wrap;
+			line-height: 120%;
 		}
 	}
 
@@ -477,6 +543,8 @@
 		flex: 1;
 		margin: auto;
 
+		width: 950px;
+
 		&.list{
 			.sec{
 				padding: 12px;
@@ -507,13 +575,13 @@
 	}
 
 	.head{
-		position: sticky;
-		top: 10px;
+
 		width: 160px;
 		border-radius: 8px;
 		padding: 10px;
 		z-index: -1;
 		margin: 10px 0 0 0px;
+		display: none;
 		h1{
 			font-size: 20px;
 			font-weight: 750;
@@ -524,63 +592,90 @@
 	}
 
 	.sec{
-		padding: 0px 20px 0px 0px;
+		position: relative;
 		border-radius: 8px;
 		transition: .2s ease;
-		margin: 20px 40px 0 10px;
+		//margin: 20px 40px 0 10px;
+		//margin: 20px auto;
 		display: flex;
-		flex-direction: row;
-		gap: 24px;
+		flex-direction: column;
+		gap: 40px;
 		justify-content: left;
 		transition: .2s ease;
 
+		background: rgba(white, .9);
+		box-shadow: -30px 30px 80px rgba(black, .12);
+		margin-top: 24px;
+		//padding-bottom: 40px;
+
+
 		.banner{
 			border-radius: 0px;
-			width: calc(100% - 200px);
-			//width: 75%;
-			margin: 20px auto;
+			width: calc(100% - 80px);
+			//width: 100%;
+			margin: 0px auto 30px auto;
 			border-radius: 16px;
 			transition: .2s ease;
-
-			/*
-			background: rgba(white, .5);
-			border: 1px solid rgba(white, .2);
-			border-radius: 18px;
-			padding: 24px;
-			*/
-
-			filter: drop-shadow(-10px 20px 30px rgba(black, .15));
+			filter: drop-shadow(-20px 30px 20px rgba(#030025, .15));
 		}
+
+		.gradient{
+			position: absolute;
+			bottom: 0;
+			left: 0;
+			width: 100%;
+			height: 240px;
+			border-radius: 8px;
+			background: linear-gradient(to bottom, rgba(white, 0), rgba(white, 1) 80%);
+		}
+
 
 		hgroup{
 			position: sticky;
 			align-self: flex-start;
-
-			width: 160px;
 			z-index: 3;
 
-			top: 72px;
+			display: flex;
+			align-items: center;
+			gap: 12px;
+			width: 100%;
+			top: -4px;
+
 			flex-shrink: 0;
 			overflow: hidden;
-			padding: 20px;
-			border-radius: 8px;
+			padding: 16px 0 12px 0;
+
+			border-radius: 6px;
 			background: rgba(white, 1);
+			//box-shadow: 0 4px 24px rgba(black, .1);
 			transition: .2s ease;
+
 
 			.header{
 				width: 100%;
 				height: 100%;
+				display: flex;
+				align-items: center;
+				gap: 6px;
+				padding-left: 14px;
 
-				.card{
-					display: none;
-				}
 				img{
 					width: 100%;
 					border-radius: 4px;
 					margin-bottom: 18px;
 				}
 
+				.card{
+					width: 36px;
+					height: 36px;
+					background: red;
+					border-radius: 6px;
+					margin: 0;
+					margin-right: 6px;
+				}
+
 				.title{
+					display: flex;
 					align-items: center;
 					gap: 12px;
 					h2{
@@ -589,24 +684,28 @@
 
 				}
 
+				.tags{
+					display: none;
+				}
+
 				h1{
-					font-size: 24px;
-					font-weight: 750;
+					font-size: 18px;
+					font-weight: 600;
 					line-height: 100%;
-					letter-spacing: -.7px;
+					letter-spacing: -.5px;
 					text-align: left;
-					margin-bottom: 8px;
-					color: rgba(#030025, .75);
+					margin: 0;
+					color: rgba(#030025, .9);
 				}
 
 				h2{
-					font-size: 14px;
+					font-size: 18px;
 					font-weight: 550;
-					line-height: 120%;
-					color: rgba(#030025, .4);
-					letter-spacing: -.4px;
+					line-height: 100%;
+					letter-spacing: -.5px;
 					text-align: left;
-					margin-bottom: 20px;
+					margin: 0;
+					color: rgba(#030025, .4);
 				}
 
 				h3{
@@ -617,52 +716,13 @@
 					font-size: 12px;
 					font-weight: 450;
 					letter-spacing: -.3px;
-					margin: 12px 0;
+					margin: 0px 0;
 					line-height: 140%;
 					color: rgba(#030025, .6);
+					display: none;
 				}
 
-				.tags{
-					display: flex;
-					flex-wrap: wrap;
-					gap: 8px;
-					margin: 20px 0;
-					.tag{
-						display: flex;
-						align-items: center;
-						gap: 6px;
-						background: white;
-						padding: 6px 8px;
-						border-radius: 10px;
-						box-shadow: 0 4px 12px rgba(black, .1);
 
-						background:rgb(29, 26, 60);
-
-						//border: 1px solid rgba(black, .1);
-
-						transition: .2s ease;
-						cursor: pointer;
-						.icon{
-							height: 14px;
-							margin: 0;
-							border-radius: 0;
-						}
-						h2{
-							font-size: 12px;
-							font-weight: 550;
-							letter-spacing: -.1px;
-							color: rgba(#030025, .6);
-							margin: 0;
-							padding: 0;
-
-							color: white;
-						}
-						&:hover{
-							box-shadow: 0 5px 12px rgba(black, .12);
-							transform: translateY(-1px);
-						}
-					}
-				}
 			}
 
 			.top{
@@ -675,10 +735,56 @@
 			}
 
 		}
+
+
 	}
+
+	.tags{
+		display: flex;
+		flex-wrap: wrap;
+		gap: 8px;
+		margin: 0px 0;
+		.tag{
+			display: flex;
+			align-items: center;
+			gap: 6px;
+			background: white;
+			padding: 6px 10px;
+			border-radius: 16px;
+			box-shadow: 0 4px 12px rgba(black, .1);
+
+			background:rgb(29, 26, 60);
+
+			//border: 1px solid rgba(black, .1);
+
+			transition: .2s ease;
+			cursor: pointer;
+			.icon{
+				height: 14px;
+				margin: 0;
+				border-radius: 0;
+			}
+			h2{
+				font-size: 12px;
+				font-weight: 550;
+				letter-spacing: -.1px;
+				color: rgba(#030025, .6);
+				margin: 0;
+				padding: 0;
+
+				color: white;
+			}
+			&:hover{
+				box-shadow: 0 5px 12px rgba(black, .12);
+				transform: translateY(-1px);
+			}
+		}
+	}
+
 
 	.splash{
 		height: 90vh;
+		max-height: 900px;
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
@@ -687,85 +793,181 @@
 		padding: 0px;
 
 		.piece{
-			height: 400px;
+			width: 300px;
 			position: absolute;
 			top: 50px;
-			z-index: -2;
+			border-radius: 8px;
+			z-index: 1;
 			filter: drop-shadow(-10px 20px 30px rgba(#030025, .15));
+			transition: .2s ease;
+			display: none;
+
+			&:hover{
+				transform: scale(1.02);
+			}
 		}
 
 		#bidam{
-			right: 30px;
+			right: calc(50% - 600px);
+			width: 350px;
 		}
 
 		#card{
-			left: 20px;
+			left: calc(50% - 500px);
+			margin-top: -100px;
+
 			background: white;
-			padding: 40px;
+			padding: 24px;
 			height: fit-content;
-			width: 220px;
+			width: 200px;
 			border-radius: 8px;
 		}
 
-		#chunchu{
-			right: 25px;
-			display: none;
+		#video{
+			right: calc(50% - 600px);
+			margin-top: -150px;
+			mix-blend-mode: multiply;
+			filter: none;
+			z-index: -2;
 		}
 
+		#chunchu{
+			width: 250px;
+			left: calc(50% - 600px);
+			margin-top: 100px;
+		}
+
+		#cta{
+			margin-top: 32px;
+			border-radius: 24px;
+			padding: 11px 18px 12px 18px;
+			h2{
+				font-size: 15px;
+				font-weight: 550;
+				letter-spacing: -.15px;
+			}
+		}
 
 		#logo{
-			height: 150px;
-			width: 160px;
+			height: 140px;
 			border-radius: 50px;
-			margin-bottom: 0px;
-			//display: none;
+			margin-bottom: -20px;
+			display: none;
 		}
 
 		#ahw{
 			height: 100px;
 		}
 
+		.screen{
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: flex-start;
 
-		#cta{
-			margin-top: 40px;
-			border-radius: 18px;
-			padding: 14px 20px;
-			h2{
-				font-size: 18px;
-				font-weight: 600;
-				letter-spacing: -.25px;
-			}
-		}
+			background-image: none;
+			background-size: cover;
+			background-position: center;
+			background-repeat: no-repeat;
 
-		.expo{
+			border-radius: 16px;
+			padding: 24px;
 
-			h1{
-				font-size: 60px;
-				font-weight: 800;
-				letter-spacing: -1.8px;
-				margin: 0;
+			overflow: hidden;
+
+			#pfp{
+				height: 180px;
+				border-radius: 200px;
+				margin-bottom: 20px;
+				box-shadow: -10px 10px 40px rgba(black, .25);
 				display: none;
 			}
-			h2{
-				font-size: 24px;
-				font-weight: 600;
-				letter-spacing: -.8px;
-				margin: 8px 0 24px 0;
-				text-align: center;
-			}
 
-			p{
-				font-size: 16px;
-				letter-spacing: -.36px;
-				text-align: center;
-				margin-top: 10px;
-				line-height: 130%;
-				max-width: 400px;
+			.expo{
+				/*
+				background: white;
+				padding: 24px;
+				border-radius: 24px;
+				border: 8px solid white;
+				box-shadow: -10px 20px 60px rgba(#030025, .25);
+*/
+				h1{
+					font-size: 60px;
+					font-weight: 800;
+					letter-spacing: -1.8px;
+					margin: 0;
+					display: none;
+				}
+				h2{
+					font-size: 15px;
+					font-weight: 650;
+					letter-spacing: -.5px;
+					text-align: center;
+					color: rgba(#030025, .85);
+				}
+
+				.status{
+					background: rgba(rgb(24, 220, 24), .1);
+					padding: 8px 10px;
+					border-radius: 8px;
+					display: flex;
+					align-items: center;
+					gap: 8px;
+					width: fit-content;
+					margin: 16px auto 32px auto;
+					.dot{
+						width: 10px;
+						height: 10px;
+						border-radius: 8px;
+						background: rgb(0, 212, 0);
+						transition: .1s ease;
+						animation: flicker .7s infinite alternate-reverse;
+
+					}
+				}
+
+				p{
+					font-size: 14px;
+					font-weight: 500;
+					letter-spacing: -.4px;
+					text-align: center;
+					margin-top: 16px;
+					line-height: 120%;
+					max-width: 360px;
+				}
 			}
 		}
-
-
 	}
+
+	#footer{
+		margin: auto;
+		width: 100%;
+		padding: 160px 0 80px 0;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		gap: 12px;
+
+		h3{
+			font-size: 14px;
+			font-weight: 500;
+			letter-spacing: -.4px;
+			color: rgba(#030025, .6);
+		}
+	}
+
+	@keyframes flicker{
+		from{
+			opacity: .6;
+			transform: scale(.6);
+		}
+		to{
+			opacity: 1;
+			transform: scale(1);
+		}
+	}
+
 
 	@media screen and (max-width: 768px){
 

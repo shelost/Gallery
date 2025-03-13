@@ -4,7 +4,7 @@ type: design
 title: Soteria
 description: Fintech Banking App
 blurb: "I was the Lead Designer for Soteria, a banking app concept led by former RBC employees."
-card: card-stan
+card: card-soteria
 banner: null
 preview: bento-soteria
 rating: 3

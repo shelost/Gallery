@@ -7,6 +7,7 @@
 	import { activeElem, activeObject, Posts } from '$lib/store'
 	import { onMount } from 'svelte'
 	import { titleCase } from '$lib/utils'
+	 import { createEventDispatcher } from 'svelte'
 
 	export let data
 
@@ -14,7 +15,7 @@
 
 	onMount(() => {
 
-		let left = 0, top = 0
+		let left = 12, top = 5
 
 		function updateScroll(){
 
@@ -25,9 +26,9 @@
 				let elem = document.querySelectorAll('.active')[0]
 				if (elem && Pill){
 					let rect = elem.getBoundingClientRect()
-					Pill.style.top = rect.top - nav.top - left + 'px'
+					Pill.style.top = rect.top - nav.top - top + 'px'
 					Pill.style.left = rect.left - nav.left - 4 - left + 'px'
-					Pill.style.width = rect.width + 8 + 'px'
+					Pill.style.width = rect.width + 20 + 'px'
 				}
 
 			}
@@ -74,12 +75,12 @@
 	#pill{
 		position: absolute;
 		background: rgba(black, .8);
-		box-shadow: 2px 4px 4px rgba(black, .2);
 		top: 0;
 		left: 0;
 		height: 28px;
 		width: 200px;
-		border-radius: 4px;
+		border-radius: 16px;
+		box-shadow: 2px 4px 4px rgba(black, .2), inset -1px 2px 2px rgba(white, .25);
 		z-index: -2;
 		transition: .2s ease;
 
@@ -95,14 +96,16 @@
 		height: fit-content;
 		padding: 18px;
 		z-index: 3;
-		background: rgba(white, .8);
-		border: 2px solid white;
+
 		margin: 6px;
 		border-radius: 8px;
 		display: flex;
 		flex-direction: column;
 		align-items: flex-end;
-		box-shadow: 10px 20px 40px rgba(#030025, .1);
+
+		//border: 2px solid white;
+		//background: rgba(white, .8);
+		//box-shadow: 10px 20px 40px rgba(#030025, .1);
 	}
 
 	h3{
@@ -149,7 +152,7 @@
 				transition: .2s ease;
 			}
 			&.active{
-				padding: 6px;
+				padding: 8px 0;
 				//margin-right: 4px;
 				h2{
 					color: white;
