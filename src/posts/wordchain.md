@@ -1,7 +1,7 @@
 ---
 type: game
 title: Wordchain
-description: A 2D Platformer Game, with a Twist
+description: A Fun Word Game
 url: https://shelost.github.io/wordchain
 banner: banner-platformr
 card: card-wordchain
