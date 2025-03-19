@@ -4,7 +4,9 @@
 </svelte:head>
 
 <div class="text-column">
-	<h1>About this app</h1>
+	<h1>
+		About this app
+	</h1>
 
 	<p>
 		This is a <a href="https://svelte.dev/docs/kit">SvelteKit</a> app. You can make your own by typing
@@ -24,3 +26,19 @@
 		using it with JavaScript disabled!
 	</p>
 </div>
+
+<style lang="scss">
+
+	.text-column{
+		padding: 100px 0;
+		max-width: 800px;
+		margin: auto;
+	}
+
+	p{
+		font-size: 14px;
+		font-weight: 450;
+		letter-spacing: -0.4px;
+	}
+
+</style>

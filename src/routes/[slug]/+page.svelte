@@ -30,7 +30,7 @@
 <div id = 'container'>
     <div id = 'sidebar'>
 
-        <button on:click = {() => {goto('/')}}>
+        <button class = 'light back' on:click = {() => {goto('/')}}>
             Back
         </button>
     </div>
@@ -40,11 +40,17 @@
             <h1>
                 {data.meta.title}
             </h1>
+            <h2>
+                {data.meta.description}
+            </h2>
+            <p>
+                {data.meta.blurb}
+            </p>
         </hgroup>
 
 
         {#if data.meta.preview}
-            <img class = 'bento' src = 'bento/{data.meta.preview}.svg'>
+            <img class = 'banner' src = 'bento/{data.meta.preview}.svg'>
         {/if}
         <div class="prose preview">
             <svelte:component this={data.content} />
@@ -58,6 +64,7 @@
     #container{
         display: flex;
         justify-content: right;
+        padding: 48px 0 72px 0;
         //border: 1px solid red;
     }
 
@@ -74,21 +81,56 @@
 
     #main{
         width: calc(100% - 160px);
+        width: clamp(50%, 800px, 90%);
         padding: 28px;
         border-radius: 12px;
+        margin: auto;
         //box-shadow: 0 10px 40px rgba(black, .05);
+    }
+
+    .banner{
+        width: 100%;
     }
 
     hgroup{
         padding: 0px 0;
         padding-bottom: 24px;
+
+        h1{
+            font-size: 36px;
+            letter-spacing: -.8px;
+            font-weight: 600;
+            text-align: left;
+            margin: 0 0 4px 0;
+        }
+
+        h2{
+            font-size: 24px;
+            letter-spacing: -.6px;
+            font-weight: 500;
+            text-align: left;
+            color: rgba(#030025, .25);
+            margin-bottom: 20px;
+        }
+
+        p{
+            font-size: 14px;
+            letter-spacing: -.32px;
+            font-weight: 450;
+            text-align: left;
+        }
     }
 
-    h1{
-        font-size: 48px;
-        letter-spacing: -1.8px;
-        font-weight: 750;
-        text-align: left;
+
+    .prose{
+        :global(p){
+            font-size: 14px;
+            letter-spacing: -.32px;
+            font-weight: 450;
+            text-align: left;
+
+        }
     }
+
 
 </style>

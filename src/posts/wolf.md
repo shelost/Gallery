@@ -2,7 +2,7 @@
 series: Stan
 type: design
 title: Wolf Financial
-description: Finance Podcast Brand
+description: Media Franchise
 blurb: "I created the branding for Wolf Financial, a finance newsletter & podcast with 400K+ Followers on Twitter/X."
 card: card-wolf
 banner: null
@@ -11,6 +11,8 @@ rating: 3
 color: DFEAFF
 date: '2024-01-27'
 author: 'Dantès'
+tags:
+  - company
 categories:
   - figma
   - react

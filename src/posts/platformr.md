@@ -7,6 +7,7 @@ url: https://shelost.github.io/platformr
 banner: banner-platformr
 card: card-platformr
 preview: bento-platformr
+video: platformr
 rating: 2
 color: FFF2C3
 date: '2025-7-21'

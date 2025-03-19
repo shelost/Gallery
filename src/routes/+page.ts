@@ -20,7 +20,7 @@ export async function load({ fetch }) {
 		}
 	}
 
-	const typeOrder = ['design', 'game', 'comic', 'gallery', 'blog']
+	const typeOrder = ['tool', 'design', 'game', 'comic', 'gallery', 'blog']
 
 	p.sort((a, b) => {
 		// Get the index of each type in the typeOrder array

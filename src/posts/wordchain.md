@@ -6,6 +6,7 @@ url: https://shelost.github.io/wordchain
 banner: banner-platformr
 card: card-wordchain
 preview: bento-platformr
+video: wordchain
 rating: 2
 color: E7F7FF
 date: '2025-7-21'

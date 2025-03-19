@@ -7,7 +7,8 @@
 	import { activeElem, activeObject, Posts } from '$lib/store'
 	import { onMount } from 'svelte'
 	import { titleCase } from '$lib/utils'
-	 import { createEventDispatcher } from 'svelte'
+	import { createEventDispatcher } from 'svelte'
+	import "material-icons/iconfont/material-icons.css";
 
 	export let data
 
@@ -22,24 +23,19 @@
 			let nav = document.getElementById('navbar').getBoundingClientRect()
 
 			if ($activeObject){
-
 				let elem = document.querySelectorAll('.active')[0]
 				if (elem && Pill){
 					let rect = elem.getBoundingClientRect()
 					Pill.style.top = rect.top - nav.top - top + 'px'
-					Pill.style.left = rect.left - nav.left - 4 - left + 'px'
-					Pill.style.width = rect.width + 20 + 'px'
+					Pill.style.left = rect.left - nav.left - left + 4 + 'px'
+					Pill.style.height = rect.height + 'px'
 				}
-
 			}
 		}
 
 		window.addEventListener('scroll', updateScroll)
 		updateScroll()
 	})
-
-
-	// 	on:click = {() => {goto('/' + link.slug)}}
 
 </script>
 
@@ -49,12 +45,12 @@
 		<img src = 'ahnheewon3.png' alt = 'Logo'>
 	</div>
 
-	<div id = 'pill' bind:this={Pill} class:hidden={!$activeObject}></div>
+	<div id = 'pill' bind:this={Pill}></div>
 
 	<div id = 'nav'>
 		{#each $Posts as link, i}
 			{#if i == 0 || i > 0 && link.meta.type != $Posts[i-1].meta.type }
-				<div class = 'title'>
+				<div class = 'header'>
 					<h1> {titleCase(link.meta.type)} </h1>
 				</div>
 			{/if}
@@ -63,7 +59,25 @@
 				class = 'nav {link.meta.type}'
 				class:active = {link.meta.title == $activeObject?.meta.title}
 			>
-				<h2> {link.meta.title}</h2>
+
+				<img class = 'card' src = 'card/{link.meta.card}.png' alt = 'Thumbnail'>
+
+				<div class = 'expo'>
+					<div class = 'title'>
+						<h2> {link.meta.title}</h2>
+						{#if link.meta.tags}
+							{#if link.meta.tags.includes('company')}
+								<span class = 'material-icons' style='color: #6355FF'>business</span>
+							{/if}
+							{#if link.meta.tags.includes('university')}
+								<span class = 'material-icons' style='color: #6355FF'>school</span>
+							{/if}
+						{/if}
+					</div>
+
+					<h3> {link.meta.description}</h3>
+				</div>
+
 			</div>
 		{/each}
 	</div>
@@ -74,13 +88,13 @@
 
 	#pill{
 		position: absolute;
-		background: rgba(black, .8);
+		background: rgba(#030025, .08);
 		top: 0;
 		left: 0;
 		height: 28px;
-		width: 200px;
-		border-radius: 16px;
-		box-shadow: 2px 4px 4px rgba(black, .2), inset -1px 2px 2px rgba(white, .25);
+		width: 220px;
+		border-radius: 8px;
+		//box-shadow: 2px 4px 4px rgba(black, .2), inset -1px 2px 2px rgba(white, .25);
 		z-index: -2;
 		transition: .2s ease;
 
@@ -91,9 +105,9 @@
 
 	#navbar{
 		position: relative;
-		width: 140px;
+		width: 240px;
 		height: calc(100vh - 50px);
-		height: fit-content;
+		//height: fit-content;
 		padding: 18px;
 		z-index: 3;
 
@@ -101,19 +115,17 @@
 		border-radius: 8px;
 		display: flex;
 		flex-direction: column;
-		align-items: flex-end;
+		align-items: flex-start;
 
+		overflow-y: scroll;
 		//border: 2px solid white;
-		//background: rgba(white, .8);
-		//box-shadow: 10px 20px 40px rgba(#030025, .1);
-	}
-
-	h3{
-		font-size: 10px;
+		background: rgba(white, .8);
+		//box-shadow: -10px 20px 40px rgba(#030025, .08);
 	}
 
 	#mast{
 		margin-bottom: 20px;
+		display: none;
 		cursor: pointer;
 		img{
 			height: 20px;
@@ -123,39 +135,84 @@
 	#nav{
 		display: flex;
 		flex-direction: column;
-		align-items: flex-end;
-		.title{
+		align-items: flex-start;
+		.header{
 			padding: 3px;
+			//display: none;
 			h1{
 				font-size: 14px;
 				font-weight: 650;
-				letter-spacing: -.3px;
-				margin: 8px 0 0px 0;
+				letter-spacing: -.36px;
+				margin: 8px 0 2px 0;
 				color: rgba(#030025, .8);
 			}
 		}
 		.nav{
-			width: fit-content;
-			padding: 3px;
-			padding-left: 8px;
+			width: 100%;
+			padding: 8px 8px;
+			border-radius: 6px;
 			//border-right: 1.5px solid rgba(#030025, .25);
 			transition: .2s ease;
 			cursor: pointer;
 
+			display: flex;
+			align-items: flex-start;
+			justify-content: left;
+			gap: 10px;
+
+			.card{
+				width: 30px;
+				height: auto;
+				flex-shrink: 0 !important;
+				border-radius: 6px;
+			}
+
+			.expo{
+				flex: 1;
+			}
+
+			.title{
+				display: flex;
+				align-items: center;
+				gap: 6px;
+				margin-bottom: 4px;
+				span{
+					font-size: 16px;
+					margin-bottom: 1px;
+				}
+
+			}
+
 			h2{
 				font-size: 13px;
-				font-weight: 500;
-				letter-spacing: -.24px;
+				font-weight: 600;
+				letter-spacing: -.3px;
 				margin: 0;
-				color: rgba(#030025, .4);
-				text-align: right;
+				margin-bottom: -2px;
+
+				color: rgba(#030025, .8);
 				transition: .2s ease;
+				white-space: nowrap;
+			}
+			h3{
+				font-size: 12px;
+				font-weight: 400;
+				letter-spacing: -.3px;
+				margin: 0;
+				//margin-left: 4px;
+				color: rgba(#030025, .25);
+				transition: .2s ease;
+				white-space: nowrap;
+				padding: 0;
+				background: none;
+				//display: none;
 			}
 			&.active{
-				padding: 8px 0;
+				//padding: 8px 0;
 				//margin-right: 4px;
+				//background: white;
 				h2{
-					color: white;
+					//color: white;
 					font-weight: 600;
 				}
 

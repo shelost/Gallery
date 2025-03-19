@@ -29,6 +29,17 @@ export function Class(tag) {
 }
 
 export function tagType(val) {
+
+	switch (val.toLowerCase()) {
+		case 'design':
+			return 'Design'
+		case 'games':
+			return 'Games'
+		default:
+			return null
+
+	}
+
 	const links = [
 		{ text: 'Design', route: '/design', icon: 'palette', color: '#F959FF' },
 		{ text: 'Games', route: '/games', icon: 'sports_esports', color: '#6355FF' },
@@ -40,6 +51,8 @@ export function tagType(val) {
 
 export function tagIcon(val) {
 	switch (val.toLowerCase()) {
+		case 'html':
+			return 'logo-html'
 		case 'figma':
 			return 'logo-figma'
 		case 'js':

@@ -2,10 +2,13 @@
 type: game
 title: Rooms
 description: Mini RPG
+blurb: "11 Rooms is a fun little adventure game where each level
+has its own twist. I loved experimenting with matrix-based Canvas rendering on this one."
 url: https://shelost.github.io/platformr
 banner: null
 card: card-rooms
 preview: bento-platformr
+video: rooms
 rating: 2
 date: '2025-7-21'
 author: 'Dantès'

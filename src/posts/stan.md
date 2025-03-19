@@ -8,12 +8,13 @@ Together, we defined the brand's iconic identity."
 card: card-stan
 banner: null
 preview: bento-stan2
+video: stan
 rating: 5
 color: DADBFF
 date: '2024-01-27'
 author: 'Dantès'
 tags:
-  - work
+  - company
 categories:
   - figma
   - vue

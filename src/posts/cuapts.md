@@ -14,7 +14,6 @@ author: 'Dantès'
 tags:
   - university
 categories:
-  - Work
   - figma
 published: true
 ---

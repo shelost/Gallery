@@ -11,16 +11,32 @@
 		</a>
 	</div>
 
+	<div>
+		<h2> Bro </h2>
+	</div>
+
 	<nav>
 		<ul>
-			<li aria-current={page.url.pathname === '/' ? 'page' : undefined}>
-				<a href="/">Home</a>
+			<li class:active = {page.url.pathname === '/'} aria-current={page.url.pathname === '/' ? 'page' : undefined}>
+				<a href="/">
+					<h2>
+						Home
+					</h2>
+				</a>
 			</li>
-			<li aria-current={page.url.pathname === '/about' ? 'page' : undefined}>
-				<a href="/about">About</a>
+			<li class:active = {page.url.pathname === '/about'} aria-current={page.url.pathname === '/about' ? 'page' : undefined}>
+				<a href="/about">
+					<h2>
+						About
+					</h2>
+				</a>
 			</li>
-			<li aria-current={page.url.pathname.startsWith('/sverdle') ? 'page' : undefined}>
-				<a href="/sverdle">Sverdle</a>
+			<li class:active = {page.url.pathname === '/sverdle'} aria-current={page.url.pathname.startsWith('/sverdle') ? 'page' : undefined}>
+				<a href="/sverdle">
+					<h2>
+						Games
+					</h2>
+				</a>
 			</li>
 		</ul>
 	</nav>
@@ -33,15 +49,22 @@
 </header>
 
 <style lang="scss">
+
 	header {
 		display: flex;
 		justify-content: space-between;
-		margin-top: 10px;
+		top: 8px;
+		width: 100%;
+		position: fixed;
+		z-index: 5;
+
+		//background: rgba(white, 1);
+		//border-bottom: 1px solid rgba(black, .05);
 	}
 
 	.corner {
-		width: 3em;
-		height: 3em;
+		height: 44px;
+		display: none;
 	}
 
 	.corner a {
@@ -60,8 +83,18 @@
 
 	nav {
 		display: flex;
+		align-items: center;
 		justify-content: center;
-		--background: rgba(255, 255, 255, 0.7);
+		border-radius: 100px;
+
+		background: white;
+		backdrop-filter: blur(10px);
+		box-shadow: 0 10px 30px rgba(#030025, 0.1), inset -2px 2px 4px rgba(white, .4);
+		//border: 1px solid rgba(white, .5);
+
+		h2{
+			//color: white;
+		}
 	}
 
 	path {
@@ -77,10 +110,8 @@
 		justify-content: center;
 		align-items: center;
 		list-style: none;
-		background: var(--background);
 		background-size: contain;
-		box-shadow: 0 15px 30px rgba(#030025, 0.12);
-		border-radius: 40px;
+		background: none;
 	}
 
 	li {
@@ -105,16 +136,18 @@
 		height: 100%;
 		align-items: center;
 		padding: 0 0.5rem;
-		color: var(--color-text);
-		font-weight: 700;
-		font-size: 0.8rem;
-		text-transform: uppercase;
-		letter-spacing: 0.1em;
-		text-decoration: none;
+		//text-transform: uppercase;
+		background: none;
 		transition: color 0.2s linear;
+		cursor: pointer;
+
+		h2{
+			font-size: 13px;
+			font-weight: 600;
+			letter-spacing: -0px;
+			cursor: pointer;
+		}
 	}
 
-	a:hover {
-		color: var(--color-theme-1);
-	}
+
 </style>

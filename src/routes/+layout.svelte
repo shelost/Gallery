@@ -3,6 +3,9 @@
 	import Navbar from './Navbar.svelte';
 	import { onMount } from 'svelte'
 	import { themeColor } from '$lib/store'
+	import { writable } from 'svelte/store'
+	import { fade, fly } from 'svelte/transition'
+	import { loading, openDrawer } from '$lib/store'
 	import '../app.css';
 
 	let { children } = $props();
@@ -12,16 +15,64 @@
     let radius = 300; // Control the effect radius
 
 	let Bar, Scroll
+	let loadingProgress = writable(0);
+	let logoMask;
+	let percentageText;
+
+	setTimeout(() => {
+		loading.set(false)
+	}, 100);
 
     onMount(() => {
+		// Simulate realistic loading with staggered progress
+		const loadSteps = [
+			{progress: 15, delay: 100},  // Initial quick progress
+			{progress: 60, delay: 300},  // Processing phase
+			{progress: 85, delay: 300},  // Nearly complete
+			{progress: 100, delay: 100}  // Final completion
+		];
 
-		if (document){
-			//document.documentElement.style.backgroundColor = '#' + $themeColor
+		let currentStep = 0;
+
+		function updateLoading() {
+			if (currentStep >= loadSteps.length) {
+				setTimeout(() => {
+					loading.set(false); // Set loading to false after reaching 100%
+				}, 300); // Small delay to let the user see 100% before hiding
+				return;
+			}
+
+			const step = loadSteps[currentStep];
+			let currentProgress = $loadingProgress;
+
+			const interval = setInterval(() => {
+				if (currentProgress < step.progress) {
+					currentProgress++;
+					loadingProgress.set(currentProgress);
+
+					if (logoMask) {
+						// Update the mask height from bottom to top
+						logoMask.style.height = `${currentProgress}%`;
+						logoMask.style.bottom = '0'; // Ensure it fills from bottom
+					}
+
+					if (percentageText) {
+						percentageText.textContent = `${currentProgress}%`;
+					}
+				} else {
+					clearInterval(interval);
+					currentStep++;
+					setTimeout(updateLoading, step.delay);
+				}
+			}, 20);
 		}
+
+		// Start the loading animation
+		updateLoading();
 
 		themeColor.subscribe((color) => {
 			if (typeof document !== 'undefined') {
-				document.documentElement.style.backgroundColor = '#' + color;
+				//document.documentElement.style.backgroundColor = '#' + color;
 			}
 		});
 
@@ -86,13 +137,14 @@
 
 		window.addEventListener("scroll", updateScroll);
 		updateScroll(); // Initialize on load
-
     });
 
 </script>
 
 
 <div class="app">
+
+
 
 	<canvas id = 'canvas'>
 	</canvas>
@@ -108,14 +160,69 @@
 		</div>
 	</div>
 
+	{#if $openDrawer}
+	<div id = 'dark' transition:fade={{duration: 200}} on:click={()=>{openDrawer.set(false)}}></div>
+	{/if}
+
 </div>
+
+
+{#if $loading}
+	<div id = 'loading' out:fade={{duration: 400}}>
+		<div class="logo-container">
+			<!-- Base logo (low opacity) -->
+			<img id="logo-base" src="ahnheewon3.png" alt="logo" class="logo-image">
+
+		</div>
+		<div class="loading-text">
+			<h2>Loading</h2>
+			<p bind:this={percentageText}>0%</p>
+		</div>
+	</div>
+{/if}
 
 
 <style lang="scss">
 
 
+	#dark{
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100vw;
+		height: 100vh;
+		background: rgba(black, .7);
+		z-index: 5;
+		transition: .2s ease;
+	}
+
+
+
+	#loading{
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100vw;
+		height: 100vh;
+		background: white;
+		z-index: 100;
+
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+
+		img{
+			height: 100px;
+		}
+	}
+
 	#scroll{
-		position: relative;
+		position: fixed;
+		top: 10px;
+		right: 10px;
+
+
 		width: 12px;
 		height: calc(100vh - 28px);
 		//height: 500px;
@@ -126,8 +233,8 @@
 		border-radius: 5px;
 		//border: 1px solid rgba(white, .2);
 		box-shadow: 20px 8px 32px rgba(black, .5);
+		z-index: 2;
 		overflow: hidden;
-		display: none;
 
 		#bar{
 			position: absolute;
@@ -219,16 +326,13 @@
 		font-weight: bold;
 	}
 
-	@media (min-width: 480px) {
-		footer {
-			padding: 12px 0;
-		}
-	}
+
 
 	@media screen and (max-width: 768px){
 
 		.app{
 			overflow-x: hidden;
+			width: 100vw;
 		}
 
 		#navbar{
@@ -239,7 +343,6 @@
 			width: 100vw;
 			padding: 0;
 		}
-
 
 	}
 

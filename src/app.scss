@@ -190,8 +190,21 @@ button:focus:not(:focus-visible) {
 	}
 }
 
+
+a{
+	//background: rgba(#ff236c, .03);
+	padding: 0px 0px;
+	border-radius: 4px;
+	transition: .2s ease;
+	color: #ff236c;
+	//color: #030025;
+	&:hover{
+		text-decoration: none;
+		background: rgba(#ff236c, .1);
+	}
+}
+
 button{
-	border-radius: 8px;
 	outline: none;
 	border: none;
 	background: #030025;
@@ -199,14 +212,20 @@ button{
 	border-radius: 8px;
 	padding: 10px 12px;
 	overflow: hidden;
-	box-shadow: 0 6px 12px rgba(black, .2), inset -1px 2px 3px rgba(white, .2);
+	box-shadow: 0 8px 18px rgba(black, .3), inset -1px 2px 3px rgba(white, .3);
 	transition: .2s ease;
 	position: relative;
 	cursor: pointer;
+
+	border-radius: 18px;
+	padding: 11px 18px 12px 18px;
+
+
 	h2{
 		color: white;
-		font-size: 14px;
-		font-weight: 500;
+		font-size: 15px;
+		font-weight: 550;
+		letter-spacing: -.16px;
 		transition: .2s ease;
 	}
 	&::before{
@@ -216,20 +235,21 @@ button{
 		left: 0;
 		width: 0%;
 		height: 100%;
-		background: rgba(white, .25);
+		background: rgba(white, .2);
 		z-index: 0;
 		transition: .25s ease-in-out;
 	}
 	&:hover{
-		//background: rgba(#030025, .85);
-		//transform: translateY(.5px);
 		h2{
-			//transform: translateY(.5px);
-
 		}
 		&::before{
 			width: 100%;
 		}
+	}
+
+	&.light{
+		background: rgba(#030025, .1);
+		box-shadow: none;
 	}
 }
 

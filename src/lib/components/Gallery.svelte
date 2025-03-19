@@ -62,7 +62,7 @@
 		// width: 114%;
 	    // transform: translateX(-6%);
         //border: 1px solid red;
-		margin: 48px 0;
+		margin: 8px 0;
         display: grid;
         grid-template-columns: repeat(3, 32%);
         column-gap: 8px;
