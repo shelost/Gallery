@@ -1,4 +1,3 @@
-// src/routes/+page.svelte
 <script>
   import { onMount, onDestroy } from 'svelte';
 
@@ -579,36 +578,45 @@
 </script>
 
 <svelte:head>
-  <title>SvelteKit Transcription App</title>
+  <title>Transcript</title>
   <meta name="description" content="Professional audio transcription app using SvelteKit" />
 </svelte:head>
 
 <main>
-  <div class="container">
-    <h1>Audio Transcription</h1>
+  <div id = 'svelte'>
 
     {#if !isSupported}
-      <div class="error-message">
+    <div class="error-message">
         <p>Speech recognition is not supported in your browser or microphone access was denied.</p>
         <p>Please use a modern browser like Chrome or Edge and allow microphone access.</p>
-      </div>
+    </div>
+
     {:else}
-      <div class="controls-container">
-        <button class="record-button {isRecording ? 'recording' : ''}" on:click={toggleRecording}>
-          {isRecording ? `Stop Recording (${formatTime(recordingTimer)})` : 'Start Recording'}
-        </button>
 
-        <label class="toggle-container">
-          <input
-            type="checkbox"
-            checked={removeFillerWords}
-            on:change={toggleFillerWords}
-            aria-label="Remove filler words"
-          >
-          <span class="toggle-text">Remove filler words</span>
-        </label>
-      </div>
+    <div id = 'mast'>
 
+
+        <h1>Audio Transcription</h1>
+        <div class="controls-container">
+            <button class="record-button {isRecording ? 'recording' : ''}" on:click={toggleRecording}>
+            {isRecording ? `Stop Recording (${formatTime(recordingTimer)})` : 'Start Recording'}
+            </button>
+
+            <label class="toggle-container">
+            <input
+                type="checkbox"
+                checked={removeFillerWords}
+                on:change={toggleFillerWords}
+                aria-label="Remove filler words"
+            >
+            <span class="toggle-text">Remove filler words</span>
+            </label>
+        </div>
+    </div>
+
+
+
+    <div id = 'content'>
       <div
         class="visualizer-container"
         class:active={isRecording}
@@ -652,7 +660,11 @@
           Words: {wordCount}
         </div>
       </div>
-    {/if}
+
+</div>
+{/if}
+
+
   </div>
 </main>
 
@@ -665,16 +677,10 @@
     color: #333;
   }
 
-  .container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 2rem;
-  }
 
   h1 {
     text-align: center;
     margin-bottom: 2rem;
-    color: #2c3e50;
   }
 
   // Controls section
@@ -882,6 +888,10 @@
     overflow-y: auto;
     line-height: 1.6;
     white-space: pre-wrap;
+
+    font-size: 18px;
+    font-weight: 500;
+    letter-spacing: -0.3px;
 
     &[contenteditable="true"] {
       border: 1px solid #3498db;

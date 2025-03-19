@@ -1,4 +1,3 @@
-// src/routes/+page.svelte
 <script>
   import { onMount } from 'svelte';
   import * as THREE from 'three';
@@ -310,7 +309,6 @@
   }
 
   h1 {
-    color: #333;
     margin-bottom: 2rem;
     text-align: center;
   }

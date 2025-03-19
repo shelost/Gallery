@@ -142,9 +142,16 @@
 </script>
 
 
+<svelte:head>
+	<title>Heewon</title>
+	<meta name="description" content="Heewon's Portfolio" />
+	<link rel="icon" href="favicon.png" />
+</svelte:head>
+
+
 <div class="app">
 
-
+	<Header />
 
 	<canvas id = 'canvas'>
 	</canvas>

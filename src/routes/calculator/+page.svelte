@@ -1,4 +1,3 @@
-<!-- src/routes/+page.svelte -->
 <script>
   import { onMount } from 'svelte';
   import { spring } from 'svelte/motion';
@@ -347,7 +346,7 @@
 </script>
 
 <svelte:head>
-  <title>Elegant Calculator</title>
+  <title>Calculator</title>
 </svelte:head>
 
 <div class="calculator-container" class:dark-mode={isDarkMode}>

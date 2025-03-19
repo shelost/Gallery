@@ -1,19 +1,16 @@
 <script>
 	import { page } from '$app/state';
+	import { goto } from '$app/navigation';
 	import logo from '$lib/images/svelte-logo.svg';
 	import github from '$lib/images/github.svg';
 </script>
 
 <header>
-	<div class="corner">
-		<a href="https://svelte.dev/docs/kit">
-			<img src={logo} alt="SvelteKit" />
-		</a>
+
+	<div id='mast' on:click={() => goto('/')}>
+		<img id = 'ahw' src='ahnheewon3.png' alt="Logo" />
 	</div>
 
-	<div>
-		<h2> Bro </h2>
-	</div>
 
 	<nav>
 		<ul>
@@ -41,30 +38,40 @@
 		</ul>
 	</nav>
 
+	<!--
 	<div class="corner">
 		<a href="https://github.com/sveltejs/kit">
 			<img src={github} alt="GitHub" />
 		</a>
 	</div>
+	-->
 </header>
 
 <style lang="scss">
 
 	header {
 		display: flex;
+		align-items: center;
 		justify-content: space-between;
 		top: 8px;
 		width: 100%;
 		position: fixed;
 		z-index: 5;
 
+		padding: 0 12px;
+		box-sizing: border-box;
+
 		//background: rgba(white, 1);
 		//border-bottom: 1px solid rgba(black, .05);
 	}
 
+	#ahw{
+		height: 20px;
+		cursor: pointer;
+	}
+
 	.corner {
 		height: 44px;
-		display: none;
 	}
 
 	.corner a {

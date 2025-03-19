@@ -53,10 +53,12 @@ p {
 
 h1 {
   font-size: 32px;
-  font-weight: 700;
-  letter-spacing: -0.9px;
+  font-weight: 650;
+  letter-spacing: -1.2px;
+  line-height: 100%;
   text-align: left;
   margin-bottom: 8px;
+  color: #030025;
 }
 
 h2 {
@@ -384,4 +386,26 @@ button.light {
 }
 .prose.prose-img p {
   display: none;
+}
+
+#svelte {
+  width: clamp(50%, 1200px, 95%);
+  margin: 0 auto;
+  padding: 2rem;
+  gap: 80px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  margin-top: 72px;
+}
+#svelte #mast {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+#svelte #mast h1 {
+  text-align: left;
+}
+#svelte #content {
+  flex: 1;
 }/*# sourceMappingURL=app.css.map */
