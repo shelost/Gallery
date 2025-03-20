@@ -114,7 +114,9 @@
       if (!isFinite(numValue)) return numValue > 0 ? '∞' : '-∞';
 
       // Format number using @number-flow
+      return numValue;
       return format(numValue, formatOptions);
+
     } catch (err) {
       console.error('Formatting error:', err);
       return value;
