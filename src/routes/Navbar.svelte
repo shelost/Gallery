@@ -60,7 +60,9 @@
 				class:active = {link.meta.title == $activeObject?.meta.title}
 			>
 
-				<img class = 'card' src = 'card/{link.meta.card}.png' alt = 'Thumbnail'>
+				{#if link.meta.card}
+					<img class = 'card' src = 'card/{link.meta.card}.png' alt = 'Thumbnail'>
+				{/if}
 
 				<div class = 'expo'>
 					<div class = 'title'>

@@ -29,6 +29,6 @@
 		"material-icons": "^1.13.14",
 		"svelte-preprocess": "^6.0.3",
 		"three": "^0.174.0",
-		"vercel": "^41.3.2"
+		"vercel": "^41.4.1"
 	}
 }
