@@ -3,6 +3,7 @@ series: Canvas — Lesson 1
 type: gallery
 title: Logo Redesigns
 description: Graphic Design
+blurb: "Personal design exercise; I tried redesigning famous brands to give them a more modern feel."
 card: card-redesign
 date: '2022-01-27'
 author: 'Dantès'

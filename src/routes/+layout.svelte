@@ -174,10 +174,10 @@
 </div>
 
 
+<!--
 {#if $loading}
 	<div id = 'loading' out:fade={{duration: 400}}>
 		<div class="logo-container">
-			<!-- Base logo (low opacity) -->
 			<img id="logo-base" src="ahnheewon3.png" alt="logo" class="logo-image">
 
 		</div>
@@ -187,6 +187,7 @@
 		</div>
 	</div>
 {/if}
+-->
 
 
 <style lang="scss">

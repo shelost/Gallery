@@ -583,7 +583,8 @@
 </svelte:head>
 
 <main>
-  <div id = 'svelte'>
+
+  <div id = 'container'>
 
     {#if !isSupported}
     <div class="error-message">
@@ -594,8 +595,6 @@
     {:else}
 
     <div id = 'mast'>
-
-
         <h1>Audio Transcription</h1>
         <div class="controls-container">
             <button class="record-button {isRecording ? 'recording' : ''}" on:click={toggleRecording}>

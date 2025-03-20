@@ -61,7 +61,7 @@
 		padding: 4px 12px;
 		//margin: 4px 2px;
 		box-sizing: border-box;
-		background: white;
+		//background: white;
 
 		border-radius: 8px;
 		//box-shadow: 0 -4px 28px rgba(#030025, 0.1), inset -2px 2px 4px rgba(white, .4);

@@ -937,7 +937,7 @@
 					padding: 12px;
 					box-sizing: border-box;
 					overflow: hidden;
-					gap: 18px;
+					gap: 12px;
 					filter: drop-shadow(-10px 30px 30px rgba(black, .1));
 
 					.mast{
