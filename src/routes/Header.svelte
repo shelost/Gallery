@@ -53,20 +53,25 @@
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		top: 8px;
+		top: 0;
 		width: 100%;
 		position: fixed;
 		z-index: 5;
 
-		padding: 0 12px;
+		padding: 4px 12px;
+		//margin: 4px 2px;
 		box-sizing: border-box;
+		background: white;
+
+		border-radius: 8px;
+		//box-shadow: 0 -4px 28px rgba(#030025, 0.1), inset -2px 2px 4px rgba(white, .4);
 
 		//background: rgba(white, 1);
 		//border-bottom: 1px solid rgba(black, .05);
 	}
 
 	#ahw{
-		height: 20px;
+		height: 18px;
 		cursor: pointer;
 	}
 
@@ -96,7 +101,7 @@
 
 		background: white;
 		backdrop-filter: blur(10px);
-		box-shadow: 0 10px 30px rgba(#030025, 0.1), inset -2px 2px 4px rgba(white, .4);
+		//box-shadow: 0 10px 30px rgba(#030025, 0.1), inset -2px 2px 4px rgba(white, .4);
 		//border: 1px solid rgba(white, .5);
 
 		h2{
