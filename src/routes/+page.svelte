@@ -915,7 +915,7 @@
 				width: clamp(300px, 90%, 1200px);
 				display: grid;
 				grid-template-columns: 1fr 1fr 1fr;
-				gap: 60px 60px;
+				gap: 20px 40px;
 				flex: 1;
 
 				.head{
