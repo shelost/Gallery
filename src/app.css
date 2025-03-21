@@ -419,4 +419,12 @@ button.light {
   overflow: hidden;
   padding: 12px;
   box-shadow: 10px 30px 60px rgba(0, 0, 0, 0.08);
+}
+
+footer {
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: -0.2px;
+  color: rgba(0, 0, 0, 0.5);
+  margin-top: 48px;
 }/*# sourceMappingURL=app.css.map */

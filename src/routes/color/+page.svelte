@@ -772,13 +772,13 @@
     height: 100px;
     width: 200px;
     margin: 30px 0 10px 0;
-    transition: background-color 0.3s ease;
+    transition: background-color 0s ease;
     display: flex;
     align-items: flex-end;
     justify-content: flex-end;
     padding: 1rem;
     border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.1);
   }
 
   .interactive-area {
@@ -1073,13 +1073,6 @@
     }
   }
 
-  footer {
-    margin-top: 2rem;
-    text-align: center;
-    color: var(--text-secondary);
-    font-size: 0.875rem;
-    padding: 1rem;
-  }
 
   .loading {
     display: flex;
