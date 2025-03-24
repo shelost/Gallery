@@ -1,0 +1,73 @@
+.piece, .piece img {
+  width: 300px;
+  position: absolute;
+  top: 50px;
+  border-radius: 8px;
+  z-index: 1;
+  filter: drop-shadow(-10px 20px 30px rgba(3, 0, 37, 0.15));
+  transition: 0.2s ease;
+  display: none;
+}
+.piece:hover, .piece img:hover {
+  transform: scale(1.02);
+}
+
+#bidam, #bidam img {
+  right: calc(50% - 600px);
+  width: 350px;
+}
+
+#chunchu, #chunchu img {
+  width: 250px;
+  left: calc(50% - 600px);
+  margin-top: 100px;
+}
+
+#logo, #logo img {
+  height: 140px;
+  border-radius: 50px;
+  margin-bottom: -20px;
+  display: none;
+}
+
+#ahw, #ahw img {
+  height: 28px;
+  margin: 60px 0 10px 0;
+}
+
+#pfp, #pfp img {
+  height: 100px;
+  border-radius: 200px;
+  margin-bottom: 20px;
+  box-shadow: -10px 10px 40px rgba(0, 0, 0, 0.25);
+  display: none;
+}
+
+.card, .card img {
+  height: 32px;
+  width: auto;
+  border-radius: 6px;
+  margin: 0;
+  margin-right: 6px;
+  box-shadow: -6px 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+.banner, .banner img {
+  border-radius: 0px;
+  width: 100%;
+  margin: 0px auto 30px auto;
+  border-radius: 16px;
+  transition: 0.2s ease;
+  filter: drop-shadow(-20px 30px 20px rgba(3, 0, 37, 0.1));
+}
+
+.icon, .icon img {
+  height: 14px;
+  margin: 0;
+  border-radius: 0;
+}
+
+.view-icon, .view-icon img {
+  height: 40px;
+  filter: drop-shadow(0px 4px 12px rgba(0, 0, 0, 0.9));
+}/*# sourceMappingURL=image-styles.css.map */

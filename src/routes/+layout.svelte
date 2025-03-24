@@ -1,5 +1,4 @@
 <script>
-	import Header from './Header.svelte';
 	import Navbar from './Navbar.svelte';
 	import { onMount } from 'svelte'
 	import { themeColor } from '$lib/store'
@@ -13,6 +12,10 @@
 	let mouseX = -1000, mouseY = -1000; // Initial off-screen position
     let intensity = .35; // Control the effect strength
     let radius = 300; // Control the effect radius
+
+
+	themeColor.set('FAFBFD')
+
 
 	let Bar, Scroll
 	let loadingProgress = writable(0);
@@ -33,6 +36,12 @@
 		];
 
 		let currentStep = 0;
+
+		themeColor.subscribe((color) => {
+			if (typeof document !== 'undefined') {
+				document.documentElement.style.backgroundColor = '#' + color;
+			}
+		});
 
 		function updateLoading() {
 			if (currentStep >= loadSteps.length) {
@@ -151,7 +160,6 @@
 
 <div class="app">
 
-	<Header />
 
 	<canvas id = 'canvas'>
 	</canvas>

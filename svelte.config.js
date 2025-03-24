@@ -9,11 +9,24 @@ const config = {
 	kit: {
 		adapter: adapter()
 	},
+	vite: {
+		optimizeDeps: {
+			include: ['@unpic/svelte']
+		},
+		ssr: {
+			noExternal: ['@unpic/svelte']
+		}
+	},
 	preprocess: [
 		vitePreprocess(),
 		mdsvex({
 			extension: '.md',
 		}),
+		sveltePreprocess({
+			scss: {
+				prependData: '@use "src/lib/styles/variables.scss" as *;'
+			}
+		})
 	],
 	prerender: {
 		handleHttpError: ({ status, path }) => {

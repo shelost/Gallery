@@ -1,0 +1,29 @@
+// Colors
+$primary-color: #030025;
+$background-color: #ffffff;
+$text-color: rgba($primary-color, 0.9);
+$text-light: rgba($primary-color, 0.6);
+$accent-color: #f3f4f7;
+
+// Typography
+$font-family: 'Inter', sans-serif;
+$base-font-size: 16px;
+$heading-font-weight: 600;
+$body-font-weight: 500;
+
+// Spacing
+$spacing-small: 8px;
+$spacing-medium: 16px;
+$spacing-large: 24px;
+$spacing-xlarge: 40px;
+
+// Borders
+$border-radius-small: 4px;
+$border-radius-medium: 8px;
+$border-radius-large: 16px;
+$border-radius-xlarge: 24px;
+
+// Transitions
+$transition-fast: 0.2s ease;
+$transition-medium: 0.4s ease;
+$transition-slow: 0.6s ease;

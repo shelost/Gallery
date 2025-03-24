@@ -482,7 +482,7 @@
 <main>
   <div id = 'container'>
 
-    <div id = 'mast'>
+    <div id = 'left' class = 'content-card'>
 
 
       <h1>
@@ -494,53 +494,14 @@
 
       <div class="color-display" style="background-color: {$hexValue}"></div>
 
-       <!-- Color Code Sections -->
-       <div class="color-codes-compact">
-        <div class="code-item">
-          <span class="code-label">HEX</span>
-          <div class="code-value">{currentHex}</div>
-          <button class="copy-icon-btn" on:click={() => copyToClipboard(currentHex)} title="Copy HEX value">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-            </svg>
-          </button>
-        </div>
-        <div class="code-item">
-          <span class="code-label">RGB</span>
-          <div class="code-value">{currentRgbStr}</div>
-          <button class="copy-icon-btn" on:click={() => copyToClipboard(currentRgbStr)} title="Copy RGB value">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-            </svg>
-          </button>
-        </div>
-        <div class="code-item">
-          <span class="code-label">HSL</span>
-          <div class="code-value">{currentHslStr}</div>
-          <button class="copy-icon-btn" on:click={() => copyToClipboard(currentHslStr)} title="Copy HSL value">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-            </svg>
-          </button>
-        </div>
-      </div>
-
 
 
     </div>
 
     <div id = 'content'>
 
-
-
-
       <div class = 'content-card'>
-
-
-      <div class="interactive-area">
+        <div class="interactive-area">
         <!-- Color Selection Square -->
         <div class="color-square-container">
           <div
@@ -570,21 +531,7 @@
         </div>
 
         <div class="controls-container">
-          <div class="control-group">
-            <h3>HEX Control</h3>
-            <div class="sliders">
-              <div class="hex-control">
-                <label>HEX</label>
-                <input
-                  type="text"
-                  value={currentHex}
-                  on:blur={(e) => handleHexChange(e.target.value)}
-                  on:keydown={(e) => e.key === 'Enter' && (handleHexChange(e.target.value), e.target.blur())}
-                  placeholder="Enter hex code"
-                />
-              </div>
-            </div>
-          </div>
+
 
           <div class="control-group">
             <h3>RGB Controls</h3>
@@ -701,10 +648,47 @@
           </div>
         </div>
       </div>
-
-
-
     </div>
+
+  </div>
+
+  <div id = 'right' class = 'content-card'>
+
+
+        <!-- Color Code Sections -->
+        <div class="color-codes-compact">
+          <div class="code-item">
+            <span class="code-label">HEX</span>
+            <div class="code-value">{currentHex}</div>
+            <button class="copy-icon-btn" on:click={() => copyToClipboard(currentHex)} title="Copy HEX value">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+            </button>
+          </div>
+          <div class="code-item">
+            <span class="code-label">RGB</span>
+            <div class="code-value">{currentRgbStr}</div>
+            <button class="copy-icon-btn" on:click={() => copyToClipboard(currentRgbStr)} title="Copy RGB value">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+            </button>
+          </div>
+          <div class="code-item">
+            <span class="code-label">HSL</span>
+            <div class="code-value">{currentHslStr}</div>
+            <button class="copy-icon-btn" on:click={() => copyToClipboard(currentHslStr)} title="Copy HSL value">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+
 
   </div>
 
@@ -853,9 +837,10 @@
 
   .color-square {
     position: relative;
-    width: 100%;
+    width: 300px;
     padding-bottom: 100%; // Square aspect ratio
-    border-radius: 8px;
+    border-radius: 16px;
+    //border: 8px solid white;
     cursor: crosshair;
     overflow: hidden;
     //box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.1);
@@ -885,7 +870,7 @@
   .hue-picker {
     position: relative;
     width: 100%;
-    height: 24px;
+    height: 32px;
     background: linear-gradient(
       to right,
       #f00,
@@ -896,7 +881,7 @@
       #f0f,
       #f00
     );
-    border-radius: 12px;
+    border-radius: 8px;
     cursor: pointer;
     box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.1);
   }
@@ -921,10 +906,11 @@
 
   .control-group {
     h3 {
-      font-size: 1rem;
+      font-size: 16px;
       font-weight: 600;
-      margin-bottom: 1rem;
-      color: var(--text-secondary);
+      margin: 0;
+      margin-bottom: 12px;
+      color: var(--text-primary);
     }
   }
 
@@ -934,6 +920,37 @@
     gap: 12px;
   }
 
+  input[type="range"] {
+      -webkit-appearance: none;
+      width: 100%;
+      height: 32px;
+      padding: 0 2px;
+
+     // border: 4px solid white;
+      border-radius: 10px;
+
+      outline: none;
+      box-shadow: 4px 8px 12px rgba(black, .15);
+
+      &::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        width: 14px;
+        height: 28px;
+        border-radius: 12px;
+        background: rgba(white, .75);
+        cursor: pointer;
+        border: 1.5px solid rgba(white, .9);
+        box-shadow: 2px 4px 12px rgba(black, 0.5);
+        backdrop-filter: blur(10px);
+        transition: .2s ease;
+
+        &:hover{
+          transform: scale(1.08);
+        }
+      }
+    }
+
+
   .slider-control {
     display: grid;
     grid-template-columns: 30px 1fr 60px;
@@ -941,48 +958,19 @@
     gap: 18px;
 
     label {
-      font-size: 0.875rem;
+      font-size: 14px;
       font-weight: 600;
       text-align: center;
       color: var(--text-secondary);
     }
 
-    input[type="range"] {
-      -webkit-appearance: none;
-      width: 100%;
-      height: 32px;
-      padding: 0 2px;
-
-      border: 4px solid white;
-      border-radius: 14px;
-
-      outline: none;
-      box-shadow: 4px 8px 12px rgba(black, .15);
-
-      &::-webkit-slider-thumb {
-        -webkit-appearance: none;
-        width: 20px;
-        height: 20px;
-        border-radius: 45%;
-        background: rgba(white, .2);
-        cursor: pointer;
-        border: 1.5px solid rgba(white, .75);
-        box-shadow: 2px 4px 12px rgba(black, 0.5);
-      }
-    }
 
     input[type="number"] {
       width: 100%;
-      border: 1px solid #e5e5e5;
       border-radius: 6px;
       padding: 0.4rem;
       font-size: 0.875rem;
-      text-align: center;
-
-      &:focus {
-        outline: none;
-        border-color: var(--accent);
-      }
+      text-align: left;
     }
   }
 
@@ -999,22 +987,6 @@
       color: var(--text-secondary);
     }
 
-    input[type="text"] {
-      width: 100%;
-      border: 1px solid #e5e5e5;
-      border-radius: 6px;
-      padding: 0.75rem;
-      font-size: 0.875rem;
-      text-align: center;
-      font-family: "SF Mono", Menlo, Monaco, Consolas, "Liberation Mono",
-        "Courier New", monospace;
-      text-transform: uppercase;
-
-      &:focus {
-        outline: none;
-        border-color: var(--accent);
-      }
-    }
   }
 
   .rgb-slider {

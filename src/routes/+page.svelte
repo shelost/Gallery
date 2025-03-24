@@ -20,8 +20,6 @@
 		slide
 	} from 'svelte/transition';
 
-
-
 	// Variables
 
 	export let data
@@ -280,9 +278,9 @@
 
 	<section class = 'splash'>
 
-		<img src = 'bidam.png' id = 'bidam' class = 'piece' alt = 'Logo'
-			in:fly={{y: 100, duration: 400, delay: 300}}>
-		<img src = 'heewon9.png' id = 'chunchu' class = 'piece' alt = 'Logo'>
+		<img src="bidam.png" id="bidam" class="piece" alt="Logo"
+			in:fly={{y: 100, duration: 400, delay: 300}} />
+		<img src="heewon9.png" id="chunchu" class="piece" alt="Logo" />
 
 		<video id = 'video' class = 'piece' alt = 'Logo' autoplay muted playsinline>
 			<source src = 'bidam.mp4' type = 'video/mp4'>
@@ -290,34 +288,25 @@
 
 		<div id = 'card' class = 'piece'>
 			<h2> Total Earned </h2>
-			<NumberFlow
-				value={val}
-				format={{ trailingZeroDisplay: 'stripIfInteger' }}
-				plugins={[continuous]}
-				class='number'
-				transformTiming={{
-					// Used for layout-related transforms:
-					duration: 1800,
-					easing: 'linear(0, 0.0012, 0.0048 0.97%, 0.0195 2.03%, 0.0446 3.19%, 0.0806 4.48%, 0.1581 6.77%, 0.3679 12.32%, 0.469 15.16%, 0.5199 16.71%, 0.5665, 0.6097, 0.6496 21.26%, 0.6876, 0.7222 24.42%, 0.7541 26.03%, 0.7833 27.68%, 0.8104 29.39%, 0.8352 31.16%, 0.8575 32.97%, 0.8779 34.87%, 0.897 36.93%, 0.9142 39.13%, 0.9292 41.42%, 0.9424 43.84%, 0.9539 46.42%, 0.9637 49.16%, 0.972 52.13%, 0.979 55.39%, 0.9888 62.39%, 0.995 71.16%, 0.9983 82.61%, 0.9997 100%)'
-				}}
-			/>
+			<!-- Temporary replacement for NumberFlow -->
+			<span class="number">{val.toLocaleString()}</span>
 		</div>
 
 		<div class = 'screen'>
-			<img src = 'smiley.svg' id = 'logo' alt = 'Logo'
-				in:fly={{y: 100, duration: 600, delay: 100}}>
+			<img src="smiley.svg" id="logo" alt="Logo"
+				in:fly={{y: 100, duration: 600, delay: 100}} />
 
-			<img src = 'heewon9.png' id = 'pfp' alt = 'Logo'
-				in:fly={{y: 100, duration: 600, delay: 100}}>
-			<img src = 'ahnheewon3.png' id = 'ahw' alt = 'Logo'
-				in:fly={{y: 100, duration: 600, delay: 100}}>
+			<img src="heewon9.png" id="pfp" alt="Logo"
+				in:fly={{y: 100, duration: 600, delay: 100}} />
+			<img src="ahnheewon3.png" id="ahw" alt="Logo"
+				in:fly={{y: 100, duration: 600, delay: 100}} />
 			<div class = 'expo'>
 				<div class = 'tagline'
 				in:fly={{y: 100, duration: 600, delay: 200}}
 				>
 				<!--
 					<h1> Design </h1>
-					<img src = 'arrow.svg' alt = 'arrow'>
+					<img src="arrow.svg" alt="arrow" />
 					<h1> Code </h1>
 					-->
 					<h1> Design to Code </h1>
@@ -393,7 +382,7 @@
 
 							<div class = 'mast'>
 								{#if link.meta.card}
-									<img src = 'card/{link.meta.card}.png' alt = 'card' class = 'card'>
+									<img src="card/{link.meta.card}.png" alt="card" class="card" />
 								{/if}
 
 								<div class = 'title'>
@@ -401,7 +390,7 @@
 									{#each link.meta.tags as tag, j}
 										<div class = 'tag'>
 											{#if tagIcon(tag)}
-												<img src = 'icon/{tagIcon(tag)}.svg' class = 'icon' alt = 'icon'>
+												<img src="icon/{tagIcon(tag)}.svg" class="icon" alt="icon" />
 											{/if}
 											<h3> {titleCase(tag)} </h3>
 										</div>
@@ -420,7 +409,7 @@
 									{#each link.meta.categories as cat, j}
 										<div class = 'tag'>
 											{#if tagIcon(cat)}
-												<img src = 'icon/{tagIcon(cat)}.svg' class = 'icon' alt = 'icon'>
+												<img src="icon/{tagIcon(cat)}.svg" class="icon" alt="icon" />
 											{/if}
 											<h3> {titleCase(cat)} </h3>
 										</div>
@@ -431,10 +420,10 @@
 						</div>
 
 						<div class = 'top'>
-							<img src = 'expand.svg' class = 'expand' alt = 'view' on:click = {() => {
+							<img src="expand.svg" class="expand" alt="view" on:click={() => {
 								expandedPost.set(link)
 								openDrawer.set(true)
-							}}>
+							}} />
 							<div class = 'rating'>
 								<h2> {link.meta.rating} </h2>
 								<div class = 'bar'>
@@ -457,7 +446,7 @@
 								</video>
 							{/if}
 							{#if link.meta.preview}
-								<img src = 'bento/{link.meta.preview}.svg' class = 'banner' alt = 'banner'>
+								<img src="bento/{link.meta.preview}.svg" class="banner" alt="banner" />
 								<div class = 'gradient'></div>
 							{:else}
 								<div class="prose prose-preview">
@@ -477,14 +466,14 @@
 				{#if $activeObject}
 					<div class = 'info'>
 						{#if $activeObject.meta.card}
-								<img src = 'card/{$activeObject.meta.card}.png' alt = 'card' class = 'card'>
-							{/if}
+							<img src="card/{$activeObject.meta.card}.png" alt="card" class="card" />
+						{/if}
 						<div class = 'title'>
 							<h1> {$activeObject.meta.title} </h1>
 							{#each $activeObject.meta.tags as tag, j}
 								<div class = 'tag'>
 									{#if tagIcon(tag)}
-										<img src = 'icon/{tagIcon(tag)}.svg' class = 'icon' alt = 'icon'>
+										<img src="icon/{tagIcon(tag)}.svg" class="icon" alt="icon" />
 									{/if}
 									<h2> {titleCase(tag)} </h2>
 								</div>
@@ -499,7 +488,7 @@
 							{#each $activeObject.meta.categories as cat, j}
 								<div class = 'tag'>
 									{#if tagIcon(cat)}
-										<img src = 'icon/{tagIcon(cat)}.svg' class = 'icon' alt = 'icon'>
+										<img src="icon/{tagIcon(cat)}.svg" class="icon" alt="icon" />
 									{/if}
 									<h2> {titleCase(cat)} </h2>
 								</div>
@@ -551,21 +540,21 @@
 
 	<div id = 'pill' bind:this={Pill}></div>
 	<div class = 'view v2' class:active={$view == 2} on:click = {() => {changeView(2)}}>
-		<img class = 'view-icon' src = 'view-list.svg' alt = 'view'>
+		<img src="view-list.svg" class="view-icon" alt="view" />
 		<h2>
 			List
 		</h2>
 	</div>
 
 	<div class = 'view v3' class:active={$view == 3} on:click = {() => {changeView(3)}}>
-		<img class = 'view-icon' src = 'view-grid.svg' alt = 'view'>
+		<img src="view-grid.svg" class="view-icon" alt="view" />
 		<h2>
 			Grid
 		</h2>
 	</div>
 
 	<div class = 'view v1' class:active={$view == 1} on:click = {() => {changeView(1)}}>
-		<img class = 'view-icon' src = 'view-sections.svg' alt = 'view'>
+		<img src="view-sections.svg" class="view-icon" alt="view" />
 		<h2>
 			Preview
 		</h2>
@@ -1419,8 +1408,8 @@
 		}
 
 		#ahw{
-			height: 28px;
-			margin: 60px 0 10px 0;
+			height: 100px;
+			margin: 80px 0 0px 0;
 
 		}
 
@@ -1437,7 +1426,6 @@
 
 			border-radius: 16px;
 			padding: 24px;
-
 
 
 			#pfp{
@@ -1468,6 +1456,7 @@
 					letter-spacing: -5px;
 					margin: 0;
 					text-shadow: -10px 30px 40px rgba(#030025, .15);
+					display: none;
 				}
 				h2{
 					font-size: 15px;
@@ -1672,5 +1661,6 @@
 		}
 	}
 
+	// Removed all :global() selectors as they're now in the global stylesheet
 
 </style>
