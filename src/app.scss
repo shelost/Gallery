@@ -83,7 +83,7 @@ h1{
 	font-size: 32px;
 	font-weight: 700;
 	letter-spacing: -.8px;
-	line-height: 100%;
+	line-height: 90%;
 	text-align: left;
 	margin-bottom: 8px;
 	color: #030025;
@@ -185,31 +185,6 @@ button:focus:not(:focus-visible) {
 ////
 
 
-.button{
-	border-radius: 8px;
-	outline: none;
-	border: none;
-	background: #f0f0f0;
-	border: 3px solid rgba(white, .5);
-	border-radius: 14px;
-	padding: 8px 12px;
-	box-shadow: 0 6px 12px rgba(black, .2), inset 0 2px 4px rgba(white, .9), inset 0 -2px 6px rgba(black, .1);
-	transition: .2s ease;
-	cursor: pointer;
-	h2{
-		font-size: 14px;
-		font-weight: 600;
-		transition: .2s ease;
-	}
-	&:hover{
-		box-shadow: 0 4px 8px rgba(black, .2), inset 0 -2px 4px rgba(white, .4), inset -2px 4px 6px rgba(black, .1);
-		h2{
-			transform: translateY(.5px);
-		}
-	}
-}
-
-
 a{
 	//background: rgba(#ff236c, .03);
 	padding: 0px 0px;
@@ -223,18 +198,19 @@ a{
 	}
 }
 
-button{
+
+
+button, .button {
 	outline: none;
 	border: none;
 	background: #030025;
-	border: 1px solid rgba(white, .5);
-	border-radius: 8px;
+	//border: 1px solid rgba(white, .5);
 	padding: 10px 12px;
 	overflow: hidden;
 	transition: .2s ease;
 	position: relative;
 	cursor: pointer;
-	border-radius: 18px;
+	border-radius: 16px;
 	padding: 11px 18px 12px 18px;
 	box-shadow: 0 8px 18px rgba(black, .3), inset -1px 2px 3px rgba(white, .3);
 	font-family: var(--font-body);
@@ -270,6 +246,10 @@ button{
 	&.light{
 		background: rgba(#030025, .1);
 		box-shadow: none;
+	}
+
+	&.highlight{
+		background: #781FFF;
 	}
 }
 
@@ -471,7 +451,7 @@ button{
 
 
 #container {
-    width: clamp(50%, 1200px, 95%);
+    width: clamp(50%, 1400px, 100%);
 	height: calc(100vh - 200px);
 	gap: 40px;
 
@@ -486,10 +466,7 @@ button{
 
 	#left{
 		//height: 400px;
-		width: 240px;
-		flex-shrink: 0;
-
-
+		width: clamp(100px, 280px, 100%);
 		display: flex;
 		flex-direction: column;
 		align-items: flex-start;
@@ -500,8 +477,8 @@ button{
 	}
 
 	#right{
-		width: 240px;
-		flex-shrink: 0;
+		width: clamp(100px, 248px, 100%);
+		//flex-shrink: 2;
 	}
 
 	#content{
@@ -515,7 +492,8 @@ button{
 	background: white;
 	border-radius: 24px;
 	overflow: hidden;
-	padding: 12px;
+	padding: 24px;
+	box-sizing: border-box;
 	box-shadow: 10px 40px 50px rgba(#030025, 0.1), inset -2px -4px 8px rgba(#030025, 0.02);
 }
 

@@ -1022,8 +1022,7 @@
 							max-width: 400px;
 							height: auto;
 							margin: 0;
-
-							//filter: drop-shadow(-20px 30px 50px rgba(black, .2));
+							filter: drop-shadow(-10px 20px 20px rgba(black, .2));
 							//filter: none;
 						}
 					}
@@ -1046,8 +1045,8 @@
 
 		h1{
 			font-size: 40px;
-			font-weight: 600;
-			letter-spacing: -1.4px;
+			font-weight: 700;
+			letter-spacing: -.75px;
 			margin: 0;
 			text-align: left;
 		}

@@ -29,6 +29,7 @@
 	"dependencies": {
 		"@number-flow/svelte": "^0.3.6",
 		"@unpic/svelte": "^1.0.0",
+		"gsap": "^3.12.7",
 		"material-icons": "^1.13.14",
 		"pdfjs-dist": "^4.8.69",
 		"svelte-image": "^0.2.9",

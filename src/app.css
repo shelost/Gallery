@@ -73,7 +73,7 @@ h1 {
   font-size: 32px;
   font-weight: 700;
   letter-spacing: -0.8px;
-  line-height: 100%;
+  line-height: 90%;
   text-align: left;
   margin-bottom: 8px;
   color: #030025;
@@ -167,30 +167,6 @@ button:focus:not(:focus-visible) {
   white-space: nowrap;
 }
 
-.button {
-  border-radius: 8px;
-  outline: none;
-  border: none;
-  background: #f0f0f0;
-  border: 3px solid rgba(255, 255, 255, 0.5);
-  border-radius: 14px;
-  padding: 8px 12px;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2), inset 0 2px 4px rgba(255, 255, 255, 0.9), inset 0 -2px 6px rgba(0, 0, 0, 0.1);
-  transition: 0.2s ease;
-  cursor: pointer;
-}
-.button h2 {
-  font-size: 14px;
-  font-weight: 600;
-  transition: 0.2s ease;
-}
-.button:hover {
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2), inset 0 -2px 4px rgba(255, 255, 255, 0.4), inset -2px 4px 6px rgba(0, 0, 0, 0.1);
-}
-.button:hover h2 {
-  transform: translateY(0.5px);
-}
-
 a {
   padding: 0px 0px;
   border-radius: 4px;
@@ -202,23 +178,21 @@ a:hover {
   background: rgba(255, 35, 108, 0.1);
 }
 
-button {
+button, .button {
   outline: none;
   border: none;
   background: #030025;
-  border: 1px solid rgba(255, 255, 255, 0.5);
-  border-radius: 8px;
   padding: 10px 12px;
   overflow: hidden;
   transition: 0.2s ease;
   position: relative;
   cursor: pointer;
-  border-radius: 18px;
+  border-radius: 16px;
   padding: 11px 18px 12px 18px;
   box-shadow: 0 8px 18px rgba(0, 0, 0, 0.3), inset -1px 2px 3px rgba(255, 255, 255, 0.3);
   font-family: var(--font-body);
 }
-button h2 {
+button h2, .button h2 {
   color: white;
   font-size: 15px;
   font-weight: 550;
@@ -226,7 +200,7 @@ button h2 {
   transition: 0.2s ease;
   font-family: var(--font-headers);
 }
-button::before {
+button::before, .button::before {
   content: "";
   position: absolute;
   bottom: 0;
@@ -237,12 +211,15 @@ button::before {
   z-index: 0;
   transition: 0.25s ease-in-out;
 }
-button:hover {
+button:hover, .button:hover {
   box-shadow: 0 8px 18px rgba(0, 0, 0, 0.4), inset -1px 2px 3px rgba(255, 255, 255, 0.3);
 }
-button.light {
+button.light, .button.light {
   background: rgba(3, 0, 37, 0.1);
   box-shadow: none;
+}
+button.highlight, .button.highlight {
+  background: #781FFF;
 }
 
 .prose {
@@ -414,7 +391,7 @@ button.light {
 }
 
 #container {
-  width: clamp(50%, 1200px, 95%);
+  width: clamp(50%, 1400px, 100%);
   height: calc(100vh - 200px);
   gap: 40px;
   box-sizing: border-box;
@@ -425,8 +402,7 @@ button.light {
   margin-top: 90px;
 }
 #container #left {
-  width: 240px;
-  flex-shrink: 0;
+  width: clamp(100px, 280px, 100%);
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -435,8 +411,7 @@ button.light {
   text-align: left;
 }
 #container #right {
-  width: 240px;
-  flex-shrink: 0;
+  width: clamp(100px, 248px, 100%);
 }
 #container #content {
   flex-shrink: 0;
@@ -446,7 +421,8 @@ button.light {
   background: white;
   border-radius: 24px;
   overflow: hidden;
-  padding: 12px;
+  padding: 24px;
+  box-sizing: border-box;
   box-shadow: 10px 40px 50px rgba(3, 0, 37, 0.1), inset -2px -4px 8px rgba(3, 0, 37, 0.02);
 }
 

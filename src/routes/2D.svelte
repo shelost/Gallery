@@ -19,9 +19,6 @@
 		scale,
 		slide
 	} from 'svelte/transition';
-	import OptimizedImage from '$lib/components/OptimizedImage.svelte';
-
-
 
 	// Variables
 
@@ -281,9 +278,9 @@
 
 	<section class = 'splash'>
 
-		<OptimizedImage src="bidam.png" id="bidam" className="piece" alt="Logo"
-			transition={{y: 100, duration: 400, delay: 300}} />
-		<OptimizedImage src="heewon9.png" id="chunchu" className="piece" alt="Logo" />
+		<img src="bidam.png" id="bidam" class="piece" alt="Logo"
+			in:fly={{y: 100, duration: 400, delay: 300}} />
+		<img src="heewon9.png" id="chunchu" class="piece" alt="Logo" />
 
 		<video id = 'video' class = 'piece' alt = 'Logo' autoplay muted playsinline>
 			<source src = 'bidam.mp4' type = 'video/mp4'>
@@ -296,20 +293,20 @@
 		</div>
 
 		<div class = 'screen'>
-			<OptimizedImage src="smiley.svg" id="logo" alt="Logo"
-				transition={{y: 100, duration: 600, delay: 100}} />
+			<img src="smiley.svg" id="logo" alt="Logo"
+				in:fly={{y: 100, duration: 600, delay: 100}} />
 
-			<OptimizedImage src="heewon9.png" id="pfp" alt="Logo"
-				transition={{y: 100, duration: 600, delay: 100}} />
-			<OptimizedImage src="ahnheewon3.png" id="ahw" alt="Logo"
-				transition={{y: 100, duration: 600, delay: 100}} />
+			<img src="heewon9.png" id="pfp" alt="Logo"
+				in:fly={{y: 100, duration: 600, delay: 100}} />
+			<img src="ahnheewon3.png" id="ahw" alt="Logo"
+				in:fly={{y: 100, duration: 600, delay: 100}} />
 			<div class = 'expo'>
 				<div class = 'tagline'
 				in:fly={{y: 100, duration: 600, delay: 200}}
 				>
 				<!--
 					<h1> Design </h1>
-					<OptimizedImage src="arrow.svg" alt="arrow" />
+					<img src="arrow.svg" alt="arrow" />
 					<h1> Code </h1>
 					-->
 					<h1> Design to Code </h1>
@@ -385,7 +382,7 @@
 
 							<div class = 'mast'>
 								{#if link.meta.card}
-									<OptimizedImage src="card/{link.meta.card}.png" alt="card" className="card" />
+									<img src="card/{link.meta.card}.png" alt="card" class="card" />
 								{/if}
 
 								<div class = 'title'>
@@ -393,7 +390,7 @@
 									{#each link.meta.tags as tag, j}
 										<div class = 'tag'>
 											{#if tagIcon(tag)}
-												<OptimizedImage src="icon/{tagIcon(tag)}.svg" className="icon" alt="icon" />
+												<img src="icon/{tagIcon(tag)}.svg" class="icon" alt="icon" />
 											{/if}
 											<h3> {titleCase(tag)} </h3>
 										</div>
@@ -412,7 +409,7 @@
 									{#each link.meta.categories as cat, j}
 										<div class = 'tag'>
 											{#if tagIcon(cat)}
-												<OptimizedImage src="icon/{tagIcon(cat)}.svg" className="icon" alt="icon" />
+												<img src="icon/{tagIcon(cat)}.svg" class="icon" alt="icon" />
 											{/if}
 											<h3> {titleCase(cat)} </h3>
 										</div>
@@ -423,7 +420,7 @@
 						</div>
 
 						<div class = 'top'>
-							<OptimizedImage src="expand.svg" className="expand" alt="view" onClick={() => {
+							<img src="expand.svg" class="expand" alt="view" on:click={() => {
 								expandedPost.set(link)
 								openDrawer.set(true)
 							}} />
@@ -449,7 +446,7 @@
 								</video>
 							{/if}
 							{#if link.meta.preview}
-								<OptimizedImage src="bento/{link.meta.preview}.svg" className="banner" alt="banner" />
+								<img src="bento/{link.meta.preview}.svg" class="banner" alt="banner" />
 								<div class = 'gradient'></div>
 							{:else}
 								<div class="prose prose-preview">
@@ -469,14 +466,14 @@
 				{#if $activeObject}
 					<div class = 'info'>
 						{#if $activeObject.meta.card}
-							<OptimizedImage src="card/{$activeObject.meta.card}.png" alt="card" className="card" />
+							<img src="card/{$activeObject.meta.card}.png" alt="card" class="card" />
 						{/if}
 						<div class = 'title'>
 							<h1> {$activeObject.meta.title} </h1>
 							{#each $activeObject.meta.tags as tag, j}
 								<div class = 'tag'>
 									{#if tagIcon(tag)}
-										<OptimizedImage src="icon/{tagIcon(tag)}.svg" className="icon" alt="icon" />
+										<img src="icon/{tagIcon(tag)}.svg" class="icon" alt="icon" />
 									{/if}
 									<h2> {titleCase(tag)} </h2>
 								</div>
@@ -491,7 +488,7 @@
 							{#each $activeObject.meta.categories as cat, j}
 								<div class = 'tag'>
 									{#if tagIcon(cat)}
-										<OptimizedImage src="icon/{tagIcon(cat)}.svg" className="icon" alt="icon" />
+										<img src="icon/{tagIcon(cat)}.svg" class="icon" alt="icon" />
 									{/if}
 									<h2> {titleCase(cat)} </h2>
 								</div>
@@ -543,21 +540,21 @@
 
 	<div id = 'pill' bind:this={Pill}></div>
 	<div class = 'view v2' class:active={$view == 2} on:click = {() => {changeView(2)}}>
-		<OptimizedImage src="view-list.svg" className="view-icon" alt="view" />
+		<img src="view-list.svg" class="view-icon" alt="view" />
 		<h2>
 			List
 		</h2>
 	</div>
 
 	<div class = 'view v3' class:active={$view == 3} on:click = {() => {changeView(3)}}>
-		<OptimizedImage src="view-grid.svg" className="view-icon" alt="view" />
+		<img src="view-grid.svg" class="view-icon" alt="view" />
 		<h2>
 			Grid
 		</h2>
 	</div>
 
 	<div class = 'view v1' class:active={$view == 1} on:click = {() => {changeView(1)}}>
-		<OptimizedImage src="view-sections.svg" className="view-icon" alt="view" />
+		<img src="view-sections.svg" class="view-icon" alt="view" />
 		<h2>
 			Preview
 		</h2>
@@ -1025,8 +1022,7 @@
 							max-width: 400px;
 							height: auto;
 							margin: 0;
-
-							//filter: drop-shadow(-20px 30px 50px rgba(black, .2));
+							filter: drop-shadow(-10px 20px 20px rgba(black, .2));
 							//filter: none;
 						}
 					}
@@ -1049,8 +1045,8 @@
 
 		h1{
 			font-size: 40px;
-			font-weight: 600;
-			letter-spacing: -1.4px;
+			font-weight: 700;
+			letter-spacing: -.75px;
 			margin: 0;
 			text-align: left;
 		}
@@ -1411,8 +1407,8 @@
 		}
 
 		#ahw{
-			height: 28px;
-			margin: 60px 0 10px 0;
+			height: 100px;
+			margin: 80px 0 0px 0;
 
 		}
 
@@ -1429,7 +1425,6 @@
 
 			border-radius: 16px;
 			padding: 24px;
-
 
 
 			#pfp{
@@ -1460,6 +1455,7 @@
 					letter-spacing: -5px;
 					margin: 0;
 					text-shadow: -10px 30px 40px rgba(#030025, .15);
+					display: none;
 				}
 				h2{
 					font-size: 15px;
@@ -1664,5 +1660,6 @@
 		}
 	}
 
+	// Removed all :global() selectors as they're now in the global stylesheet
 
 </style>

@@ -141,10 +141,10 @@
     ctx.fillStyle = '#FFFFFF';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-
     // Update the texture
     canvasTexture.image = canvas;
     canvasTexture.needsUpdate = true;
+    canvasTexture.colorSpace = THREE.SRGBColorSpace;
 
     console.log("Standard white screen texture created");
   }
@@ -173,6 +173,7 @@
     renderer.setSize(containerEl.clientWidth, containerEl.clientHeight);
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.outputEncoding = THREE.sRGBEncoding;
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
     containerEl.appendChild(renderer.domElement);
 
     // Setup lighting
@@ -242,6 +243,7 @@
 
     // Setup texture for iPhone screen - this will be shared across materials
     canvasTexture = new THREE.Texture();
+    canvasTexture.colorSpace = THREE.SRGBColorSpace;
 
     // Create base screen material (for backward compatibility)
     screenMaterial = new THREE.MeshBasicMaterial({
@@ -630,6 +632,7 @@
       if (canvasTexture.image) {
         console.log("Ensuring texture is applied to the new model");
         canvasTexture.needsUpdate = true;
+        canvasTexture.colorSpace = THREE.SRGBColorSpace;
       } else {
         console.log("No texture found, creating initial white screen");
         createWhiteScreenTexture();
@@ -1080,10 +1083,12 @@
       // This hook is kept for potential future texture adjustments
     }
 
-
     // Update the texture - this affects all materials that use this texture
     canvasTexture.image = canvas;
     canvasTexture.needsUpdate = true;
+
+    // Ensure correct colorspace to match the renderer's output encoding
+    canvasTexture.colorSpace = THREE.SRGBColorSpace;
 
     console.log("Screen texture updated successfully for all models");
   }
@@ -1211,6 +1216,7 @@
         console.log("Restoring screen texture after model switch");
         canvasTexture.image = currentTexture;
         canvasTexture.needsUpdate = true;
+        canvasTexture.colorSpace = THREE.SRGBColorSpace;
       } else {
         console.log("No texture to restore, creating white screen");
         createWhiteScreenTexture();
@@ -2261,10 +2267,7 @@
     </div>
     {:else}
     <div class="upload-container">
-      <label for="image-upload" class="upload-button">
-        Upload Design
-      </label>
-      <input id="image-upload" type="file" accept="image/*" on:change={handleImageUpload} multiple />
+
 
       {#if wallpapers.length > 0}
       <div class="wallpaper-picker">
@@ -2293,6 +2296,15 @@
         </div>
       </div>
       {/if}
+
+
+      <label for="image-upload" class="upload-button button">
+        Upload Image
+      </label>
+      <input id="image-upload" type="file" accept="image/*" on:change={handleImageUpload} multiple />
+
+
+
     </div>
 
 
@@ -2479,7 +2491,7 @@
           }}
         />
       </div>
-      <button class="reset-button" on:click={() => {
+      <button class="reset-button secondary" on:click={() => {
         // Get current values for animation
         const currentX = get(cameraRotationXStore);
         const currentY = get(cameraRotationYStore);
@@ -2514,11 +2526,13 @@
           // Force an update
           updateCameraAnglesFromCamera();
         }, 1500);
-      }}>Reset Camera</button>
+      }}>
+          <h2> Reset Camera </h2>
+      </button>
     </div>
 
-    <button class="download-button" on:click={takeScreenshot} disabled={wallpapers.length === 0}>
-      Download Mockup
+    <button class="download-button highlight" on:click={takeScreenshot} disabled={wallpapers.length === 0}>
+      <h2> Download PNG </h2>
     </button>
   </div>
 
@@ -2530,9 +2544,17 @@
     width: 100%;
     height: 100vh;
 
+    font-family: 'Inter', sans-serif;
+
     @media (max-width: 768px) {
       flex-direction: column;
     }
+  }
+
+
+
+  #content{
+    padding: 4px;
   }
 
   .sidebar {
@@ -2558,13 +2580,12 @@
   }
 
   .viewer {
-    flex: 1;
     background: #f5f5f5;
     position: relative;
 
-    height: 80vh;
-    aspect-ratio: 1;
-
+    width: clamp(400px, calc(min(80vh, 100vw - 800px)), 800px);
+    height: clamp(400px, calc(min(80vh, 100vw - 800px)), 800px);
+    aspect-ratio: 1 !important;
 
     & canvas {
       width: 100% !important;
@@ -2598,8 +2619,6 @@
 
   .upload-container {
 
-
-
     margin-bottom: 20px;
 
     input[type="file"] {
@@ -2608,20 +2627,10 @@
   }
 
   .upload-button {
-    display: block;
-    width: 100%;
-    padding: 12px;
-    background: #007aff;
     color: white;
-    text-align: center;
-    border-radius: 8px;
-    cursor: pointer;
+    font-size: 14px;
     font-weight: 500;
-    transition: background 0.2s;
-
-    &:hover {
-      background: #0056b3;
-    }
+    margin: 20px 0 !important;
   }
 
   .image-preview {
@@ -2652,25 +2661,7 @@
     }
   }
 
-  .download-button {
-    padding: 12px;
-    background: #34c759;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: background 0.2s;
 
-    &:hover {
-      background: #2aa447;
-    }
-
-    &:disabled {
-      background: #ccc;
-      cursor: not-allowed;
-    }
-  }
 
   .credits {
     margin-top: auto;
@@ -2680,6 +2671,7 @@
   }
 
   .model-switcher {
+    display: none;
     margin-bottom: 20px;
 
     h3 {
@@ -2694,24 +2686,7 @@
     display: flex;
     gap: 10px;
 
-    .model-button {
-      padding: 12px;
-      background: #007aff;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      font-weight: 500;
-      cursor: pointer;
-      transition: background 0.2s;
 
-      &:hover {
-        background: #0056b3;
-      }
-
-      &.active {
-        background: #34c759;
-      }
-    }
   }
 
   .camera-controls {
@@ -2739,14 +2714,17 @@
   .control-row input[type="range"] {
     flex: 1;
     margin: 0 10px;
-    height: 8px;
+    height: 16px;
     border-radius: 4px;
     -webkit-appearance: none;
     background: #e0e0e0;
+    box-sizing: border-box;
     outline: none;
     opacity: 0.7;
     transition: opacity 0.2s;
     cursor: pointer;
+
+    width: 100px;
   }
 
   .control-row input[type="range"]:hover {
@@ -2779,22 +2757,7 @@
     font-size: 0.9rem;
   }
 
-  .reset-button {
-    width: 100%;
-    padding: 8px 15px;
-    margin-top: 1rem;
-    background-color: #4a90e2;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: background-color 0.3s;
-  }
 
-  .reset-button:hover {
-    background-color: #357abD;
-  }
 
   /* Touch friendly adjustments for mobile */
   @media (max-width: 768px) {
@@ -2956,7 +2919,7 @@
 
   .wallpaper-picker {
 
-    margin-top: 20px;
+    margin: 20px 0 40px 0;
     width: 200px;
 
     h4 {
@@ -2975,6 +2938,7 @@
 
     .wallpaper-item {
       grid-column: span 1;
+      width: 50px;
       position: relative;
       cursor: pointer;
       transition: transform 0.2s;
@@ -2999,13 +2963,13 @@
           position: absolute;
           top: 0;
           left: 0;
-          width: 100%;
+          width: 90%;
           height: 100%;
           object-fit: cover;
           object-position: center;
           border: 2px solid transparent;
           border-radius: 8px;
-          transition: border-color 0.3s;
+          transition: .1s ease;
         }
 
         .remove-wallpaper {
@@ -3042,6 +3006,7 @@
       }
 
       .wallpaper-name {
+        font-family: 'Inter', sans-serif;
         margin-top: 5px;
         font-size: 12px;
         color: #666;
