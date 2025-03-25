@@ -386,9 +386,9 @@
 						Building...
 					</h2>
 				</div>
-				<p in:fly={{y: 100, duration: 600, delay: 300}}>
-					I'm a Design Engineer
-				</p>
+				<h2 in:fly={{y: 100, duration: 600, delay: 300}}>
+					Web Design Studio
+				</h2>
 				<p in:fly={{y: 100, duration: 600, delay: 350}}>
 					I also work for <a href = 'https://stan.store'>startups</a>, draw <a href = 'https://www.instagram.com/_heewonahn'>comics</a>, and write <a href = 'https://www.instagram.com/ahnheewon_comics'>essays</a>.
 				</p>
@@ -1079,7 +1079,7 @@
 			#sections{
 				display: flex;
 				flex-wrap: wrap;
-				width: clamp(300px, 90%, 1200px);
+				width: clamp(300px, 80%, 1200px);
 				display: grid;
 				grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
 				gap: 20px 60px;
@@ -1121,7 +1121,7 @@
 					animation-delay: calc(var(--index, 0) * 0.05s);
 
 
-					box-shadow: inset -2px -4px 8px rgba(#030025, 0.03);
+					//box-shadow: inset -2px -4px 8px rgba(#030025, 0.03);
 					filter: drop-shadow(0 20px 25px rgba(0, 0, 0, 0.1));
 
 
@@ -1189,7 +1189,7 @@
 								margin-bottom: 8px;
 							}
 							h2{
-								font-size: 18px;
+								font-size: 20px;
 								font-weight: 500;
 								letter-spacing: -.48px;
 								opacity: .8;
@@ -1627,7 +1627,7 @@
 		}
 
 		#ahw{
-			height: 100px;
+			height: 120px;
 			margin: 80px 0 0px 0;
 
 		}
@@ -1658,8 +1658,9 @@
 			.expo{
 				width: 100%;
 
+
 				.tagline{
-					display: flex;
+					display: none;
 					justify-content: center;
 					align-items: center;
 					gap: 8px;
@@ -1678,11 +1679,12 @@
 					display: none;
 				}
 				h2{
-					font-size: 15px;
-					font-weight: 650;
-					letter-spacing: -.5px;
+					font-size: 28px;
+					font-weight: 800;
+					letter-spacing: -1px;
 					text-align: center;
 					color: rgba(#030025, .85);
+					margin: 12px 0 28px 0;
 				}
 
 				.status{
