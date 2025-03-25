@@ -24,6 +24,14 @@
   let loadingProgress = 0;
   let currentModelType = "iphone"; // Track which model is active
 
+  // Animation variables for image fit transitions
+  let isAnimatingFit = false;
+  let animStartTime = 0;
+  let animDuration = 400; // 400ms for the animation
+  let prevScaleFactor = null;
+  let targetScaleFactor = null;
+  let currentScaleFactor = null;
+
   // Define default wallpapers
   const DEFAULT_WALLPAPERS = ["wallpaper.png", "wallpaper2.png", "wallpaper3.png"];
   const DEFAULT_WALLPAPER_COUNT = DEFAULT_WALLPAPERS.length;
@@ -32,6 +40,9 @@
   const cameraRotationXStore = writable(0);
   const cameraRotationYStore = writable(0);
   const cameraRotationZStore = writable(0);  // Will be updated after camera setup
+
+  // Create a store for image fit mode
+  const imageFitMode = writable('fit'); // Default to 'fit' (contain)
 
   // Create a derived store that combines all three angles
   const cameraAngles = derived(
@@ -72,10 +83,11 @@
     { id: "black", name: "Space Black", color: "#2e2e2e" },
     { id: "white", name: "Silver", color: "#e9e8ed" },
     { id: "blue", name: "Blue", color: "#437691" },
-    { id: "pink", name: "Pink", color: "#f6c7b4" },
+    { id: "pink", name: "Pink", color: "#F2ADDA" },
     { id: "yellow", name: "Yellow", color: "#f2e8ce" },
     { id: "green", name: "Green", color: "#4a8b60" }, // Original color
-    { id: "purple", name: "Purple", color: "#8d7fa5" }
+    { id: "purple", name: "Teal", color: "#9AADF6" },
+    { id: "red", name: "Red", color: "#ff0000" }
   ];
 
   // Current selected iPhone color
@@ -138,7 +150,7 @@
     canvas.height = Math.round(canvas.width * (19.5/9)); // Approximately 2535
 
     // Fill with white background
-    ctx.fillStyle = '#FFFFFF';
+    ctx.fillStyle = '#202020';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     // Update the texture
@@ -279,7 +291,7 @@
     const ctx = initialCanvas.getContext('2d');
     initialCanvas.width = 512;
     initialCanvas.height = 1024;
-    ctx.fillStyle = '#FFFFFF';
+    ctx.fillStyle = '#202020';
     ctx.fillRect(0, 0, initialCanvas.width, initialCanvas.height);
 
     // Start animation loop
@@ -354,7 +366,7 @@
       // Scale and position the model
       if (currentModelType === "iphone") {
         // Smaller scale for the iPhone model to ensure it's fully visible
-        model.scale.set(0.35, 0.35, 0.35); // Significantly reduced scale to better match phone/block models
+        model.scale.set(0.33, 0.33, 0.33); // Significantly reduced scale to better match phone/block models
         // Rotate to show the front (screen) of the phone
         model.rotation.y = 0; // No rotation around Y axis to show the front
       } else {
@@ -384,7 +396,7 @@
 
       // Use a larger multiplier for the iPhone model to ensure it's not too zoomed in
       if (currentModelType === "iphone") {
-        cameraZ *= 1.8; // Adjusted camera distance for better comparative size with block/phone models
+        cameraZ *= 2.0; // Adjusted camera distance for better comparative size with block/phone models
       } else {
         cameraZ *= 1.2; // Default zoom level for other models
       }
@@ -422,7 +434,15 @@
       setTimeout(() => {
         updateCameraAnglesFromCamera();
         console.log(`Initial camera angles set: X=${get(cameraRotationXStore)}, Y=${get(cameraRotationYStore)}, Z=${get(cameraRotationZStore)}`);
-      }, 50);
+
+        // Start default camera animation
+        const targetX = -10;
+        const targetY = 15;
+        const targetZ = -5;
+        const duration = 2000;
+        console.log("Starting default camera animation for iPhone model");
+        animateCameraRotation(targetX, targetY, targetZ, duration);
+      }, 200);
 
       console.log("Successfully loaded iPhone model");
 
@@ -1060,20 +1080,54 @@
     ctx.fillStyle = '#FFFFFF';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    // Calculate dimensions to fit image while maintaining aspect ratio
-    const scale = Math.min(
+    // Get current image fit mode
+    const fitMode = get(imageFitMode);
+    console.log(`Updating screen texture with fit mode: ${fitMode}`);
+
+    // Calculate scale factors for both modes
+    const coverScale = Math.max(
       canvas.width / img.width,
       canvas.height / img.height
     );
+
+    const fitScale = Math.min(
+      canvas.width / img.width,
+      canvas.height / img.height
+    );
+
+    // If we're starting a new animation
+    if (!isAnimatingFit) {
+      // Set animation parameters based on current fit mode
+      let scale;
+      if (fitMode === 'cover') {
+        prevScaleFactor = fitScale;  // We're coming from 'fit'
+        targetScaleFactor = coverScale;
+      } else {
+        prevScaleFactor = coverScale; // We're coming from 'cover'
+        targetScaleFactor = fitScale;
+      }
+      currentScaleFactor = prevScaleFactor;
+
+      // Only animate if we have a previous state and it's different
+      if (prevScaleFactor !== null && Math.abs(prevScaleFactor - targetScaleFactor) > 0.001) {
+        isAnimatingFit = true;
+        animStartTime = Date.now();
+        animateFitTransition(img, canvas, ctx);
+        return; // Exit here as animation will handle the rest
+      }
+    }
+
+    // If no animation is needed, use the target scale directly
+    let scale = fitMode === 'cover' ? coverScale : fitScale;
 
     const scaledWidth = img.width * scale;
     const scaledHeight = img.height * scale;
     const x = (canvas.width - scaledWidth) / 2;
     const y = (canvas.height - scaledHeight) / 2;
 
-    console.log(`Updating screen texture: image=${img.width}x${img.height}, scaled=${scaledWidth}x${scaledHeight}`);
+    console.log(`Updating screen texture: image=${img.width}x${img.height}, scaled=${scaledWidth}x${scaledHeight}, mode=${fitMode}`);
 
-    // Draw the image centered on the canvas
+    // Draw the image on the canvas according to calculated dimensions
     ctx.drawImage(img, x, y, scaledWidth, scaledHeight);
 
     // Add post-processing for the texture if needed
@@ -1091,6 +1145,45 @@
     canvasTexture.colorSpace = THREE.SRGBColorSpace;
 
     console.log("Screen texture updated successfully for all models");
+  }
+
+  // New function to animate the transition between fit modes
+  function animateFitTransition(img, canvas, ctx) {
+    if (!isAnimatingFit) return;
+
+    const elapsed = Date.now() - animStartTime;
+    const progress = Math.min(1, elapsed / animDuration);
+
+    // Easing function for smoother animation (ease-in-out)
+    const easedProgress = progress < 0.5
+      ? 2 * progress * progress
+      : 1 - Math.pow(-2 * progress + 2, 2) / 2;
+
+    // Interpolate between previous and target scale
+    currentScaleFactor = prevScaleFactor + (targetScaleFactor - prevScaleFactor) * easedProgress;
+
+    // Calculate dimensions
+    const scaledWidth = img.width * currentScaleFactor;
+    const scaledHeight = img.height * currentScaleFactor;
+    const x = (canvas.width - scaledWidth) / 2;
+    const y = (canvas.height - scaledHeight) / 2;
+
+    // Clear canvas and redraw with current scale
+    ctx.fillStyle = '#FFFFFF';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.drawImage(img, x, y, scaledWidth, scaledHeight);
+
+    // Update texture
+    canvasTexture.image = canvas;
+    canvasTexture.needsUpdate = true;
+
+    // Continue animation if not complete
+    if (progress < 1) {
+      requestAnimationFrame(() => animateFitTransition(img, canvas, ctx));
+    } else {
+      // Animation complete
+      isAnimatingFit = false;
+    }
   }
 
   function takeScreenshot() {
@@ -1582,6 +1675,9 @@
 
     // Flag for tracking that we're in animation
     console.log("===== ANIMATION STARTED =====");
+
+    // Ensure camera.up is normalized
+    camera.up.set(0, 1, 0);
 
     // Pre-start with a small movement to make animation visible immediately
     const quickStartProgress = 0.05; // 5% of the way instantly
@@ -2307,6 +2403,37 @@
 
     </div>
 
+    {#if uploadedImage}
+    <div class="image-fit-options">
+      <h3>Image Fit</h3>
+      <div class="fit-buttons">
+        <button
+          class="fit-button {$imageFitMode === 'fit' ? 'active' : ''}"
+          on:click={() => {
+            if (!isAnimatingFit && $imageFitMode !== 'fit') {
+              imageFitMode.set('fit');
+              if (uploadedImage) updateScreenTexture(uploadedImage);
+            }
+          }}
+          title="Fit entire image within screen (may show whitespace)"
+        >
+          Fit
+        </button>
+        <button
+          class="fit-button {$imageFitMode === 'cover' ? 'active' : ''}"
+          on:click={() => {
+            if (!isAnimatingFit && $imageFitMode !== 'cover') {
+              imageFitMode.set('cover');
+              if (uploadedImage) updateScreenTexture(uploadedImage);
+            }
+          }}
+          title="Cover entire screen (may crop image edges)"
+        >
+          Cover
+        </button>
+      </div>
+    </div>
+    {/if}
 
     <div class="model-switcher">
       <h3>Phone Model</h3>
@@ -3028,5 +3155,35 @@
         }
       }
     }
+  }
+
+  .image-fit-options {
+    margin-bottom: 20px;
+  }
+
+  .fit-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+  }
+
+  .fit-button {
+    flex: 1;
+    padding: 8px 12px;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .fit-button:hover {
+    background-color: #e0e0e0;
+  }
+
+  .fit-button.active {
+    background-color: #4a8b60;
+    color: white;
+    border-color: #4a8b60;
   }
 </style>
