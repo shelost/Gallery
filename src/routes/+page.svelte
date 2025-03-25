@@ -42,13 +42,85 @@
 
 	// Functions
 
+	function setAnimationIndexes() {
+		// Set animation indexes for staggered animations
+		const sections = document.querySelectorAll('.sec');
+		sections.forEach((section, index) => {
+			section.style.setProperty('--index', index);
+		});
+	}
+
 	function changeView(v){
-		view.set(v)
-		setTimeout(() => {
-			//splash.set(true)
-		}, 100);
+		// Don't transition if we're already on this view
+		if ($view === v) return;
+
+		// Store the current active object and its position before view change
+		const currentObject = $activeObject;
+		let currentPosition = null;
+
+		if (currentObject) {
+			const elem = document.getElementById(currentObject.meta.title);
+			if (elem) {
+				const rect = elem.getBoundingClientRect();
+				currentPosition = {
+					id: currentObject.meta.title,
+					top: rect.top,
+					viewportHeight: window.innerHeight
+				};
+			}
+		}
+
+		// Check if View Transitions API is supported
+		if ('startViewTransition' in document) {
+			document.startViewTransition(async () => {
+				// Set the new view
+				view.set(v);
+				await Promise.resolve();
+
+				// Apply staggered animations
+				setAnimationIndexes();
+
+				// After view changes, scroll to keep current project visible if we had one
+				if (currentPosition) {
+					setTimeout(() => {
+						const targetElem = document.getElementById(currentPosition.id);
+						if (targetElem) {
+							// Calculate how to position the element similarly in the viewport
+							const newRect = targetElem.getBoundingClientRect();
+							const scrollAdjustment = newRect.top - currentPosition.top;
+
+							// Smooth scroll to the adjusted position
+							window.scrollBy({
+								top: scrollAdjustment,
+								behavior: 'smooth'
+							});
+						}
+					}, 100);
+				}
+			});
+		} else {
+			// Fallback for browsers that don't support View Transitions
+			view.set(v);
+			setAnimationIndexes();
+
+			if (currentPosition) {
+				setTimeout(() => {
+					const targetElem = document.getElementById(currentPosition.id);
+					if (targetElem) {
+						const newRect = targetElem.getBoundingClientRect();
+						const scrollAdjustment = newRect.top - currentPosition.top;
+
+						window.scrollBy({
+							top: scrollAdjustment,
+							behavior: 'smooth'
+						});
+					}
+				}, 100);
+			}
+		}
+
 		Click.currentTime = 0;
-		Click.play()
+		Click.play();
 	}
 
 	function updateActiveSection() {
@@ -185,6 +257,7 @@
 		loading.subscribe(v => {
 			setTimeout(() => {
 				changeView(3)
+				setAnimationIndexes();
 
 				let elem = Class('v3')[0]
 				let container = Id('view').getBoundingClientRect()
@@ -200,7 +273,6 @@
 		})
 
 		view.subscribe(v => {
-
 			let elem = Class(`v${v}`)[0]
 
 			if (!elem){
@@ -211,27 +283,22 @@
 			let container = Id('view').getBoundingClientRect()
 			let rect = elem.getBoundingClientRect()
 
-			Pill.style.position = 'fixed'
-			Pill.style.top = rect.top - container.top - 3 + 'px'
-			Pill.style.left = rect.left - container.left - 3 + 'px'
-			Pill.style.width = rect.width + 'px'
-			Pill.style.height = rect.height + 'px'
-
-			/*
-			switch (v){
-				case 1:
-					Pill.style.borderRadius = '12px 28px 28px 12px'
-					break
-				case 2:
-					Pill.style.borderRadius = '28px 12px 12px 28px'
-					break
-				case 3:
-					Pill.style.borderRadius = '8px'
-					break
-				default:
-					break
+			// Use View Transitions API for the pill animation if available
+			if ('startViewTransition' in document) {
+				document.startViewTransition(() => {
+					Pill.style.position = 'fixed'
+					Pill.style.top = rect.top - container.top - 3 + 'px'
+					Pill.style.left = rect.left - container.left - 3 + 'px'
+					Pill.style.width = rect.width + 'px'
+					Pill.style.height = rect.height + 'px'
+				});
+			} else {
+				Pill.style.position = 'fixed'
+				Pill.style.top = rect.top - container.top - 3 + 'px'
+				Pill.style.left = rect.left - container.left - 3 + 'px'
+				Pill.style.width = rect.width + 'px'
+				Pill.style.height = rect.height + 'px'
 			}
-					*/
 		})
 
 		window.addEventListener("scroll", updateActiveSection);
@@ -269,6 +336,7 @@
 <svelte:head>
 	<title>Heewon</title>
 	<meta name="description" content="Heewon's Portfolio" />
+	<meta name="view-transition" content="same-origin" />
 	<link rel="icon" href="favicon.png" />
 </svelte:head>
 
@@ -567,6 +635,42 @@
 
 
 <style lang="scss">
+	// Add View Transitions styles at the top of the style section
+	::view-transition-old(root),
+	::view-transition-new(root) {
+		animation-duration: 0.5s;
+	}
+
+	// Floating animation for the "gentle butterfly" effect
+	@keyframes float {
+		0% {
+			transform: translateY(0px);
+		}
+		50% {
+			transform: translateY(-5px);
+		}
+		100% {
+			transform: translateY(0px);
+		}
+	}
+
+	.sec {
+		view-transition-name: section-card;
+		transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+			           opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+			           box-shadow 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+			           background 0.3s ease,
+			           width 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+		will-change: transform, opacity, width, height;
+		animation: float 6s ease-in-out infinite;
+		animation-delay: calc(var(--index, 0) * 0.5s);
+
+		&:hover {
+			transform: translateY(-4px);
+			box-shadow: -15px 15px 40px rgba(black, .12);
+			animation-play-state: paused;
+		}
+	}
 
 	:global(number-flow-svelte) {
 		--number-flow-char-height: 0.85em;
@@ -686,7 +790,7 @@
 			border-radius: 28px;
 			box-shadow: -5px 10px 25px rgba(black, .5), inset 0 -2px 4px rgba(black, .05);
 			z-index: -1;
-			transition: .2s ease;
+			transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 		}
 
 		.view{
@@ -699,12 +803,13 @@
 			justify-content: center;
 			gap: 3px;
 			opacity: .4;
-			transition: .2s ease;
+			transition: opacity 0.3s ease;
 			cursor: pointer;
 
 			img{
 				height: 40px;
 				filter: drop-shadow(0px 4px 12px rgba(black, 0.9));
+				transition: transform 0.3s ease;
 			}
 
 			h2{
@@ -712,25 +817,25 @@
 				font-weight: 500;
 				letter-spacing: -.1px;
 				color: white;
-				//color: rgba(#030025, .8);
-
+				transition: font-weight 0.3s ease;
 			}
 
 			&:hover{
-				//background: rgba(white, .9);
-				//box-shadow: -5px 20px 30px rgba(black, .25), inset 0 -2px 4px rgba(black, .05);
 				opacity: .6;
+
+				img {
+					transform: translateY(-2px);
+				}
 			}
 
 			&.active{
-				//background: white;
-				//box-shadow: -5px 10px 20px rgba(black, .2);
 				opacity: 1;
-				img{
-					//filter: drop-shadow(-6px 6px 12px rgba(black, 0)) brightness(.7);
-				}
 				h2{
 					font-weight: 550;
+				}
+
+				img {
+					transform: scale(1.05);
 				}
 			}
 		}
@@ -823,7 +928,7 @@
 		margin: auto;
 		gap: 36px;
 		min-height: 100vh;
-		transition: .2s ease;
+		transition: 0.3s cubic-bezier(0.22, 1, 0.36, 1);
 
 		#top{
 			position: absolute;
@@ -835,8 +940,65 @@
 			display: none;
 		}
 
-		&.view2{
+		&.view1{
+			#sections{
+				.sec{
+					width: clamp(300px, 90%, 1000px);
+					margin: 60px auto;
+					padding: 30px;
+					box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+					border-radius: 16px;
+					gap: 40px;
+					transform-origin: top center;
+					opacity: 0;
+					animation: previewFadeIn 0.6s forwards;
+					animation-delay: calc(var(--index, 0) * 0.1s);
 
+					@keyframes previewFadeIn {
+						from {
+							opacity: 0;
+							transform: translateY(30px);
+						}
+						to {
+							opacity: 1;
+							transform: translateY(0);
+						}
+					}
+
+					.preview {
+						max-height: 600px;
+						overflow: hidden;
+						border-radius: 12px;
+
+						.content {
+							transition: transform 0.4s ease;
+
+							&:hover {
+								transform: translateY(-10px);
+							}
+						}
+
+						.video, .banner {
+							filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.15));
+							transition: transform 0.3s ease, filter 0.3s ease;
+
+							&:hover {
+								filter: drop-shadow(0 25px 50px rgba(0, 0, 0, 0.2));
+							}
+						}
+					}
+
+					hgroup {
+						border-radius: 16px;
+						background: white;
+						padding: 20px;
+						box-shadow: 0 15px 30px rgba(0, 0, 0, 0.05);
+					}
+				}
+			}
+		}
+
+		&.view2{
 			#navbar{
 				display: none;
 			}
@@ -847,6 +1009,22 @@
 					margin-top: 20px;
 					gap: 0;
 					width: 800px;
+					transform-origin: top center;
+					opacity: 0;
+					animation: fadeIn 0.4s forwards;
+					animation-delay: calc(var(--index, 0) * 0.05s);
+
+					@keyframes fadeIn {
+						from {
+							opacity: 0;
+							transform: translateY(10px);
+						}
+						to {
+							opacity: 1;
+							transform: translateY(0);
+						}
+					}
+
 					hgroup{
 						display: flex;
 						align-items: flex-start;
@@ -903,14 +1081,22 @@
 				flex-wrap: wrap;
 				width: clamp(300px, 90%, 1200px);
 				display: grid;
-				grid-template-columns: 1fr 1fr 1fr;
-				gap: 20px 40px;
+				grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+				gap: 20px 60px;
 				flex: 1;
 
+				@media (min-width: 1024px) {
+					grid-template-columns: 1fr 1fr 1fr;
+				}
+
 				.head{
-					grid-column: 1 / 4;
+					grid-column: 1 / -1;
+					width: 100%;
 					display: block;
 					z-index: 3;
+					padding: 0 0 18px 0;
+					margin: 120px 0 40px 0;
+					border-bottom: 4px solid rgba(#030025, .05);
 					h1{
 						display: block;
 						color: black;
@@ -920,23 +1106,47 @@
 				.sec{
 					width: 100%;
 					box-shadow: none;
+					border-radius: 16px;
 					border: none;
 					background: none;
-					aspect-ratio: 6/10;
-					padding: 12px;
+					aspect-ratio: 7/10;
+					padding: 8px;
 					box-sizing: border-box;
 					overflow: hidden;
 					gap: 12px;
-					filter: drop-shadow(-10px 30px 30px rgba(black, .1));
+
+
+					transform-origin: center;
+					animation: gridFadeIn 0.5s forwards;
+					animation-delay: calc(var(--index, 0) * 0.05s);
+
+
+					box-shadow: inset -2px -4px 8px rgba(#030025, 0.03);
+					filter: drop-shadow(0 20px 25px rgba(0, 0, 0, 0.1));
+
+
+					@keyframes gridFadeIn {
+						from {
+							opacity: 0;
+							transform: scale(0.95);
+						}
+						to {
+							opacity: 1;
+							transform: scale(1);
+						}
+					}
 
 					.mast{
 						padding: 0 0 24px 0;
 					}
 
+
+
 					.prose-preview{
 						width: 100%;
 						padding: 0 8px;
 						box-sizing: border-box;
+
 						:global(p){
 							font-size: 12px;
 							font-weight: 100;
@@ -974,7 +1184,8 @@
 								margin-top: 8px;
 							}
 							h1{
-								font-size: 24px;
+								font-size: 28px;
+								font-weight: 600;
 								margin-bottom: 8px;
 							}
 							h2{
@@ -1000,13 +1211,21 @@
 						flex-wrap: nowrap;
 						width: 100%;
 						gap: 8px;
-						border-radius: 8px;
+						//border: 2px solid rgba(white, .2);
+						border-radius: 12px;
 						overflow: hidden;
 						padding: 0;
 
+
+
+						// /box-shadow: 4px 8px 10px rgba(#030025, 0.05), inset -4px 8px 16px rgba(#030025, 0.05);
+
+						z-index: 2;
+
 						.content{
 							width: 100%;
-							height: 100%;
+							aspect-ratio: 8/10;
+
 							padding: 20px;
 							box-sizing: border-box;
 						}
@@ -1015,14 +1234,15 @@
 							width: 100%;
 							height: auto;
 							//max-width: 100%;
-							//filter: drop-shadow(-10px 20px 30px rgba(black, .2));
+							filter: drop-shadow(-10px 20px 30px rgba(#030025, .2));
 						}
 						.banner{
 							width: 100%;
 							max-width: 400px;
 							height: auto;
 							margin: 0;
-							filter: drop-shadow(-10px 20px 20px rgba(black, .2));
+
+							filter: drop-shadow(-10px 30px 20px rgba(#030025, .2));
 							//filter: none;
 						}
 					}

@@ -2789,7 +2789,7 @@
 
   /* Axes toggle styles */
   .axes-toggle {
-    margin-top: 1rem;
+    //margin-top: 1rem;
     margin-bottom: 1.5rem;
   }
 
