@@ -2885,9 +2885,20 @@
 
   .download-button{
       width: 100%;
+      margin-top: 4px;
       h2{
         text-align: center;
       }
+  }
+
+  .reset-button{
+    width: 100%;
+    margin-top: 8px;
+    padding: 10px;
+    h2{
+      text-align: center;
+      color: rgba(#030025, .6);
+    }
   }
 
   /* Touch friendly adjustments for mobile */
@@ -2971,7 +2982,9 @@
   }
 
   .toggle-label {
-    font-size: 0.9rem;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: -.32px;
     color: #555;
   }
 

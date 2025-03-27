@@ -226,7 +226,10 @@ button.secondary:hover, .button.secondary:hover {
   background: rgba(3, 0, 37, 0.15);
 }
 button.highlight, .button.highlight {
-  background: #781FFF;
+  background: #6355FF;
+}
+button.highlight:hover, .button.highlight:hover {
+  background: #5548E5;
 }
 
 .prose {
@@ -437,7 +440,7 @@ button.highlight, .button.highlight {
   overflow: hidden;
   padding: 24px;
   box-sizing: border-box;
-  box-shadow: 10px 40px 50px rgba(3, 0, 37, 0.1), inset -2px -4px 8px rgba(3, 0, 37, 0.02);
+  box-shadow: 15px 25px 40px rgba(3, 0, 37, 0.12), inset -2px -4px 8px rgba(3, 0, 37, 0.03);
 }
 
 footer {

@@ -259,7 +259,10 @@ button, .button {
 
 
 	&.highlight{
-		background: #781FFF;
+		background: #6355FF;
+		&:hover{
+			background: #5548E5;
+		}
 	}
 }
 
@@ -511,7 +514,7 @@ button, .button {
 	overflow: hidden;
 	padding: 24px;
 	box-sizing: border-box;
-	box-shadow: 10px 40px 50px rgba(#030025, 0.1), inset -2px -4px 8px rgba(#030025, 0.02);
+	box-shadow: 15px 25px 40px rgba(#030025, 0.12), inset -2px -4px 8px rgba(#030025, 0.03);
 }
 
 
