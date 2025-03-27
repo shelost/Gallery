@@ -191,18 +191,19 @@ a:hover {
 button, .button {
   outline: none;
   border: none;
-  background: #030025;
-  padding: 10px 12px;
+  background: #35306c;
   width: -moz-fit-content;
   width: fit-content;
   overflow: hidden;
-  transition: 0.2s ease;
+  box-sizing: border-box;
   position: relative;
   cursor: pointer;
-  border-radius: 16px;
-  padding: 11px 18px 12px 18px;
-  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.3), inset -1px 2px 3px rgba(255, 255, 255, 0.3);
+  border-radius: 18px;
+  padding: 9px 18px 10px 18px;
+  box-shadow: 2px 8px 18px rgba(0, 0, 0, 0.3), inset 1px 2px 3px rgba(255, 255, 255, 0.15), inset -1px -3px 8px rgba(3, 0, 37, 0.15);
   font-family: var(--font-body);
+  border: 3px solid transparent;
+  transition: 0.2s ease;
 }
 button h2, .button h2 {
   color: white;
@@ -211,6 +212,7 @@ button h2, .button h2 {
   letter-spacing: -0.16px;
   transition: 0.2s ease;
   font-family: var(--font-headers);
+  text-shadow: 1px 2px 6px rgba(0, 0, 0, 0.2);
 }
 button::before, .button::before {
   content: "";
@@ -224,11 +226,18 @@ button::before, .button::before {
   transition: 0.25s ease-in-out;
 }
 button:hover, .button:hover {
-  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.4), inset -1px 2px 3px rgba(255, 255, 255, 0.3);
+  background: #282360;
+  box-shadow: 2px 8px 18px rgba(0, 0, 0, 0.3), inset 0px 4px 8px rgba(0, 0, 0, 0.3), inset -2px -3px 6px rgba(255, 255, 255, 0.25);
+}
+button:hover h2, .button:hover h2 {
+  transform: translateY(0.5px);
 }
 button.light, .button.light {
   background: rgba(3, 0, 37, 0.1);
   box-shadow: none;
+}
+button.light h2, .button.light h2 {
+  text-shadow: none;
 }
 button.secondary, .button.secondary {
   background: rgba(3, 0, 37, 0.1);
@@ -236,6 +245,7 @@ button.secondary, .button.secondary {
 }
 button.secondary h1, button.secondary h2, button.secondary h3, button.secondary p, .button.secondary h1, .button.secondary h2, .button.secondary h3, .button.secondary p {
   color: #030025;
+  text-shadow: none;
 }
 button.secondary:hover, .button.secondary:hover {
   background: rgba(3, 0, 37, 0.15);
@@ -244,7 +254,7 @@ button.highlight, .button.highlight {
   background: #6355FF;
 }
 button.highlight:hover, .button.highlight:hover {
-  background: #5548E5;
+  background: #584af4;
 }
 
 .prose {
@@ -504,7 +514,7 @@ input[type=range]::-webkit-slider-thumb {
   border-radius: 12px;
   background: white;
   cursor: pointer;
-  box-shadow: 4px 6px 18px rgba(3, 0, 37, 0.3), inset -1px -2px 4px rgba(3, 0, 37, 0.15);
+  box-shadow: 6px 4px 18px rgba(3, 0, 37, 0.4), inset -2px -2px 4px rgba(3, 0, 37, 0.15);
   -webkit-backdrop-filter: blur(10px);
           backdrop-filter: blur(10px);
   -webkit-transition: 0.2s ease;

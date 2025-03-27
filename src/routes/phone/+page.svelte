@@ -2758,6 +2758,14 @@
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
+    width: 100%;
+    border-radius: 20px 20px 24px 24px;
+    box-sizing: border-box;
+
+    box-shadow: 2px 4px 8px rgba(black, .03), inset -4px -8px 12px rgba(#030025, .05), inset 2px 2px 4px rgba(white, .2);
+
+    background:rgb(248, 245, 255);
+    padding: 16px 18px;
     // /margin-bottom: 20px;
 
     input[type="file"] {
@@ -2855,23 +2863,24 @@
 
     &:nth-child(2){
       input[type="range"]{
-        background: rgba(#0074FF, .25);
+        background: rgba(#0074FF, .3);
       }
     }
     &:nth-child(3){
       input[type="range"]{
-        background: rgba(green, .25);
+        background: rgba(green, .3);
       }
     }
     &:nth-child(4){
       input[type="range"]{
-        background: rgba(red, .25);
+        background: rgba(red, .3);
       }
     }
 
 
     input[type="range"]{
       box-shadow: none;
+      box-shadow: inset 2px 4px 6px rgba(#030025, .1);
     }
   }
 
@@ -2957,6 +2966,7 @@
     border-radius: 24px;
     transition: 0.4s;
     margin-right: 10px;
+    box-shadow: inset -1px 2px 4px rgba(#030025, .1);
   }
 
   .toggle-slider:before {
@@ -3010,7 +3020,7 @@
       min-height: 32px; /* Prevent vertical stretching */
       max-width: 32px; /* Ensure exact width */
       max-height: 32px; /* Ensure exact height */
-      border: 2px solid transparent;
+      //border: 2px solid transparent;
       border-radius: 50%;
       cursor: pointer;
       transition: all 0.2s ease;
@@ -3018,7 +3028,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      box-shadow: 2px 4px 6px rgba(black, 0.1), inset -2px -4px 4px rgba(#030025, .1), inset 2px 2px 4px rgba(white, .2);
       flex: 0 0 auto; /* Don't allow flex to resize */
       padding: 0; /* Remove any padding */
       margin: 0; /* Use gap for spacing instead */
@@ -3031,7 +3041,7 @@
       &.active {
         border-color: #34c759;
         transform: scale(1.15);
-        box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        box-shadow: 0 4px 12px rgba(black, .1);
 
         &:after {
           content: "";
@@ -3041,6 +3051,7 @@
           border-radius: 50%;
           background-color: white;
           box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+          transition: .2s ease;
         }
       }
     }
