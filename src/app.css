@@ -465,7 +465,7 @@ button.highlight:hover, .button.highlight:hover {
   overflow: hidden;
   padding: 24px;
   box-sizing: border-box;
-  box-shadow: 15px 25px 40px rgba(3, 0, 37, 0.12), inset -2px -4px 8px rgba(3, 0, 37, 0.03);
+  box-shadow: 15px 30px 40px rgba(3, 0, 37, 0.12), inset -2px -4px 8px rgba(3, 0, 37, 0.03);
 }
 
 footer {
@@ -510,11 +510,12 @@ input[type=range] {
 input[type=range]::-webkit-slider-thumb {
   -webkit-appearance: none;
   width: 14px;
-  height: 28px;
-  border-radius: 12px;
-  background: white;
+  height: 26px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.9);
+  border: 2px solid white;
   cursor: pointer;
-  box-shadow: 4px 4px 18px rgba(3, 0, 37, 0.5), inset -2px -2px 3px rgba(3, 0, 37, 0.2);
+  box-shadow: 4px 4px 18px rgba(3, 0, 37, 0.6), inset -2px -2px 3px rgba(3, 0, 37, 0.08);
   -webkit-backdrop-filter: blur(10px);
           backdrop-filter: blur(10px);
   -webkit-transition: 0.2s ease;

@@ -2880,7 +2880,7 @@
 
     input[type="range"]{
       box-shadow: none;
-      box-shadow: inset 2px 4px 6px rgba(#030025, .1);
+      box-shadow: inset 4px 4px 6px rgba(#030025, .12);
     }
   }
 
@@ -3009,17 +3009,17 @@
   .color-options {
     display: flex;
     flex-wrap: wrap;
-    gap: 12px;
+    gap: 10px;
     margin-bottom: 8px;
     justify-content: flex-start;
 
     .color-option {
-      width: 32px;
-      height: 32px;
-      min-width: 32px; /* Prevent horizontal stretching */
-      min-height: 32px; /* Prevent vertical stretching */
-      max-width: 32px; /* Ensure exact width */
-      max-height: 32px; /* Ensure exact height */
+      width: 28px;
+      height: 28px;
+      min-width: 28px; /* Prevent horizontal stretching */
+      min-height: 28px; /* Prevent vertical stretching */
+      max-width: 28px; /* Ensure exact width */
+      max-height: 28px; /* Ensure exact height */
       //border: 2px solid transparent;
       border-radius: 50%;
       cursor: pointer;
@@ -3028,7 +3028,8 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 2px 4px 6px rgba(black, 0.1), inset -2px -4px 4px rgba(#030025, .1), inset 2px 2px 4px rgba(white, .2);
+      box-shadow: none;
+      //box-shadow: 2px 4px 6px rgba(black, 0.1), inset -2px -4px 4px rgba(#030025, .1), inset 2px 2px 4px rgba(white, .2);
       flex: 0 0 auto; /* Don't allow flex to resize */
       padding: 0; /* Remove any padding */
       margin: 0; /* Use gap for spacing instead */
@@ -3039,7 +3040,8 @@
       }
 
       &.active {
-        border-color: #34c759;
+        border: 2px solid #6355FF;
+        // /border-color: #6355FF;
         transform: scale(1.15);
         box-shadow: 0 4px 12px rgba(black, .1);
 
@@ -3095,7 +3097,7 @@
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 10px;
-      height: 160px;
+      height: 140px;
       overflow-y: scroll;
       position: relative;
 

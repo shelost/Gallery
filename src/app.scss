@@ -543,7 +543,7 @@ button, .button {
 	overflow: hidden;
 	padding: 24px;
 	box-sizing: border-box;
-	box-shadow: 15px 25px 40px rgba(#030025, 0.12), inset -2px -4px 8px rgba(#030025, 0.03);
+	box-shadow: 15px 30px 40px rgba(#030025, 0.12), inset -2px -4px 8px rgba(#030025, 0.03);
 }
 
 
@@ -598,12 +598,13 @@ input[type="range"] {
 	&::-webkit-slider-thumb {
 	  -webkit-appearance: none;
 	  width: 14px;
-	  height: 28px;
-	  border-radius: 12px;
-	  background: rgba(white, 1);
+	  height: 26px;
+	  border-radius: 10px;
+	  background: rgba(white, .9);
+	  border: 2px solid white;
 	  cursor: pointer;
 	 // border: 1.5px solid rgba(white, .9);
-	  box-shadow: 4px 4px 18px rgba(#030025, .5), inset -2px -2px 3px rgba(#030025, .2);
+	  box-shadow: 4px 4px 18px rgba(#030025, .6), inset -2px -2px 3px rgba(#030025, .08);
 	  backdrop-filter: blur(10px);
 	  transition: .2s ease;
 
