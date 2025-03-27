@@ -5,6 +5,7 @@
   import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
   import * as BufferGeometryUtils from 'three/examples/jsm/utils/BufferGeometryUtils.js';
   import { writable, derived, get } from 'svelte/store';
+  import Header from '$lib/components/Header.svelte';
 
   let containerEl;
   let renderer;
@@ -1241,7 +1242,7 @@
           resolve({
             img: img,
             src: img.src,
-            name: `Default ${index + 1}`,
+            name: `o${index + 1}`,
             isDefault: true
           });
         };
@@ -2349,7 +2350,11 @@
   <title> 3D Phone Viewer </title>
 </svelte:head>
 
+<Header />
+
+
 <div id='container'>
+
 
   <div id='left' class = 'content-card'>
     <h1> 3D Phone Viewer </h1>
@@ -2367,7 +2372,7 @@
 
       {#if wallpapers.length > 0}
       <div class="wallpaper-picker">
-        <h4>Available Wallpapers</h4>
+        <h3> Display Images </h3>
         <div class="wallpaper-grid">
           {#each wallpapers as wallpaper, index}
             <div
@@ -2395,7 +2400,7 @@
 
 
       <label for="image-upload" class="upload-button button">
-        Upload Image
+        <h2> Upload Image </h2>
       </label>
       <input id="image-upload" type="file" accept="image/*" on:change={handleImageUpload} multiple />
 
@@ -2408,7 +2413,7 @@
       <h3>Image Fit</h3>
       <div class="fit-buttons">
         <button
-          class="fit-button {$imageFitMode === 'fit' ? 'active' : ''}"
+          class="fit-button secondary {$imageFitMode === 'fit' ? 'active' : ''}"
           on:click={() => {
             if (!isAnimatingFit && $imageFitMode !== 'fit') {
               imageFitMode.set('fit');
@@ -2417,10 +2422,12 @@
           }}
           title="Fit entire image within screen (may show whitespace)"
         >
-          Fit
+        <h2> Fit </h2>
+
+
         </button>
         <button
-          class="fit-button {$imageFitMode === 'cover' ? 'active' : ''}"
+          class="fit-button secondary {$imageFitMode === 'cover' ? 'active' : ''}"
           on:click={() => {
             if (!isAnimatingFit && $imageFitMode !== 'cover') {
               imageFitMode.set('cover');
@@ -2429,7 +2436,9 @@
           }}
           title="Cover entire screen (may crop image edges)"
         >
-          Cover
+        <h2> Cover </h2>
+
+
         </button>
       </div>
     </div>
@@ -2486,7 +2495,7 @@
     <div class="camera-controls">
       <h3>Camera Angle Controls</h3>
       <div class="control-row">
-        <label for="rotationX">X:</label>
+        <label for="rotationX">X</label>
         <input type="range" id="rotationX" min="-90" max="90" step="1"
           value={Math.round($cameraRotationXStore)}
           on:input={(e) => {
@@ -2527,7 +2536,7 @@
         />
       </div>
       <div class="control-row">
-        <label for="rotationY">Y:</label>
+        <label for="rotationY">Y</label>
         <input type="range" id="rotationY" min="-180" max="180" step="1"
           value={Math.round($cameraRotationYStore)}
           on:input={(e) => {
@@ -2568,7 +2577,7 @@
         />
       </div>
       <div class="control-row">
-        <label for="rotationZ">Z:</label>
+        <label for="rotationZ">Z</label>
         <input type="range" id="rotationZ" min="-180" max="180" step="1"
           value={Math.round($cameraRotationZStore)}
           on:input={(e) => {
@@ -2679,7 +2688,6 @@
   }
 
 
-
   #content{
     padding: 4px;
   }
@@ -2746,7 +2754,11 @@
 
   .upload-container {
 
-    margin-bottom: 20px;
+    // /border: 1px solid black;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    // /margin-bottom: 20px;
 
     input[type="file"] {
       display: none;
@@ -2754,10 +2766,12 @@
   }
 
   .upload-button {
-    color: white;
-    font-size: 14px;
-    font-weight: 500;
-    margin: 20px 0 !important;
+    margin-top: 24px;
+    width: 100%;
+    h2{
+      width: 100%;
+      text-align: center;
+    }
   }
 
   .image-preview {
@@ -2816,75 +2830,53 @@
 
   }
 
-  .camera-controls {
-    margin-top: 1.5rem;
-  }
+  .camera-controls{
+    width: 100%;
 
-  .camera-controls h3 {
-    margin-bottom: 1rem;
-    color: #333;
+    h3{
+      margin-bottom: 1rem;
+    }
   }
 
   .control-row {
     display: flex;
     align-items: center;
+    gap: 12px;
     margin-bottom: 0.75rem;
     width: 100%;
+
+    label{
+      flex-shrink: 0;
+      width: 12px;
+      font-size: 14px;
+      font-weight: bold;
+      color: #555;      border-radius: 8px;
+    }
+
+    input[type="range"]{
+      box-shadow: none;
+
+      &::-webkit-slider-thumb{
+        background: #6355FF;
+        box-shadow: 2px 4px 12px rgba(#030025, .4);
+      }
+    }
   }
 
-  .control-row label {
-    width: 25px;
-    font-weight: bold;
-    color: #555;
-  }
 
-  .control-row input[type="range"] {
-    flex: 1;
-    margin: 0 10px;
-    height: 16px;
-    border-radius: 4px;
-    -webkit-appearance: none;
-    background: #e0e0e0;
-    box-sizing: border-box;
-    outline: none;
-    opacity: 0.7;
-    transition: opacity 0.2s;
-    cursor: pointer;
-
-    width: 100px;
-  }
-
-  .control-row input[type="range"]:hover {
-    opacity: 1;
-  }
-
-  .control-row input[type="range"]::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
-    background: #4a90e2;
-    cursor: pointer;
-  }
-
-  .control-row input[type="range"]::-moz-range-thumb {
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
-    background: #4a90e2;
-    cursor: pointer;
-  }
 
   .control-row input[type="number"] {
-    width: 60px;
-    text-align: center;
-    padding: 5px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 0.9rem;
+    width: 44px;
+    text-align: left;
+    padding: 6px;
   }
 
-
+  .download-button{
+      width: 100%;
+      h2{
+        text-align: center;
+      }
+  }
 
   /* Touch friendly adjustments for mobile */
   @media (max-width: 768px) {
@@ -2914,11 +2906,6 @@
     }
   }
 
-  /* Axes toggle styles */
-  .axes-toggle {
-    //margin-top: 1rem;
-    margin-bottom: 1.5rem;
-  }
 
   .axes-toggle h3 {
     margin-bottom: 1rem;
@@ -2975,22 +2962,19 @@
   }
 
   .color-switcher {
-    margin-top: 1.5rem;
-
-    h3 {
-      margin-top: 0;
-      margin-bottom: 10px;
-      font-size: 18px;
-      font-weight: 500;
-    }
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 12px;
   }
 
   .color-options {
     display: flex;
     flex-wrap: wrap;
     gap: 12px;
-    margin-bottom: 10px;
-    justify-content: center;
+    margin-bottom: 8px;
+    justify-content: flex-start;
 
     .color-option {
       width: 32px;
@@ -3035,6 +3019,7 @@
     }
   }
 
+
   .selected-color-name {
     margin-top: 8px;
     margin-bottom: 15px;
@@ -3042,17 +3027,17 @@
     color: #333;
     text-align: center;
     font-weight: 500;
+    display: none;
   }
 
   .wallpaper-picker {
 
-    margin: 20px 0 40px 0;
+    //margin: 20px 0 40px 0;
     width: 200px;
 
-    h4 {
-      margin-bottom: 10px;
-      font-size: 16px;
-      font-weight: 500;
+
+    h3 {
+        margin: 0 0 16px 0;
     }
 
     .wallpaper-grid {
@@ -3157,15 +3142,22 @@
     }
   }
 
-  .image-fit-options {
-    margin-bottom: 20px;
-  }
-
   .fit-buttons {
     display: flex;
     gap: 10px;
     margin-top: 10px;
+
+    .fit-button{
+
+      &.active{
+        background: rgba(#030025, .2);
+      }
+    }
   }
+
+
+
+  /*
 
   .fit-button {
     flex: 1;
@@ -3186,4 +3178,5 @@
     color: white;
     border-color: #4a8b60;
   }
+    */
 </style>

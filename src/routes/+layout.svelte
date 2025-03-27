@@ -1,4 +1,5 @@
 <script>
+
 	import Navbar from './Navbar.svelte';
 	import { onMount } from 'svelte'
 	import { themeColor } from '$lib/store'
@@ -39,7 +40,7 @@
 
 		themeColor.subscribe((color) => {
 			if (typeof document !== 'undefined') {
-				document.documentElement.style.backgroundColor = '#' + color;
+				//document.documentElement.style.backgroundColor = '#' + color;
 			}
 		});
 
@@ -182,20 +183,6 @@
 </div>
 
 
-<!--
-{#if $loading}
-	<div id = 'loading' out:fade={{duration: 400}}>
-		<div class="logo-container">
-			<img id="logo-base" src="ahnheewon3.png" alt="logo" class="logo-image">
-
-		</div>
-		<div class="loading-text">
-			<h2>Loading</h2>
-			<p bind:this={percentageText}>0%</p>
-		</div>
-	</div>
-{/if}
--->
 
 
 <style lang="scss">

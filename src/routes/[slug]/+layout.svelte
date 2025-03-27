@@ -5,7 +5,7 @@
 <div class="app">
 
 
-    <Header />
+
 
     <slot />
 

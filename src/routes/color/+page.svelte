@@ -1,7 +1,7 @@
 <script>
   import { onMount } from 'svelte';
   import { writable, derived } from 'svelte/store';
-
+  import Header from '$lib/components/Header.svelte';
   // Create stores for our color values
   const rgb = writable({ r: 255, g: 87, b: 51, a: 1 });
   const hsl = writable({ h: 14, s: 100, l: 60 });
@@ -476,6 +476,9 @@
   <title>Color Picker</title>
   <meta name="description" content="Professional color picker using SvelteKit" />
 </svelte:head>
+
+
+<Header />
 
 <!-- Prevent errors by only rendering the interactive UI on the client side -->
 {#if typeof window !== 'undefined'}
