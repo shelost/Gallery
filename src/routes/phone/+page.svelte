@@ -3078,10 +3078,27 @@
         margin: 0 0 16px 0;
     }
 
+    ::-webkit-scrollbar{
+        width: 6px;
+      }
+
+      ::-webkit-scrollbar-track{
+        background: rgba(black, .0);
+      }
+
+      ::-webkit-scrollbar-thumb{
+        background: rgba(black, .2);
+        border-radius: 10px;
+      }
+
     .wallpaper-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 10px;
+      height: 160px;
+      overflow-y: scroll;
+      position: relative;
+
 
       // border: 2px solid blue;
     }

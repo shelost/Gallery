@@ -514,7 +514,7 @@ input[type=range]::-webkit-slider-thumb {
   border-radius: 12px;
   background: white;
   cursor: pointer;
-  box-shadow: 6px 4px 18px rgba(3, 0, 37, 0.4), inset -2px -2px 4px rgba(3, 0, 37, 0.15);
+  box-shadow: 4px 4px 18px rgba(3, 0, 37, 0.5), inset -2px -2px 3px rgba(3, 0, 37, 0.2);
   -webkit-backdrop-filter: blur(10px);
           backdrop-filter: blur(10px);
   -webkit-transition: 0.2s ease;
