@@ -2484,7 +2484,7 @@
   <div id = 'right' class = 'content-card'>
 
     <div class="axes-toggle">
-      <h3>View Settings</h3>
+      <h3>View</h3>
       <label class="toggle-switch">
         <input type="checkbox" checked on:change={toggleAxesHelper}>
         <span class="toggle-slider"></span>
@@ -2493,7 +2493,7 @@
     </div>
 
     <div class="camera-controls">
-      <h3>Camera Angle Controls</h3>
+      <h3>Camera</h3>
       <div class="control-row">
         <label for="rotationX">X</label>
         <input type="range" id="rotationX" min="-90" max="90" step="1"

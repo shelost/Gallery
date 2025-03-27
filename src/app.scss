@@ -71,8 +71,25 @@ textarea {
 }
 
 ::-webkit-scrollbar{
-	width: 0;
+	width: 10px;
 }
+
+::-webkit-scrollbar-track{
+	background: rgba(black, .05);
+}
+
+::-webkit-scrollbar-thumb{
+	background: rgba(#6355FF, .6);
+	border-radius: 8px 0 0 8px;
+	cursor: pointer;
+	transition: .2s ease;
+
+	&:hover{
+		background: rgba(#6355FF, .8);
+	}
+}
+
+
 
 ::selection{
 	background: #ffdd00;

@@ -733,7 +733,7 @@
 		//background: rgba(#030025, .3);
 		background: rgba(#030025, .15);
 		border-radius: 20px;
-		display: block;
+		display: none;
 		overflow: hidden;
 
 		#bar{

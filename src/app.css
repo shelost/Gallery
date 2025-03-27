@@ -58,7 +58,22 @@ textarea {
 }
 
 ::-webkit-scrollbar {
-  width: 0;
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(99, 85, 255, 0.6);
+  border-radius: 8px 0 0 8px;
+  cursor: pointer;
+  -webkit-transition: 0.2s ease;
+  transition: 0.2s ease;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(99, 85, 255, 0.8);
 }
 
 ::-moz-selection {
