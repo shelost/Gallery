@@ -686,7 +686,6 @@
 		//width: clamp(50vw, 1200px, 99vw);
 		width: 100%;
 		margin: auto;
-		background: white;
 		transition: .2s ease;
 	}
 
@@ -773,7 +772,7 @@
 		gap: 8px;
 		z-index: 4;
 		backdrop-filter: blur(20px);
-		display: flex;
+		display: none;
 
 
 		background: rgba(black, .7);
@@ -1122,7 +1121,7 @@
 
 
 					//box-shadow: inset -2px -4px 8px rgba(#030025, 0.03);
-					filter: drop-shadow(0 20px 25px rgba(0, 0, 0, 0.1));
+					filter: drop-shadow(-15px 25px 15px rgba(#030025, 0.12));
 
 
 					@keyframes gridFadeIn {
@@ -1216,9 +1215,7 @@
 						overflow: hidden;
 						padding: 0;
 
-
-
-						// /box-shadow: 4px 8px 10px rgba(#030025, 0.05), inset -4px 8px 16px rgba(#030025, 0.05);
+						//box-shadow: 4px 8px 10px rgba(#030025, 0.0), inset -4px 8px 16px rgba(#030025, 0.8);
 
 						z-index: 2;
 
@@ -1228,6 +1225,8 @@
 
 							padding: 20px;
 							box-sizing: border-box;
+
+							box-shadow: inset 4px -8px 12px rgba(#030025, 0.03);
 						}
 
 						.video{

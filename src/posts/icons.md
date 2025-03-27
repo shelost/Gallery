@@ -17,7 +17,7 @@ tags:
   - company
 categories:
   - figma
-published: true
+published: false
 ---
 
 <script>

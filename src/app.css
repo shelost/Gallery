@@ -29,6 +29,7 @@ body {
   background: none;
   transition: 0.2s ease;
   overflow-x: hidden;
+  background: #FAFBFD;
 }
 
 /* Heading elements */
