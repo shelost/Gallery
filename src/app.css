@@ -474,6 +474,7 @@ input[type=range] {
   height: 32px;
   padding: 0 2px;
   background: rgba(3, 0, 37, 0.08);
+  background: rgba(99, 85, 255, 0.2);
   border-radius: 10px;
   outline: none;
   box-shadow: 4px 8px 12px rgba(0, 0, 0, 0.15);
@@ -483,10 +484,9 @@ input[type=range]::-webkit-slider-thumb {
   width: 14px;
   height: 28px;
   border-radius: 12px;
-  background: rgba(255, 255, 255, 0.75);
+  background: white;
   cursor: pointer;
-  border: 1.5px solid rgba(255, 255, 255, 0.9);
-  box-shadow: 2px 4px 12px rgba(0, 0, 0, 0.5);
+  box-shadow: 4px 6px 18px rgba(3, 0, 37, 0.3), inset -1px -2px 4px rgba(3, 0, 37, 0.15);
   -webkit-backdrop-filter: blur(10px);
           backdrop-filter: blur(10px);
   -webkit-transition: 0.2s ease;

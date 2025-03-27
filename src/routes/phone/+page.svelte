@@ -2853,13 +2853,25 @@
       color: #555;      border-radius: 8px;
     }
 
+    &:nth-child(2){
+      input[type="range"]{
+        background: rgba(#0074FF, .25);
+      }
+    }
+    &:nth-child(3){
+      input[type="range"]{
+        background: rgba(green, .25);
+      }
+    }
+    &:nth-child(4){
+      input[type="range"]{
+        background: rgba(red, .25);
+      }
+    }
+
+
     input[type="range"]{
       box-shadow: none;
-
-      &::-webkit-slider-thumb{
-        background: #6355FF;
-        box-shadow: 2px 4px 12px rgba(#030025, .4);
-      }
     }
   }
 
@@ -2928,7 +2940,7 @@
   .toggle-slider {
     position: relative;
     display: inline-block;
-    width: 50px;
+    width: 40px;
     height: 24px;
     background-color: #ccc;
     border-radius: 24px;
@@ -2946,14 +2958,16 @@
     background-color: white;
     border-radius: 50%;
     transition: 0.4s;
+    box-shadow: 2px 4px 8px rgba(#030025, .4), inset -1px -2px 3px rgba(#030025, .25);
   }
 
   input:checked + .toggle-slider {
-    background-color: #4a90e2;
+    background-color: #6355FF;
   }
 
   input:checked + .toggle-slider:before {
-    transform: translateX(26px);
+    transform: translateX(16px);
+    box-shadow: 2px 4px 8px rgba(#030025, .8), inset -1px -2px 3px rgba(#030025, .25);
   }
 
   .toggle-label {
