@@ -42,6 +42,63 @@
 
 	// Functions
 
+	function throttle(func, limit) {
+		let inThrottle;
+		return function() {
+			const args = arguments;
+			const context = this;
+			if (!inThrottle) {
+				func.apply(context, args);
+				inThrottle = true;
+				setTimeout(() => inThrottle = false, limit);
+			}
+		};
+	}
+
+	function updateReflections(lightX, lightY) {
+		// Update reflections based on light position
+		const reflections = document.querySelectorAll('.sec');
+		reflections.forEach(reflection => {
+			// Skip shadow calculation if section is far from viewport (performance optimization)
+			const rect = reflection.getBoundingClientRect();
+			if (rect.bottom < -200 || rect.top > window.innerHeight + 200) {
+				return;
+			}
+
+			const reflectionCenterX = rect.left + rect.width / 2;
+			const reflectionCenterY = rect.top + rect.height / 2;
+
+			// Calculate angle from light to reflection
+			const dx = lightX - reflectionCenterX;
+			const dy = lightY - reflectionCenterY;
+			const angle = Math.atan2(dy, dx) * (180 / Math.PI);
+
+			// Calculate distance to light (for intensity)
+			const distanceToLight = Math.sqrt(dx * dx + dy * dy);
+			const maxDistance = Math.sqrt(window.innerWidth * window.innerWidth + window.innerHeight * window.innerHeight);
+			const normalizedDistance = Math.min(distanceToLight / maxDistance, 1);
+
+			// Intensity based on distance - brighter when closer to light
+			const reflectionIntensity = Math.max(0.3, 0.5 - normalizedDistance * 0.3);
+
+			// Set the gradient angle based on light position
+			// This makes the reflection appear to come from the light source
+			const gradientAngle = (angle + 180) % 360;
+
+			// Apply the reflection gradient
+			if (reflection.querySelector('.light-reflection')) {
+				const reflectionElement = reflection.querySelector('.light-reflection');
+				reflectionElement.style.background = `linear-gradient(${gradientAngle}deg,
+					rgba(255, 255, 255, ${reflectionIntensity}) 0%,
+					rgba(255, 255, 255, ${reflectionIntensity * 0.3}) 30%,
+					rgba(255, 255, 255, 0) 60%)`;
+
+				// Set opacity based on distance
+				reflectionElement.style.opacity = (0.3 - normalizedDistance * 0.15).toString();
+			}
+		});
+	}
+
 	function setAnimationIndexes() {
 		// Set animation indexes for staggered animations
 		const sections = document.querySelectorAll('.sec');
@@ -124,20 +181,183 @@
 	}
 
 	function updateActiveSection() {
-
 		// Update Active
 		let closest = null;
 		let object = null
 		let minDistance = Infinity;
 
+		// Calculate light position relative to scroll with a dynamic component
+		const scrollY = document.documentElement.scrollTop || document.body.scrollTop;
+		const viewportHeight = window.innerHeight;
+		const viewportWidth = window.innerWidth;
+
+		// Find the #page element to use its width for light positioning
+		const pageElement = document.getElementById('page') || document.getElementById('sections');
+
+		// Get the actual content bounds to position light properly
+		let pageLeft = 0;
+		let pageWidth = viewportWidth * 0.8;
+		let pageTop = 0;
+
+		if (pageElement) {
+			const rect = pageElement.getBoundingClientRect();
+			pageLeft = rect.left;
+			pageWidth = rect.width;
+			pageTop = rect.top + window.scrollY; // Account for scrolled position
+		}
+
+		// Responsive offset scaled to page width
+		const lightXOffset = Math.min(100, pageWidth * 0.08);
+
+		// Parallax effect for light source - moves slower than scroll for a nice effect
+		// Light stays positioned relative to the content area, not the viewport
+		const lightX = pageLeft + pageWidth - lightXOffset - (scrollY * 0.02);
+
+		// Light moves down slightly as user scrolls, but stays within reasonable bounds
+		// This creates a subtle sun-like movement
+		const lightParallaxY = Math.min(viewportHeight * 0.3, scrollY * 0.15);
+		const lightY = 100 + lightParallaxY;
+
+		// Update CSS variables for the light position
+		document.documentElement.style.setProperty('--light-x', `${lightX}px`);
+		document.documentElement.style.setProperty('--light-y', `${lightY}px`);
+
+		// Update reflections based on light position (throttled)
+		if (sections) {
+			sections.forEach(section => {
+				if (!section.querySelector('.light-reflection')) {
+					// Add the reflection element if it doesn't exist
+					const reflectionDiv = document.createElement('div');
+					reflectionDiv.className = 'light-reflection';
+					section.appendChild(reflectionDiv);
+				}
+			});
+		}
+		// Call the throttled reflection update - 100ms is a good balance for performance
+		throttle(updateReflections, 100)(lightX, lightY);
+
+		// Create a throttled function for shadow calculations (once per 16ms = ~60fps)
+		const updateShadows = throttle(() => {
+			sections.forEach((sec, index) => {
+				// Skip shadow calculation if section is far from viewport (performance optimization)
+				const rect = sec.getBoundingClientRect();
+				if (rect.bottom < -200 || rect.top > viewportHeight + 200) {
+					return;
+				}
+
+				const distance = Math.abs(rect.top + window.innerHeight * .25);
+				const dist2 = rect.top;
+				let height = rect.bottom - rect.top;
+
+				// Calculate the center position of the section
+				const secCenterX = rect.left + rect.width / 2;
+				const secCenterY = rect.top + rect.height / 2;
+
+				// Calculate the distance and angle from the light source to the section
+				const dx = lightX - secCenterX;
+				const dy = lightY - secCenterY;
+				const distanceToLight = Math.sqrt(dx * dx + dy * dy);
+
+				// Normalize distance to a value between 0 and 1
+				const maxDistance = Math.sqrt(viewportWidth * viewportWidth + viewportHeight * viewportHeight);
+				const normalizedDistance = Math.min(distanceToLight / maxDistance, 1);
+
+				// Calculate shadow properties based on distance and position
+				const shadowOffsetX = -dx * 0.05; // Shadow moves opposite to light direction
+				const shadowOffsetY = -dy * 0.05;
+				const shadowBlur = 15 + normalizedDistance * 15; // Blur increases with distance
+				const shadowOpacity = 0.12 + normalizedDistance * 0.15; // Opacity increases with distance
+
+				// Apply dynamic shadow with box-shadow
+				if ($view === 3) {
+					// Check if we're on mobile (simplified effect for better performance)
+					const isMobile = window.innerWidth <= 800;
+
+					if (isMobile) {
+						// Simpler shadow effect for mobile
+						const shadowIntensity = 0.15 + (normalizedDistance * 0.1);
+						const simpleShadow = `drop-shadow(0 10px 20px rgba(3, 0, 37, ${shadowIntensity}))`;
+						sec.style.filter = simpleShadow;
+
+						// For mobile, use a simpler approach with just the filter
+						// Reset any background gradients
+						sec.style.background = 'none';
+					} else {
+						// Full effect for desktop
+						// Calculate the angle between light source and element
+						const angle = Math.atan2(dy, dx) * (180 / Math.PI);
+
+						// Calculate shadow properties based on the light position
+						// The shadow is opposite to the light direction
+						const offsetX = -dx * 0.05;
+						const offsetY = -dy * 0.05;
+						const blurRadius = 15 + (normalizedDistance * 15);
+
+						// Stronger shadow for elements farther from the light
+						const shadowIntensity = 0.08 + (normalizedDistance * 0.12); // Reduced opacity for more subtlety
+
+						// Create a primary shadow
+						const primaryShadow = `drop-shadow(${offsetX}px ${offsetY}px ${blurRadius}px rgba(3, 0, 37, ${shadowIntensity}))`;
+
+						// Create a secondary softer shadow for depth
+						const secondaryShadowOffsetX = offsetX * 0.5;
+						const secondaryShadowOffsetY = offsetY * 0.5;
+						const secondaryShadowBlur = blurRadius * 1.5;
+						const secondaryShadowIntensity = shadowIntensity * 0.6;
+
+						const secondaryShadow = `drop-shadow(${secondaryShadowOffsetX}px ${secondaryShadowOffsetY}px ${secondaryShadowBlur}px rgba(3, 0, 37, ${secondaryShadowIntensity}))`;
+
+						// Apply multiple shadows for a more realistic 3D effect
+						const combinedShadow = `${primaryShadow} ${secondaryShadow}`;
+
+						// Apply the shadow
+						sec.style.filter = combinedShadow;
+						sec.style.transition = 'filter 0s ease';
+
+						// Add dynamic lighting effect using CSS gradient
+						// Calculate gradient angle based on light position
+						// The gradient should go from light direction to opposite direction
+						const gradientAngle = (Math.atan2(dy, dx) * (180 / Math.PI) + 180) % 360;
+
+						// Intensity based on distance
+						const lightIntensity = Math.max(0.03, 0.12 - normalizedDistance * 0.08);
+
+						// Create dynamic gradient based on light position for the lighting effect
+						const gradientStyle = `linear-gradient(${gradientAngle}deg,
+							rgba(255, 255, 255, ${lightIntensity}) 0%,
+							rgba(255, 255, 255, 0) 70%)`;
+
+						// Apply the gradient to the background
+						sec.style.background = gradientStyle;
+
+						sec.style.background = 'none';
+
+						// We can't directly select ::before with querySelector,
+						// so we use a CSS custom property to control its opacity based on distance
+						const beforeOpacity = Math.max(0.2, 0.6 - normalizedDistance * 0.4);
+						sec.style.setProperty('--before-opacity', beforeOpacity.toString());
+					}
+				} else {
+					// Reset shadows and background for other views
+					sec.style.filter = 'none';
+					sec.style.background = 'none';
+				}
+
+				if (distance < minDistance) {
+					minDistance = distance;
+					closest = sec;
+					object = data.posts[index];
+				}
+			});
+		}, 16); // Limit to roughly 60fps
+
+		// Execute the throttled shadow update
+		updateShadows();
+
+		// Use all sections for non-shadow calculations
 		sections.forEach((sec, index) => {
 			const rect = sec.getBoundingClientRect();
 			const distance = Math.abs(rect.top + window.innerHeight * .25);
-			const dist2 = rect.top;
-			let height = rect.bottom - rect.top;
-
-			const inView = rect.top - 200 < window.innerHeight && rect.top + height > 0;
-			const hgroup = document.querySelectorAll('hgroup')[index];
 
 			if (distance < minDistance) {
 				minDistance = distance;
@@ -145,47 +365,6 @@
 				object = data.posts[index];
 			}
 		});
-
-		// Auto-scroll for preview sections
-		//const previews = document.querySelectorAll('.preview');
-		/*
-		previews.forEach(preview => {
-			// Only set up scrolling if it has content that can be scrolled
-			if (preview.scrollHeight > preview.clientHeight) {
-				// Check if we already set up scrolling for this preview
-				if (!preview.hasAttribute('data-auto-scroll-setup')) {
-					// Clone the content for seamless looping
-					const content = preview.innerHTML;
-					//preview.innerHTML = content + content;
-					preview.insertAdjacentHTML('beforeend', content);
-
-					// Set up the scrolling animation
-					let scrollPos = 0;
-					const scrollSpeed = 1; // pixels per frame
-
-					function autoScroll() {
-						scrollPos += scrollSpeed;
-
-						// Reset when we've scrolled through the first copy of content
-						if (scrollPos >= preview.scrollHeight / 2 - 10) {
-							scrollPos = 0;
-							preview.scrollTop = 0;
-						}
-
-						preview.scrollTop = scrollPos;
-						requestAnimationFrame(autoScroll);
-					}
-
-					// Start the animation
-					requestAnimationFrame(autoScroll);
-
-					// Mark this preview as having scroll set up
-					preview.setAttribute('data-auto-scroll-setup', 'true');
-				}
-			}
-		});
-		*/
-
 
 		// Reactivity
 		activeElem.set(closest);
@@ -221,30 +400,6 @@
 			piece.style.top = document.documentElement.scrollTop * scrollSpeed + 200 + 'px'
 		})
 		let flex = document.querySelector('#flex')
-		/*
-		if (flex) {
-			const flexRect = flex.getBoundingClientRect();
-			const viewportHeight = window.innerHeight;
-			const flexVisibleRatio = (viewportHeight - flexRect.top) / viewportHeight;
-			const scale = Math.min(1, 0.8 + (0.2 * Math.max(0, flexVisibleRatio)));
-
-			// Only apply transformations when not fully visible or scrolling back up
-			if (flexVisibleRatio < 1 && window.innerWidth > 800) {
-				const rotateX = 30 * (1 - Math.max(0, flexVisibleRatio));
-				const skewY = 10 * (1 - Math.max(0, flexVisibleRatio));
-
-				//flex.style.transform = `scale(${scale}) rotate3d(5, 2, -1, ${rotateX}deg) perspective(800px)`;
-				flex.style.transform = `scale(${scale})`;
-				flex.style.transformOrigin = 'center top';
-				flex.style.perspective = '1000px';
-			} else {
-				// Reset transforms when fully visible
-				flex.style.transform = '';
-				flex.style.transformOrigin = 'center top';
-				flex.style.perspective = 'none';
-			}
-		}
-		*/
 	}
 
 
@@ -641,6 +796,17 @@
 		animation-duration: 0.5s;
 	}
 
+	:root {
+		/* Light source properties */
+		--light-x: 100vw; /* Start position of light (top right corner) */
+		--light-y: 0;
+		--shadow-color: rgba(3, 0, 37, 0.1); /* Reduced opacity */
+		--shadow-color-intense: rgba(3, 0, 37, 0.18); /* Reduced opacity */
+		--shadow-transition-duration: 0.3s;
+		--filter-transition-duration: 0.3s;
+		--reflection-opacity: 0.4; /* Default reflection opacity */
+	}
+
 	// Floating animation for the "gentle butterfly" effect
 	@keyframes float {
 		0% {
@@ -654,21 +820,85 @@
 		}
 	}
 
+	/* Light reflection animation */
+	@keyframes reflectionMove {
+		0% {
+			background-position: 120% 0%;
+		}
+		100% {
+			background-position: -20% 100%;
+		}
+	}
+
+	.light-reflection {
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background: linear-gradient(
+			125deg,
+			rgba(255, 255, 255, 0.3) 0%,
+			rgba(255, 255, 255, 0.1) 30%,
+			rgba(255, 255, 255, 0) 60%
+		);
+		background-size: 200% 200%;
+		opacity: var(--reflection-opacity, 0.4);
+		border-radius: inherit;
+		pointer-events: none;
+		z-index: 10; /* Place above other content but below interactive elements */
+		transition: opacity 0.5s ease, background 0.8s ease; /* Smoother transitions */
+	}
+
 	.sec {
 		view-transition-name: section-card;
 		transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1),
 			           opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1),
-			           box-shadow 0.5s cubic-bezier(0.22, 1, 0.36, 1),
-			           background 0.3s ease,
+			           filter var(--filter-transition-duration) cubic-bezier(0.22, 1, 0.36, 1),
+			           background 0.5s ease,
 			           width 0.5s cubic-bezier(0.22, 1, 0.36, 1);
-		will-change: transform, opacity, width, height;
-		animation: float 6s ease-in-out infinite;
+		will-change: transform, opacity, width, height, filter;
+		animation: float .2s ease-in-out infinite;
 		animation-delay: calc(var(--index, 0) * 0.5s);
+		position: relative;
+		overflow: hidden;
+
+
+		/* Add a subtle glass-like reflection overlay - keep this as a static fallback */
+		&::after {
+			content: '';
+			position: absolute;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			background: linear-gradient(
+				125deg,
+				rgba(255, 255, 255, 0.2) 0%,
+				rgba(255, 255, 255, 0.1) 30%,
+				rgba(255, 255, 255, 0) 60%
+			);
+			background-size: 200% 200%;
+			opacity: 0.3; /* Lower opacity for static effect since we have dynamic one */
+			border-radius: inherit;
+			pointer-events: none;
+			z-index: 3;
+			/* Subtle animation for the reflection */
+			animation: reflectionMove .2s ease-in-out infinite alternate;
+		}
 
 		&:hover {
 			transform: translateY(-4px);
-			box-shadow: -15px 15px 40px rgba(black, .12);
+			filter: drop-shadow(-15px 15px 40px var(--shadow-color-intense));
 			animation-play-state: paused;
+
+			&::after {
+				opacity: 0.4; /* Increase reflection on hover */
+			}
+
+			.light-reflection {
+				opacity: 0.6; /* Brighten dynamic reflection on hover */
+			}
 		}
 	}
 
@@ -705,7 +935,6 @@
 		background: rgba(white, 9);
 		backdrop-filter: blur(10px);
 		border-radius: 8px 0 0 8px;
-		box-shadow: -8px 12px 48px rgba(black, .3);
 		text-align: left;
 		h1{
 			text-align: left;
@@ -1104,25 +1333,59 @@
 
 				.sec{
 					width: 100%;
-					box-shadow: none;
 					border-radius: 16px;
 					border: none;
 					background: none;
 					aspect-ratio: 7/10;
-					padding: 8px;
+					padding: 12px 16px 0px 16px;
 					box-sizing: border-box;
 					overflow: hidden;
 					gap: 12px;
 
+					transition: .1s ease;
+
+					/* Add CSS variable for pseudo-element opacity control */
+					--before-opacity: 0.5;
 
 					transform-origin: center;
-					animation: gridFadeIn 0.5s forwards;
+					animation: gridFadeIn 0.2s forwards;
 					animation-delay: calc(var(--index, 0) * 0.05s);
 
+					// Replace box-shadow with filter
+					filter: drop-shadow(-15px 15px 15px var(--shadow-color));
+					position: relative;
 
-					//box-shadow: inset -2px -4px 8px rgba(#030025, 0.03);
-					filter: drop-shadow(-15px 25px 15px rgba(#030025, 0.12));
+					// Keep the reflection effect with dynamic opacity
+					&::before {
+						content: '';
+						position: absolute;
+						top: 0;
+						left: 0;
+						right: 0;
+						bottom: 0;
+						background: linear-gradient(to bottom,
+							rgba(255, 255, 255, 0.05) 0%,
+							rgba(255, 255, 255, 0) 100%);
+						border-radius: 16px;
+						z-index: 0;
+						pointer-events: none;
+						opacity: var(--before-opacity, 0.5);
+						transition: all var(--shadow-transition-duration) ease;
+					}
 
+					// Update hover styles for filter-based approach
+					&:hover {
+						transform: translateY(-4px);
+						filter: drop-shadow(-20px 20px 30px var(--shadow-color-intense));
+						--before-opacity: 0.7;
+						animation-play-state: paused;
+
+						/* Enhanced reflection when hovered */
+						&::after {
+							background-position: 0% 100%;
+							transition: background-position 1.2s ease-out;
+						}
+					}
 
 					@keyframes gridFadeIn {
 						from {
@@ -1137,14 +1400,16 @@
 
 					.mast{
 						padding: 0 0 24px 0;
+						position: relative;
+						z-index: 2;
 					}
-
-
 
 					.prose-preview{
 						width: 100%;
 						padding: 0 8px;
 						box-sizing: border-box;
+						position: relative;
+						z-index: 5; /* Ensure text is above reflections */
 
 						:global(p){
 							font-size: 12px;
@@ -1165,6 +1430,7 @@
 						width: 100%;
 						box-shadow: none;
 						background: none;
+						z-index: 5; /* Keep above reflections */
 
 						.card{
 							width: 60px;
@@ -1210,14 +1476,11 @@
 						flex-wrap: nowrap;
 						width: 100%;
 						gap: 8px;
-						//border: 2px solid rgba(white, .2);
 						border-radius: 12px;
 						overflow: hidden;
 						padding: 0;
-
-						//box-shadow: 4px 8px 10px rgba(#030025, 0.0), inset -4px 8px 16px rgba(#030025, 0.8);
-
 						z-index: 2;
+						position: relative;
 
 						.content{
 							width: 100%;
@@ -1312,18 +1575,18 @@
 		}
 
 		.info{
-			width: 100%;
+			width: calc(100% + 40px);
 			flex: 1;
 			padding: 18px;
 			text-align: left;
 			background: rgba(white, .9);
+			align-self: stretch;
+			box-sizing: border-box;
 
-			border-radius: 18px 18px 12px 12px;
+			border-radius: 14px;
 			backdrop-filter: blur(10px);
 			border: 2px solid white;
 			z-index: 2;
-			//filter: drop-shadow(-20px 30px 20px rgba(#030025, .1));
-			//display: none;
 
 			h1{
 				font-size: 20px;
@@ -1614,22 +1877,14 @@
 			margin-top: 100px;
 		}
 
-		#cta{
-			margin-top: 24px;
-
-		}
-
 		#logo{
-			height: 140px;
-			border-radius: 50px;
-			margin-bottom: -20px;
-			display: none;
+			height: 160px;
+			margin-top: 20px;
+			margin-bottom: -32px;
 		}
 
 		#ahw{
 			height: 120px;
-			margin: 80px 0 0px 0;
-
 		}
 
 		.screen{
@@ -1645,6 +1900,8 @@
 
 			border-radius: 16px;
 			padding: 24px;
+
+
 
 
 			#pfp{
@@ -1798,6 +2055,7 @@
 				}
 			}
 			&.view3{
+
 				#sections{
 					width: 100vw;
 					margin: 0;
@@ -1807,10 +2065,25 @@
 					flex-direction: column;
 					align-items: center;
 					justify-content: flex-start;
-					gap: 0px;
+					gap: 24px;
+
+					.head{
+						padding: 8px 24px;
+						box-sizing: border-box;
+					}
 
 					.sec{
-						width: 100%;
+						width: 90%;
+						box-sizing: border-box;
+						gap: 12px;
+						.info{
+							width: 100%;
+							margin-bottom: 12px;
+						}
+					}
+
+					.content{
+						flex: 1;
 					}
 
 				}
@@ -1858,7 +2131,6 @@
 				align-self: flex-start;
 				width: 100%;
 				padding: 16px;
-
 
 				.header{
 					h1{
