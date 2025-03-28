@@ -6,6 +6,7 @@
 	import { writable } from 'svelte/store'
 	import { fade, fly } from 'svelte/transition'
 	import { loading, openDrawer } from '$lib/store'
+	import { injectAnalytics } from '@vercel/analytics/sveltekit'
 	import '../app.css';
 
 	let { children } = $props();

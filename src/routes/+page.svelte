@@ -1318,7 +1318,7 @@
 			text-align: left;
 			background: rgba(white, .9);
 
-			border-radius: 10px;
+			border-radius: 18px 18px 12px 12px;
 			backdrop-filter: blur(10px);
 			border: 2px solid white;
 			z-index: 2;
@@ -1525,12 +1525,13 @@
 			align-items: center;
 			gap: 6px;
 			background: white;
-			padding: 6px 8px;
-			border-radius: 8px;
-			box-shadow: -2px 6px 12px rgba(black, .2);
+			background:rgb(255, 255, 255);
+			//border: 1.5px solid rgb(240, 243, 249);
+			padding: 4px 10px 6px 10px;
+			border-radius: 12px;
+			box-shadow: -2px 6px 12px rgba(#030025, .1), inset -2px -3px 4px rgba(#030025, .06);
 			transition: .2s ease;
 			cursor: pointer;
-			background: #030025;
 
 			.icon{
 				height: 14px;
@@ -1540,14 +1541,14 @@
 			h3{
 				display: block;
 				font-size: 12px;
-				font-weight: 550;
-				letter-spacing: -.1px;
-				color: rgba(#030025, .6);
+				font-weight: 700;
+				letter-spacing: -.32px;
+				color: rgba(#030025, .8);
 				margin: 0;
 				padding: 0;
 				background: none;
 
-				color: white;
+
 			}
 			&:hover{
 				box-shadow: 0 5px 12px rgba(black, .12);
