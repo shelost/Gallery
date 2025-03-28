@@ -604,9 +604,11 @@
 				<h2 in:fly={{y: 100, duration: 600, delay: 300}}>
 					Web Design Studio
 				</h2>
+				<!--
 				<p in:fly={{y: 100, duration: 600, delay: 350}}>
 					I also work for <a href = 'https://stan.store'>startups</a>, draw <a href = 'https://www.instagram.com/_heewonahn'>comics</a>, and write <a href = 'https://www.instagram.com/ahnheewon_comics'>essays</a>.
 				</p>
+				-->
 				<p in:fly={{y: 100, duration: 600, delay: 400}}>
 					Let's work together! You can reach me at <a href = 'mailto:h@ahnheewon.com'>h@ahnheewon.com</a>.
 				</p>
@@ -1105,15 +1107,20 @@
 		width: 250px;
 		height: 72px;
 		border-radius: 40px;
-		box-shadow: -8px 36px 60px rgba(black, .6);
+		box-shadow: -8px 36px 60px rgba(black, .75);
 		padding: 8px;
 		gap: 8px;
 		z-index: 4;
 		backdrop-filter: blur(20px);
+
+
 		display: none;
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
 
 
-		background: rgba(black, .7);
+		background: rgba(#030025, .75);
 		border: 3px solid rgba(white, .1);
 
 
@@ -1125,7 +1132,7 @@
 			height: 0;
 			background: rgba(white, .2);
 			border-radius: 28px;
-			box-shadow: -5px 10px 25px rgba(black, .5), inset 0 -2px 4px rgba(black, .05);
+			box-shadow: -8px 16px 24px rgba(#030025, .5), inset -2px -4px 6px rgba(black, .2);
 			z-index: -1;
 			transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 		}
@@ -1278,18 +1285,30 @@
 		}
 
 		&.view1{
+
+			#navbar{
+					display: none;
+				}
 			#sections{
+				width: clamp(300px, 100%, 900px);
+
+
 				.sec{
 					width: clamp(300px, 90%, 1000px);
-					margin: 60px auto;
-					padding: 30px;
+					margin: 40px auto;
+					padding: 30px 10px 30px 30px;
 					box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
 					border-radius: 16px;
-					gap: 40px;
+					gap: 20px;
 					transform-origin: top center;
 					opacity: 0;
 					animation: previewFadeIn 0.6s forwards;
 					animation-delay: calc(var(--index, 0) * 0.1s);
+
+					display: flex;
+					flex-direction: row;
+					align-items: flex-start;
+					justify-content: center;
 
 					@keyframes previewFadeIn {
 						from {
@@ -1326,11 +1345,17 @@
 					}
 
 					hgroup {
-						border-radius: 16px;
-						background: white;
-						padding: 20px;
-						box-shadow: 0 15px 30px rgba(0, 0, 0, 0.05);
+						width: 240px;
+						padding: 0;
+						background: none;
+						.header{
+							flex-direction: column;
+							background: none;
+							padding: 0;
+						}
 					}
+
+
 				}
 			}
 		}
@@ -1346,6 +1371,7 @@
 					margin-top: 20px;
 					gap: 0;
 					width: 800px;
+					background: rgba(white, .8) !important;
 					transform-origin: top center;
 					opacity: 0;
 					animation: fadeIn 0.4s forwards;
@@ -1360,6 +1386,10 @@
 							opacity: 1;
 							transform: translateY(0);
 						}
+					}
+
+					.preview{
+						display: none;
 					}
 
 					hgroup{
@@ -2278,6 +2308,7 @@
 				width: 102%;
 				transform: translateX(-1%);
 			}
+
 		}
 	}
 
@@ -2292,3 +2323,4 @@
 	}
 
 </style>
+
