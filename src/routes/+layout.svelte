@@ -1,6 +1,7 @@
 <script>
 
 	import Navbar from './Navbar.svelte';
+	import { dev } from '$app/environment';
 	import { onMount } from 'svelte'
 	import { themeColor } from '$lib/store'
 	import { writable } from 'svelte/store'
@@ -8,6 +9,8 @@
 	import { loading, openDrawer } from '$lib/store'
 	import { injectAnalytics } from '@vercel/analytics/sveltekit'
 	import '../app.css';
+
+	injectAnalytics({ mode: dev ? 'development' : 'production' });
 
 	let { children } = $props();
 
