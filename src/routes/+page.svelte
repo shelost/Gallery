@@ -1449,7 +1449,7 @@
 				width: clamp(300px, 80%, 1200px);
 				display: grid;
 				grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-				gap: 24px 48px;
+				gap: 12px 24px;
 				flex: 1;
 
 				@media (min-width: 1024px) {
@@ -1472,7 +1472,7 @@
 
 				.sec{
 					width: 100%;
-					border-radius: 16px;
+					border-radius: 12px;
 					border: none;
 					background: none;
 					aspect-ratio: 7/10;
@@ -1494,6 +1494,7 @@
 					filter: drop-shadow(-15px 15px 15px var(--shadow-color));
 					position: relative;
 
+
 					// Keep the reflection effect with dynamic opacity
 					&::before {
 						content: '';
@@ -1503,8 +1504,8 @@
 						right: 0;
 						bottom: 0;
 						background: linear-gradient(to bottom,
-							rgba(255, 255, 255, 0.05) 0%,
-							rgba(255, 255, 255, 0) 100%);
+							rgba(255, 255, 255, 0.5) 0%,
+							rgba(255, 255, 255, 0.5) 100%);
 						border-radius: 16px;
 						z-index: 0;
 						pointer-events: none;
@@ -1625,7 +1626,7 @@
 							width: 100%;
 							aspect-ratio: 8/10;
 
-							padding: 20px;
+							padding: 12px;
 							box-sizing: border-box;
 
 							box-shadow: inset 4px -8px 12px rgba(#030025, 0.03);
@@ -1639,7 +1640,7 @@
 						}
 						.banner{
 							width: 100%;
-							max-width: 400px;
+							max-width: 800px;
 							height: auto;
 							margin: 0;
 

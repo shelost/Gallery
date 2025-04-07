@@ -16,9 +16,11 @@
 
 	export let data
 
-    console.log(data)
+    function goBack(){
+        goto('/')
+    }
 
- </script>
+</script>
 
 <svelte:head>
 	<title>{data.meta.title}</title>
@@ -29,8 +31,7 @@
 
 <div id = 'container'>
     <div id = 'sidebar'>
-
-        <button class = 'light back' on:click = {() => {goto('/')}}>
+        <button class = 'light back' on:click = {goBack}>
             Back
         </button>
     </div>
@@ -49,9 +50,11 @@
         </hgroup>
 
 
+        <!--
         {#if data.meta.preview}
             <img class = 'banner' src = 'bento/{data.meta.preview}.svg'>
         {/if}
+        -->
         <div class="prose preview">
             <svelte:component this={data.content} />
         </div>
@@ -64,7 +67,7 @@
     #container{
         display: flex;
         justify-content: right;
-        padding: 48px 0 72px 0;
+        box-sizing: border-box;
         //border: 1px solid red;
     }
 
@@ -82,7 +85,7 @@
     #main{
         width: calc(100% - 160px);
         width: clamp(50%, 800px, 90%);
-        padding: 28px;
+        padding: 0 0 100px 0;
         border-radius: 12px;
         margin: auto;
         //box-shadow: 0 10px 40px rgba(black, .05);
@@ -118,6 +121,11 @@
             letter-spacing: -.32px;
             font-weight: 450;
             text-align: left;
+            margin-top: 32px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: -16px 28px 40px rgba(black, 0.1);
+            padding: 18px;
         }
     }
 
@@ -130,6 +138,26 @@
             text-align: left;
 
         }
+    }
+
+    @media screen and (max-width: 800px) {
+        #container{
+            flex-direction: column;
+            width: 90vw;
+            padding: 0;
+            margin: 40px auto;
+
+        }
+
+        #sidebar{
+            display: none;
+        }
+
+        #main{
+            width: 90vw;
+            padding: 0;
+        }
+
     }
 
 

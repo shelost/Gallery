@@ -293,19 +293,6 @@
 		align-items: flex-start;
 		width: clamp(400px, 100%, 1600px);
 		margin: auto;
-
-		/*
-		height: calc(100vh - 50px);
-		width: calc(100vw - 50px);
-		box-shadow: -10px 20px 80px rgba(black, .25);
-		position: sticky;
-		top: 20px;
-		//margin: 20px;
-		border-radius: 10px;
-		//border: 1px solid black;
-		overflow-y: scroll;
-		scroll-snap-type: y mandatory;
-		*/
 	}
 
 
@@ -313,12 +300,6 @@
 	main {
 		flex: 1;
 		width: 100%;
-		/*
-		scroll-snap-align: start;
-		margin-top: 200px;
-		scroll-snap-align: end;
-		margin-bottom: 100px;
-		*/
 	}
 
 	footer {
@@ -335,22 +316,5 @@
 
 
 
-	@media screen and (max-width: 768px){
-
-		.app{
-			overflow-x: hidden;
-			width: 100vw;
-		}
-
-		#navbar{
-			display: none;
-		}
-
-		main{
-			width: 100vw;
-			padding: 0;
-		}
-
-	}
 
 </style>
