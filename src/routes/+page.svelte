@@ -27,7 +27,7 @@
 	let Scroll, Bar, App, Flex, Pill, Drawer;
 	let sections, previews
 	let splash = writable(false)
-	let view = writable(3)
+	let view = writable(2)
 	let val = 0
 
 	let Click;
@@ -263,88 +263,9 @@
 			}, 200)();
 		}
 
-		// Create a throttled function for shadow calculations - 32ms (approx 30fps) is sufficient
-		// This is a significant performance improvement from 60fps while still looking smooth
-		const updateShadows = throttle(() => {
-			// Only run shadow calculations if we're in view mode 3 and on desktop
-			if ($view !== 3 || window.innerWidth <= 800) return;
 
-			sections.forEach((sec, index) => {
-				// Skip shadow calculation if section is far from viewport (performance optimization)
-				const rect = sec.getBoundingClientRect();
-				if (rect.bottom < -200 || rect.top > viewportHeight + 200) {
-					return;
-				}
 
-				const distance = Math.abs(rect.top + window.innerHeight * .25);
-
-				// Calculate the center position of the section (reusing rect to avoid multiple calls)
-				const secCenterX = rect.left + rect.width / 2;
-				const secCenterY = rect.top + rect.height / 2;
-
-				// Calculate the distance and angle from the light source to the section
-				const dx = lightX - secCenterX;
-				const dy = lightY - secCenterY;
-				const distanceToLight = Math.sqrt(dx * dx + dy * dy);
-
-				// Normalize distance to a value between 0 and 1
-				const maxDistance = Math.sqrt(viewportWidth * viewportWidth + viewportHeight * viewportHeight);
-				const normalizedDistance = Math.min(distanceToLight / maxDistance, 1);
-
-				// Full effect for desktop
-				// Calculate shadow properties based on the light position
-				// The shadow is opposite to the light direction
-				const offsetX = -dx * 0.05;
-				const offsetY = -dy * 0.05;
-				const blurRadius = 15 + (normalizedDistance * 15);
-
-				// Stronger shadow for elements farther from the light
-				const shadowIntensity = 0.0 + (normalizedDistance * 0.15); // Reduced opacity for more subtlety
-
-				// Create a primary shadow
-				const primaryShadow = `drop-shadow(${offsetX}px ${offsetY}px ${blurRadius}px rgba(3, 0, 37, ${shadowIntensity}))`;
-
-				// Create a secondary softer shadow for depth
-				const secondaryShadowOffsetX = offsetX * 0.5;
-				const secondaryShadowOffsetY = offsetY * 0.5;
-				const secondaryShadowBlur = blurRadius * 1.5;
-				const secondaryShadowIntensity = shadowIntensity * 0.6;
-
-				const secondaryShadow = `drop-shadow(${secondaryShadowOffsetX}px ${secondaryShadowOffsetY}px ${secondaryShadowBlur}px rgba(3, 0, 37, ${secondaryShadowIntensity}))`;
-
-				// Apply multiple shadows for a more realistic 3D effect
-				const combinedShadow = `${primaryShadow} ${secondaryShadow}`;
-
-				// Apply the shadow
-				sec.style.filter = combinedShadow;
-
-				// Calculate gradient angle based on light position
-				// The gradient should go from light direction to opposite direction
-				const gradientAngle = (Math.atan2(dy, dx) * (180 / Math.PI) + 180) % 360;
-
-				// Intensity based on distance
-				const lightIntensity = Math.max(0.03, 0.12 - normalizedDistance * 0.08);
-
-				// Create dynamic gradient based on light position for the lighting effect
-				const gradientStyle = `linear-gradient(${gradientAngle}deg,
-					rgba(255, 255, 255, ${lightIntensity}) 0%,
-					rgba(255, 255, 255, 0) 70%)`;
-
-				// Apply the gradient to the background
-				sec.style.background = gradientStyle;
-
-				// We can't directly select ::before with querySelector,
-				// so we use a CSS custom property to control its opacity based on distance
-				const beforeOpacity = Math.max(0.2, 0.6 - normalizedDistance * 0.4);
-				sec.style.setProperty('--before-opacity', beforeOpacity.toString());
-
-				if (distance < minDistance) {
-					minDistance = distance;
-					closest = sec;
-					object = data.posts[index];
-				}
-			});
-		}, 32); // Reduced from 16ms to 32ms - still smooth but half the CPU usage
+		function updateShadows(){}
 
 		// Execute the throttled shadow update
 		updateShadows();
@@ -430,7 +351,7 @@
 			if (!v) {
 				// Use setTimeout with a short delay to ensure DOM is ready
 				setTimeout(() => {
-					changeView(3);
+					changeView(1);
 					setAnimationIndexes();
 
 					// Get pill position
@@ -819,7 +740,7 @@
 
 
 
-<div id = 'view' in:fly={{y: 100, duration: 500, delay: 600}} on:load = {() => {changeView(3)}}>
+<div id = 'view' in:fly={{y: 100, duration: 500, delay: 600}} on:load = {() => {changeView(1)}}>
 
 	<audio bind:this={Click} src="audio/click-1.mp3"></audio>
 
@@ -971,6 +892,8 @@
 		will-change: transform, filter;
 		position: relative;
 		overflow: hidden;
+
+		filter: drop-shadow(-10px 10px 20px rgba(#030025, .1));
 		/* Animation is now handled by the media query for better performance */
 		animation-delay: calc(var(--index, 0) * 0.5s);
 
@@ -1000,7 +923,7 @@
 
 		&:hover {
 			transform: translateY(-4px);
-			filter: drop-shadow(-15px 15px 40px var(--shadow-color-intense));
+			//filter: drop-shadow(-15px 15px 40px var(--shadow-color-intense));
 
 			&::after {
 				opacity: 0.3; /* Increase reflection on hover */
@@ -1100,7 +1023,7 @@
 
 	#view{
 		position: fixed;
-		bottom: 16px;
+		bottom: 12px;
 		left: calc(50% - 135px);
 		background: rgba(white, .9);
 		border: 3px solid rgba(white, .5);
@@ -1287,28 +1210,15 @@
 		&.view1{
 
 			#navbar{
-					display: none;
-				}
+				display: none;
+			}
+
 			#sections{
-				width: clamp(300px, 100%, 900px);
+				width: clamp(300px, 100%, 1000px);
 
 
 				.sec{
-					width: clamp(300px, 90%, 1000px);
-					margin: 40px auto;
-					padding: 30px 10px 30px 30px;
-					box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
-					border-radius: 16px;
-					gap: 20px;
-					transform-origin: top center;
-					opacity: 0;
-					animation: previewFadeIn 0.6s forwards;
-					animation-delay: calc(var(--index, 0) * 0.1s);
 
-					display: flex;
-					flex-direction: row;
-					align-items: flex-start;
-					justify-content: center;
 
 					@keyframes previewFadeIn {
 						from {
@@ -1322,36 +1232,24 @@
 					}
 
 					.preview {
-						max-height: 600px;
+						max-height: 500px;
 						overflow: hidden;
 						border-radius: 12px;
-
-						.content {
-							transition: transform 0.4s ease;
-
-							&:hover {
-								transform: translateY(-10px);
-							}
-						}
-
-						.video, .banner {
-							filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.15));
-							transition: transform 0.3s ease, filter 0.3s ease;
-
-							&:hover {
-								filter: drop-shadow(0 25px 50px rgba(0, 0, 0, 0.2));
-							}
-						}
 					}
 
 					hgroup {
 						width: 240px;
+						max-width: 240px;
 						padding: 0;
 						background: none;
 						.header{
 							flex-direction: column;
 							background: none;
 							padding: 0;
+							width: 100%;
+							.info{
+								width: 230px;
+							}
 						}
 					}
 
@@ -1367,13 +1265,6 @@
 
 			#sections{
 				.sec{
-					padding: 20px;
-					margin-top: 20px;
-					gap: 0;
-					width: 800px;
-					background: rgba(white, .8) !important;
-					transform-origin: top center;
-					opacity: 0;
 					animation: fadeIn 0.4s forwards;
 					animation-delay: calc(var(--index, 0) * 0.05s);
 
@@ -1404,6 +1295,12 @@
 						.header{
 							padding: 0;
 							background: none;
+
+							display: flex;
+							flex-direction: column;
+							align-items: flex-start;
+							justify-content: flex-start;
+
 							.card{
 								border-radius: 4px;
 							}
@@ -1424,6 +1321,7 @@
 						.tags{
 							margin: 0;
 						}
+
 					}
 					.preview{
 						.banner{
@@ -1453,7 +1351,7 @@
 				flex: 1;
 
 				@media (min-width: 1024px) {
-					grid-template-columns: 1fr 1fr 1fr;
+					grid-template-columns: repeat(6, 1fr);
 				}
 
 				.head{
@@ -1471,6 +1369,9 @@
 				}
 
 				.sec{
+					grid-column: span 2;
+
+
 					width: 100%;
 					border-radius: 12px;
 					border: none;
@@ -1493,6 +1394,10 @@
 					// Replace box-shadow with filter
 					filter: drop-shadow(-15px 15px 15px var(--shadow-color));
 					position: relative;
+
+					&.r5{
+						//grid-column: span 3;
+					}
 
 
 					// Keep the reflection effect with dynamic opacity
@@ -1659,46 +1564,76 @@
 	}
 
 	.head{
-		width: 160px;
+		width: 100%;
+		box-sizing: border-box;
 		//border-radius: 8px;
 		padding: 10px;
 		z-index: -1;
-		margin: 80px 0 0px 0;
+		margin: 100px 20px 0px 0;
 
 		h1{
-			font-size: 40px;
+			font-size: 44px;
 			font-weight: 700;
 			letter-spacing: -.75px;
 			margin: 0;
-			text-align: left;
+			text-align: center;
+			color:#030025;
 		}
 	}
 
 	.sec{
-		position: relative;
+		width: clamp(300px, 100%, 1000px);
+		margin: 40px auto;
+		background: none !important;
+		padding: 30px 10px 30px 30px;
+		//box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+		border-radius: 16px;
+		gap: 20px;
+		transform-origin: top center;
+		opacity: 0;
+		overflow: visible !important;
+		animation: previewFadeIn 0.6s forwards;
+		animation-delay: calc(var(--index, 0) * 0.1s);
+
 		display: flex;
-		flex-direction: column;
-		gap: 40px;
-		justify-content: left;
+		flex-direction: row;
+		align-items: flex-start;
+		justify-content: center;
+
 
 		background: rgba(white, .9);
-		box-shadow: -10px 10px 30px rgba(black, .08);
-		box-shadow: -20px 20px 60px rgba(black, .08);
+		//box-shadow: -20px 20px 60px rgba(black, .08);
 		margin-top: 24px;
 		width: 800px;
 		transition: .2s ease;
+		overflow: visible;
 
 		border-radius: 10px;
+
+		filter: drop-shadow(-18px 24px 16px rgba(#030025, .1));
+
+		&.game{
+			.preview{
+				padding: 0;
+			}
+			.video{
+				margin: 0 !important;
+			}
+			.banner{
+				display: none;
+			}
+		}
 
 		.preview{
 			display: flex;
 			flex-wrap: wrap;
+			flex: 1;
 			//flex-direction: row-reverse;
 			align-items: flex-start;
 			justify-content: center;
 			gap: 20px;
 			width: 100%;
-			padding: 0 40px;
+			padding: 0 28px;
 			box-sizing: border-box;
 			position: relative;
 			.background{
@@ -1711,6 +1646,26 @@
 				transition: .2s ease;
 				z-index: -1;
 				//display: none;
+			}
+			.content{
+				.video{
+					width: 100%;
+					height: auto;
+					margin: 24px 0;
+					border-radius: 8px;
+					transition: .2s ease;
+					filter: drop-shadow(-20px 30px 20px rgba(#030025, .1));
+				}
+
+				.banner{
+					border-radius: 0px;
+					width: 100%;
+					//max-width: 800px;
+					margin: 24px auto 24px auto;
+					border-radius: 16px;
+					transition: .2s ease;
+					filter: drop-shadow(-18px 36px 36px rgba(#030025, .2));
+				}
 			}
 		}
 
@@ -1728,58 +1683,19 @@
 			border: 2px solid white;
 			z-index: 2;
 
-			h1{
-				font-size: 20px;
-				font-weight: 600;
-				letter-spacing: -.4px;
-				margin: 0;
-				color: rgba(#030025, .9);
-				text-align: left;
-				display: none;
-			}
-
-			h2, h3{
-				display: none;
-			}
-
 			p{
-				font-size: 12px;
-				line-height: 130%;
-				font-weight: 500;
-				letter-spacing: -.2px;
-				margin: 0;
-				color: rgba(#030025, .6);
-				display: block;
+				font-family: Newsreader, sans-serif;
+				font-size: 18px !important;
+				font-weight: 550;
+				color: rgba(#030025, .7);
+				line-height: 110%;
+				letter-spacing: -.3px;
 			}
 
 			.tags{
 				margin-top: 20px;
 			}
 		}
-
-		.content{
-			-webkit-mask-image: -webkit-gradient(linear, left 80%, left 95%, from(rgba(0,0,0,1)), to(rgba(0,0,0,0)));
-
-			.video{
-				width: 60%;
-				height: auto;
-				border-radius: 8px;
-				transition: .2s ease;
-				filter: drop-shadow(-20px 30px 20px rgba(#030025, .1));
-			}
-
-			.banner{
-				border-radius: 0px;
-				width: 100%;
-				//max-width: 800px;
-				margin: 0px auto 30px auto;
-				border-radius: 16px;
-				transition: .2s ease;
-				filter: drop-shadow(-20px 30px 20px rgba(#030025, .1));
-			}
-		}
-
-
 
 		.gradient{
 			position: absolute;
@@ -1788,29 +1704,27 @@
 			width: 100%;
 			height: 100px;
 			border-radius: 10px;
-			background: linear-gradient(to bottom, rgba(white, 0), rgba(white, 1) 80%);
+			//background: linear-gradient(to bottom, rgba(white, 0), rgba(white, 1) 80%);
 		}
-
 
 		hgroup{
 			position: sticky;
 			align-self: flex-start;
 			z-index: 3;
 
+
 			display: flex;
-			align-items: center;
+			align-items: flex-start;
 			gap: 12px;
 			width: 100%;
 			top: 0px;
 
 			flex-shrink: 0;
-			overflow: hidden;
 			padding: 8px 0 8px 0;
 
 			border-radius: 10px 10px 0 0;
 			background: rgba(white, 1);
-			//border-bottom: 1px solid rgba(black, .1);
-			//box-shadow: 0 4px 24px rgba(black, .05);
+
 			transition: .2s ease;
 
 
@@ -1818,14 +1732,37 @@
 				width: 100%;
 				height: 100%;
 				display: flex;
-				align-items: center;
-				gap: 6px;
-				padding-left: 14px;
+				align-items: flex-start;
+				gap: 24px;
+
+
+				h1{
+					//font-family: Newsreader, sans-serif;
+					font-size: 26px;
+					font-weight: 650;
+					line-height: 100%;
+					letter-spacing: -.7px;
+					text-align: left;
+					margin: 8px 0;
+					color: rgba(#030025, .9);
+				}
+
+				h2{
+					font-size: 20px;
+					font-weight: 550;
+					line-height: 100%;
+					letter-spacing: -.7px;
+					text-align: left;
+					margin-bottom: -1px;
+					color:rgb(218, 155, 155);
+				}
+
 
 				img{
 					width: 100%;
 					border-radius: 4px;
 					margin-bottom: 18px;
+					display: none;
 				}
 
 				.card{
@@ -1846,44 +1783,14 @@
 						display: none;
 					}
 				}
-
-
-				h1{
-					font-size: 20px;
-					font-weight: 550;
-					line-height: 100%;
-					letter-spacing: -.5px;
-					text-align: left;
-					margin: 0;
-					color: rgba(#030025, .9);
-				}
-
-				h2{
-					font-size: 20px;
-					font-weight: 500;
-					line-height: 100%;
-					letter-spacing: -.5px;
-					text-align: left;
-					margin-bottom: -1px;
-					color: rgba(#030025, .3);
-				}
-
 				.type{
+					display: none;
 					h3{
 						font-size: 14px;
 						font-weight: 500;
 						letter-spacing: -.2px;
 					}
 					//display: none;
-				}
-
-				p{
-					font-size: 12px;
-					font-weight: 450;
-					letter-spacing: -.3px;
-					margin: 0px 0;
-					line-height: 140%;
-					color: rgba(#030025, .6);
 				}
 			}
 
@@ -1897,13 +1804,13 @@
 					height: 14px;
 					padding: 8px;
 					border-radius: 6px;
-					opacity: .5;
+					opacity: 0;
 					transition: .1s ease;
 					cursor: pointer;
 
 					&:hover{
 						background: rgba(black, .05);
-						opacity: 1;
+						opacity: 0;
 					}
 				}
 			}
@@ -1940,6 +1847,7 @@
 				height: 14px;
 				margin: 0;
 				border-radius: 0;
+				display: block;
 			}
 			h3{
 				display: block;
@@ -2172,6 +2080,10 @@
 	// Mobile
 	@media screen and (max-width: 800px){
 		/* Optimize for mobile - reduce animations and effects */
+
+		#view{
+			display: none;
+		}
 		.sec {
 			transition: transform 0.2s ease, opacity 0.2s ease;
 			will-change: none; /* Remove will-change to save GPU memory on mobile */
@@ -2195,8 +2107,13 @@
 			width: 0 !important;
 		}
 
+		#app{
+			width: 98vw;
+			overflow-x: hidden;
+		}
+
 		#page{
-			width: 100%;
+			width: 98vw;
 			overflow-x: hidden;
 		}
 
@@ -2209,11 +2126,56 @@
 			#page{
 				width: 100vw;
 				#sections{
+					width: 100vw;
+					margin: 0;
+					overflow-x: hidden;
+					box-sizing: border-box;
+					display: flex;
+					flex-direction: column;
+					align-items: center;
+					justify-content: flex-start;
+					gap: 24px;
+
+					.head{
+						padding: 8px 24px;
+						box-sizing: border-box;
+					}
+
+					hgroup{
+						width: 100%;
+						max-width: 100%;
+						box-sizing: border-box;
+					}
+
+					.sec{
+						width: 90%;
+						box-sizing: border-box;
+						gap: 12px;
+						.info{
+							width: 100%;
+							margin-bottom: 12px;
+						}
+					}
+					.preview{
+						padding: 18px;
+						box-sizing: border-box;
+
+						.banner{
+							padding: 0;
+							margin: 0 auto;
+						}
+					}
+					.content{
+						flex: 1;
+						padding: 0;
+						margin: 0;
+					}
 				}
 				#sidebar{
 					display: none;
 				}
 			}
+
 			&.view3{
 				#sections{
 					width: 100vw;
@@ -2311,6 +2273,7 @@
 			}
 
 		}
+
 	}
 
 	// Removed all :global() selectors as they're now in the global stylesheet

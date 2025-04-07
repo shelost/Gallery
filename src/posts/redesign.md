@@ -40,7 +40,5 @@ published: true
 
 </script>
 
-The <a href = ''> Learning + Recursion Lab </a> is a
-
 
 <Gallery images = {images} />

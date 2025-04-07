@@ -69,7 +69,7 @@ textarea {
 }
 
 ::-webkit-scrollbar{
-	width: 18px;
+	width: 20px;
 }
 
 ::-webkit-scrollbar-track{
@@ -346,6 +346,8 @@ button, .button {
 		margin: 18px 0;
 	}
 
+
+
 	code{
 		font-size: 12px;
 	}
@@ -430,6 +432,10 @@ button, .button {
 		:where(table:not(:has(tfoot)) tr:last-child td:last-child) {
 			border-end-end-radius: 6px;
 		}
+	}
+
+	.gallery{
+		gap: 16px !important;
 	}
 
 	&.prose-text{

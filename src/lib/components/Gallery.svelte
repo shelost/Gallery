@@ -64,7 +64,7 @@
         //border: 1px solid red;
 		margin: 32px 0;
         display: grid;
-        grid-template-columns: repeat(3, 32%);
+        grid-template-columns: repeat(3, 1fr);
         column-gap: 36px;
         row-gap: 32px;
         transition: 0.2s ease;

@@ -291,7 +291,7 @@
 		position: relative;
 		justify-content: flex-start;
 		align-items: flex-start;
-		width: clamp(400px, 100%, 1600px);
+		width: clamp(400px, 100%, 1800px);
 		margin: auto;
 	}
 
