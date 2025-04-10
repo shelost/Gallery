@@ -29,7 +29,7 @@
     <link rel="icon" href="smiley.png" />
 </svelte:head>
 
-<div id = 'container'>
+<div id = 'container' transition:fly={{y: 100}}>
     <div id = 'sidebar'>
         <button class = 'light back' on:click = {goBack}>
             Back

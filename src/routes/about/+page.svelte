@@ -1,29 +1,46 @@
+<script>
+	import { onMount } from 'svelte';
+	import { fly, crossfade } from 'svelte/transition';
+
+	const [send, receive] = crossfade({
+		duration: 100,
+		fallback: fly
+	});
+
+
+	let visible = false;
+
+	onMount(() => {
+		//visible = true;
+	});
+
+	// transition:fly={{y: 50, duration: 100}}
+
+</script>
+
+
 <svelte:head>
-	<title>About</title>
-	<meta name="description" content="About this app" />
+	<title>About Heewon</title>
+	<meta name="description" content="About Heewon, a software engineer and designer" />
 </svelte:head>
 
 <div class="text-column">
 	<h1>
-		About this app
+		About Me
 	</h1>
 
 	<p>
-		This is a <a href="https://svelte.dev/docs/kit">SvelteKit</a> app. You can make your own by typing
-		the following into your command line and following the prompts:
+		Hi! My name is Heewon, and I'm a software engineer and designer.
 	</p>
 
 	<pre>npx sv create</pre>
 
 	<p>
-		The page you're looking at is purely static HTML, with no client-side interactivity needed.
-		Because of that, we don't need to load any JavaScript. Try viewing the page's source, or opening
-		the devtools network panel and reloading.
+		I was briefly at Cornell and Stan
 	</p>
 
 	<p>
-		The <a href="/sverdle">Sverdle</a> page illustrates SvelteKit's data loading and form handling. Try
-		using it with JavaScript disabled!
+		Since then, I've been working on many projects & freelancing for early-stage startups.
 	</p>
 </div>
 
@@ -31,14 +48,20 @@
 
 	.text-column{
 		padding: 100px 0;
-		max-width: 800px;
+		width: 100%;
+		max-width: 600px;
 		margin: auto;
+	}
+
+	h1{
+		margin: 40px 0;
+		letter-spacing: -.25px;
 	}
 
 	p{
 		font-size: 14px;
 		font-weight: 450;
-		letter-spacing: -0.4px;
+		letter-spacing: -0.35px;
 	}
 
 </style>

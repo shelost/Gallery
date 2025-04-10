@@ -1,5 +1,6 @@
 <script>
 
+	import Header from './Header.svelte';
 	import Navbar from './Navbar.svelte';
 	import { dev } from '$app/environment';
 	import { onMount } from 'svelte'
@@ -163,8 +164,7 @@
 </svelte:head>
 
 
-<div class="app">
-
+<div class="app" >
 
 	<canvas id = 'canvas'>
 	</canvas>
@@ -179,6 +179,8 @@
 			<div id = 'bar' bind:this={Bar}></div>
 		</div>
 	</div>
+
+	<Header />
 
 	<!--
 	{#if $openDrawer}

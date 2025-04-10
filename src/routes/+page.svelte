@@ -1999,7 +1999,7 @@
 		#logo{
 			height: 160px;
 			margin-top: 20px;
-			margin-bottom: -32px;
+			margin-bottom: -48px;
 		}
 
 		#ahw{
