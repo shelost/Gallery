@@ -16,6 +16,14 @@
 
 	export let data
 
+    let visible = false;
+
+    onMount(() => {
+        setTimeout(() => {
+            visible = true;
+        }, 10);
+    });
+
     function goBack(){
         goto('/')
     }
@@ -29,9 +37,10 @@
     <link rel="icon" href="smiley.png" />
 </svelte:head>
 
-<div id = 'container' transition:fly={{y: 100}}>
+{#if visible}
+<div id = 'container'>
     <div id = 'sidebar'>
-        <button class = 'light back' on:click = {goBack}>
+        <button class = 'button light back' on:click = {goBack}>
             Back
         </button>
     </div>
@@ -56,30 +65,33 @@
         {/if}
         -->
         <div class="prose preview">
-            <svelte:component this={data.content} />
+                <svelte:component this={data.content} />
+            </div>
         </div>
     </div>
-</div>
+{/if}
 
 
 <style lang="scss">
 
     #container{
         display: flex;
-        justify-content: right;
+        flex-direction: row;
+        justify-content: space-between;
         box-sizing: border-box;
         //border: 1px solid red;
     }
 
     #sidebar{
         width: 140px;
-		height: calc(100vh - 52px);
+		height: 100vh;
 		border-radius: 6px;
-		padding: 16px;
+		padding: 60px 0;
 		position: fixed;
 		top: 10px;
 		left: 10px;
 		z-index: 3;
+        box-sizing: border-box;
     }
 
     #main{
@@ -89,6 +101,10 @@
         border-radius: 12px;
         margin: auto;
         //box-shadow: 0 10px 40px rgba(black, .05);
+    }
+
+    #back{
+        margin-top: 40px;
     }
 
     .banner{
@@ -126,19 +142,11 @@
             border-radius: 12px;
             box-shadow: -16px 28px 40px rgba(black, 0.1);
             padding: 18px;
+            display: none;
         }
     }
 
 
-    .prose{
-        :global(p){
-            font-size: 14px;
-            letter-spacing: -.32px;
-            font-weight: 450;
-            text-align: left;
-
-        }
-    }
 
     @media screen and (max-width: 800px) {
         #container{

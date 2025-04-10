@@ -7,13 +7,52 @@
 	import { themeColor } from '$lib/store'
 	import { writable } from 'svelte/store'
 	import { fade, fly } from 'svelte/transition'
-	import { loading, openDrawer } from '$lib/store'
+	import { loading, openDrawer, showHeader } from '$lib/store'
 	import { injectAnalytics } from '@vercel/analytics/sveltekit'
+	import { page } from '$app/stores';
+	import { afterNavigate, beforeNavigate } from '$app/navigation';
 	import '../app.css';
 
 	injectAnalytics({ mode: dev ? 'development' : 'production' });
 
 	let { children } = $props();
+
+	// Track current route for key block
+	let currentPath = $page.url.pathname;
+	let prevRouteId = null;
+
+	// Ensure page content transitions properly between routes
+	beforeNavigate(({ from, to }) => {
+		if (from && to && from.route.id !== to.route.id) {
+			// Remember previous route
+			prevRouteId = from.route.id;
+
+			// Make sure global state is reset between different routes
+			if (from.route.id === '/[slug]') {
+				// Immediately reset critical styles
+				document.body.style.overflow = '';
+				showHeader.set(true);
+			}
+		}
+	});
+
+	afterNavigate(({ to }) => {
+		currentPath = to?.url.pathname || $page.url.pathname;
+
+		// Force a slight delay for DOM cleanup after navigating from [slug] pages
+		if (prevRouteId === '/[slug]') {
+			// Delay needed to ensure proper cleanup
+			setTimeout(() => {
+				// Remove any orphaned elements that might be from [slug] page
+				const orphanedEls = document.querySelectorAll('.main');
+				orphanedEls.forEach(el => {
+					if (el.closest('[data-sveltekit-preload-data]') === null) {
+						el.remove();
+					}
+				});
+			}, 200);
+		}
+	});
 
 	let mouseX = -1000, mouseY = -1000; // Initial off-screen position
     let intensity = .35; // Control the effect strength
@@ -28,9 +67,6 @@
 	let logoMask;
 	let percentageText;
 
-	setTimeout(() => {
-		loading.set(false)
-	}, 100);
 
     onMount(() => {
 		// Simulate realistic loading with staggered progress
@@ -169,9 +205,13 @@
 	<canvas id = 'canvas'>
 	</canvas>
 
-	<main>
-		{@render children()}
-	</main>
+	{#key $page.url.pathname}
+	<div in:fly={{y: 100, duration: 150, delay: 200}} out:fade={{duration: 150}}>
+		<main class="main-content" in:fade={{duration: 150, delay: 150}} out:fade={{duration: 150}}>
+			{@render children()}
+		</main>
+	</div>
+	{/key}
 
 	<div id = 'navbar'>
 		<Navbar />
@@ -293,13 +333,11 @@
 	.app {
 		display: flex;
 		position: relative;
-		justify-content: flex-start;
-		align-items: flex-start;
+		justify-content: center !important;
+		align-items:  center !important;
 		width: clamp(400px, 100%, 1800px);
 		margin: auto;
 	}
-
-
 
 	main {
 		flex: 1;

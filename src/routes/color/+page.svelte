@@ -478,8 +478,6 @@
 </svelte:head>
 
 
-<Header />
-
 <!-- Prevent errors by only rendering the interactive UI on the client side -->
 {#if typeof window !== 'undefined'}
 <main>

@@ -3,7 +3,8 @@
 	import { tweened } from 'svelte/motion';
 	import { activeImage, showPreview, showHeader, themeColor } from '$lib/store';
 	import { formatDate } from '$lib/utils';
-	import {onMount} from 'svelte'
+	import { onMount, onDestroy } from 'svelte'
+	import { beforeNavigate } from '$app/navigation';
 	import {
 		blur,
 		crossfade,
@@ -17,9 +18,24 @@
 
 	let headers = [];
 	let activeId = '';
+	let isNavigatingAway = false;
+	let mainElement;
 
 	showHeader.set(false)
 	themeColor.set('FFFFFF')
+
+	// Handle navigation away from this page
+	beforeNavigate(() => {
+		isNavigatingAway = true;
+		// Immediately reset styles that might affect other pages
+		document.body.style.overflow = '';
+		showHeader.set(true);
+
+		// Add a unique identifier to this element for easier cleanup
+		if (mainElement) {
+			mainElement.dataset.slugPage = 'true';
+		}
+	});
 
 	onMount(()=> {
 		document.body.style.overflow = 'hidden';
@@ -60,6 +76,12 @@
 
 	})
 
+	onDestroy(() => {
+		// Reset any global states when leaving the page
+		showHeader.set(true)
+		document.body.style.overflow = '';
+	});
+
 	function scrollToHeader(id) {
         const target = document.getElementById(id);
         if (target) {
@@ -92,15 +114,22 @@
 	<meta property="og:title" content={data.meta.title} />
 </svelte:head>
 
-<div id = 'bar'>
+{#if !isNavigatingAway}
+<div id="bar">
 	<h3> {data.slug} </h3>
 </div>
 
-<div class="main" in:fade={{duration: 200}} >
+<div
+	class="main"
+	bind:this={mainElement}
+	in:fade={{duration: 200}}
+	out:fade={{duration: 100, easing: (t) => t}}
+	style="position: fixed; top: 0; left: 0; z-index: 10; margin: 0; padding: 0;"
+	data-slug-page="true"
+>
 
-	<div class = 'sidebar left'>
-
-		<p class = 'blurb'>
+	<div class="sidebar left">
+		<p class="blurb">
 			{#if data.meta.blurb}
 				{data.meta.blurb}
 			{/if}
@@ -108,46 +137,43 @@
 
 		<div class="tags">
 			{#each data.meta.categories as category}
-				<div class = 'tag'>
-					<h3> {category}  </h3>
+				<div class="tag">
+					<h3> {category} </h3>
 				</div>
 			{/each}
 		</div>
-
 	</div>
 
-	<div class = 'container {data.meta.type} {data.meta.theme ? data.meta.theme : ''}'>
+	<div class="container {data.meta.type} {data.meta.theme ? data.meta.theme : ''}">
 		{#if data.meta.banner}
-			<div id = 'banner'>
-				<div id = 'img' style='background-image: url("banner/{data.meta.banner}.png")'>
+			<div id="banner">
+				<div id="img" style='background-image: url("banner/{data.meta.banner}.png")'>
 				</div>
-				<div id = 'gradient'></div>
+				<div id="gradient"></div>
 			</div>
 		{/if}
 		<article>
-
 			<hgroup>
 				{#if data.meta.series}
 					<h3>{data.meta.series}</h3>
 				{/if}
 				<h1>{data.meta.title}</h1>
 
-				<div class = 'profile'>
+				<div class="profile">
 					<a href="https://lh3.googleusercontent.com/drive-viewer/AITFw-xPEYrPxiy026fqjw7Rjxen5nkMMpx8rP8_gYRhj4f1kkcUhXKJyhTE55n1MXPaQz-cKjTs_EuXD7whMajZsdR0HAn29A=s2560?source=screenshot.guru"> <img src="https://lh3.googleusercontent.com/drive-viewer/AITFw-xPEYrPxiy026fqjw7Rjxen5nkMMpx8rP8_gYRhj4f1kkcUhXKJyhTE55n1MXPaQz-cKjTs_EuXD7whMajZsdR0HAn29A=s2560" /> </a>
 					<h2> {data.meta.author} </h2>
 				</div>
 
-				<h2 class = 'date'> {formatDate(data.meta.date)}</h2>
-
+				<h2 class="date"> {formatDate(data.meta.date)}</h2>
 			</hgroup>
 
 			<div class="prose preview">
 				<svelte:component this={data.content} />
 			</div>
 		</article>
-
 	</div>
-	<div class = 'sidebar right'>
+
+	<div class="sidebar right">
 		<nav class='menu'>
 			<h2>Table of Contents</h2>
 			<ul>
@@ -166,18 +192,18 @@
 
 	{#if $showPreview}
 		{#if $activeImage}
-			<div id = 'dark' transition:fade={{duration: 100}} ></div>
-				<div id = 'pop' on:click={closeModal}>
-					<div id = 'modal' bind:this={Preview} in:fade={{duration: 100}}>
-						<img id = 'preview' src = '/img/{$activeImage.url}.png' loading='lazy' alt = 'Image'>
-						<div class = 'content'> {$activeImage.caption} </div>
+			<div id="dark" transition:fade={{duration: 100}} ></div>
+				<div id="pop" on:click={closeModal}>
+					<div id="modal" bind:this={Preview} in:fade={{duration: 100}}>
+						<img id="preview" src="/img/{$activeImage.url}.png" loading='lazy' alt="Image">
+						<div class="content"> {$activeImage.caption} </div>
 				</div>
 			</div>
 
 		{/if}
 	{/if}
-
 </div>
+{/if}
 
 <style lang="scss">
 
@@ -189,7 +215,7 @@
 		height: 32px;
 		width: 100vw;
 		border-bottom: 1px solid rgba(black, 0.1);
-		z-index: 3;
+		z-index: 20;
 	}
 
 	.sidebar{
@@ -200,13 +226,11 @@
 
 		background: white;
 		margin: 12px;
-		//box-shadow: 0 20px 60px rgba(#030025, 0.12);
 		border-radius: 8px;
 		overflow-y: scroll;
 
 		position: fixed;
 		top: 0;
-
 
 		&.left{
 			left: 0;
@@ -246,7 +270,6 @@
 				padding: 4px 8px;
 				border-radius: 8px;
 				background: rgba(white, 0.4);
-				//box-shadow: 0 6px 12px rgba(#030025, 0.12);
 				opacity: 0.75;
 				transition: 0.2s ease;
 
@@ -257,21 +280,16 @@
 					transition: 0.2s ease;
 				}
 
-
 				&.h2{
-					//font-size: 13px;
 					margin-left: 8px;
 				}
 
 				&:hover{
 					opacity: 1;
 					background: rgba(white, 0.6);
-					//transform: translateX(-1px);
-					//font-weight: 600;
 
 					p{
 						color: black;
-						//font-weight: 600;
 					}
 
 				}
@@ -293,13 +311,6 @@
 		padding: 0px;
 		transition: all 0.5s ease;
 
-		//max-width: 1440px;
-		//max-height: 1180px;
-		//box-shadow: 0 10px 40px rgba(#030025, 0.15);
-		//border: 2px solid white;
-		//border: 1.5px solid #030025;
-		//background: rgba(white, 1);
-
 		&.dark{
 			background: rgba(black, 0.95);
 
@@ -312,36 +323,24 @@
 		}
 	}
 
-
 	.main {
-		position: fixed; /* Ensures it floats over previous page */
-		top: 0;
-		left: 0;
-		width: 100vw;
-		height: 100vh;
-		//background: rgba(255, 255, 255, 0.9);
-		border-radius: 12px;
-		box-shadow: 0 25px 50px rgba(0, 0, 0, 0);
+		position: fixed !important;
+		top: 0 !important;
+		left: 0 !important;
+		width: 100vw !important;
+		height: 100vh !important;
+		z-index: 10 !important;
+		margin: 0 !important;
+		padding: 0 !important;
 		overflow-y: auto;
-		padding: 20px;
-		//border: 3px solid red;
-		transition: all 0.5s ease;
-		gap: 20px;
-		display: flex;
-		align-items: center;
-		justify-content: center;
+		background-color: white;
 	}
 
-
 	article {
-		//width: 1440px;
-
 		width: calc(95% - 400px);
 		max-width: 1440px;
 		height: calc(100vh - 40px);
 		max-height: 1180px;
-
-
 
 		max-inline-size: 98%;
 		margin-inline: auto;
@@ -363,7 +362,6 @@
 			background-size: cover;
 			background-position: 50% 20%;
 			position: absolute;
-			//background-attachment: fixed;
 			background-color: #ffce00;
 			top: 0;
 			left: 0;
@@ -380,28 +378,23 @@
 	}
 
 	hgroup{
-		//margin: 230px auto 100px auto;
 		width: 900px;
 		color: rgba(black, 0.8);
 		margin-bottom: 40px;
 
 		h1{
-			//font-family: 'DM Serif Display', sans-serif;
 			font-size: 52px;
 			letter-spacing: -1.2px;
 			line-height: 100%;
 			max-inline-size: 100%;
 
 			font-weight: 800;
-			//color: white;
-			//text-shadow: 0 10px 30px rgba(black, 0.8);
 		}
 		h2{
 			background: rgba(white, 0.8);
 			color: black;
 			margin-top: 8px;
 			font-size: 14px;
-			//padding: 8px 12px;
 			border-radius: 8px;
 			width: fit-content;
 			display: none;
@@ -452,8 +445,6 @@
 		margin-bottom: 5px;
 	}
 
-
-
 	#dark{
 		position: fixed !important;
 		top: 0;
@@ -471,7 +462,6 @@
 		left: 0;
 		width: 100vw;
 		height: 100vh;
-		//background: rgba(black, 0.1);
 		z-index: 4;
 
 		display: flex;
@@ -487,9 +477,6 @@
 			z-index: 4 !important;
 			overflow: visible;
 			transform: translateY(16px);
-			//background: white;
-			//box-shadow: 0 15px 60px rgba(black, .25), inset 0px -15px 20px rgba(black, 0.08);
-            //border: 1px solid red;
 
 			#preview{
 				width: 100%;
@@ -499,13 +486,10 @@
 				border: none;
 				margin: auto;
 				object-fit: contain !important;
-				//border: 1px solid rgba(white, 0.1);
-				//box-shadow: 0 15px 60px rgba(black, .5), inset 0px -15px 20px rgba(black, 0.08);
 				filter: drop-shadow(0 15px 50px rgba(black, 0.5));
 			}
         }
     }
-
 
 	@media screen and (max-width: 1024px){
 		.sidebar{
@@ -519,9 +503,6 @@
 			height: 100vh;
 			background: white;
 			border-radius: 0 !important;
-			//max-width: 1440px;
-			//height: calc(100vh - 50p);
-			//max-height: 1080px;
 		}
 
 		article{
@@ -529,10 +510,7 @@
 			max-inline-size: 100%;
 			padding: 16px;
 			border-radius: 0 !important;
-			//height: 100vh;
 		}
 	}
-
-
 
 </style>

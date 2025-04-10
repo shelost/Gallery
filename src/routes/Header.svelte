@@ -2,10 +2,12 @@
 	import { page } from '$app/state';
 	import logo from '$lib/images/svelte-logo.svg';
 	import github from '$lib/images/github.svg';
-  import { goto } from '$app/navigation';
+  	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
 
     let Pill
+
+
 
 	function switchPage(page) {
 
@@ -19,7 +21,7 @@
 			Pill.style.height = `${rect.height}px`;
 		}
 
-		if (page === 'home') {
+		if (page === 'home' || page === '/') {
 			goto('/')
 		} else {
 			goto('/' + page)
@@ -49,13 +51,22 @@
 	})
 
 
+	let title = page.url.pathname.slice(1, 2).toUpperCase() + page.url.pathname.slice(2)
+
+	$: title = page.url.pathname.slice(1, 2).toUpperCase() + page.url.pathname.slice(2)
+
+
 
 </script>
 
 <header>
-	<div class="corner">
-		<img id = 'logo' src='ahw.png' alt="Logo" />
+	<div class="corner title" on:click={() => {switchPage('home')}}>
+		<img id = 'logo' src='smiley.png' alt="Logo" />
+		<h3>
+			{page.url.pathname.slice(1, 2).toUpperCase() + page.url.pathname.slice(2)}
+		</h3>
 	</div>
+
 
 	<nav>
 
@@ -120,6 +131,20 @@
         display: none;
     }
 
+	.title{
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		cursor: pointer;
+		z-index: 4;
+		gap: 4px;
+		h3{
+			font-size: 18px;
+			font-weight: 650;
+			letter-spacing: -.75px;
+		}
+	}
+
 	nav {
 		display: flex;
 		justify-content: center;
@@ -132,6 +157,7 @@
 		gap: 0px;
 		z-index: 2;
 	}
+
 
 	.tab{
 		display: flex;
@@ -159,25 +185,14 @@
 	}
 
 
-	.corner a {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		width: 100%;
-		height: 100%;
-	}
-
-	.corner img {
-		width: 36px;
-		height: 36px;
-	}
 
 	#logo{
 		width: auto;
-		height: 24px;
+		height: 32px;
 		border-radius: 8px;
 		object-fit: contain;
         margin-left: 4px;
+        cursor: pointer;
 		//filter: drop-shadow( -6px 6px 6px rgba(#030025, 0.15));
 	}
 

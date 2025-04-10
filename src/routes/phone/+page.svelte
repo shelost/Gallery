@@ -2350,8 +2350,6 @@
   <title> 3D Phone Viewer </title>
 </svelte:head>
 
-<Header />
-
 
 <div id='container'>
 

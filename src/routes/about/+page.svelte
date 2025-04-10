@@ -11,7 +11,7 @@
 	let visible = false;
 
 	onMount(() => {
-		//visible = true;
+		visible = true;
 	});
 
 	// transition:fly={{y: 50, duration: 100}}
@@ -24,19 +24,18 @@
 	<meta name="description" content="About Heewon, a software engineer and designer" />
 </svelte:head>
 
-<div class="text-column">
+<div class="text-column" in:fly={{y: 50, duration: 100, delay: 100}}  out:fly={{y: -50, duration: 100}}>
 	<h1>
 		About Me
 	</h1>
 
 	<p>
-		Hi! My name is Heewon, and I'm a software engineer and designer.
+		Hi! My name is Heewon, and I'm a Design Engineer based in Ithaca, NY.
 	</p>
 
-	<pre>npx sv create</pre>
-
 	<p>
-		I was briefly at Cornell and Stan
+		I was briefly at <a href="https://cornell.edu">Cornell</a>, before joining <a href="https://stan.store">Stan</a> as its Founding Designer.
+
 	</p>
 
 	<p>
@@ -62,6 +61,7 @@
 		font-size: 14px;
 		font-weight: 450;
 		letter-spacing: -0.35px;
+		margin: 8px 0;
 	}
 
 </style>

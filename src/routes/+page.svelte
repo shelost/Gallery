@@ -39,6 +39,9 @@
 		val = 17945
 	}, 400);
 
+	setTimeout(() => {
+		loading.set(false)
+	}, 100);
 
 
 	// Functions
@@ -478,7 +481,7 @@
 {#if !$loading}
 <section id = 'app' bind:this={App} class:offset={$openDrawer}>
 
-	<section class = 'splash'>
+	<section class = 'splash' >
 
 		<img src="bidam.png" id="bidam" class="piece" alt="Logo" width="350" height="197" loading="lazy"
 			in:fly={{y: 100, duration: 400, delay: 300}} />
