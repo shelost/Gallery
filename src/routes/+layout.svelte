@@ -180,9 +180,11 @@
 		</div>
 	</div>
 
+	<!--
 	{#if $openDrawer}
 	<div id = 'dark' transition:fade={{duration: 200}} on:click={()=>{openDrawer.set(false)}}></div>
 	{/if}
+	-->
 
 </div>
 

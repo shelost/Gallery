@@ -17,8 +17,9 @@
 		fade,
 		fly,
 		scale,
-		slide
+		slide,
 	} from 'svelte/transition';
+	import { quintOut } from 'svelte/easing';
 
 	// Variables
 
@@ -445,10 +446,7 @@
 </script>
 
 <svelte:head>
-	<title>Heewon</title>
-	<meta name="description" content="Heewon's Portfolio" />
-	<meta name="view-transition" content="same-origin" />
-	<link rel="icon" href="favicon.png" />
+
 
 	<!-- Resource hints for performance -->
 	<link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -621,6 +619,13 @@
 										</div>
 									{/each}
 								</div>
+
+								<button class = 'button' on:click={() => {
+									expandedPost.set(link)
+									openDrawer.set(true)
+								}}>
+									<h2> View Project </h2>
+								</button>
 							</div>
 
 						</div>
@@ -721,19 +726,21 @@
 
 
 {#if $openDrawer}
-	<div id = 'drawer' bind:this={Drawer} transition:fly={{x: 500, duration: 400}}>
-		<div class = 'drawer-top'>
+	<div id = 'overlay' transition:fade={{duration: 200}} on:click = {() => {openDrawer.set(false)}}>
+		<div id = 'drawer' bind:this={Drawer} transition:fly={{y: 500, duration: 300, easing: quintOut}}>
+			<div class = 'drawer-top'>
 
-			<div class = 'x' on:click = {() => {openDrawer.set(false)}}>
-				<p> close </p>
+				<div class = 'x' on:click = {() => {openDrawer.set(false)}}>
+					<p> close </p>
+				</div>
+
 			</div>
 
-		</div>
+			<h1> {$expandedPost.meta.title} </h1>
 
-		<h1> {$expandedPost.meta.title} </h1>
-
-		<div class="prose">
-			<svelte:component this={$expandedPost.content} />
+			<div class="prose">
+				<svelte:component this={$expandedPost.content} />
+			</div>
 		</div>
 	</div>
 {/if}
@@ -957,21 +964,61 @@
 		cursor: pointer;
 	}
 
-	#drawer{
+	#overlay{
 		position: fixed;
 		top: 0;
 		right: 0;
-		width: 600px;
+		width: 100%;
+		height: 100%;
+		transition: 0.2s ease;
+
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		background: rgba(black, .5);
+	}
+
+	#drawer{
 		padding: 40px;
-		height: calc(100vh - 80px);
+		width: clamp(25%, 640px, 100%);
+		height: 600px;
+		border-radius: 18px;
+
+
+
+		box-shadow: -12px 48px 100px rgba(black, .5), -8px 12px 18px rgba(black, .1), inset -4px -4px 4px rgba(#030025, .1);
+		//border: 2px solid white;
+
 		overflow-y: scroll;
+		overflow-x: hidden;
 		z-index: 10;
 		background: rgba(white, 9);
 		backdrop-filter: blur(10px);
-		border-radius: 8px 0 0 8px;
+
 		text-align: left;
+
 		h1{
 			text-align: left;
+		}
+
+		::-webkit-scrollbar{
+			width: 4px !important;
+		}
+
+		::-webkit-scrollbar-track{
+			background: rgba(black, .2);
+			border-radius: 4px;
+			width: 4px !important;
+		}
+
+		::-webkit-scrollbar-thumb{
+			background: rgba(black, .2);
+			border-radius: 4px;
+			width: 4px !important;
+		}
+
+		.prose{
+			width: 100%;
 		}
 	}
 
@@ -1030,7 +1077,7 @@
 		width: 250px;
 		height: 72px;
 		border-radius: 40px;
-		box-shadow: -8px 36px 60px rgba(black, .75);
+		box-shadow: -8px 36px 60px rgba(black, .9);
 		padding: 8px;
 		gap: 8px;
 		z-index: 4;
@@ -1053,8 +1100,8 @@
 			left: 0;
 			width: 0;
 			height: 0;
-			background: rgba(white, .2);
-			border-radius: 28px;
+			background: rgba(white, .9);
+			border-radius: 24px;
 			box-shadow: -8px 16px 24px rgba(#030025, .5), inset -2px -4px 6px rgba(black, .2);
 			z-index: -1;
 			transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
@@ -1075,7 +1122,7 @@
 
 			img{
 				height: 40px;
-				filter: drop-shadow(0px 4px 12px rgba(black, 0.9));
+				filter: drop-shadow(0px 4px 12px rgba(black, 0.25));
 				transition: transform 0.3s ease;
 			}
 
@@ -1099,6 +1146,7 @@
 				opacity: 1;
 				h2{
 					font-weight: 550;
+					color: black;
 				}
 
 				img {
@@ -1214,12 +1262,10 @@
 			}
 
 			#sections{
-				width: clamp(300px, 100%, 1000px);
+				width: clamp(300px, 100%, 1400px);
 
 
 				.sec{
-
-
 					@keyframes previewFadeIn {
 						from {
 							opacity: 0;
@@ -1232,8 +1278,8 @@
 					}
 
 					.preview {
-						max-height: 500px;
-						overflow: hidden;
+						//max-height: 500px;
+						//overflow: hidden;
 						border-radius: 12px;
 					}
 
@@ -1582,7 +1628,7 @@
 	}
 
 	.sec{
-		width: clamp(300px, 100%, 1000px);
+		width: clamp(300px, 100%, 850px);
 		margin: 40px auto;
 		background: none !important;
 		padding: 30px 10px 30px 30px;
@@ -1602,15 +1648,18 @@
 
 
 		background: rgba(white, .9);
-		//box-shadow: -20px 20px 60px rgba(black, .08);
 		margin-top: 24px;
-		width: 800px;
 		transition: .2s ease;
-		overflow: visible;
+		overflow: visible !important;
 
 		border-radius: 10px;
 
 		filter: drop-shadow(-18px 24px 16px rgba(#030025, .1));
+
+		.prose{
+			max-height: 600px;
+			overflow-y: hidden;
+		}
 
 		&.game{
 			.preview{
@@ -1633,9 +1682,12 @@
 			justify-content: center;
 			gap: 20px;
 			width: 100%;
-			padding: 0 28px;
+			overflow: visible;
+			//padding: 0 28px;
 			box-sizing: border-box;
 			position: relative;
+			//box-shadow: inset -2px -4px 8px rgba(black, 0.08);
+
 			.background{
 				position: absolute;
 				background: #e0e0e0;
@@ -1645,7 +1697,7 @@
 				height: 10000px;
 				transition: .2s ease;
 				z-index: -1;
-				//display: none;
+				display: none;
 			}
 			.content{
 				.video{
@@ -1664,7 +1716,8 @@
 					margin: 24px auto 24px auto;
 					border-radius: 16px;
 					transition: .2s ease;
-					filter: drop-shadow(-18px 36px 36px rgba(#030025, .2));
+
+					filter: drop-shadow(-12px 24px 36px rgba(#030025, .08));
 				}
 			}
 		}
@@ -1678,17 +1731,32 @@
 			align-self: stretch;
 			box-sizing: border-box;
 
-			border-radius: 14px;
+			border-radius: 16px;
 			backdrop-filter: blur(10px);
-			border: 2px solid white;
+			// /border: 2px solid rgba(white, .5);
 			z-index: 2;
+
+			box-shadow: inset -2px -2px 8px rgba(black, 0.03);
+
+			&::before{
+				content: 'Info';
+				font-size: 14px;
+				font-weight: 600;
+				font-family: DM Sans, sans-serif;
+				color: rgba(#030025, .25);
+				transform: translateY(-12px);
+			}
+
+			button{
+				margin-top: 24px;
+			}
 
 			p{
 				font-family: Newsreader, sans-serif;
 				font-size: 18px !important;
 				font-weight: 550;
-				color: rgba(#030025, .7);
-				line-height: 110%;
+				color: rgba(#030025, .75);
+				line-height: 115%;
 				letter-spacing: -.3px;
 			}
 
@@ -1708,7 +1776,7 @@
 		}
 
 		hgroup{
-			position: sticky;
+			//position: sticky;
 			align-self: flex-start;
 			z-index: 3;
 
@@ -1735,27 +1803,30 @@
 				align-items: flex-start;
 				gap: 24px;
 
+				.mast{
+					h1{
+						//font-family: Newsreader, sans-serif;
+						font-size: 26px;
+						font-weight: 650;
+						line-height: 100%;
+						letter-spacing: -.7px;
+						text-align: left;
+						margin: 8px 0;
+						color: rgba(#030025, .9);
+					}
 
-				h1{
-					//font-family: Newsreader, sans-serif;
-					font-size: 26px;
-					font-weight: 650;
-					line-height: 100%;
-					letter-spacing: -.7px;
-					text-align: left;
-					margin: 8px 0;
-					color: rgba(#030025, .9);
+					h2{
+						font-size: 20px;
+						font-weight: 550;
+						line-height: 100%;
+						letter-spacing: -.7px;
+						text-align: left;
+						margin-bottom: -1px;
+						color:rgb(218, 155, 155);
+					}
 				}
 
-				h2{
-					font-size: 20px;
-					font-weight: 550;
-					line-height: 100%;
-					letter-spacing: -.7px;
-					text-align: left;
-					margin-bottom: -1px;
-					color:rgb(218, 155, 155);
-				}
+
 
 
 				img{

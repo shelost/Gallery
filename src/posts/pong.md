@@ -2,8 +2,7 @@
 type: game
 title: Super Pong
 description: Pong, but with superpowers
-blurb: "I was Stan's first UI/UX Designer, working at the company for 2 years.
-Together, we defined the brand's iconic identity."
+blurb: "I made a chaotic, but fun addition to the classic Pong game."
 url: https://shelost.github.io/superpong
 banner: null
 card: card-pong

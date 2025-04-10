@@ -7,7 +7,7 @@ blurb: "I was Stan's first UI/UX Designer, working at the company for 2 years.
 Together, we defined the brand's iconic identity."
 card: card-stan
 banner: null
-preview: bento-stan2
+preview: bento-stan
 video: null
 rating: 5
 color: DADBFF
