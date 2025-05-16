@@ -4,23 +4,24 @@
 	import github from '$lib/images/github.svg';
   	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
+  	import { formatDate } from '$lib/utils';
 
     let Pill
 
-
-
 	function switchPage(page) {
-
 		let tab = document.getElementById(page);
-		let rect = tab.getBoundingClientRect();
+		if (tab){
+			let rect = tab.getBoundingClientRect();
 
-		if (Pill) {
-			Pill.style.left = `${rect.left}px`;
-			Pill.style.top = `${rect.top}px`;
-			Pill.style.width = `${rect.width}px`;
-			Pill.style.height = `${rect.height}px`;
+			/*
+			if (Pill) {
+				Pill.style.left = `${rect.left}px`;
+				Pill.style.top = `${rect.top}px`;
+				Pill.style.width = `${rect.width}px`;
+				Pill.style.height = `${rect.height}px`;
+			}
+			*/
 		}
-
 		if (page === 'home' || page === '/') {
 			goto('/')
 		} else {
@@ -28,40 +29,19 @@
 		}
 	}
 
-	onMount(() => {
-
-		setPage()
-
-		setTimeout(() => {
-			setPage()
-		}, 1000)
-
-		window.addEventListener('resize', setPage)
-
-        function setPage(){
-            switch (page.url.pathname) {
-				case '/':
-					switchPage('home')
-					break;
-                default:
-                    switchPage(page.url.pathname.slice(1))
-                    break
-			}
-        }
-	})
-
 
 	let title = page.url.pathname.slice(1, 2).toUpperCase() + page.url.pathname.slice(2)
-
 	$: title = page.url.pathname.slice(1, 2).toUpperCase() + page.url.pathname.slice(2)
 
-
+	$: () => {
+		let active = document.querySelector('.active')[0]
+	}
 
 </script>
 
 <header>
 	<div class="corner title" on:click={() => {switchPage('home')}}>
-		<img id = 'logo' src='smiley.png' alt="Logo" />
+		<img id = 'logo' src='ahww.svg' alt="Logo" />
 		<h3>
 			{page.url.pathname.slice(1, 2).toUpperCase() + page.url.pathname.slice(2)}
 		</h3>
@@ -69,36 +49,45 @@
 
 
 	<nav>
+		<div class = 'tab' on:click={() => {goto('/games')}}>
+			<h2>Games</h2>
+		</div>
 
-		<div id = 'pill' bind:this={Pill}></div>
+		<div class = 'tab' on:click={() => {goto('/design')}}>
+			<h2>Design</h2>
+		</div>
 
-			<div id = 'home' class = 'tab' class:active={page.url.pathname === '/'} on:click={() => {switchPage('home')}}>
-				<h2>
-					Home
-				</h2>
+		<div class = 'tab' on:click={() => {goto('/blog')}}>
+			<h2>Blog</h2>
+		</div>
 
-			</div>
-			<div id = 'about' class = 'tab' class:active={page.url.pathname === '/about'} on:click={() => {switchPage('about')}}>
-				<h2>
-					About
-				</h2>
-			</div>
-			<div id = 'blog' class = 'tab' class:active={page.url.pathname === '/blog'} on:click={() => {switchPage('blog')}}>
-				<h2>
-					Blog
-				</h2>
-			</div>
+		<div class = 'tab' on:click={() => {goto('/comics')}}>
+			<h2>Comics</h2>
+		</div>
 
+		<div class = 'tab' on:click={() => {goto('/apps')}}>
+			<h2>Apps</h2>
+		</div>
 	</nav>
 
-	<div class="corner right">
-		<a href="https://github.com/shelost/dido">
-			<img src={github} alt="GitHub" />
-		</a>
+	<div class = 'corner right'>
+
+		<div class = 'time'>
+			<h2>
+				{new Date().toLocaleTimeString([], {hour: '2-digit', minute: '2-digit', hour12: true}).replace(/^0/, '').replace(/:0/, ':').replace(/^0/, '')}
+			</h2>
+
+			<h2>
+				{new Date().toLocaleDateString([], {month: '2-digit', day: '2-digit', year: 'numeric'}).replace(/\//g, '.').replace(/^0/, '').replace(/\.0/g, '.').replace(/^0/, '').replace(/\.0/g, '.')}
+			</h2>
+		</div>
 	</div>
+
 </header>
 
 <style lang="scss">
+
+	@import 'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200';
 
 
 	header {
@@ -113,6 +102,7 @@
 		margin-top: 10px;
 		padding: 0 12px;
 		box-sizing: border-box;
+		color: white;
 	}
 
 	#pill{
@@ -123,39 +113,58 @@
 		left: 50%;
 		border-radius: 50px;
 		background: #6355FF;
-		box-shadow: -2px 4px 10px rgba(#030025, 0.5), inset -2px -4px 8px rgba(#030025, 0.25), inset 2px 4px 8px rgba(white, 0.2);
+		box-shadow: -2px 4px 12px rgba(#030025, 0.5), inset -2px -4px 8px rgba(#030025, 0.25), inset 2px 4px 8px rgba(white, 0.2);
 		transition: .2s ease;
 	}
 
-    .right{
-        display: none;
-    }
 
-	.title{
+	.corner{
+		width: 200px;
+
+		img{
+			height: 36px;
+		}
+
+	}
+
+	.time{
 		display: flex;
+		flex-direction: row;
 		align-items: center;
-		justify-content: center;
-		cursor: pointer;
-		z-index: 4;
-		gap: 4px;
-		h3{
-			font-size: 18px;
-			font-weight: 650;
-			letter-spacing: -.75px;
+		justify-content: space-between;
+		gap: 8px;
+		h2{
+			font-size: 16px;
+			font-weight: 600;
+			letter-spacing: -.4px;
 		}
 	}
+
+	.right{
+       // display: none;
+	   	display: flex;
+		align-items: center;
+		justify-content: right;
+    }
+
 
 	nav {
 		display: flex;
 		justify-content: center;
 		position: relative;
 
-		padding: 6px 6px;
+		padding: 5px 5px;
 		border-radius: 50px;
-		background: white;
-		box-shadow: -8px 12px 24px rgba(#030025, 0.2), inset -2px -2px 4px rgba(#030025, 0.1), inset 2px 4px 8px rgba(white, 0.2);
+		color: rgba(white, .9);
 		gap: 0px;
 		z-index: 2;
+
+		a{
+			border: none;
+			border-radius: 4px;
+
+		}
+
 	}
 
 
@@ -165,38 +174,77 @@
 		justify-content: center;
 		cursor: pointer;
 		z-index: 4;
-		padding: 8px 14px;
+		padding: 7px 12px 8px 12px;
 		border-radius: 50px;
+		gap: 4px;
 		transition: .2s ease;
+		cursor: pointer;
+
 		h2{
 			font-size: 14px;
-			font-weight: 600;
-			letter-spacing: -.4px;
+			font-weight: 400;
+			letter-spacing: -.1px;
+			color: rgba(white, .5);
+			transition: .2s ease;
 		}
+		span{
+			font-size: 16px;
+			color: rgba(black, .25);
+			display: none;
+			color: black !important;
+		}
+
 		&.active{
 			h2{
 				color: white;
-				text-shadow: -2px 4px 8px rgba(black, .5);
+				text-shadow: -2px 6px 8px rgba(black, .6);
+			}
+			span{
+				color: rgba(white, .8) !important;
+				filter: drop-shadow( -2px 2px 4px rgba(black, .5));
 			}
 		}
 		&:hover{
-			background: rgba(black, .1);
+			h2{
+				color: rgba(white, .75);
+			}
 		}
 	}
 
 
 
-	#logo{
-		width: auto;
-		height: 32px;
-		border-radius: 8px;
-		object-fit: contain;
-        margin-left: 4px;
-        cursor: pointer;
-		//filter: drop-shadow( -6px 6px 6px rgba(#030025, 0.15));
+	.title{
+		display: flex;
+		align-items: center;
+		justify-content: left;
+		cursor: pointer;
+		z-index: 4;
+		gap: 4px;
+
+		h3{
+			font-size: 18px;
+			font-weight: 400;
+			letter-spacing: -0px;
+			color: rgba(white, .6);
+		}
 	}
 
+	#logo{
+		width: auto;
+		height: 24px;
+		border-radius: 8px;
+		object-fit: contain;
+        margin-bottom: 2.5px;
+        cursor: pointer;
+		filter: drop-shadow( -6px 6px 6px rgba(#030025, 0.1));
+	}
 
+	#text{
+		width: auto;
+		height: 20px;
+		border-radius: 8px;
+		display: none;
+	}
 
 	svg {
 		width: 2em;
@@ -207,7 +255,6 @@
 	path {
 		//fill: var(--background);
 	}
-
 
 
 	li {
@@ -229,20 +276,6 @@
 		border: var(--size) solid transparent;
 		border-top: var(--size) solid var(--color-theme-1);
 		transition: .2s ease;
-	}
-
-	nav a {
-		font-family: 'Inter', sans-serif;
-		display: flex;
-		height: 100%;
-		align-items: center;
-		padding: 0 0.5rem;
-		color: var(--color-text);
-		font-weight: 600;
-		font-size: 14px;
-		letter-spacing: -0.25px;
-		text-decoration: none;
-		transition: color 0.2s linear;
 	}
 
 	a:hover {

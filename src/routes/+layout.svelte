@@ -6,7 +6,7 @@
 	import { onMount } from 'svelte'
 	import { themeColor } from '$lib/store'
 	import { writable } from 'svelte/store'
-	import { fade, fly } from 'svelte/transition'
+	import { fade, fly, scale } from 'svelte/transition'
 	import { loading, openDrawer, showHeader } from '$lib/store'
 	import { injectAnalytics } from '@vercel/analytics/sveltekit'
 	import { page } from '$app/stores';
@@ -21,6 +21,7 @@
 	let currentPath = $page.url.pathname;
 	let prevRouteId = null;
 
+	/*
 	// Ensure page content transitions properly between routes
 	beforeNavigate(({ from, to }) => {
 		if (from && to && from.route.id !== to.route.id) {
@@ -53,6 +54,7 @@
 			}, 200);
 		}
 	});
+	*/
 
 	let mouseX = -1000, mouseY = -1000; // Initial off-screen position
     let intensity = .35; // Control the effect strength
@@ -196,7 +198,7 @@
 <svelte:head>
 	<title>Heewon</title>
 	<meta name="description" content="Heewon's Portfolio" />
-	<link rel="icon" href="favicon.png" />
+	<link rel="icon" href="ahwsq.png" />
 </svelte:head>
 
 
@@ -206,27 +208,13 @@
 	</canvas>
 
 	{#key $page.url.pathname}
-	<div in:fly={{y: 100, duration: 150, delay: 200}} out:fade={{duration: 150}}>
-		<main class="main-content" in:fade={{duration: 150, delay: 150}} out:fade={{duration: 150}}>
-			{@render children()}
-		</main>
-	</div>
+			<main class="main-content" in:scale={{start: .95, duration: 300}}>
+				{@render children()}
+			</main>
 	{/key}
 
-	<div id = 'navbar'>
-		<Navbar />
-		<div id = 'scroll' bind:this={Scroll}>
-			<div id = 'bar' bind:this={Bar}></div>
-		</div>
-	</div>
 
 	<Header />
-
-	<!--
-	{#if $openDrawer}
-	<div id = 'dark' transition:fade={{duration: 200}} on:click={()=>{openDrawer.set(false)}}></div>
-	{/if}
-	-->
 
 </div>
 
@@ -312,13 +300,6 @@
 		}
 	}
 
-	#navbar{
-		position: sticky;
-		top: 0px;
-		height: 100vh;
-		//margin-top: 80vh;
-		display: none;
-	}
 
 	#canvas{
 		position: fixed;

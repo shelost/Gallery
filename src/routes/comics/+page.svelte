@@ -8,7 +8,7 @@
 	// Properly receive the data from the load function
 	export let data;
 
-	let blog = data.posts.filter(post => post.meta?.type == 'blog');
+	let posts = data.posts.filter(post => post.meta?.type == 'comic');
 	let visible = false;
 
 	onMount(() => {
@@ -34,30 +34,28 @@
 </script>
 
 <svelte:head>
-	<title>Blog</title>
+	<title>Comics</title>
 	<meta name="description" content="Blog posts by Heewon" />
 </svelte:head>
 
 {#if visible}
 	<div class="text-column">
-
 		<div class = 'header'>
 			<h1>
-				Blog
+				Comics
 			</h1>
 			<h2>
-				My thoughts on history, tech, and more.
+				I've been exploring drawing comics as a hobby.
 			</h2>
 		</div>
 
+
 		{#if data.posts && data.posts.length > 0}
 			<div class="posts">
-				{#each blog as post, i (post.slug)}
-					{#if post.meta?.type == 'blog' && visible}
+				{#each posts as post, i (post.slug)}
+					{#if visible}
 						<div class="post"
 							on:click={() => navigateToBlogPost(post.slug)}
-							in:fly={{y: 100, duration: 300, delay: 100 + (25 * i)}}
-							out:fade={{duration: 150}}
 						>
 							<hgroup>
 								<div class = 'title'>
@@ -88,24 +86,30 @@
 	.text-column{
 		padding: 100px 0;
 		width: 100%;
-		max-width: 600px;
+		max-width: 1200px;
 		margin: auto;
+	}
+
+	.posts{
+		margin-top: 40px;
 	}
 
 	.post{
 		margin-bottom: 12px;
-		padding: 24px;
+		padding: 16px;
 		border-radius: 8px;
 		transition: background-color 0.2s;
 		cursor: pointer;
 
-
+		//background: white;
+		//box-shadow: -8px 24px 32px rgba(#030025, 0.12), inset -2px -4px 8px rgba(#030025, 0.03);
 
 		&:hover {
-			background: rgba(white, .03);
+			//background-color: rgba(0, 0, 0, 0.03);
 		}
 
 		hgroup{
+			color: rgba(white, .8);
 			.title{
 				display: flex;
 				justify-content: flex-start;
@@ -114,42 +118,40 @@
 				margin-bottom: 12px;
 				h2{
 					font-family: 'Newsreader', sans-serif;
-					font-size: 24px;
+					font-size: 40px;
 					font-weight: 600;
-					letter-spacing: -.2px;
+					letter-spacing: -.8px;
 					color: rgba(white, .8);
 				}
 				h3{
-					font-size: 14px;
-					font-weight: 300;
-					letter-spacing: -.1px;
 					color: rgba(white, .3);
 					margin-bottom: 4px;
+					display: none;
+				}
+			}
+			p{
+				font-size: 14px;
+				font-weight: 300;
+				letter-spacing: -0.1px;
+				color: rgba(white, .4);
+			}
+		}
+		.content{
+			//display: none;
+
+			:global(.gallery){
+				display: grid;
+				grid-template-columns: repeat(5, 1fr) !important;
+				gap: 16px;
+			}
+
+			.prose{
+				:global(p){
+					display: none;
 				}
 			}
 		}
-		p{
-			font-size: 14px;
-			font-weight: 300;
-			letter-spacing: -.1px;
-			line-height: 130%;
-			color: rgba(white, .4);
-		}
-		.content{
-			display: none;
-		}
 	}
 
 
-	ul {
-		list-style: none;
-		padding: 0;
-		margin: 20px 0;
-	}
-
-	li {
-		margin-bottom: 30px;
-		padding-bottom: 20px;
-		border-bottom: 1px solid #eee;
-	}
 </style>

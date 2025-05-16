@@ -29,18 +29,27 @@
 		About Me
 	</h1>
 
-	<p>
-		Hi! My name is Heewon, and I'm a Design Engineer based in Ithaca, NY.
-	</p>
+	<div class = 'expo'>
+		<img src = 'heewon9.png' id = 'pfp' alt = 'Heewon' />
 
-	<p>
-		I was briefly at <a href="https://cornell.edu">Cornell</a>, before joining <a href="https://stan.store">Stan</a> as its Founding Designer.
+		<div class = 'text'>
+			<p>
+				Hi! My name is Heewon, and I'm a Design Engineer based in Ithaca, NY.
+			</p>
 
-	</p>
+			<p>
+				I was briefly at <a href="https://cornell.edu">Cornell</a>, before joining <a href="https://stan.store">Stan</a> as its Founding Designer.
 
-	<p>
-		Since then, I've been working on many projects & freelancing for early-stage startups.
-	</p>
+			</p>
+
+			<p>
+				Since then, I've been working on many projects & freelancing for early-stage startups.
+			</p>
+		</div>
+
+	</div>
+
+
 </div>
 
 <style lang="scss">
@@ -52,6 +61,20 @@
 		margin: auto;
 	}
 
+	.expo{
+		display: flex;
+		align-items: flex-start;
+		justify-content: center;
+		gap: 24px;
+		margin: 20px 0;
+	}
+
+	#pfp{
+		width: 200px;
+		border-radius: 8px;
+		box-shadow: -8px 8px 24px rgba(#030025, 0.3);
+	}
+
 	h1{
 		margin: 40px 0;
 		letter-spacing: -.25px;
@@ -60,8 +83,9 @@
 	p{
 		font-size: 14px;
 		font-weight: 450;
-		letter-spacing: -0.35px;
-		margin: 8px 0;
+		letter-spacing: -0.36px;
+		line-height: 130%;
+		margin-bottom: 16px;
 	}
 
 </style>

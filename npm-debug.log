@@ -1,0 +1,2359 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/Users/heewonahn/opt/anaconda3/bin/node',
+1 verbose cli   '/Users/heewonahn/opt/anaconda3/bin/npm',
+1 verbose cli   'install' ]
+2 info using npm@3.10.10
+3 info using node@v6.13.1
+4 silly loadCurrentTree Starting
+5 silly install loadCurrentTree
+6 silly install readLocalPackageData
+7 silly install normalizeTree
+8 silly loadCurrentTree Finishing
+9 silly loadIdealTree Starting
+10 silly install loadIdealTree
+11 silly cloneCurrentTree Starting
+12 silly install cloneCurrentTreeToIdealTree
+13 silly cloneCurrentTree Finishing
+14 silly loadShrinkwrap Starting
+15 silly install loadShrinkwrap
+16 silly loadShrinkwrap Finishing
+17 silly loadAllDepsIntoIdealTree Starting
+18 silly install loadAllDepsIntoIdealTree
+19 silly fetchNamedPackageData @number-flow/svelte
+20 silly mapToRegistry name @number-flow/svelte
+21 silly mapToRegistry scope (from package name) @number-flow
+22 verbose mapToRegistry no registry URL found in name for scope @number-flow
+23 silly mapToRegistry using default registry
+24 silly mapToRegistry registry https://registry.npmjs.org/
+25 silly mapToRegistry data Result {
+25 silly mapToRegistry   raw: '@number-flow/svelte',
+25 silly mapToRegistry   scope: '@number-flow',
+25 silly mapToRegistry   escapedName: '@number-flow%2fsvelte',
+25 silly mapToRegistry   name: '@number-flow/svelte',
+25 silly mapToRegistry   rawSpec: '',
+25 silly mapToRegistry   spec: 'latest',
+25 silly mapToRegistry   type: 'tag' }
+26 silly mapToRegistry uri https://registry.npmjs.org/@number-flow%2fsvelte
+27 silly fetchNamedPackageData @tensorflow-models/pose-detection
+28 silly mapToRegistry name @tensorflow-models/pose-detection
+29 silly mapToRegistry scope (from package name) @tensorflow-models
+30 verbose mapToRegistry no registry URL found in name for scope @tensorflow-models
+31 silly mapToRegistry using default registry
+32 silly mapToRegistry registry https://registry.npmjs.org/
+33 silly mapToRegistry data Result {
+33 silly mapToRegistry   raw: '@tensorflow-models/pose-detection',
+33 silly mapToRegistry   scope: '@tensorflow-models',
+33 silly mapToRegistry   escapedName: '@tensorflow-models%2fpose-detection',
+33 silly mapToRegistry   name: '@tensorflow-models/pose-detection',
+33 silly mapToRegistry   rawSpec: '',
+33 silly mapToRegistry   spec: 'latest',
+33 silly mapToRegistry   type: 'tag' }
+34 silly mapToRegistry uri https://registry.npmjs.org/@tensorflow-models%2fpose-detection
+35 silly fetchNamedPackageData @tensorflow/tfjs-backend-webgl
+36 silly mapToRegistry name @tensorflow/tfjs-backend-webgl
+37 silly mapToRegistry scope (from package name) @tensorflow
+38 verbose mapToRegistry no registry URL found in name for scope @tensorflow
+39 silly mapToRegistry using default registry
+40 silly mapToRegistry registry https://registry.npmjs.org/
+41 silly mapToRegistry data Result {
+41 silly mapToRegistry   raw: '@tensorflow/tfjs-backend-webgl',
+41 silly mapToRegistry   scope: '@tensorflow',
+41 silly mapToRegistry   escapedName: '@tensorflow%2ftfjs-backend-webgl',
+41 silly mapToRegistry   name: '@tensorflow/tfjs-backend-webgl',
+41 silly mapToRegistry   rawSpec: '',
+41 silly mapToRegistry   spec: 'latest',
+41 silly mapToRegistry   type: 'tag' }
+42 silly mapToRegistry uri https://registry.npmjs.org/@tensorflow%2ftfjs-backend-webgl
+43 silly fetchNamedPackageData @tensorflow/tfjs-core
+44 silly mapToRegistry name @tensorflow/tfjs-core
+45 silly mapToRegistry scope (from package name) @tensorflow
+46 verbose mapToRegistry no registry URL found in name for scope @tensorflow
+47 silly mapToRegistry using default registry
+48 silly mapToRegistry registry https://registry.npmjs.org/
+49 silly mapToRegistry data Result {
+49 silly mapToRegistry   raw: '@tensorflow/tfjs-core',
+49 silly mapToRegistry   scope: '@tensorflow',
+49 silly mapToRegistry   escapedName: '@tensorflow%2ftfjs-core',
+49 silly mapToRegistry   name: '@tensorflow/tfjs-core',
+49 silly mapToRegistry   rawSpec: '',
+49 silly mapToRegistry   spec: 'latest',
+49 silly mapToRegistry   type: 'tag' }
+50 silly mapToRegistry uri https://registry.npmjs.org/@tensorflow%2ftfjs-core
+51 silly fetchNamedPackageData @unpic/svelte
+52 silly mapToRegistry name @unpic/svelte
+53 silly mapToRegistry scope (from package name) @unpic
+54 verbose mapToRegistry no registry URL found in name for scope @unpic
+55 silly mapToRegistry using default registry
+56 silly mapToRegistry registry https://registry.npmjs.org/
+57 silly mapToRegistry data Result {
+57 silly mapToRegistry   raw: '@unpic/svelte',
+57 silly mapToRegistry   scope: '@unpic',
+57 silly mapToRegistry   escapedName: '@unpic%2fsvelte',
+57 silly mapToRegistry   name: '@unpic/svelte',
+57 silly mapToRegistry   rawSpec: '',
+57 silly mapToRegistry   spec: 'latest',
+57 silly mapToRegistry   type: 'tag' }
+58 silly mapToRegistry uri https://registry.npmjs.org/@unpic%2fsvelte
+59 silly fetchNamedPackageData @vercel/analytics
+60 silly mapToRegistry name @vercel/analytics
+61 silly mapToRegistry scope (from package name) @vercel
+62 verbose mapToRegistry no registry URL found in name for scope @vercel
+63 silly mapToRegistry using default registry
+64 silly mapToRegistry registry https://registry.npmjs.org/
+65 silly mapToRegistry data Result {
+65 silly mapToRegistry   raw: '@vercel/analytics',
+65 silly mapToRegistry   scope: '@vercel',
+65 silly mapToRegistry   escapedName: '@vercel%2fanalytics',
+65 silly mapToRegistry   name: '@vercel/analytics',
+65 silly mapToRegistry   rawSpec: '',
+65 silly mapToRegistry   spec: 'latest',
+65 silly mapToRegistry   type: 'tag' }
+66 silly mapToRegistry uri https://registry.npmjs.org/@vercel%2fanalytics
+67 silly fetchNamedPackageData embla-carousel-svelte
+68 silly mapToRegistry name embla-carousel-svelte
+69 silly mapToRegistry using default registry
+70 silly mapToRegistry registry https://registry.npmjs.org/
+71 silly mapToRegistry data Result {
+71 silly mapToRegistry   raw: 'embla-carousel-svelte',
+71 silly mapToRegistry   scope: null,
+71 silly mapToRegistry   escapedName: 'embla-carousel-svelte',
+71 silly mapToRegistry   name: 'embla-carousel-svelte',
+71 silly mapToRegistry   rawSpec: '',
+71 silly mapToRegistry   spec: 'latest',
+71 silly mapToRegistry   type: 'tag' }
+72 silly mapToRegistry uri https://registry.npmjs.org/embla-carousel-svelte
+73 silly fetchNamedPackageData fabric
+74 silly mapToRegistry name fabric
+75 silly mapToRegistry using default registry
+76 silly mapToRegistry registry https://registry.npmjs.org/
+77 silly mapToRegistry data Result {
+77 silly mapToRegistry   raw: 'fabric',
+77 silly mapToRegistry   scope: null,
+77 silly mapToRegistry   escapedName: 'fabric',
+77 silly mapToRegistry   name: 'fabric',
+77 silly mapToRegistry   rawSpec: '',
+77 silly mapToRegistry   spec: 'latest',
+77 silly mapToRegistry   type: 'tag' }
+78 silly mapToRegistry uri https://registry.npmjs.org/fabric
+79 silly fetchNamedPackageData glob
+80 silly mapToRegistry name glob
+81 silly mapToRegistry using default registry
+82 silly mapToRegistry registry https://registry.npmjs.org/
+83 silly mapToRegistry data Result {
+83 silly mapToRegistry   raw: 'glob',
+83 silly mapToRegistry   scope: null,
+83 silly mapToRegistry   escapedName: 'glob',
+83 silly mapToRegistry   name: 'glob',
+83 silly mapToRegistry   rawSpec: '',
+83 silly mapToRegistry   spec: 'latest',
+83 silly mapToRegistry   type: 'tag' }
+84 silly mapToRegistry uri https://registry.npmjs.org/glob
+85 silly fetchNamedPackageData gsap
+86 silly mapToRegistry name gsap
+87 silly mapToRegistry using default registry
+88 silly mapToRegistry registry https://registry.npmjs.org/
+89 silly mapToRegistry data Result {
+89 silly mapToRegistry   raw: 'gsap',
+89 silly mapToRegistry   scope: null,
+89 silly mapToRegistry   escapedName: 'gsap',
+89 silly mapToRegistry   name: 'gsap',
+89 silly mapToRegistry   rawSpec: '',
+89 silly mapToRegistry   spec: 'latest',
+89 silly mapToRegistry   type: 'tag' }
+90 silly mapToRegistry uri https://registry.npmjs.org/gsap
+91 silly fetchNamedPackageData langchain
+92 silly mapToRegistry name langchain
+93 silly mapToRegistry using default registry
+94 silly mapToRegistry registry https://registry.npmjs.org/
+95 silly mapToRegistry data Result {
+95 silly mapToRegistry   raw: 'langchain',
+95 silly mapToRegistry   scope: null,
+95 silly mapToRegistry   escapedName: 'langchain',
+95 silly mapToRegistry   name: 'langchain',
+95 silly mapToRegistry   rawSpec: '',
+95 silly mapToRegistry   spec: 'latest',
+95 silly mapToRegistry   type: 'tag' }
+96 silly mapToRegistry uri https://registry.npmjs.org/langchain
+97 silly fetchNamedPackageData material-icons
+98 silly mapToRegistry name material-icons
+99 silly mapToRegistry using default registry
+100 silly mapToRegistry registry https://registry.npmjs.org/
+101 silly mapToRegistry data Result {
+101 silly mapToRegistry   raw: 'material-icons',
+101 silly mapToRegistry   scope: null,
+101 silly mapToRegistry   escapedName: 'material-icons',
+101 silly mapToRegistry   name: 'material-icons',
+101 silly mapToRegistry   rawSpec: '',
+101 silly mapToRegistry   spec: 'latest',
+101 silly mapToRegistry   type: 'tag' }
+102 silly mapToRegistry uri https://registry.npmjs.org/material-icons
+103 silly fetchNamedPackageData pdfjs-dist
+104 silly mapToRegistry name pdfjs-dist
+105 silly mapToRegistry using default registry
+106 silly mapToRegistry registry https://registry.npmjs.org/
+107 silly mapToRegistry data Result {
+107 silly mapToRegistry   raw: 'pdfjs-dist',
+107 silly mapToRegistry   scope: null,
+107 silly mapToRegistry   escapedName: 'pdfjs-dist',
+107 silly mapToRegistry   name: 'pdfjs-dist',
+107 silly mapToRegistry   rawSpec: '',
+107 silly mapToRegistry   spec: 'latest',
+107 silly mapToRegistry   type: 'tag' }
+108 silly mapToRegistry uri https://registry.npmjs.org/pdfjs-dist
+109 silly fetchNamedPackageData svelte-image
+110 silly mapToRegistry name svelte-image
+111 silly mapToRegistry using default registry
+112 silly mapToRegistry registry https://registry.npmjs.org/
+113 silly mapToRegistry data Result {
+113 silly mapToRegistry   raw: 'svelte-image',
+113 silly mapToRegistry   scope: null,
+113 silly mapToRegistry   escapedName: 'svelte-image',
+113 silly mapToRegistry   name: 'svelte-image',
+113 silly mapToRegistry   rawSpec: '',
+113 silly mapToRegistry   spec: 'latest',
+113 silly mapToRegistry   type: 'tag' }
+114 silly mapToRegistry uri https://registry.npmjs.org/svelte-image
+115 silly fetchNamedPackageData svelte-preprocess
+116 silly mapToRegistry name svelte-preprocess
+117 silly mapToRegistry using default registry
+118 silly mapToRegistry registry https://registry.npmjs.org/
+119 silly mapToRegistry data Result {
+119 silly mapToRegistry   raw: 'svelte-preprocess',
+119 silly mapToRegistry   scope: null,
+119 silly mapToRegistry   escapedName: 'svelte-preprocess',
+119 silly mapToRegistry   name: 'svelte-preprocess',
+119 silly mapToRegistry   rawSpec: '',
+119 silly mapToRegistry   spec: 'latest',
+119 silly mapToRegistry   type: 'tag' }
+120 silly mapToRegistry uri https://registry.npmjs.org/svelte-preprocess
+121 silly fetchNamedPackageData turn.js
+122 silly mapToRegistry name turn.js
+123 silly mapToRegistry using default registry
+124 silly mapToRegistry registry https://registry.npmjs.org/
+125 silly mapToRegistry data Result {
+125 silly mapToRegistry   raw: 'turn.js',
+125 silly mapToRegistry   scope: null,
+125 silly mapToRegistry   escapedName: 'turn.js',
+125 silly mapToRegistry   name: 'turn.js',
+125 silly mapToRegistry   rawSpec: '',
+125 silly mapToRegistry   spec: 'latest',
+125 silly mapToRegistry   type: 'tag' }
+126 silly mapToRegistry uri https://registry.npmjs.org/turn.js
+127 silly fetchNamedPackageData vercel
+128 silly mapToRegistry name vercel
+129 silly mapToRegistry using default registry
+130 silly mapToRegistry registry https://registry.npmjs.org/
+131 silly mapToRegistry data Result {
+131 silly mapToRegistry   raw: 'vercel',
+131 silly mapToRegistry   scope: null,
+131 silly mapToRegistry   escapedName: 'vercel',
+131 silly mapToRegistry   name: 'vercel',
+131 silly mapToRegistry   rawSpec: '',
+131 silly mapToRegistry   spec: 'latest',
+131 silly mapToRegistry   type: 'tag' }
+132 silly mapToRegistry uri https://registry.npmjs.org/vercel
+133 verbose request uri https://registry.npmjs.org/@tensorflow-models%2fpose-detection
+134 verbose request no auth needed
+135 info attempt registry request try #1 at 8:50:29 PM
+136 verbose request using bearer token for auth
+137 verbose request id 82173e22413d0efd
+138 http request GET https://registry.npmjs.org/@tensorflow-models%2fpose-detection
+139 verbose request uri https://registry.npmjs.org/@tensorflow%2ftfjs-backend-webgl
+140 verbose request no auth needed
+141 info attempt registry request try #1 at 8:50:29 PM
+142 verbose request using bearer token for auth
+143 http request GET https://registry.npmjs.org/@tensorflow%2ftfjs-backend-webgl
+144 verbose request uri https://registry.npmjs.org/@tensorflow%2ftfjs-core
+145 verbose request no auth needed
+146 info attempt registry request try #1 at 8:50:29 PM
+147 verbose request using bearer token for auth
+148 http request GET https://registry.npmjs.org/@tensorflow%2ftfjs-core
+149 verbose request uri https://registry.npmjs.org/@unpic%2fsvelte
+150 verbose request no auth needed
+151 info attempt registry request try #1 at 8:50:29 PM
+152 verbose request using bearer token for auth
+153 http request GET https://registry.npmjs.org/@unpic%2fsvelte
+154 verbose request uri https://registry.npmjs.org/@vercel%2fanalytics
+155 verbose request no auth needed
+156 info attempt registry request try #1 at 8:50:29 PM
+157 verbose request using bearer token for auth
+158 http request GET https://registry.npmjs.org/@vercel%2fanalytics
+159 verbose request uri https://registry.npmjs.org/embla-carousel-svelte
+160 verbose request no auth needed
+161 info attempt registry request try #1 at 8:50:29 PM
+162 verbose request using bearer token for auth
+163 http request GET https://registry.npmjs.org/embla-carousel-svelte
+164 verbose request uri https://registry.npmjs.org/glob
+165 verbose request no auth needed
+166 info attempt registry request try #1 at 8:50:29 PM
+167 verbose request using bearer token for auth
+168 http request GET https://registry.npmjs.org/glob
+169 verbose request uri https://registry.npmjs.org/langchain
+170 verbose request no auth needed
+171 info attempt registry request try #1 at 8:50:29 PM
+172 verbose request using bearer token for auth
+173 http request GET https://registry.npmjs.org/langchain
+174 verbose request uri https://registry.npmjs.org/material-icons
+175 verbose request no auth needed
+176 info attempt registry request try #1 at 8:50:29 PM
+177 verbose request using bearer token for auth
+178 http request GET https://registry.npmjs.org/material-icons
+179 verbose request uri https://registry.npmjs.org/pdfjs-dist
+180 verbose request no auth needed
+181 info attempt registry request try #1 at 8:50:29 PM
+182 verbose request using bearer token for auth
+183 http request GET https://registry.npmjs.org/pdfjs-dist
+184 verbose request uri https://registry.npmjs.org/svelte-image
+185 verbose request no auth needed
+186 info attempt registry request try #1 at 8:50:29 PM
+187 verbose request using bearer token for auth
+188 http request GET https://registry.npmjs.org/svelte-image
+189 verbose request uri https://registry.npmjs.org/svelte-preprocess
+190 verbose request no auth needed
+191 info attempt registry request try #1 at 8:50:29 PM
+192 verbose request using bearer token for auth
+193 http request GET https://registry.npmjs.org/svelte-preprocess
+194 verbose request uri https://registry.npmjs.org/turn.js
+195 verbose request no auth needed
+196 info attempt registry request try #1 at 8:50:29 PM
+197 verbose request using bearer token for auth
+198 http request GET https://registry.npmjs.org/turn.js
+199 verbose request uri https://registry.npmjs.org/vercel
+200 verbose request no auth needed
+201 info attempt registry request try #1 at 8:50:29 PM
+202 verbose request using bearer token for auth
+203 http request GET https://registry.npmjs.org/vercel
+204 verbose request uri https://registry.npmjs.org/@number-flow%2fsvelte
+205 verbose request no auth needed
+206 info attempt registry request try #1 at 8:50:29 PM
+207 verbose request using bearer token for auth
+208 verbose etag W/"db885c21ee93ac2f49018c6d11d6efe5"
+209 verbose lastModified Sat, 05 Apr 2025 22:15:41 GMT
+210 http request GET https://registry.npmjs.org/@number-flow%2fsvelte
+211 verbose request uri https://registry.npmjs.org/gsap
+212 verbose request no auth needed
+213 info attempt registry request try #1 at 8:50:29 PM
+214 verbose request using bearer token for auth
+215 verbose etag W/"e566c5ae9813a56e72fd03474f9c3948"
+216 verbose lastModified Wed, 15 Jan 2025 23:16:55 GMT
+217 http request GET https://registry.npmjs.org/gsap
+218 verbose request uri https://registry.npmjs.org/fabric
+219 verbose request no auth needed
+220 info attempt registry request try #1 at 8:50:29 PM
+221 verbose request using bearer token for auth
+222 verbose etag W/"75554d08159c4aab8ee9029913841d8d"
+223 verbose lastModified Tue, 15 Apr 2025 13:03:45 GMT
+224 http request GET https://registry.npmjs.org/fabric
+225 http 200 https://registry.npmjs.org/@vercel%2fanalytics
+226 verbose headers { date: 'Thu, 24 Apr 2025 00:50:30 GMT',
+226 verbose headers   'content-type': 'application/json',
+226 verbose headers   'transfer-encoding': 'chunked',
+226 verbose headers   connection: 'keep-alive',
+226 verbose headers   'cf-ray': '93519b5acd14eb07-ORD',
+226 verbose headers   'cf-cache-status': 'HIT',
+226 verbose headers   'access-control-allow-origin': '*',
+226 verbose headers   'cache-control': 'public, max-age=300',
+226 verbose headers   etag: 'W/"fb10b1966735544ac46b072c6301552e"',
+226 verbose headers   'last-modified': 'Mon, 10 Feb 2025 16:23:48 GMT',
+226 verbose headers   vary: 'accept-encoding, accept',
+226 verbose headers   'set-cookie': [ '_cfuvid=Uhr1l97YP9IPWzDbXIjdY80V2O5A9UU86CIaC8qr27Y-1745455830263-0.0.1.1-604800000; path=/; domain=.npmjs.org; HttpOnly; Secure; SameSite=None' ],
+226 verbose headers   server: 'cloudflare',
+226 verbose headers   'content-encoding': 'gzip' }
+227 silly get cb [ 200,
+227 silly get   { date: 'Thu, 24 Apr 2025 00:50:30 GMT',
+227 silly get     'content-type': 'application/json',
+227 silly get     'transfer-encoding': 'chunked',
+227 silly get     connection: 'keep-alive',
+227 silly get     'cf-ray': '93519b5acd14eb07-ORD',
+227 silly get     'cf-cache-status': 'HIT',
+227 silly get     'access-control-allow-origin': '*',
+227 silly get     'cache-control': 'public, max-age=300',
+227 silly get     etag: 'W/"fb10b1966735544ac46b072c6301552e"',
+227 silly get     'last-modified': 'Mon, 10 Feb 2025 16:23:48 GMT',
+227 silly get     vary: 'accept-encoding, accept',
+227 silly get     'set-cookie': [ '_cfuvid=Uhr1l97YP9IPWzDbXIjdY80V2O5A9UU86CIaC8qr27Y-1745455830263-0.0.1.1-604800000; path=/; domain=.npmjs.org; HttpOnly; Secure; SameSite=None' ],
+227 silly get     server: 'cloudflare',
+227 silly get     'content-encoding': 'gzip' } ]
+228 verbose get saving @vercel/analytics to /Users/heewonahn/.npm/registry.npmjs.org/_40vercel_252fanalytics/.cache.json
+229 verbose correctMkdir /Users/heewonahn/.npm correctMkdir not in flight; initializing
+230 http 200 https://registry.npmjs.org/gsap
+231 verbose headers { date: 'Thu, 24 Apr 2025 00:50:30 GMT',
+231 verbose headers   'content-type': 'application/json',
+231 verbose headers   'transfer-encoding': 'chunked',
+231 verbose headers   connection: 'keep-alive',
+231 verbose headers   'cf-ray': '93519b5adc91fa21-ORD',
+231 verbose headers   'cf-cache-status': 'HIT',
+231 verbose headers   'access-control-allow-origin': '*',
+231 verbose headers   age: '140',
+231 verbose headers   'cache-control': 'public, max-age=300',
+231 verbose headers   etag: 'W/"e566c5ae9813a56e72fd03474f9c3948"',
+231 verbose headers   'last-modified': 'Wed, 15 Jan 2025 23:16:55 GMT',
+231 verbose headers   vary: 'accept-encoding, accept',
+231 verbose headers   'set-cookie': [ '_cfuvid=OcmmJWDnZyj8j_cVpCsTeWbGvJb4RJxQzJdz06ZmIBI-1745455830235-0.0.1.1-604800000; path=/; domain=.npmjs.org; HttpOnly; Secure; SameSite=None' ],
+231 verbose headers   server: 'cloudflare',
+231 verbose headers   'content-encoding': 'gzip' }
+232 silly get cb [ 200,
+232 silly get   { date: 'Thu, 24 Apr 2025 00:50:30 GMT',
+232 silly get     'content-type': 'application/json',
+232 silly get     'transfer-encoding': 'chunked',
+232 silly get     connection: 'keep-alive',
+232 silly get     'cf-ray': '93519b5adc91fa21-ORD',
+232 silly get     'cf-cache-status': 'HIT',
+232 silly get     'access-control-allow-origin': '*',
+232 silly get     age: '140',
+232 silly get     'cache-control': 'public, max-age=300',
+232 silly get     etag: 'W/"e566c5ae9813a56e72fd03474f9c3948"',
+232 silly get     'last-modified': 'Wed, 15 Jan 2025 23:16:55 GMT',
+232 silly get     vary: 'accept-encoding, accept',
+232 silly get     'set-cookie': [ '_cfuvid=OcmmJWDnZyj8j_cVpCsTeWbGvJb4RJxQzJdz06ZmIBI-1745455830235-0.0.1.1-604800000; path=/; domain=.npmjs.org; HttpOnly; Secure; SameSite=None' ],
+232 silly get     server: 'cloudflare',
+232 silly get     'content-encoding': 'gzip' } ]
+233 verbose get saving gsap to /Users/heewonahn/.npm/registry.npmjs.org/gsap/.cache.json
+234 verbose correctMkdir /Users/heewonahn/.npm correctMkdir already in flight; waiting
+235 http 200 https://registry.npmjs.org/material-icons
+236 verbose headers { date: 'Thu, 24 Apr 2025 00:50:30 GMT',
+236 verbose headers   'content-type': 'application/json',
+236 verbose headers   'transfer-encoding': 'chunked',
+236 verbose headers   connection: 'keep-alive',
+236 verbose headers   'cf-ray': '93519b5ace861b66-ORD',
+236 verbose headers   'cf-cache-status': 'HIT',
+236 verbose headers   'access-control-allow-origin': '*',
+236 verbose headers   age: '212',
+236 verbose headers   'cache-control': 'public, max-age=300',
+236 verbose headers   etag: 'W/"433550c778511fc6be15852329e7d0d8"',
+236 verbose headers   'last-modified': 'Wed, 12 Feb 2025 02:30:39 GMT',
+236 verbose headers   vary: 'accept-encoding, accept',
+236 verbose headers   'set-cookie': [ '_cfuvid=xHX66v0SbjgQoKihAt6g.lpAa0M3JnGaB6hYXiafrV0-1745455830244-0.0.1.1-604800000; path=/; domain=.npmjs.org; HttpOnly; Secure; SameSite=None' ],
+236 verbose headers   server: 'cloudflare',
+236 verbose headers   'content-encoding': 'gzip' }
+237 silly get cb [ 200,
+237 silly get   { date: 'Thu, 24 Apr 2025 00:50:30 GMT',
+237 silly get     'content-type': 'application/json',
+237 silly get     'transfer-encoding': 'chunked',
+237 silly get     connection: 'keep-alive',
+237 silly get     'cf-ray': '93519b5ace861b66-ORD',
+237 silly get     'cf-cache-status': 'HIT',
+237 silly get     'access-control-allow-origin': '*',
+237 silly get     age: '212',
+237 silly get     'cache-control': 'public, max-age=300',
+237 silly get     etag: 'W/"433550c778511fc6be15852329e7d0d8"',
+237 silly get     'last-modified': 'Wed, 12 Feb 2025 02:30:39 GMT',
+237 silly get     vary: 'accept-encoding, accept',
+237 silly get     'set-cookie': [ '_cfuvid=xHX66v0SbjgQoKihAt6g.lpAa0M3JnGaB6hYXiafrV0-1745455830244-0.0.1.1-604800000; path=/; domain=.npmjs.org; HttpOnly; Secure; SameSite=None' ],
+237 silly get     server: 'cloudflare',
+237 silly get     'content-encoding': 'gzip' } ]
+238 verbose get saving material-icons to /Users/heewonahn/.npm/registry.npmjs.org/material-icons/.cache.json
+239 verbose correctMkdir /Users/heewonahn/.npm correctMkdir not in flight; initializing
+240 http 200 https://registry.npmjs.org/turn.js
+241 verbose headers { date: 'Thu, 24 Apr 2025 00:50:30 GMT',
+241 verbose headers   'content-type': 'application/json',
+241 verbose headers   'transfer-encoding': 'chunked',
+241 verbose headers   connection: 'keep-alive',
+241 verbose headers   'cf-ray': '93519b5acbb87815-ORD',
+241 verbose headers   'cf-cache-status': 'REVALIDATED',
+241 verbose headers   'access-control-allow-origin': '*',
+241 verbose headers   'cache-control': 'public, max-age=300',
+241 verbose headers   etag: 'W/"f52f7aa0a03bfa83d8b9c75965fbaf67"',
+241 verbose headers   'last-modified': 'Mon, 27 Jun 2022 23:35:41 GMT',
+241 verbose headers   vary: 'accept-encoding, accept',
+241 verbose headers   'set-cookie': [ '_cfuvid=Gx3.c7vycMjX7TuGuMIC.lCAVlIfrTUTRpVjs5oJVGw-1745455830501-0.0.1.1-604800000; path=/; domain=.npmjs.org; HttpOnly; Secure; SameSite=None' ],
+241 verbose headers   server: 'cloudflare',
+241 verbose headers   'content-encoding': 'gzip' }
+242 silly get cb [ 200,
+242 silly get   { date: 'Thu, 24 Apr 2025 00:50:30 GMT',
+242 silly get     'content-type': 'application/json',
+242 silly get     'transfer-encoding': 'chunked',
+242 silly get     connection: 'keep-alive',
+242 silly get     'cf-ray': '93519b5acbb87815-ORD',
+242 silly get     'cf-cache-status': 'REVALIDATED',
+242 silly get     'access-control-allow-origin': '*',
+242 silly get     'cache-control': 'public, max-age=300',
+242 silly get     etag: 'W/"f52f7aa0a03bfa83d8b9c75965fbaf67"',
+242 silly get     'last-modified': 'Mon, 27 Jun 2022 23:35:41 GMT',
+242 silly get     vary: 'accept-encoding, accept',
+242 silly get     'set-cookie': [ '_cfuvid=Gx3.c7vycMjX7TuGuMIC.lCAVlIfrTUTRpVjs5oJVGw-1745455830501-0.0.1.1-604800000; path=/; domain=.npmjs.org; HttpOnly; Secure; SameSite=None' ],
+242 silly get     server: 'cloudflare',
+242 silly get     'content-encoding': 'gzip' } ]
+243 verbose get saving turn.js to /Users/heewonahn/.npm/registry.npmjs.org/turn.js/.cache.json
+244 verbose correctMkdir /Users/heewonahn/.npm correctMkdir not in flight; initializing
+245 http 200 https://registry.npmjs.org/@tensorflow%2ftfjs-backend-webgl
+246 verbose headers { date: 'Thu, 24 Apr 2025 00:50:30 GMT',
+246 verbose headers   'content-type': 'application/json',
+246 verbose headers   'transfer-encoding': 'chunked',
+246 verbose headers   connection: 'keep-alive',
+246 verbose headers   'cf-ray': '93519b5acda1eacc-ORD',
+246 verbose headers   'cf-cache-status': 'HIT',
+246 verbose headers   'access-control-allow-origin': '*',
+246 verbose headers   age: '291',
+246 verbose headers   'cache-control': 'public, max-age=300',
+246 verbose headers   etag: 'W/"dd3775223c1537741e92e88be5e48335"',
+246 verbose headers   'last-modified': 'Wed, 08 Jan 2025 20:33:03 GMT',
+246 verbose headers   vary: 'accept-encoding, accept',
+246 verbose headers   'set-cookie': [ '_cfuvid=r2eO3geFYUN3CY61TQONXmr7IVcZbhHJX_RUJTnWUBo-1745455830251-0.0.1.1-604800000; path=/; domain=.npmjs.org; HttpOnly; Secure; SameSite=None' ],
+246 verbose headers   server: 'cloudflare',
+246 verbose headers   'content-encoding': 'gzip' }
+247 silly get cb [ 200,
+247 silly get   { date: 'Thu, 24 Apr 2025 00:50:30 GMT',
+247 silly get     'content-type': 'application/json',
+247 silly get     'transfer-encoding': 'chunked',
+247 silly get     connection: 'keep-alive',
+247 silly get     'cf-ray': '93519b5acda1eacc-ORD',
+247 silly get     'cf-cache-status': 'HIT',
+247 silly get     'access-control-allow-origin': '*',
+247 silly get     age: '291',
+247 silly get     'cache-control': 'public, max-age=300',
+247 silly get     etag: 'W/"dd3775223c1537741e92e88be5e48335"',
+247 silly get     'last-modified': 'Wed, 08 Jan 2025 20:33:03 GMT',
+247 silly get     vary: 'accept-encoding, accept',
+247 silly get     'set-cookie': [ '_cfuvid=r2eO3geFYUN3CY61TQONXmr7IVcZbhHJX_RUJTnWUBo-1745455830251-0.0.1.1-604800000; path=/; domain=.npmjs.org; HttpOnly; Secure; SameSite=None' ],
+247 silly get     server: 'cloudflare',
+247 silly get     'content-encoding': 'gzip' } ]
+248 verbose get saving @tensorflow/tfjs-backend-webgl to /Users/heewonahn/.npm/registry.npmjs.org/_40tensorflow_252ftfjs-backend-webgl/.cache.json
+249 verbose correctMkdir /Users/heewonahn/.npm correctMkdir not in flight; initializing
+250 http 200 https://registry.npmjs.org/svelte-image
+251 verbose headers { date: 'Thu, 24 Apr 2025 00:50:30 GMT',
+251 verbose headers   'content-type': 'application/json',
+251 verbose headers   'transfer-encoding': 'chunked',
+251 verbose headers   connection: 'keep-alive',
+251 verbose headers   'cf-ray': '93519b5ac8080ed2-ORD',
+251 verbose headers   'cf-cache-status': 'REVALIDATED',
+251 verbose headers   'access-control-allow-origin': '*',
+251 verbose headers   'cache-control': 'public, max-age=300',
+251 verbose headers   etag: 'W/"8d4bbf229c1493bc9aa4c6a76ff42bcf"',
+251 verbose headers   'last-modified': 'Thu, 19 May 2022 02:49:34 GMT',
+251 verbose headers   vary: 'accept-encoding, accept',
+251 verbose headers   'set-cookie': [ '_cfuvid=.1O19kYWxfOX0CDfMyfax.qLNkKDzDoDv35AYuld3Zw-1745455830466-0.0.1.1-604800000; path=/; domain=.npmjs.org; HttpOnly; Secure; SameSite=None' ],
+251 verbose headers   server: 'cloudflare',
+251 verbose headers   'content-encoding': 'gzip' }
+252 silly get cb [ 200,
+252 silly get   { date: 'Thu, 24 Apr 2025 00:50:30 GMT',
+252 silly get     'content-type': 'application/json',
+252 silly get     'transfer-encoding': 'chunked',
+252 silly get     connection: 'keep-alive',
+252 silly get     'cf-ray': '93519b5ac8080ed2-ORD',
+252 silly get     'cf-cache-status': 'REVALIDATED',
+252 silly get     'access-control-allow-origin': '*',
+252 silly get     'cache-control': 'public, max-age=300',
+252 silly get     etag: 'W/"8d4bbf229c1493bc9aa4c6a76ff42bcf"',
+252 silly get     'last-modified': 'Thu, 19 May 2022 02:49:34 GMT',
+252 silly get     vary: 'accept-encoding, accept',
+252 silly get     'set-cookie': [ '_cfuvid=.1O19kYWxfOX0CDfMyfax.qLNkKDzDoDv35AYuld3Zw-1745455830466-0.0.1.1-604800000; path=/; domain=.npmjs.org; HttpOnly; Secure; SameSite=None' ],
+252 silly get     server: 'cloudflare',
+252 silly get     'content-encoding': 'gzip' } ]
+253 verbose get saving svelte-image to /Users/heewonahn/.npm/registry.npmjs.org/svelte-image/.cache.json
+254 verbose correctMkdir /Users/heewonahn/.npm correctMkdir not in flight; initializing
+255 http 200 https://registry.npmjs.org/glob
+256 verbose headers { date: 'Thu, 24 Apr 2025 00:50:30 GMT',
+256 verbose headers   'content-type': 'application/json',
+256 verbose headers   'transfer-encoding': 'chunked',
+256 verbose headers   connection: 'keep-alive',
+256 verbose headers   'cf-ray': '93519b5acd2813f8-ORD',
+256 verbose headers   'cf-cache-status': 'HIT',
+256 verbose headers   'access-control-allow-origin': '*',
+256 verbose headers   age: '56',
+256 verbose headers   'cache-control': 'public, max-age=300',
+256 verbose headers   etag: 'W/"35f01f00dfec79a4dc02a746ad2312cf"',
+256 verbose headers   'last-modified': 'Wed, 23 Apr 2025 16:02:35 GMT',
+256 verbose headers   vary: 'accept-encoding, accept',
+256 verbose headers   'set-cookie': [ '_cfuvid=Mt_bOQpDG.fobI_IYga1oanUi6Qe77brsPU.sF3G.X0-1745455830252-0.0.1.1-604800000; path=/; domain=.npmjs.org; HttpOnly; Secure; SameSite=None' ],
+256 verbose headers   server: 'cloudflare',
+256 verbose headers   'content-encoding': 'gzip' }
+257 silly get cb [ 200,
+257 silly get   { date: 'Thu, 24 Apr 2025 00:50:30 GMT',
+257 silly get     'content-type': 'application/json',
+257 silly get     'transfer-encoding': 'chunked',
+257 silly get     connection: 'keep-alive',
+257 silly get     'cf-ray': '93519b5acd2813f8-ORD',
+257 silly get     'cf-cache-status': 'HIT',
+257 silly get     'access-control-allow-origin': '*',
+257 silly get     age: '56',
+257 silly get     'cache-control': 'public, max-age=300',
+257 silly get     etag: 'W/"35f01f00dfec79a4dc02a746ad2312cf"',
+257 silly get     'last-modified': 'Wed, 23 Apr 2025 16:02:35 GMT',
+257 silly get     vary: 'accept-encoding, accept',
+257 silly get     'set-cookie': [ '_cfuvid=Mt_bOQpDG.fobI_IYga1oanUi6Qe77brsPU.sF3G.X0-1745455830252-0.0.1.1-604800000; path=/; domain=.npmjs.org; HttpOnly; Secure; SameSite=None' ],
+257 silly get     server: 'cloudflare',
+257 silly get     'content-encoding': 'gzip' } ]
+258 verbose get saving glob to /Users/heewonahn/.npm/registry.npmjs.org/glob/.cache.json
+259 verbose correctMkdir /Users/heewonahn/.npm correctMkdir not in flight; initializing
+260 silly resolveWithNewModule gsap@3.12.7 checking installable status
+261 silly cache add args [ 'gsap@^3.12.7', null ]
+262 verbose cache add spec gsap@^3.12.7
+263 silly cache add parsed spec Result {
+263 silly cache add   raw: 'gsap@^3.12.7',
+263 silly cache add   scope: null,
+263 silly cache add   escapedName: 'gsap',
+263 silly cache add   name: 'gsap',
+263 silly cache add   rawSpec: '^3.12.7',
+263 silly cache add   spec: '>=3.12.7 <4.0.0',
+263 silly cache add   type: 'range' }
+264 silly addNamed gsap@>=3.12.7 <4.0.0
+265 verbose addNamed ">=3.12.7 <4.0.0" is a valid semver range for gsap
+266 silly addNameRange { name: 'gsap', range: '>=3.12.7 <4.0.0', hasData: false }
+267 silly mapToRegistry name gsap
+268 silly mapToRegistry using default registry
+269 silly mapToRegistry registry https://registry.npmjs.org/
+270 silly mapToRegistry data Result {
+270 silly mapToRegistry   raw: 'gsap',
+270 silly mapToRegistry   scope: null,
+270 silly mapToRegistry   escapedName: 'gsap',
+270 silly mapToRegistry   name: 'gsap',
+270 silly mapToRegistry   rawSpec: '',
+270 silly mapToRegistry   spec: 'latest',
+270 silly mapToRegistry   type: 'tag' }
+271 silly mapToRegistry uri https://registry.npmjs.org/gsap
+272 verbose addNameRange registry:https://registry.npmjs.org/gsap not in flight; fetching
+273 silly resolveWithNewModule @vercel/analytics@1.5.0 checking installable status
+274 silly cache add args [ '@vercel/analytics@^1.5.0', null ]
+275 verbose cache add spec @vercel/analytics@^1.5.0
+276 silly cache add parsed spec Result {
+276 silly cache add   raw: '@vercel/analytics@^1.5.0',
+276 silly cache add   scope: '@vercel',
+276 silly cache add   escapedName: '@vercel%2fanalytics',
+276 silly cache add   name: '@vercel/analytics',
+276 silly cache add   rawSpec: '^1.5.0',
+276 silly cache add   spec: '>=1.5.0 <2.0.0',
+276 silly cache add   type: 'range' }
+277 silly addNamed @vercel/analytics@>=1.5.0 <2.0.0
+278 verbose addNamed ">=1.5.0 <2.0.0" is a valid semver range for @vercel/analytics
+279 silly addNameRange { name: '@vercel/analytics',
+279 silly addNameRange   range: '>=1.5.0 <2.0.0',
+279 silly addNameRange   hasData: false }
+280 silly mapToRegistry name @vercel/analytics
+281 silly mapToRegistry scope (from package name) @vercel
+282 verbose mapToRegistry no registry URL found in name for scope @vercel
+283 silly mapToRegistry using default registry
+284 silly mapToRegistry registry https://registry.npmjs.org/
+285 silly mapToRegistry data Result {
+285 silly mapToRegistry   raw: '@vercel/analytics',
+285 silly mapToRegistry   scope: '@vercel',
+285 silly mapToRegistry   escapedName: '@vercel%2fanalytics',
+285 silly mapToRegistry   name: '@vercel/analytics',
+285 silly mapToRegistry   rawSpec: '',
+285 silly mapToRegistry   spec: 'latest',
+285 silly mapToRegistry   type: 'tag' }
+286 silly mapToRegistry uri https://registry.npmjs.org/@vercel%2fanalytics
+287 verbose addNameRange registry:https://registry.npmjs.org/@vercel%2fanalytics not in flight; fetching
+288 silly resolveWithNewModule material-icons@1.13.14 checking installable status
+289 silly cache add args [ 'material-icons@^1.13.14', null ]
+290 verbose cache add spec material-icons@^1.13.14
+291 silly cache add parsed spec Result {
+291 silly cache add   raw: 'material-icons@^1.13.14',
+291 silly cache add   scope: null,
+291 silly cache add   escapedName: 'material-icons',
+291 silly cache add   name: 'material-icons',
+291 silly cache add   rawSpec: '^1.13.14',
+291 silly cache add   spec: '>=1.13.14 <2.0.0',
+291 silly cache add   type: 'range' }
+292 silly addNamed material-icons@>=1.13.14 <2.0.0
+293 verbose addNamed ">=1.13.14 <2.0.0" is a valid semver range for material-icons
+294 silly addNameRange { name: 'material-icons',
+294 silly addNameRange   range: '>=1.13.14 <2.0.0',
+294 silly addNameRange   hasData: false }
+295 silly mapToRegistry name material-icons
+296 silly mapToRegistry using default registry
+297 silly mapToRegistry registry https://registry.npmjs.org/
+298 silly mapToRegistry data Result {
+298 silly mapToRegistry   raw: 'material-icons',
+298 silly mapToRegistry   scope: null,
+298 silly mapToRegistry   escapedName: 'material-icons',
+298 silly mapToRegistry   name: 'material-icons',
+298 silly mapToRegistry   rawSpec: '',
+298 silly mapToRegistry   spec: 'latest',
+298 silly mapToRegistry   type: 'tag' }
+299 silly mapToRegistry uri https://registry.npmjs.org/material-icons
+300 verbose addNameRange registry:https://registry.npmjs.org/material-icons not in flight; fetching
+301 http 200 https://registry.npmjs.org/embla-carousel-svelte
+302 verbose headers { date: 'Thu, 24 Apr 2025 00:50:30 GMT',
+302 verbose headers   'content-type': 'application/json',
+302 verbose headers   'transfer-encoding': 'chunked',
+302 verbose headers   connection: 'keep-alive',
+302 verbose headers   'cf-ray': '93519b5acb29e253-ORD',
+302 verbose headers   'cf-cache-status': 'REVALIDATED',
+302 verbose headers   'access-control-allow-origin': '*',
+302 verbose headers   'cache-control': 'public, max-age=300',
+302 verbose headers   etag: 'W/"b5ba29524b073fa5359e04a4d00ad852"',
+302 verbose headers   'last-modified': 'Fri, 04 Apr 2025 17:38:00 GMT',
+302 verbose headers   vary: 'accept-encoding, accept',
+302 verbose headers   'set-cookie': [ '_cfuvid=NkSP40aF0Mhc9SrNXlpFyvgrRfxhhL8P7.0c2azJkw8-1745455830487-0.0.1.1-604800000; path=/; domain=.npmjs.org; HttpOnly; Secure; SameSite=None' ],
+302 verbose headers   server: 'cloudflare',
+302 verbose headers   'content-encoding': 'gzip' }
+303 silly get cb [ 200,
+303 silly get   { date: 'Thu, 24 Apr 2025 00:50:30 GMT',
+303 silly get     'content-type': 'application/json',
+303 silly get     'transfer-encoding': 'chunked',
+303 silly get     connection: 'keep-alive',
+303 silly get     'cf-ray': '93519b5acb29e253-ORD',
+303 silly get     'cf-cache-status': 'REVALIDATED',
+303 silly get     'access-control-allow-origin': '*',
+303 silly get     'cache-control': 'public, max-age=300',
+303 silly get     etag: 'W/"b5ba29524b073fa5359e04a4d00ad852"',
+303 silly get     'last-modified': 'Fri, 04 Apr 2025 17:38:00 GMT',
+303 silly get     vary: 'accept-encoding, accept',
+303 silly get     'set-cookie': [ '_cfuvid=NkSP40aF0Mhc9SrNXlpFyvgrRfxhhL8P7.0c2azJkw8-1745455830487-0.0.1.1-604800000; path=/; domain=.npmjs.org; HttpOnly; Secure; SameSite=None' ],
+303 silly get     server: 'cloudflare',
+303 silly get     'content-encoding': 'gzip' } ]
+304 verbose get saving embla-carousel-svelte to /Users/heewonahn/.npm/registry.npmjs.org/embla-carousel-svelte/.cache.json
+305 verbose correctMkdir /Users/heewonahn/.npm correctMkdir not in flight; initializing
+306 silly resolveWithNewModule turn.js@1.0.5 checking installable status
+307 silly cache add args [ 'turn.js@^1.0.5', null ]
+308 verbose cache add spec turn.js@^1.0.5
+309 silly cache add parsed spec Result {
+309 silly cache add   raw: 'turn.js@^1.0.5',
+309 silly cache add   scope: null,
+309 silly cache add   escapedName: 'turn.js',
+309 silly cache add   name: 'turn.js',
+309 silly cache add   rawSpec: '^1.0.5',
+309 silly cache add   spec: '>=1.0.5 <2.0.0',
+309 silly cache add   type: 'range' }
+310 silly addNamed turn.js@>=1.0.5 <2.0.0
+311 verbose addNamed ">=1.0.5 <2.0.0" is a valid semver range for turn.js
+312 silly addNameRange { name: 'turn.js', range: '>=1.0.5 <2.0.0', hasData: false }
+313 silly mapToRegistry name turn.js
+314 silly mapToRegistry using default registry
+315 silly mapToRegistry registry https://registry.npmjs.org/
+316 silly mapToRegistry data Result {
+316 silly mapToRegistry   raw: 'turn.js',
+316 silly mapToRegistry   scope: null,
+316 silly mapToRegistry   escapedName: 'turn.js',
+316 silly mapToRegistry   name: 'turn.js',
+316 silly mapToRegistry   rawSpec: '',
+316 silly mapToRegistry   spec: 'latest',
+316 silly mapToRegistry   type: 'tag' }
+317 silly mapToRegistry uri https://registry.npmjs.org/turn.js
+318 verbose addNameRange registry:https://registry.npmjs.org/turn.js not in flight; fetching
+319 verbose get https://registry.npmjs.org/gsap not expired, no request
+320 silly addNameRange number 2 { name: 'gsap', range: '>=3.12.7 <4.0.0', hasData: true }
+321 silly addNameRange versions [ 'gsap',
+321 silly addNameRange   [ '1.13.2',
+321 silly addNameRange     '1.14.1',
+321 silly addNameRange     '1.14.2',
+321 silly addNameRange     '1.15.0',
+321 silly addNameRange     '1.15.1',
+321 silly addNameRange     '1.16.0',
+321 silly addNameRange     '1.16.1',
+321 silly addNameRange     '1.17.0',
+321 silly addNameRange     '1.18.0',
+321 silly addNameRange     '1.18.2',
+321 silly addNameRange     '1.18.3',
+321 silly addNameRange     '1.18.4',
+321 silly addNameRange     '1.18.5',
+321 silly addNameRange     '1.19.0',
+321 silly addNameRange     '1.19.1',
+321 silly addNameRange     '1.20.0',
+321 silly addNameRange     '1.20.1',
+321 silly addNameRange     '1.20.2',
+321 silly addNameRange     '1.20.3',
+321 silly addNameRange     '1.20.4',
+321 silly addNameRange     '1.20.5',
+321 silly addNameRange     '1.20.6',
+321 silly addNameRange     '2.0.0',
+321 silly addNameRange     '2.0.1',
+321 silly addNameRange     '2.0.2',
+321 silly addNameRange     '2.1.0',
+321 silly addNameRange     '2.1.1',
+321 silly addNameRange     '2.1.2',
+321 silly addNameRange     '2.1.3',
+321 silly addNameRange     '3.0.0-beta.7',
+321 silly addNameRange     '3.0.0-beta.8',
+321 silly addNameRange     '3.0.0-beta.10',
+321 silly addNameRange     '3.0.0-beta.11',
+321 silly addNameRange     '3.0.0',
+321 silly addNameRange     '3.0.1',
+321 silly addNameRange     '3.0.2',
+321 silly addNameRange     '3.0.3',
+321 silly addNameRange     '3.0.4',
+321 silly addNameRange     '3.0.5',
+321 silly addNameRange     '3.1.0',
+321 silly addNameRange     '3.1.1',
+321 silly addNameRange     '3.2.0',
+321 silly addNameRange     '3.2.1',
+321 silly addNameRange     '3.2.2',
+321 silly addNameRange     '3.2.3',
+321 silly addNameRange     '3.2.4',
+321 silly addNameRange     '3.2.5',
+321 silly addNameRange     '3.2.6',
+321 silly addNameRange     '3.3.0',
+321 silly addNameRange     '3.3.1',
+321 silly addNameRange     '3.3.2',
+321 silly addNameRange     '3.3.3',
+321 silly addNameRange     '3.3.4',
+321 silly addNameRange     '3.4.0',
+321 silly addNameRange     '3.4.1',
+321 silly addNameRange     '3.4.2',
+321 silly addNameRange     '3.5.0',
+321 silly addNameRange     '3.5.1',
+321 silly addNameRange     '3.6.0',
+321 silly addNameRange     '3.6.1',
+321 silly addNameRange     '3.7.0',
+321 silly addNameRange     '3.7.1',
+321 silly addNameRange     '3.8.0',
+321 silly addNameRange     '3.9.0',
+321 silly addNameRange     '3.9.1',
+321 silly addNameRange     '3.10.0',
+321 silly addNameRange     '3.10.1',
+321 silly addNameRange     '3.10.2',
+321 silly addNameRange     '3.10.3',
+321 silly addNameRange     '3.10.4',
+321 silly addNameRange     '3.11.0',
+321 silly addNameRange     '3.11.1',
+321 silly addNameRange     '3.11.2',
+321 silly addNameRange     '3.11.3',
+321 silly addNameRange     '3.11.4',
+321 silly addNameRange     '3.11.5',
+321 silly addNameRange     '3.12.0',
+321 silly addNameRange     '3.12.1',
+321 silly addNameRange     '3.12.2',
+321 silly addNameRange     '3.12.3',
+321 silly addNameRange     '3.12.4',
+321 silly addNameRange     '3.12.5',
+321 silly addNameRange     '3.12.6',
+321 silly addNameRange     '3.12.7' ] ]
+322 silly addNamed gsap@3.12.7
+323 verbose addNamed "3.12.7" is a plain semver version for gsap
+324 silly resolveWithNewModule @tensorflow/tfjs-backend-webgl@4.22.0 checking installable status
+325 silly cache add args [ '@tensorflow/tfjs-backend-webgl@^4.22.0', null ]
+326 verbose cache add spec @tensorflow/tfjs-backend-webgl@^4.22.0
+327 silly cache add parsed spec Result {
+327 silly cache add   raw: '@tensorflow/tfjs-backend-webgl@^4.22.0',
+327 silly cache add   scope: '@tensorflow',
+327 silly cache add   escapedName: '@tensorflow%2ftfjs-backend-webgl',
+327 silly cache add   name: '@tensorflow/tfjs-backend-webgl',
+327 silly cache add   rawSpec: '^4.22.0',
+327 silly cache add   spec: '>=4.22.0 <5.0.0',
+327 silly cache add   type: 'range' }
+328 silly addNamed @tensorflow/tfjs-backend-webgl@>=4.22.0 <5.0.0
+329 verbose addNamed ">=4.22.0 <5.0.0" is a valid semver range for @tensorflow/tfjs-backend-webgl
+330 silly addNameRange { name: '@tensorflow/tfjs-backend-webgl',
+330 silly addNameRange   range: '>=4.22.0 <5.0.0',
+330 silly addNameRange   hasData: false }
+331 silly mapToRegistry name @tensorflow/tfjs-backend-webgl
+332 silly mapToRegistry scope (from package name) @tensorflow
+333 verbose mapToRegistry no registry URL found in name for scope @tensorflow
+334 silly mapToRegistry using default registry
+335 silly mapToRegistry registry https://registry.npmjs.org/
+336 silly mapToRegistry data Result {
+336 silly mapToRegistry   raw: '@tensorflow/tfjs-backend-webgl',
+336 silly mapToRegistry   scope: '@tensorflow',
+336 silly mapToRegistry   escapedName: '@tensorflow%2ftfjs-backend-webgl',
+336 silly mapToRegistry   name: '@tensorflow/tfjs-backend-webgl',
+336 silly mapToRegistry   rawSpec: '',
+336 silly mapToRegistry   spec: 'latest',
+336 silly mapToRegistry   type: 'tag' }
+337 silly mapToRegistry uri https://registry.npmjs.org/@tensorflow%2ftfjs-backend-webgl
+338 verbose addNameRange registry:https://registry.npmjs.org/@tensorflow%2ftfjs-backend-webgl not in flight; fetching
+339 verbose get https://registry.npmjs.org/@vercel%2fanalytics not expired, no request
+340 silly addNameRange number 2 { name: '@vercel/analytics',
+340 silly addNameRange   range: '>=1.5.0 <2.0.0',
+340 silly addNameRange   hasData: true }
+341 silly addNameRange versions [ '@vercel/analytics',
+341 silly addNameRange   [ '0.1.0',
+341 silly addNameRange     '0.1.1',
+341 silly addNameRange     '0.1.2',
+341 silly addNameRange     '0.1.3',
+341 silly addNameRange     '0.1.4',
+341 silly addNameRange     '0.1.5-beta.0',
+341 silly addNameRange     '0.1.5',
+341 silly addNameRange     '0.1.6-beta.0',
+341 silly addNameRange     '0.1.6-beta.1',
+341 silly addNameRange     '0.1.6',
+341 silly addNameRange     '0.1.7-beta.1',
+341 silly addNameRange     '0.1.7',
+341 silly addNameRange     '0.1.8-beta.0',
+341 silly addNameRange     '0.1.8',
+341 silly addNameRange     '0.1.9-beta.0',
+341 silly addNameRange     '0.1.9-beta.1',
+341 silly addNameRange     '0.1.9-beta.2',
+341 silly addNameRange     '0.1.9-beta.3',
+341 silly addNameRange     '0.1.9-beta.4',
+341 silly addNameRange     '0.1.9',
+341 silly addNameRange     '0.1.10',
+341 silly addNameRange     '0.1.9-beta.5',
+341 silly addNameRange     '0.1.9-beta.6',
+341 silly addNameRange     '0.1.11',
+341 silly addNameRange     '1.0.0',
+341 silly addNameRange     '1.0.1-beta.0',
+341 silly addNameRange     '1.0.1-beta.1',
+341 silly addNameRange     '1.0.1',
+341 silly addNameRange     '1.1.0-beta.1',
+341 silly addNameRange     '1.1.0-beta.2',
+341 silly addNameRange     '1.1.0-beta.3',
+341 silly addNameRange     '1.0.2',
+341 silly addNameRange     '1.1.0-beta.4',
+341 silly addNameRange     '1.1.0-beta.5',
+341 silly addNameRange     '1.1.0-beta.6',
+341 silly addNameRange     '1.1.0-beta.7',
+341 silly addNameRange     '1.1.0-beta.8',
+341 silly addNameRange     '1.1.0-beta.9',
+341 silly addNameRange     '1.1.0',
+341 silly addNameRange     '1.1.1',
+341 silly addNameRange     '1.1.2',
+341 silly addNameRange     '1.2.0-beta.1',
+341 silly addNameRange     '1.2.0-beta.2',
+341 silly addNameRange     '1.2.0-beta.3',
+341 silly addNameRange     '1.2.0-beta.4',
+341 silly addNameRange     '1.1.3',
+341 silly addNameRange     '1.1.4',
+341 silly addNameRange     '1.2.0',
+341 silly addNameRange     '1.2.1',
+341 silly addNameRange     '1.2.2',
+341 silly addNameRange     '1.3.0',
+341 silly addNameRange     '1.3.1',
+341 silly addNameRange     '1.3.2',
+341 silly addNameRange     '1.4.0',
+341 silly addNameRange     '1.5.0-canary.1',
+341 silly addNameRange     '1.4.1',
+341 silly addNameRange     '1.5.0-canary.2',
+341 silly addNameRange     '1.5.0-canary.3',
+341 silly addNameRange     '1.5.0' ] ]
+342 silly addNamed @vercel/analytics@1.5.0
+343 verbose addNamed "1.5.0" is a plain semver version for @vercel/analytics
+344 verbose get https://registry.npmjs.org/material-icons not expired, no request
+345 silly addNameRange number 2 { name: 'material-icons',
+345 silly addNameRange   range: '>=1.13.14 <2.0.0',
+345 silly addNameRange   hasData: true }
+346 silly addNameRange versions [ 'material-icons',
+346 silly addNameRange   [ '0.1.0',
+346 silly addNameRange     '0.2.0',
+346 silly addNameRange     '0.2.1',
+346 silly addNameRange     '0.2.2',
+346 silly addNameRange     '0.2.3',
+346 silly addNameRange     '0.3.0',
+346 silly addNameRange     '0.3.1',
+346 silly addNameRange     '0.4.0',
+346 silly addNameRange     '0.5.0',
+346 silly addNameRange     '0.5.1',
+346 silly addNameRange     '0.5.2',
+346 silly addNameRange     '0.5.3',
+346 silly addNameRange     '0.5.4',
+346 silly addNameRange     '0.5.5',
+346 silly addNameRange     '0.6.0',
+346 silly addNameRange     '0.6.1',
+346 silly addNameRange     '0.6.2',
+346 silly addNameRange     '0.6.3',
+346 silly addNameRange     '0.6.4',
+346 silly addNameRange     '0.7.0',
+346 silly addNameRange     '0.7.1',
+346 silly addNameRange     '0.7.2',
+346 silly addNameRange     '0.7.3',
+346 silly addNameRange     '0.7.4',
+346 silly addNameRange     '0.7.5',
+346 silly addNameRange     '0.7.6',
+346 silly addNameRange     '0.7.7',
+346 silly addNameRange     '1.0.0',
+346 silly addNameRange     '1.0.1',
+346 silly addNameRange     '1.1.0',
+346 silly addNameRange     '1.1.1',
+346 silly addNameRange     '1.2.0',
+346 silly addNameRange     '1.2.1',
+346 silly addNameRange     '1.2.2',
+346 silly addNameRange     '1.3.0',
+346 silly addNameRange     '1.4.0',
+346 silly addNameRange     '1.4.1',
+346 silly addNameRange     '1.5.0',
+346 silly addNameRange     '1.5.1',
+346 silly addNameRange     '1.6.0',
+346 silly addNameRange     '1.6.1',
+346 silly addNameRange     '1.7.0',
+346 silly addNameRange     '1.7.1',
+346 silly addNameRange     '1.8.0',
+346 silly addNameRange     '1.8.1',
+346 silly addNameRange     '1.8.2',
+346 silly addNameRange     '1.9.0',
+346 silly addNameRange     '1.9.1',
+346 silly addNameRange     '1.10.0',
+346 silly addNameRange     '1.10.1',
+346 silly addNameRange     '1.10.2',
+346 silly addNameRange     '1.10.3',
+346 silly addNameRange     '1.10.4',
+346 silly addNameRange     '1.10.5',
+346 silly addNameRange     '1.10.6',
+346 silly addNameRange     '1.10.7',
+346 silly addNameRange     '1.10.8',
+346 silly addNameRange     '1.10.9',
+346 silly addNameRange     '1.10.10',
+346 silly addNameRange     '1.10.11',
+346 silly addNameRange     '1.11.0',
+346 silly addNameRange     '1.11.1',
+346 silly addNameRange     '1.11.2',
+346 silly addNameRange     '1.11.3',
+346 silly addNameRange     '1.11.4',
+346 silly addNameRange     '1.11.5',
+346 silly addNameRange     '1.11.6',
+346 silly addNameRange     '1.11.7',
+346 silly addNameRange     '1.11.8',
+346 silly addNameRange     '1.11.9',
+346 silly addNameRange     '1.11.10',
+346 silly addNameRange     '1.11.11',
+346 silly addNameRange     '1.12.0',
+346 silly addNameRange     '1.12.1',
+346 silly addNameRange     '1.12.2',
+346 silly addNameRange     '1.13.0',
+346 silly addNameRange     '1.13.1',
+346 silly addNameRange     '1.13.2',
+346 silly addNameRange     '1.13.3',
+346 silly addNameRange     '1.13.4',
+346 silly addNameRange     '1.13.5',
+346 silly addNameRange     '1.13.6',
+346 silly addNameRange     '1.13.7',
+346 silly addNameRange     '1.13.8',
+346 silly addNameRange     '1.13.9',
+346 silly addNameRange     '1.13.10',
+346 silly addNameRange     '1.13.11',
+346 silly addNameRange     '1.13.12',
+346 silly addNameRange     '1.13.13',
+346 silly addNameRange     '1.13.14' ] ]
+347 silly addNamed material-icons@1.13.14
+348 verbose addNamed "1.13.14" is a plain semver version for material-icons
+349 silly mapToRegistry name @vercel/analytics
+350 silly mapToRegistry scope (from package name) @vercel
+351 verbose mapToRegistry no registry URL found in name for scope @vercel
+352 silly mapToRegistry using default registry
+353 silly mapToRegistry registry https://registry.npmjs.org/
+354 silly mapToRegistry data Result {
+354 silly mapToRegistry   raw: '@vercel/analytics',
+354 silly mapToRegistry   scope: '@vercel',
+354 silly mapToRegistry   escapedName: '@vercel%2fanalytics',
+354 silly mapToRegistry   name: '@vercel/analytics',
+354 silly mapToRegistry   rawSpec: '',
+354 silly mapToRegistry   spec: 'latest',
+354 silly mapToRegistry   type: 'tag' }
+355 silly mapToRegistry uri https://registry.npmjs.org/@vercel%2fanalytics
+356 verbose addRemoteTarball https://registry.npmjs.org/@vercel/analytics/-/analytics-1.5.0.tgz not in flight; adding
+357 verbose addRemoteTarball [ 'https://registry.npmjs.org/@vercel/analytics/-/analytics-1.5.0.tgz',
+357 verbose addRemoteTarball   '073f93694897414b21a8495e2619bbf64447dcaa' ]
+358 silly mapToRegistry name material-icons
+359 silly mapToRegistry using default registry
+360 silly mapToRegistry registry https://registry.npmjs.org/
+361 silly mapToRegistry data Result {
+361 silly mapToRegistry   raw: 'material-icons',
+361 silly mapToRegistry   scope: null,
+361 silly mapToRegistry   escapedName: 'material-icons',
+361 silly mapToRegistry   name: 'material-icons',
+361 silly mapToRegistry   rawSpec: '',
+361 silly mapToRegistry   spec: 'latest',
+361 silly mapToRegistry   type: 'tag' }
+362 silly mapToRegistry uri https://registry.npmjs.org/material-icons
+363 verbose addRemoteTarball https://registry.npmjs.org/material-icons/-/material-icons-1.13.14.tgz not in flight; adding
+364 verbose addRemoteTarball [ 'https://registry.npmjs.org/material-icons/-/material-icons-1.13.14.tgz',
+364 verbose addRemoteTarball   '65ae8693550b9f789036bd4cf29e775f1bd389ed' ]
+365 silly resolveWithNewModule svelte-image@0.2.9 checking installable status
+366 silly cache add args [ 'svelte-image@^0.2.9', null ]
+367 verbose cache add spec svelte-image@^0.2.9
+368 silly cache add parsed spec Result {
+368 silly cache add   raw: 'svelte-image@^0.2.9',
+368 silly cache add   scope: null,
+368 silly cache add   escapedName: 'svelte-image',
+368 silly cache add   name: 'svelte-image',
+368 silly cache add   rawSpec: '^0.2.9',
+368 silly cache add   spec: '>=0.2.9 <0.3.0',
+368 silly cache add   type: 'range' }
+369 silly addNamed svelte-image@>=0.2.9 <0.3.0
+370 verbose addNamed ">=0.2.9 <0.3.0" is a valid semver range for svelte-image
+371 silly addNameRange { name: 'svelte-image', range: '>=0.2.9 <0.3.0', hasData: false }
+372 silly mapToRegistry name svelte-image
+373 silly mapToRegistry using default registry
+374 silly mapToRegistry registry https://registry.npmjs.org/
+375 silly mapToRegistry data Result {
+375 silly mapToRegistry   raw: 'svelte-image',
+375 silly mapToRegistry   scope: null,
+375 silly mapToRegistry   escapedName: 'svelte-image',
+375 silly mapToRegistry   name: 'svelte-image',
+375 silly mapToRegistry   rawSpec: '',
+375 silly mapToRegistry   spec: 'latest',
+375 silly mapToRegistry   type: 'tag' }
+376 silly mapToRegistry uri https://registry.npmjs.org/svelte-image
+377 verbose addNameRange registry:https://registry.npmjs.org/svelte-image not in flight; fetching
+378 verbose get https://registry.npmjs.org/@tensorflow%2ftfjs-backend-webgl not expired, no request
+379 silly addNameRange number 2 { name: '@tensorflow/tfjs-backend-webgl',
+379 silly addNameRange   range: '>=4.22.0 <5.0.0',
+379 silly addNameRange   hasData: true }
+380 silly addNameRange versions [ '@tensorflow/tfjs-backend-webgl',
+380 silly addNameRange   [ '2.0.0-rc.1',
+380 silly addNameRange     '2.0.0-rc.3',
+380 silly addNameRange     '2.0.0-rc.4',
+380 silly addNameRange     '2.0.0',
+380 silly addNameRange     '2.0.1',
+380 silly addNameRange     '2.1.0',
+380 silly addNameRange     '2.2.0',
+380 silly addNameRange     '2.3.0',
+380 silly addNameRange     '2.4.0',
+380 silly addNameRange     '2.5.0',
+380 silly addNameRange     '2.6.0',
+380 silly addNameRange     '2.7.0',
+380 silly addNameRange     '2.8.0',
+380 silly addNameRange     '2.8.1',
+380 silly addNameRange     '2.8.2',
+380 silly addNameRange     '3.0.0-rc.0',
+380 silly addNameRange     '2.8.3',
+380 silly addNameRange     '2.8.4',
+380 silly addNameRange     '3.0.0-rc.1',
+380 silly addNameRange     '2.8.5',
+380 silly addNameRange     '3.0.0',
+380 silly addNameRange     '3.1.0',
+380 silly addNameRange     '2.8.6',
+380 silly addNameRange     '3.2.0',
+380 silly addNameRange     '3.3.0',
+380 silly addNameRange     '3.4.0',
+380 silly addNameRange     '3.5.0',
+380 silly addNameRange     '3.6.0',
+380 silly addNameRange     '3.7.0',
+380 silly addNameRange     '3.8.0',
+380 silly addNameRange     '3.9.0',
+380 silly addNameRange     '3.10.0',
+380 silly addNameRange     '3.11.0',
+380 silly addNameRange     '3.12.0',
+380 silly addNameRange     '3.13.0',
+380 silly addNameRange     '3.14.0',
+380 silly addNameRange     '3.15.0',
+380 silly addNameRange     '3.16.0',
+380 silly addNameRange     '3.17.0',
+380 silly addNameRange     '3.18.0',
+380 silly addNameRange     '3.19.0',
+380 silly addNameRange     '3.20.0',
+380 silly addNameRange     '3.21.0',
+380 silly addNameRange     '4.0.0',
+380 silly addNameRange     '4.1.0',
+380 silly addNameRange     '4.2.0',
+380 silly addNameRange     '4.3.0',
+380 silly addNameRange     '4.4.0',
+380 silly addNameRange     '4.5.0',
+380 silly addNameRange     '4.6.0',
+380 silly addNameRange     '4.7.0',
+380 silly addNameRange     '4.8.0',
+380 silly addNameRange     '4.9.0',
+380 silly addNameRange     '4.10.0',
+380 silly addNameRange     '4.11.0',
+380 silly addNameRange     '4.12.0-rc.0',
+380 silly addNameRange     '4.12.0',
+380 silly addNameRange     '4.13.0-rc.0',
+380 silly addNameRange     '4.13.0',
+380 silly addNameRange     '4.14.0-rc.0',
+380 silly addNameRange     '4.14.0',
+380 silly addNameRange     '4.15.0-rc.0',
+380 silly addNameRange     '4.15.0',
+380 silly addNameRange     '4.16.0-rc.0',
+380 silly addNameRange     '4.16.0',
+380 silly addNameRange     '4.17.0-rc.0',
+380 silly addNameRange     '4.17.0',
+380 silly addNameRange     '4.18.0-rc.0',
+380 silly addNameRange     '4.18.0',
+380 silly addNameRange     '4.19.0-rc.0',
+380 silly addNameRange     '4.19.0',
+380 silly addNameRange     '4.20.0-rc.0',
+380 silly addNameRange     '4.20.0',
+380 silly addNameRange     '4.21.0-rc.0',
+380 silly addNameRange     '4.21.0',
+380 silly addNameRange     '4.22.0-rc.0',
+380 silly addNameRange     '4.22.0',
+380 silly addNameRange     '4.23.0-rc.0' ] ]
+381 silly addNamed @tensorflow/tfjs-backend-webgl@4.22.0
+382 verbose addNamed "4.22.0" is a plain semver version for @tensorflow/tfjs-backend-webgl
+383 verbose get https://registry.npmjs.org/turn.js not expired, no request
+384 silly addNameRange number 2 { name: 'turn.js', range: '>=1.0.5 <2.0.0', hasData: true }
+385 silly addNameRange versions [ 'turn.js', [ '1.0.2', '1.0.3', '1.0.4', '1.0.5' ] ]
+386 silly addNamed turn.js@1.0.5
+387 verbose addNamed "1.0.5" is a plain semver version for turn.js
+388 silly mapToRegistry name @tensorflow/tfjs-backend-webgl
+389 silly mapToRegistry scope (from package name) @tensorflow
+390 verbose mapToRegistry no registry URL found in name for scope @tensorflow
+391 silly mapToRegistry using default registry
+392 silly mapToRegistry registry https://registry.npmjs.org/
+393 silly mapToRegistry data Result {
+393 silly mapToRegistry   raw: '@tensorflow/tfjs-backend-webgl',
+393 silly mapToRegistry   scope: '@tensorflow',
+393 silly mapToRegistry   escapedName: '@tensorflow%2ftfjs-backend-webgl',
+393 silly mapToRegistry   name: '@tensorflow/tfjs-backend-webgl',
+393 silly mapToRegistry   rawSpec: '',
+393 silly mapToRegistry   spec: 'latest',
+393 silly mapToRegistry   type: 'tag' }
+394 silly mapToRegistry uri https://registry.npmjs.org/@tensorflow%2ftfjs-backend-webgl
+395 verbose addRemoteTarball https://registry.npmjs.org/@tensorflow/tfjs-backend-webgl/-/tfjs-backend-webgl-4.22.0.tgz not in flight; adding
+396 verbose addRemoteTarball [ 'https://registry.npmjs.org/@tensorflow/tfjs-backend-webgl/-/tfjs-backend-webgl-4.22.0.tgz',
+396 verbose addRemoteTarball   'c6ffb8c5e737b1b1ef7fab8f721328b5b2e658c0' ]
+397 silly cache afterAdd gsap@3.12.7
+398 verbose afterAdd /Users/heewonahn/.npm/gsap/3.12.7/package/package.json not in flight; writing
+399 verbose correctMkdir /Users/heewonahn/.npm correctMkdir not in flight; initializing
+400 silly resolveWithNewModule glob@10.4.5 checking installable status
+401 silly cache add args [ 'glob@^10.4.5', null ]
+402 verbose cache add spec glob@^10.4.5
+403 silly cache add parsed spec Result {
+403 silly cache add   raw: 'glob@^10.4.5',
+403 silly cache add   scope: null,
+403 silly cache add   escapedName: 'glob',
+403 silly cache add   name: 'glob',
+403 silly cache add   rawSpec: '^10.4.5',
+403 silly cache add   spec: '>=10.4.5 <11.0.0',
+403 silly cache add   type: 'range' }
+404 silly addNamed glob@>=10.4.5 <11.0.0
+405 verbose addNamed ">=10.4.5 <11.0.0" is a valid semver range for glob
+406 silly addNameRange { name: 'glob', range: '>=10.4.5 <11.0.0', hasData: false }
+407 silly mapToRegistry name glob
+408 silly mapToRegistry using default registry
+409 silly mapToRegistry registry https://registry.npmjs.org/
+410 silly mapToRegistry data Result {
+410 silly mapToRegistry   raw: 'glob',
+410 silly mapToRegistry   scope: null,
+410 silly mapToRegistry   escapedName: 'glob',
+410 silly mapToRegistry   name: 'glob',
+410 silly mapToRegistry   rawSpec: '',
+410 silly mapToRegistry   spec: 'latest',
+410 silly mapToRegistry   type: 'tag' }
+411 silly mapToRegistry uri https://registry.npmjs.org/glob
+412 verbose addNameRange registry:https://registry.npmjs.org/glob not in flight; fetching
+413 silly mapToRegistry name turn.js
+414 silly mapToRegistry using default registry
+415 silly mapToRegistry registry https://registry.npmjs.org/
+416 silly mapToRegistry data Result {
+416 silly mapToRegistry   raw: 'turn.js',
+416 silly mapToRegistry   scope: null,
+416 silly mapToRegistry   escapedName: 'turn.js',
+416 silly mapToRegistry   name: 'turn.js',
+416 silly mapToRegistry   rawSpec: '',
+416 silly mapToRegistry   spec: 'latest',
+416 silly mapToRegistry   type: 'tag' }
+417 silly mapToRegistry uri https://registry.npmjs.org/turn.js
+418 verbose addRemoteTarball https://registry.npmjs.org/turn.js/-/turn.js-1.0.5.tgz not in flight; adding
+419 verbose addRemoteTarball [ 'https://registry.npmjs.org/turn.js/-/turn.js-1.0.5.tgz',
+419 verbose addRemoteTarball   '47fa2245cac5fd44b0b64316a26aedef6ff221a4' ]
+420 http 200 https://registry.npmjs.org/@tensorflow-models%2fpose-detection
+421 verbose headers { date: 'Thu, 24 Apr 2025 00:50:30 GMT',
+421 verbose headers   'content-type': 'application/json',
+421 verbose headers   'transfer-encoding': 'chunked',
+421 verbose headers   connection: 'keep-alive',
+421 verbose headers   'cf-ray': '93519b5aca0613fe-ORD',
+421 verbose headers   'cf-cache-status': 'REVALIDATED',
+421 verbose headers   'access-control-allow-origin': '*',
+421 verbose headers   'cache-control': 'public, max-age=300',
+421 verbose headers   etag: 'W/"78a930b404139f577c7c8731fbc8e0cc"',
+421 verbose headers   'last-modified': 'Tue, 17 Oct 2023 22:38:15 GMT',
+421 verbose headers   vary: 'accept-encoding, accept',
+421 verbose headers   'set-cookie': [ '_cfuvid=_N6v8_b2X4RzqxAUizVR6nNMsXs5oISmwHFv.Rfgpso-1745455830863-0.0.1.1-604800000; path=/; domain=.npmjs.org; HttpOnly; Secure; SameSite=None' ],
+421 verbose headers   server: 'cloudflare',
+421 verbose headers   'content-encoding': 'gzip' }
+422 silly get cb [ 200,
+422 silly get   { date: 'Thu, 24 Apr 2025 00:50:30 GMT',
+422 silly get     'content-type': 'application/json',
+422 silly get     'transfer-encoding': 'chunked',
+422 silly get     connection: 'keep-alive',
+422 silly get     'cf-ray': '93519b5aca0613fe-ORD',
+422 silly get     'cf-cache-status': 'REVALIDATED',
+422 silly get     'access-control-allow-origin': '*',
+422 silly get     'cache-control': 'public, max-age=300',
+422 silly get     etag: 'W/"78a930b404139f577c7c8731fbc8e0cc"',
+422 silly get     'last-modified': 'Tue, 17 Oct 2023 22:38:15 GMT',
+422 silly get     vary: 'accept-encoding, accept',
+422 silly get     'set-cookie': [ '_cfuvid=_N6v8_b2X4RzqxAUizVR6nNMsXs5oISmwHFv.Rfgpso-1745455830863-0.0.1.1-604800000; path=/; domain=.npmjs.org; HttpOnly; Secure; SameSite=None' ],
+422 silly get     server: 'cloudflare',
+422 silly get     'content-encoding': 'gzip' } ]
+423 verbose get saving @tensorflow-models/pose-detection to /Users/heewonahn/.npm/registry.npmjs.org/_40tensorflow-models_252fpose-detection/.cache.json
+424 verbose correctMkdir /Users/heewonahn/.npm correctMkdir not in flight; initializing
+425 verbose get https://registry.npmjs.org/svelte-image not expired, no request
+426 silly addNameRange number 2 { name: 'svelte-image', range: '>=0.2.9 <0.3.0', hasData: true }
+427 silly addNameRange versions [ 'svelte-image',
+427 silly addNameRange   [ '0.0.1',
+427 silly addNameRange     '0.0.2',
+427 silly addNameRange     '0.0.3',
+427 silly addNameRange     '0.0.4',
+427 silly addNameRange     '0.0.5',
+427 silly addNameRange     '0.0.6',
+427 silly addNameRange     '0.0.7',
+427 silly addNameRange     '0.0.8',
+427 silly addNameRange     '0.0.9',
+427 silly addNameRange     '0.0.10',
+427 silly addNameRange     '0.0.11',
+427 silly addNameRange     '0.0.12',
+427 silly addNameRange     '0.0.13',
+427 silly addNameRange     '0.0.14',
+427 silly addNameRange     '0.1.1',
+427 silly addNameRange     '0.1.2',
+427 silly addNameRange     '0.1.3',
+427 silly addNameRange     '0.1.4',
+427 silly addNameRange     '0.1.5',
+427 silly addNameRange     '0.1.6',
+427 silly addNameRange     '0.1.8',
+427 silly addNameRange     '0.1.9',
+427 silly addNameRange     '0.2.0',
+427 silly addNameRange     '0.2.1',
+427 silly addNameRange     '0.2.3',
+427 silly addNameRange     '0.2.5',
+427 silly addNameRange     '0.2.6',
+427 silly addNameRange     '0.2.7',
+427 silly addNameRange     '0.2.8-pre',
+427 silly addNameRange     '0.2.9' ] ]
+428 silly addNamed svelte-image@0.2.9
+429 verbose addNamed "0.2.9" is a plain semver version for svelte-image
+430 silly resolveWithNewModule embla-carousel-svelte@8.6.0 checking installable status
+431 silly cache add args [ 'embla-carousel-svelte@^8.6.0', null ]
+432 verbose cache add spec embla-carousel-svelte@^8.6.0
+433 silly cache add parsed spec Result {
+433 silly cache add   raw: 'embla-carousel-svelte@^8.6.0',
+433 silly cache add   scope: null,
+433 silly cache add   escapedName: 'embla-carousel-svelte',
+433 silly cache add   name: 'embla-carousel-svelte',
+433 silly cache add   rawSpec: '^8.6.0',
+433 silly cache add   spec: '>=8.6.0 <9.0.0',
+433 silly cache add   type: 'range' }
+434 silly addNamed embla-carousel-svelte@>=8.6.0 <9.0.0
+435 verbose addNamed ">=8.6.0 <9.0.0" is a valid semver range for embla-carousel-svelte
+436 silly addNameRange { name: 'embla-carousel-svelte',
+436 silly addNameRange   range: '>=8.6.0 <9.0.0',
+436 silly addNameRange   hasData: false }
+437 silly mapToRegistry name embla-carousel-svelte
+438 silly mapToRegistry using default registry
+439 silly mapToRegistry registry https://registry.npmjs.org/
+440 silly mapToRegistry data Result {
+440 silly mapToRegistry   raw: 'embla-carousel-svelte',
+440 silly mapToRegistry   scope: null,
+440 silly mapToRegistry   escapedName: 'embla-carousel-svelte',
+440 silly mapToRegistry   name: 'embla-carousel-svelte',
+440 silly mapToRegistry   rawSpec: '',
+440 silly mapToRegistry   spec: 'latest',
+440 silly mapToRegistry   type: 'tag' }
+441 silly mapToRegistry uri https://registry.npmjs.org/embla-carousel-svelte
+442 verbose addNameRange registry:https://registry.npmjs.org/embla-carousel-svelte not in flight; fetching
+443 info retry fetch attempt 1 at 8:50:30 PM
+444 info attempt registry request try #1 at 8:50:30 PM
+445 http fetch GET https://registry.npmjs.org/material-icons/-/material-icons-1.13.14.tgz
+446 verbose request using bearer token for auth
+447 info retry fetch attempt 1 at 8:50:30 PM
+448 info attempt registry request try #1 at 8:50:30 PM
+449 http fetch GET https://registry.npmjs.org/turn.js/-/turn.js-1.0.5.tgz
+450 verbose request using bearer token for auth
+451 silly mapToRegistry name svelte-image
+452 silly mapToRegistry using default registry
+453 silly mapToRegistry registry https://registry.npmjs.org/
+454 silly mapToRegistry data Result {
+454 silly mapToRegistry   raw: 'svelte-image',
+454 silly mapToRegistry   scope: null,
+454 silly mapToRegistry   escapedName: 'svelte-image',
+454 silly mapToRegistry   name: 'svelte-image',
+454 silly mapToRegistry   rawSpec: '',
+454 silly mapToRegistry   spec: 'latest',
+454 silly mapToRegistry   type: 'tag' }
+455 silly mapToRegistry uri https://registry.npmjs.org/svelte-image
+456 verbose addRemoteTarball https://registry.npmjs.org/svelte-image/-/svelte-image-0.2.9.tgz not in flight; adding
+457 verbose addRemoteTarball [ 'https://registry.npmjs.org/svelte-image/-/svelte-image-0.2.9.tgz',
+457 verbose addRemoteTarball   '09b766697f32b20a84150f52f3b7e9cdb41c9c8d' ]
+458 http 200 https://registry.npmjs.org/@number-flow%2fsvelte
+459 verbose headers { date: 'Thu, 24 Apr 2025 00:50:30 GMT',
+459 verbose headers   'content-type': 'application/json',
+459 verbose headers   'transfer-encoding': 'chunked',
+459 verbose headers   connection: 'keep-alive',
+459 verbose headers   'cf-ray': '93519b5acfbe118f-ORD',
+459 verbose headers   'cf-cache-status': 'REVALIDATED',
+459 verbose headers   'access-control-allow-origin': '*',
+459 verbose headers   'cache-control': 'public, max-age=300',
+459 verbose headers   etag: 'W/"db885c21ee93ac2f49018c6d11d6efe5"',
+459 verbose headers   'last-modified': 'Sat, 05 Apr 2025 22:15:41 GMT',
+459 verbose headers   vary: 'accept-encoding, accept',
+459 verbose headers   'set-cookie': [ '_cfuvid=ZmTAIY_2YVjrdAsX8n7NA0R_ymbeU5n4.fXogPLbSz4-1745455830920-0.0.1.1-604800000; path=/; domain=.npmjs.org; HttpOnly; Secure; SameSite=None' ],
+459 verbose headers   server: 'cloudflare',
+459 verbose headers   'content-encoding': 'gzip' }
+460 silly get cb [ 200,
+460 silly get   { date: 'Thu, 24 Apr 2025 00:50:30 GMT',
+460 silly get     'content-type': 'application/json',
+460 silly get     'transfer-encoding': 'chunked',
+460 silly get     connection: 'keep-alive',
+460 silly get     'cf-ray': '93519b5acfbe118f-ORD',
+460 silly get     'cf-cache-status': 'REVALIDATED',
+460 silly get     'access-control-allow-origin': '*',
+460 silly get     'cache-control': 'public, max-age=300',
+460 silly get     etag: 'W/"db885c21ee93ac2f49018c6d11d6efe5"',
+460 silly get     'last-modified': 'Sat, 05 Apr 2025 22:15:41 GMT',
+460 silly get     vary: 'accept-encoding, accept',
+460 silly get     'set-cookie': [ '_cfuvid=ZmTAIY_2YVjrdAsX8n7NA0R_ymbeU5n4.fXogPLbSz4-1745455830920-0.0.1.1-604800000; path=/; domain=.npmjs.org; HttpOnly; Secure; SameSite=None' ],
+460 silly get     server: 'cloudflare',
+460 silly get     'content-encoding': 'gzip' } ]
+461 verbose get saving @number-flow/svelte to /Users/heewonahn/.npm/registry.npmjs.org/_40number-flow_252fsvelte/.cache.json
+462 verbose correctMkdir /Users/heewonahn/.npm correctMkdir not in flight; initializing
+463 info retry fetch attempt 1 at 8:50:30 PM
+464 info attempt registry request try #1 at 8:50:30 PM
+465 http fetch GET https://registry.npmjs.org/@tensorflow/tfjs-backend-webgl/-/tfjs-backend-webgl-4.22.0.tgz
+466 verbose request using bearer token for auth
+467 verbose get https://registry.npmjs.org/glob not expired, no request
+468 silly addNameRange number 2 { name: 'glob', range: '>=10.4.5 <11.0.0', hasData: true }
+469 silly addNameRange versions [ 'glob',
+469 silly addNameRange   [ '1.1.0',
+469 silly addNameRange     '3.0.0',
+469 silly addNameRange     '3.0.1',
+469 silly addNameRange     '3.1.0',
+469 silly addNameRange     '3.1.1',
+469 silly addNameRange     '3.1.2',
+469 silly addNameRange     '3.1.3',
+469 silly addNameRange     '3.1.4',
+469 silly addNameRange     '3.1.5',
+469 silly addNameRange     '3.1.6',
+469 silly addNameRange     '3.1.7',
+469 silly addNameRange     '3.1.9',
+469 silly addNameRange     '3.1.10',
+469 silly addNameRange     '3.1.11',
+469 silly addNameRange     '3.1.12',
+469 silly addNameRange     '3.1.13',
+469 silly addNameRange     '3.1.14',
+469 silly addNameRange     '3.1.15',
+469 silly addNameRange     '3.1.16',
+469 silly addNameRange     '3.1.17',
+469 silly addNameRange     '3.1.18',
+469 silly addNameRange     '3.1.19',
+469 silly addNameRange     '3.1.20',
+469 silly addNameRange     '3.1.21',
+469 silly addNameRange     '3.2.0',
+469 silly addNameRange     '3.2.1',
+469 silly addNameRange     '3.2.3',
+469 silly addNameRange     '3.2.4',
+469 silly addNameRange     '3.2.5',
+469 silly addNameRange     '3.2.6',
+469 silly addNameRange     '3.2.7',
+469 silly addNameRange     '3.2.8',
+469 silly addNameRange     '3.2.9',
+469 silly addNameRange     '3.2.10',
+469 silly addNameRange     '3.2.11',
+469 silly addNameRange     '4.0.0',
+469 silly addNameRange     '4.0.1',
+469 silly addNameRange     '4.0.2',
+469 silly addNameRange     '4.0.3',
+469 silly addNameRange     '4.0.4',
+469 silly addNameRange     '4.0.5',
+469 silly addNameRange     '4.0.6',
+469 silly addNameRange     '4.1.2-beta',
+469 silly addNameRange     '4.1.2',
+469 silly addNameRange     '4.1.3',
+469 silly addNameRange     '4.1.4',
+469 silly addNameRange     '4.1.5',
+469 silly addNameRange     '4.1.6',
+469 silly addNameRange     '4.2.0',
+469 silly addNameRange     '4.2.1',
+469 silly addNameRange     '4.2.2',
+469 silly addNameRange     '4.3.0',
+469 silly addNameRange     '4.3.1',
+469 silly addNameRange     '4.3.2',
+469 silly addNameRange     '4.3.3',
+469 silly addNameRange     '4.3.4',
+469 silly addNameRange     '4.3.5',
+469 silly addNameRange     '4.4.0',
+469 silly addNameRange     '4.4.2',
+469 silly addNameRange     '4.5.0',
+469 silly addNameRange     '5.0.0',
+469 silly addNameRange     '4.5.1',
+469 silly addNameRange     '5.0.1',
+469 silly addNameRange     '4.5.2',
+469 silly addNameRange     '5.0.2',
+469 silly addNameRange     '4.5.3',
+469 silly addNameRange     '5.0.3',
+469 silly addNameRange     '5.0.4',
+469 silly addNameRange     '5.0.5',
+469 silly addNameRange     '5.0.6',
+469 silly addNameRange     '5.0.7',
+469 silly addNameRange     '5.0.9',
+469 silly addNameRange     '5.0.10',
+469 silly addNameRange     '5.0.11',
+469 silly addNameRange     '5.0.12',
+469 silly addNameRange     '5.0.13',
+469 silly addNameRange     '5.0.14',
+469 silly addNameRange     '5.0.15',
+469 silly addNameRange     '6.0.1',
+469 silly addNameRange     '6.0.2',
+469 silly addNameRange     '6.0.3',
+469 silly addNameRange     '6.0.4',
+469 silly addNameRange     '7.0.0',
+469 silly addNameRange     '7.0.1',
+469 silly addNameRange     '7.0.3',
+469 silly addNameRange     '7.0.4',
+469 silly addNameRange     '7.0.5',
+469 silly addNameRange     '7.0.6',
+469 silly addNameRange     '7.1.0',
+469 silly addNameRange     '7.1.1',
+469 silly addNameRange     '7.1.2',
+469 silly addNameRange     '7.1.3',
+469 silly addNameRange     '7.1.4',
+469 silly addNameRange     '7.1.5',
+469 silly addNameRange     '7.1.6',
+469 silly addNameRange     '7.1.7',
+469 silly addNameRange     '7.2.0',
+469 silly addNameRange     '7.2.2',
+469 silly addNameRange     '7.2.3',
+469 silly addNameRange     '10.4.5' ] ]
+470 silly addNamed glob@10.4.5
+471 verbose addNamed "10.4.5" is a plain semver version for glob
+472 silly mapToRegistry name glob
+473 silly mapToRegistry using default registry
+474 silly mapToRegistry registry https://registry.npmjs.org/
+475 silly mapToRegistry data Result {
+475 silly mapToRegistry   raw: 'glob',
+475 silly mapToRegistry   scope: null,
+475 silly mapToRegistry   escapedName: 'glob',
+475 silly mapToRegistry   name: 'glob',
+475 silly mapToRegistry   rawSpec: '',
+475 silly mapToRegistry   spec: 'latest',
+475 silly mapToRegistry   type: 'tag' }
+476 silly mapToRegistry uri https://registry.npmjs.org/glob
+477 verbose addRemoteTarball https://registry.npmjs.org/glob/-/glob-10.4.5.tgz not in flight; adding
+478 verbose addRemoteTarball [ 'https://registry.npmjs.org/glob/-/glob-10.4.5.tgz',
+478 verbose addRemoteTarball   'f4d9f0b90ffdbab09c9d77f5f29b4262517b0956' ]
+479 info retry fetch attempt 1 at 8:50:31 PM
+480 info attempt registry request try #1 at 8:50:31 PM
+481 http fetch GET https://registry.npmjs.org/@vercel/analytics/-/analytics-1.5.0.tgz
+482 verbose request using bearer token for auth
+483 http 200 https://registry.npmjs.org/@unpic%2fsvelte
+484 verbose headers { date: 'Thu, 24 Apr 2025 00:50:30 GMT',
+484 verbose headers   'content-type': 'application/json',
+484 verbose headers   'transfer-encoding': 'chunked',
+484 verbose headers   connection: 'keep-alive',
+484 verbose headers   'cf-ray': '93519b5acfa3e5db-ORD',
+484 verbose headers   'cf-cache-status': 'REVALIDATED',
+484 verbose headers   'access-control-allow-origin': '*',
+484 verbose headers   'cache-control': 'public, max-age=300',
+484 verbose headers   etag: 'W/"fc035348ef49904739294c58adf169ba"',
+484 verbose headers   'last-modified': 'Sun, 19 Jan 2025 16:47:14 GMT',
+484 verbose headers   vary: 'accept-encoding, accept',
+484 verbose headers   'set-cookie': [ '_cfuvid=h0F1fKgtN9a2yduCMiPngmA1d5cMHAfky1ouBO5cfos-1745455830848-0.0.1.1-604800000; path=/; domain=.npmjs.org; HttpOnly; Secure; SameSite=None' ],
+484 verbose headers   server: 'cloudflare',
+484 verbose headers   'content-encoding': 'gzip' }
+485 silly get cb [ 200,
+485 silly get   { date: 'Thu, 24 Apr 2025 00:50:30 GMT',
+485 silly get     'content-type': 'application/json',
+485 silly get     'transfer-encoding': 'chunked',
+485 silly get     connection: 'keep-alive',
+485 silly get     'cf-ray': '93519b5acfa3e5db-ORD',
+485 silly get     'cf-cache-status': 'REVALIDATED',
+485 silly get     'access-control-allow-origin': '*',
+485 silly get     'cache-control': 'public, max-age=300',
+485 silly get     etag: 'W/"fc035348ef49904739294c58adf169ba"',
+485 silly get     'last-modified': 'Sun, 19 Jan 2025 16:47:14 GMT',
+485 silly get     vary: 'accept-encoding, accept',
+485 silly get     'set-cookie': [ '_cfuvid=h0F1fKgtN9a2yduCMiPngmA1d5cMHAfky1ouBO5cfos-1745455830848-0.0.1.1-604800000; path=/; domain=.npmjs.org; HttpOnly; Secure; SameSite=None' ],
+485 silly get     server: 'cloudflare',
+485 silly get     'content-encoding': 'gzip' } ]
+486 verbose get saving @unpic/svelte to /Users/heewonahn/.npm/registry.npmjs.org/_40unpic_252fsvelte/.cache.json
+487 verbose correctMkdir /Users/heewonahn/.npm correctMkdir not in flight; initializing
+488 info retry fetch attempt 1 at 8:50:31 PM
+489 info attempt registry request try #1 at 8:50:31 PM
+490 http fetch GET https://registry.npmjs.org/svelte-image/-/svelte-image-0.2.9.tgz
+491 verbose request using bearer token for auth
+492 verbose afterAdd /Users/heewonahn/.npm/gsap/3.12.7/package/package.json written
+493 verbose get https://registry.npmjs.org/embla-carousel-svelte not expired, no request
+494 silly addNameRange number 2 { name: 'embla-carousel-svelte',
+494 silly addNameRange   range: '>=8.6.0 <9.0.0',
+494 silly addNameRange   hasData: true }
+495 silly addNameRange versions [ 'embla-carousel-svelte',
+495 silly addNameRange   [ '7.0.0',
+495 silly addNameRange     '7.0.1',
+495 silly addNameRange     '7.0.2',
+495 silly addNameRange     '7.0.3',
+495 silly addNameRange     '7.0.4',
+495 silly addNameRange     '7.0.5',
+495 silly addNameRange     '7.0.6',
+495 silly addNameRange     '7.0.7',
+495 silly addNameRange     '7.0.8',
+495 silly addNameRange     '7.0.9',
+495 silly addNameRange     '7.1.0',
+495 silly addNameRange     '8.0.0-rc01',
+495 silly addNameRange     '8.0.0-rc02',
+495 silly addNameRange     '8.0.0-rc03',
+495 silly addNameRange     '8.0.0-rc04',
+495 silly addNameRange     '8.0.0-rc05',
+495 silly addNameRange     '8.0.0-rc06',
+495 silly addNameRange     '8.0.0-rc07',
+495 silly addNameRange     '8.0.0-rc08',
+495 silly addNameRange     '8.0.0-rc09',
+495 silly addNameRange     '8.0.0-rc10',
+495 silly addNameRange     '8.0.0-rc11',
+495 silly addNameRange     '8.0.0-rc12',
+495 silly addNameRange     '8.0.0-rc13',
+495 silly addNameRange     '8.0.0-rc14',
+495 silly addNameRange     '8.0.0-rc15',
+495 silly addNameRange     '8.0.0-rc16',
+495 silly addNameRange     '8.0.0-rc17',
+495 silly addNameRange     '8.0.0-rc18',
+495 silly addNameRange     '8.0.0-rc19',
+495 silly addNameRange     '8.0.0-rc20',
+495 silly addNameRange     '8.0.0-rc21',
+495 silly addNameRange     '8.0.0-rc22',
+495 silly addNameRange     '8.0.0-rc23',
+495 silly addNameRange     '8.0.0',
+495 silly addNameRange     '8.0.1',
+495 silly addNameRange     '8.0.2',
+495 silly addNameRange     '8.0.3',
+495 silly addNameRange     '8.0.4',
+495 silly addNameRange     '8.1.0',
+495 silly addNameRange     '8.1.1',
+495 silly addNameRange     '8.1.2',
+495 silly addNameRange     '8.1.3',
+495 silly addNameRange     '8.1.4',
+495 silly addNameRange     '8.1.5',
+495 silly addNameRange     '8.1.6',
+495 silly addNameRange     '8.1.7',
+495 silly addNameRange     '8.1.8',
+495 silly addNameRange     '8.2.0',
+495 silly addNameRange     '8.2.1',
+495 silly addNameRange     '8.3.0',
+495 silly addNameRange     '8.3.1',
+495 silly addNameRange     '8.4.0',
+495 silly addNameRange     '8.5.0',
+495 silly addNameRange     '8.5.1',
+495 silly addNameRange     '8.5.2',
+495 silly addNameRange     '8.6.0' ] ]
+496 silly addNamed embla-carousel-svelte@8.6.0
+497 verbose addNamed "8.6.0" is a plain semver version for embla-carousel-svelte
+498 silly mapToRegistry name embla-carousel-svelte
+499 silly mapToRegistry using default registry
+500 silly mapToRegistry registry https://registry.npmjs.org/
+501 silly mapToRegistry data Result {
+501 silly mapToRegistry   raw: 'embla-carousel-svelte',
+501 silly mapToRegistry   scope: null,
+501 silly mapToRegistry   escapedName: 'embla-carousel-svelte',
+501 silly mapToRegistry   name: 'embla-carousel-svelte',
+501 silly mapToRegistry   rawSpec: '',
+501 silly mapToRegistry   spec: 'latest',
+501 silly mapToRegistry   type: 'tag' }
+502 silly mapToRegistry uri https://registry.npmjs.org/embla-carousel-svelte
+503 verbose addRemoteTarball https://registry.npmjs.org/embla-carousel-svelte/-/embla-carousel-svelte-8.6.0.tgz not in flight; adding
+504 verbose addRemoteTarball [ 'https://registry.npmjs.org/embla-carousel-svelte/-/embla-carousel-svelte-8.6.0.tgz',
+504 verbose addRemoteTarball   'a6ed4a84243e31b8a118490b94de9e8bebfb2372' ]
+505 http fetch 200 https://registry.npmjs.org/material-icons/-/material-icons-1.13.14.tgz
+506 http fetch 200 https://registry.npmjs.org/turn.js/-/turn.js-1.0.5.tgz
+507 info retry fetch attempt 1 at 8:50:31 PM
+508 info attempt registry request try #1 at 8:50:31 PM
+509 http fetch GET https://registry.npmjs.org/glob/-/glob-10.4.5.tgz
+510 verbose request using bearer token for auth
+511 http fetch 200 https://registry.npmjs.org/@tensorflow/tfjs-backend-webgl/-/tfjs-backend-webgl-4.22.0.tgz
+512 http fetch 200 https://registry.npmjs.org/svelte-image/-/svelte-image-0.2.9.tgz
+513 http 200 https://registry.npmjs.org/svelte-preprocess
+514 verbose headers { date: 'Thu, 24 Apr 2025 00:50:30 GMT',
+514 verbose headers   'content-type': 'application/json',
+514 verbose headers   'transfer-encoding': 'chunked',
+514 verbose headers   connection: 'keep-alive',
+514 verbose headers   'cf-ray': '93519b5acb29a3d4-ORD',
+514 verbose headers   'cf-cache-status': 'HIT',
+514 verbose headers   'access-control-allow-origin': '*',
+514 verbose headers   age: '58',
+514 verbose headers   'cache-control': 'public, max-age=300',
+514 verbose headers   etag: 'W/"2eeff61a99bbf74801bda456ea729f8a"',
+514 verbose headers   'last-modified': 'Thu, 26 Sep 2024 12:06:20 GMT',
+514 verbose headers   vary: 'accept-encoding, accept',
+514 verbose headers   'set-cookie': [ '_cfuvid=SsrmSpNazbgIQZvKMNxrCADCv.xoz7Ct2NQlSFBjDuY-1745455830233-0.0.1.1-604800000; path=/; domain=.npmjs.org; HttpOnly; Secure; SameSite=None' ],
+514 verbose headers   server: 'cloudflare',
+514 verbose headers   'content-encoding': 'gzip' }
+515 silly get cb [ 200,
+515 silly get   { date: 'Thu, 24 Apr 2025 00:50:30 GMT',
+515 silly get     'content-type': 'application/json',
+515 silly get     'transfer-encoding': 'chunked',
+515 silly get     connection: 'keep-alive',
+515 silly get     'cf-ray': '93519b5acb29a3d4-ORD',
+515 silly get     'cf-cache-status': 'HIT',
+515 silly get     'access-control-allow-origin': '*',
+515 silly get     age: '58',
+515 silly get     'cache-control': 'public, max-age=300',
+515 silly get     etag: 'W/"2eeff61a99bbf74801bda456ea729f8a"',
+515 silly get     'last-modified': 'Thu, 26 Sep 2024 12:06:20 GMT',
+515 silly get     vary: 'accept-encoding, accept',
+515 silly get     'set-cookie': [ '_cfuvid=SsrmSpNazbgIQZvKMNxrCADCv.xoz7Ct2NQlSFBjDuY-1745455830233-0.0.1.1-604800000; path=/; domain=.npmjs.org; HttpOnly; Secure; SameSite=None' ],
+515 silly get     server: 'cloudflare',
+515 silly get     'content-encoding': 'gzip' } ]
+516 verbose get saving svelte-preprocess to /Users/heewonahn/.npm/registry.npmjs.org/svelte-preprocess/.cache.json
+517 verbose correctMkdir /Users/heewonahn/.npm correctMkdir not in flight; initializing
+518 http fetch 200 https://registry.npmjs.org/@vercel/analytics/-/analytics-1.5.0.tgz
+519 info retry fetch attempt 1 at 8:50:31 PM
+520 info attempt registry request try #1 at 8:50:31 PM
+521 http fetch GET https://registry.npmjs.org/embla-carousel-svelte/-/embla-carousel-svelte-8.6.0.tgz
+522 verbose request using bearer token for auth
+523 http fetch 200 https://registry.npmjs.org/glob/-/glob-10.4.5.tgz
+524 silly resolveWithNewModule @tensorflow-models/pose-detection@2.1.3 checking installable status
+525 silly cache add args [ '@tensorflow-models/pose-detection@^2.1.3', null ]
+526 verbose cache add spec @tensorflow-models/pose-detection@^2.1.3
+527 silly cache add parsed spec Result {
+527 silly cache add   raw: '@tensorflow-models/pose-detection@^2.1.3',
+527 silly cache add   scope: '@tensorflow-models',
+527 silly cache add   escapedName: '@tensorflow-models%2fpose-detection',
+527 silly cache add   name: '@tensorflow-models/pose-detection',
+527 silly cache add   rawSpec: '^2.1.3',
+527 silly cache add   spec: '>=2.1.3 <3.0.0',
+527 silly cache add   type: 'range' }
+528 silly addNamed @tensorflow-models/pose-detection@>=2.1.3 <3.0.0
+529 verbose addNamed ">=2.1.3 <3.0.0" is a valid semver range for @tensorflow-models/pose-detection
+530 silly addNameRange { name: '@tensorflow-models/pose-detection',
+530 silly addNameRange   range: '>=2.1.3 <3.0.0',
+530 silly addNameRange   hasData: false }
+531 silly mapToRegistry name @tensorflow-models/pose-detection
+532 silly mapToRegistry scope (from package name) @tensorflow-models
+533 verbose mapToRegistry no registry URL found in name for scope @tensorflow-models
+534 silly mapToRegistry using default registry
+535 silly mapToRegistry registry https://registry.npmjs.org/
+536 silly mapToRegistry data Result {
+536 silly mapToRegistry   raw: '@tensorflow-models/pose-detection',
+536 silly mapToRegistry   scope: '@tensorflow-models',
+536 silly mapToRegistry   escapedName: '@tensorflow-models%2fpose-detection',
+536 silly mapToRegistry   name: '@tensorflow-models/pose-detection',
+536 silly mapToRegistry   rawSpec: '',
+536 silly mapToRegistry   spec: 'latest',
+536 silly mapToRegistry   type: 'tag' }
+537 silly mapToRegistry uri https://registry.npmjs.org/@tensorflow-models%2fpose-detection
+538 verbose addNameRange registry:https://registry.npmjs.org/@tensorflow-models%2fpose-detection not in flight; fetching
+539 silly fetchAndShaCheck shasum 09b766697f32b20a84150f52f3b7e9cdb41c9c8d
+540 http 200 https://registry.npmjs.org/@tensorflow%2ftfjs-core
+541 verbose headers { date: 'Thu, 24 Apr 2025 00:50:30 GMT',
+541 verbose headers   'content-type': 'application/json',
+541 verbose headers   'transfer-encoding': 'chunked',
+541 verbose headers   connection: 'keep-alive',
+541 verbose headers   'cf-ray': '93519b5acb34eafb-ORD',
+541 verbose headers   'cf-cache-status': 'HIT',
+541 verbose headers   'access-control-allow-origin': '*',
+541 verbose headers   age: '234',
+541 verbose headers   'cache-control': 'public, max-age=300',
+541 verbose headers   etag: 'W/"acf72ea1cbba376efc2b4e102f1d6d52"',
+541 verbose headers   'last-modified': 'Wed, 08 Jan 2025 20:32:51 GMT',
+541 verbose headers   vary: 'accept-encoding, accept',
+541 verbose headers   'set-cookie': [ '_cfuvid=Mt_bOQpDG.fobI_IYga1oanUi6Qe77brsPU.sF3G.X0-1745455830252-0.0.1.1-604800000; path=/; domain=.npmjs.org; HttpOnly; Secure; SameSite=None' ],
+541 verbose headers   server: 'cloudflare',
+541 verbose headers   'content-encoding': 'gzip' }
+542 silly get cb [ 200,
+542 silly get   { date: 'Thu, 24 Apr 2025 00:50:30 GMT',
+542 silly get     'content-type': 'application/json',
+542 silly get     'transfer-encoding': 'chunked',
+542 silly get     connection: 'keep-alive',
+542 silly get     'cf-ray': '93519b5acb34eafb-ORD',
+542 silly get     'cf-cache-status': 'HIT',
+542 silly get     'access-control-allow-origin': '*',
+542 silly get     age: '234',
+542 silly get     'cache-control': 'public, max-age=300',
+542 silly get     etag: 'W/"acf72ea1cbba376efc2b4e102f1d6d52"',
+542 silly get     'last-modified': 'Wed, 08 Jan 2025 20:32:51 GMT',
+542 silly get     vary: 'accept-encoding, accept',
+542 silly get     'set-cookie': [ '_cfuvid=Mt_bOQpDG.fobI_IYga1oanUi6Qe77brsPU.sF3G.X0-1745455830252-0.0.1.1-604800000; path=/; domain=.npmjs.org; HttpOnly; Secure; SameSite=None' ],
+542 silly get     server: 'cloudflare',
+542 silly get     'content-encoding': 'gzip' } ]
+543 verbose get saving @tensorflow/tfjs-core to /Users/heewonahn/.npm/registry.npmjs.org/_40tensorflow_252ftfjs-core/.cache.json
+544 verbose correctMkdir /Users/heewonahn/.npm correctMkdir not in flight; initializing
+545 silly resolveWithNewModule @number-flow/svelte@0.3.7 checking installable status
+546 silly cache add args [ '@number-flow/svelte@^0.3.6', null ]
+547 verbose cache add spec @number-flow/svelte@^0.3.6
+548 silly cache add parsed spec Result {
+548 silly cache add   raw: '@number-flow/svelte@^0.3.6',
+548 silly cache add   scope: '@number-flow',
+548 silly cache add   escapedName: '@number-flow%2fsvelte',
+548 silly cache add   name: '@number-flow/svelte',
+548 silly cache add   rawSpec: '^0.3.6',
+548 silly cache add   spec: '>=0.3.6 <0.4.0',
+548 silly cache add   type: 'range' }
+549 silly addNamed @number-flow/svelte@>=0.3.6 <0.4.0
+550 verbose addNamed ">=0.3.6 <0.4.0" is a valid semver range for @number-flow/svelte
+551 silly addNameRange { name: '@number-flow/svelte',
+551 silly addNameRange   range: '>=0.3.6 <0.4.0',
+551 silly addNameRange   hasData: false }
+552 silly mapToRegistry name @number-flow/svelte
+553 silly mapToRegistry scope (from package name) @number-flow
+554 verbose mapToRegistry no registry URL found in name for scope @number-flow
+555 silly mapToRegistry using default registry
+556 silly mapToRegistry registry https://registry.npmjs.org/
+557 silly mapToRegistry data Result {
+557 silly mapToRegistry   raw: '@number-flow/svelte',
+557 silly mapToRegistry   scope: '@number-flow',
+557 silly mapToRegistry   escapedName: '@number-flow%2fsvelte',
+557 silly mapToRegistry   name: '@number-flow/svelte',
+557 silly mapToRegistry   rawSpec: '',
+557 silly mapToRegistry   spec: 'latest',
+557 silly mapToRegistry   type: 'tag' }
+558 silly mapToRegistry uri https://registry.npmjs.org/@number-flow%2fsvelte
+559 verbose addNameRange registry:https://registry.npmjs.org/@number-flow%2fsvelte not in flight; fetching
+560 silly resolveWithNewModule @unpic/svelte@1.0.0 checking installable status
+561 silly cache add args [ '@unpic/svelte@^1.0.0', null ]
+562 verbose cache add spec @unpic/svelte@^1.0.0
+563 silly cache add parsed spec Result {
+563 silly cache add   raw: '@unpic/svelte@^1.0.0',
+563 silly cache add   scope: '@unpic',
+563 silly cache add   escapedName: '@unpic%2fsvelte',
+563 silly cache add   name: '@unpic/svelte',
+563 silly cache add   rawSpec: '^1.0.0',
+563 silly cache add   spec: '>=1.0.0 <2.0.0',
+563 silly cache add   type: 'range' }
+564 silly addNamed @unpic/svelte@>=1.0.0 <2.0.0
+565 verbose addNamed ">=1.0.0 <2.0.0" is a valid semver range for @unpic/svelte
+566 silly addNameRange { name: '@unpic/svelte',
+566 silly addNameRange   range: '>=1.0.0 <2.0.0',
+566 silly addNameRange   hasData: false }
+567 silly mapToRegistry name @unpic/svelte
+568 silly mapToRegistry scope (from package name) @unpic
+569 verbose mapToRegistry no registry URL found in name for scope @unpic
+570 silly mapToRegistry using default registry
+571 silly mapToRegistry registry https://registry.npmjs.org/
+572 silly mapToRegistry data Result {
+572 silly mapToRegistry   raw: '@unpic/svelte',
+572 silly mapToRegistry   scope: '@unpic',
+572 silly mapToRegistry   escapedName: '@unpic%2fsvelte',
+572 silly mapToRegistry   name: '@unpic/svelte',
+572 silly mapToRegistry   rawSpec: '',
+572 silly mapToRegistry   spec: 'latest',
+572 silly mapToRegistry   type: 'tag' }
+573 silly mapToRegistry uri https://registry.npmjs.org/@unpic%2fsvelte
+574 verbose addNameRange registry:https://registry.npmjs.org/@unpic%2fsvelte not in flight; fetching
+575 verbose addTmpTarball /var/folders/r0/v3n9h_kn1zzfy112f53bk5qw0000gn/T/npm-67428-0599656d/registry.npmjs.org/svelte-image/-/svelte-image-0.2.9.tgz not in flight; adding
+576 verbose addTmpTarball already have metadata; skipping unpack for svelte-image@0.2.9
+577 verbose correctMkdir /Users/heewonahn/.npm correctMkdir not in flight; initializing
+578 verbose get https://registry.npmjs.org/@tensorflow-models%2fpose-detection not expired, no request
+579 silly addNameRange number 2 { name: '@tensorflow-models/pose-detection',
+579 silly addNameRange   range: '>=2.1.3 <3.0.0',
+579 silly addNameRange   hasData: true }
+580 silly addNameRange versions [ '@tensorflow-models/pose-detection',
+580 silly addNameRange   [ '0.0.1-rc.0',
+580 silly addNameRange     '0.0.1-rc.1',
+580 silly addNameRange     '0.0.1-rc.2',
+580 silly addNameRange     '0.0.1',
+580 silly addNameRange     '0.0.2',
+580 silly addNameRange     '0.0.3',
+580 silly addNameRange     '0.0.4',
+580 silly addNameRange     '0.1.0-alpha.0',
+580 silly addNameRange     '0.0.5',
+580 silly addNameRange     '0.0.6',
+580 silly addNameRange     '1.0.0',
+580 silly addNameRange     '1.0.1',
+580 silly addNameRange     '2.0.0',
+580 silly addNameRange     '2.1.0',
+580 silly addNameRange     '2.1.1',
+580 silly addNameRange     '2.1.2',
+580 silly addNameRange     '2.1.3' ] ]
+581 silly addNamed @tensorflow-models/pose-detection@2.1.3
+582 verbose addNamed "2.1.3" is a plain semver version for @tensorflow-models/pose-detection
+583 http fetch 200 https://registry.npmjs.org/embla-carousel-svelte/-/embla-carousel-svelte-8.6.0.tgz
+584 silly fetchAndShaCheck shasum 073f93694897414b21a8495e2619bbf64447dcaa
+585 silly mapToRegistry name @tensorflow-models/pose-detection
+586 silly mapToRegistry scope (from package name) @tensorflow-models
+587 verbose mapToRegistry no registry URL found in name for scope @tensorflow-models
+588 silly mapToRegistry using default registry
+589 silly mapToRegistry registry https://registry.npmjs.org/
+590 silly mapToRegistry data Result {
+590 silly mapToRegistry   raw: '@tensorflow-models/pose-detection',
+590 silly mapToRegistry   scope: '@tensorflow-models',
+590 silly mapToRegistry   escapedName: '@tensorflow-models%2fpose-detection',
+590 silly mapToRegistry   name: '@tensorflow-models/pose-detection',
+590 silly mapToRegistry   rawSpec: '',
+590 silly mapToRegistry   spec: 'latest',
+590 silly mapToRegistry   type: 'tag' }
+591 silly mapToRegistry uri https://registry.npmjs.org/@tensorflow-models%2fpose-detection
+592 verbose addRemoteTarball https://registry.npmjs.org/@tensorflow-models/pose-detection/-/pose-detection-2.1.3.tgz not in flight; adding
+593 verbose addRemoteTarball [ 'https://registry.npmjs.org/@tensorflow-models/pose-detection/-/pose-detection-2.1.3.tgz',
+593 verbose addRemoteTarball   '5b57f5fe290f7b2c0abbee07607e39a30d3cf3ac' ]
+594 verbose get https://registry.npmjs.org/@number-flow%2fsvelte not expired, no request
+595 silly addNameRange number 2 { name: '@number-flow/svelte',
+595 silly addNameRange   range: '>=0.3.6 <0.4.0',
+595 silly addNameRange   hasData: true }
+596 silly addNameRange versions [ '@number-flow/svelte',
+596 silly addNameRange   [ '0.1.0',
+596 silly addNameRange     '0.1.1',
+596 silly addNameRange     '0.1.2',
+596 silly addNameRange     '0.1.3',
+596 silly addNameRange     '0.1.4',
+596 silly addNameRange     '0.1.5',
+596 silly addNameRange     '0.1.6',
+596 silly addNameRange     '0.1.7',
+596 silly addNameRange     '0.2.0',
+596 silly addNameRange     '0.2.1',
+596 silly addNameRange     '0.2.2',
+596 silly addNameRange     '0.2.3',
+596 silly addNameRange     '0.3.0',
+596 silly addNameRange     '0.3.1',
+596 silly addNameRange     '0.3.2',
+596 silly addNameRange     '0.3.3',
+596 silly addNameRange     '0.3.4',
+596 silly addNameRange     '0.3.5',
+596 silly addNameRange     '0.3.6',
+596 silly addNameRange     '0.3.7' ] ]
+597 silly addNamed @number-flow/svelte@0.3.7
+598 verbose addNamed "0.3.7" is a plain semver version for @number-flow/svelte
+599 silly resolveWithNewModule svelte-preprocess@6.0.3 checking installable status
+600 verbose get https://registry.npmjs.org/@unpic%2fsvelte not expired, no request
+601 silly addNameRange number 2 { name: '@unpic/svelte', range: '>=1.0.0 <2.0.0', hasData: true }
+602 silly addNameRange versions [ '@unpic/svelte',
+602 silly addNameRange   [ '0.0.1',
+602 silly addNameRange     '0.0.2',
+602 silly addNameRange     '0.0.3',
+602 silly addNameRange     '0.0.4',
+602 silly addNameRange     '0.0.5',
+602 silly addNameRange     '0.0.6',
+602 silly addNameRange     '0.0.7',
+602 silly addNameRange     '0.0.8',
+602 silly addNameRange     '0.0.9',
+602 silly addNameRange     '0.0.10',
+602 silly addNameRange     '0.0.11',
+602 silly addNameRange     '0.0.12',
+602 silly addNameRange     '0.0.13',
+602 silly addNameRange     '0.0.14',
+602 silly addNameRange     '0.0.15',
+602 silly addNameRange     '0.0.16',
+602 silly addNameRange     '0.0.17',
+602 silly addNameRange     '0.0.18',
+602 silly addNameRange     '0.0.19',
+602 silly addNameRange     '0.0.20',
+602 silly addNameRange     '0.0.21',
+602 silly addNameRange     '0.0.22',
+602 silly addNameRange     '0.0.23',
+602 silly addNameRange     '0.0.24',
+602 silly addNameRange     '0.0.25',
+602 silly addNameRange     '0.0.26',
+602 silly addNameRange     '0.0.27',
+602 silly addNameRange     '0.0.28',
+602 silly addNameRange     '0.0.29',
+602 silly addNameRange     '0.0.30',
+602 silly addNameRange     '0.0.31',
+602 silly addNameRange     '0.0.32',
+602 silly addNameRange     '0.0.33',
+602 silly addNameRange     '0.0.34',
+602 silly addNameRange     '0.0.35',
+602 silly addNameRange     '0.0.36',
+602 silly addNameRange     '0.0.37',
+602 silly addNameRange     '0.0.38',
+602 silly addNameRange     '0.0.41',
+602 silly addNameRange     '0.0.42',
+602 silly addNameRange     '0.0.43',
+602 silly addNameRange     '0.0.44',
+602 silly addNameRange     '0.0.45',
+602 silly addNameRange     '0.0.46',
+602 silly addNameRange     '0.0.47',
+602 silly addNameRange     '0.0.48',
+602 silly addNameRange     '0.0.49',
+602 silly addNameRange     '0.0.50',
+602 silly addNameRange     '0.0.51',
+602 silly addNameRange     '0.0.53',
+602 silly addNameRange     '0.0.54',
+602 silly addNameRange     '0.0.55',
+602 silly addNameRange     '0.0.56',
+602 silly addNameRange     '0.0.57',
+602 silly addNameRange     '0.0.58',
+602 silly addNameRange     '1.0.0' ] ]
+603 silly addNamed @unpic/svelte@1.0.0
+604 verbose addNamed "1.0.0" is a plain semver version for @unpic/svelte
+605 verbose addTmpTarball /var/folders/r0/v3n9h_kn1zzfy112f53bk5qw0000gn/T/npm-67428-0599656d/registry.npmjs.org/_40vercel/analytics/-/analytics-1.5.0.tgz not in flight; adding
+606 verbose addTmpTarball already have metadata; skipping unpack for @vercel/analytics@1.5.0
+607 verbose correctMkdir /Users/heewonahn/.npm correctMkdir not in flight; initializing
+608 silly fetchAndShaCheck shasum f4d9f0b90ffdbab09c9d77f5f29b4262517b0956
+609 silly mapToRegistry name @unpic/svelte
+610 silly mapToRegistry scope (from package name) @unpic
+611 verbose mapToRegistry no registry URL found in name for scope @unpic
+612 silly mapToRegistry using default registry
+613 silly mapToRegistry registry https://registry.npmjs.org/
+614 silly mapToRegistry data Result {
+614 silly mapToRegistry   raw: '@unpic/svelte',
+614 silly mapToRegistry   scope: '@unpic',
+614 silly mapToRegistry   escapedName: '@unpic%2fsvelte',
+614 silly mapToRegistry   name: '@unpic/svelte',
+614 silly mapToRegistry   rawSpec: '',
+614 silly mapToRegistry   spec: 'latest',
+614 silly mapToRegistry   type: 'tag' }
+615 silly mapToRegistry uri https://registry.npmjs.org/@unpic%2fsvelte
+616 verbose addRemoteTarball https://registry.npmjs.org/@unpic/svelte/-/svelte-1.0.0.tgz not in flight; adding
+617 verbose addRemoteTarball [ 'https://registry.npmjs.org/@unpic/svelte/-/svelte-1.0.0.tgz',
+617 verbose addRemoteTarball   '9c3634c0608ae0034a398da676cb39a686291698' ]
+618 silly fetchAndShaCheck shasum a6ed4a84243e31b8a118490b94de9e8bebfb2372
+619 info retry fetch attempt 1 at 8:50:31 PM
+620 info attempt registry request try #1 at 8:50:31 PM
+621 http fetch GET https://registry.npmjs.org/@tensorflow-models/pose-detection/-/pose-detection-2.1.3.tgz
+622 verbose request using bearer token for auth
+623 silly resolveWithNewModule @tensorflow/tfjs-core@4.22.0 checking installable status
+624 silly cache add args [ '@tensorflow/tfjs-core@^4.22.0', null ]
+625 verbose cache add spec @tensorflow/tfjs-core@^4.22.0
+626 silly cache add parsed spec Result {
+626 silly cache add   raw: '@tensorflow/tfjs-core@^4.22.0',
+626 silly cache add   scope: '@tensorflow',
+626 silly cache add   escapedName: '@tensorflow%2ftfjs-core',
+626 silly cache add   name: '@tensorflow/tfjs-core',
+626 silly cache add   rawSpec: '^4.22.0',
+626 silly cache add   spec: '>=4.22.0 <5.0.0',
+626 silly cache add   type: 'range' }
+627 silly addNamed @tensorflow/tfjs-core@>=4.22.0 <5.0.0
+628 verbose addNamed ">=4.22.0 <5.0.0" is a valid semver range for @tensorflow/tfjs-core
+629 silly addNameRange { name: '@tensorflow/tfjs-core',
+629 silly addNameRange   range: '>=4.22.0 <5.0.0',
+629 silly addNameRange   hasData: false }
+630 silly mapToRegistry name @tensorflow/tfjs-core
+631 silly mapToRegistry scope (from package name) @tensorflow
+632 verbose mapToRegistry no registry URL found in name for scope @tensorflow
+633 silly mapToRegistry using default registry
+634 silly mapToRegistry registry https://registry.npmjs.org/
+635 silly mapToRegistry data Result {
+635 silly mapToRegistry   raw: '@tensorflow/tfjs-core',
+635 silly mapToRegistry   scope: '@tensorflow',
+635 silly mapToRegistry   escapedName: '@tensorflow%2ftfjs-core',
+635 silly mapToRegistry   name: '@tensorflow/tfjs-core',
+635 silly mapToRegistry   rawSpec: '',
+635 silly mapToRegistry   spec: 'latest',
+635 silly mapToRegistry   type: 'tag' }
+636 silly mapToRegistry uri https://registry.npmjs.org/@tensorflow%2ftfjs-core
+637 verbose addNameRange registry:https://registry.npmjs.org/@tensorflow%2ftfjs-core not in flight; fetching
+638 silly cache afterAdd @number-flow/svelte@0.3.7
+639 verbose afterAdd /Users/heewonahn/.npm/@number-flow/svelte/0.3.7/package/package.json not in flight; writing
+640 verbose correctMkdir /Users/heewonahn/.npm correctMkdir not in flight; initializing
+641 verbose addTmpTarball /var/folders/r0/v3n9h_kn1zzfy112f53bk5qw0000gn/T/npm-67428-0599656d/registry.npmjs.org/glob/-/glob-10.4.5.tgz not in flight; adding
+642 verbose addTmpTarball already have metadata; skipping unpack for glob@10.4.5
+643 verbose correctMkdir /Users/heewonahn/.npm correctMkdir not in flight; initializing
+644 verbose addTmpTarball /var/folders/r0/v3n9h_kn1zzfy112f53bk5qw0000gn/T/npm-67428-0599656d/registry.npmjs.org/embla-carousel-svelte/-/embla-carousel-svelte-8.6.0.tgz not in flight; adding
+645 verbose addTmpTarball already have metadata; skipping unpack for embla-carousel-svelte@8.6.0
+646 verbose correctMkdir /Users/heewonahn/.npm correctMkdir not in flight; initializing
+647 info retry fetch attempt 1 at 8:50:31 PM
+648 info attempt registry request try #1 at 8:50:31 PM
+649 http fetch GET https://registry.npmjs.org/@unpic/svelte/-/svelte-1.0.0.tgz
+650 verbose request using bearer token for auth
+651 verbose get https://registry.npmjs.org/@tensorflow%2ftfjs-core not expired, no request
+652 silly addNameRange number 2 { name: '@tensorflow/tfjs-core',
+652 silly addNameRange   range: '>=4.22.0 <5.0.0',
+652 silly addNameRange   hasData: true }
+653 silly addNameRange versions [ '@tensorflow/tfjs-core',
+653 silly addNameRange   [ '0.0.1',
+653 silly addNameRange     '0.0.2',
+653 silly addNameRange     '0.6.0-alpha7',
+653 silly addNameRange     '0.6.0',
+653 silly addNameRange     '0.6.1',
+653 silly addNameRange     '0.7.0',
+653 silly addNameRange     '0.7.1',
+653 silly addNameRange     '0.7.2',
+653 silly addNameRange     '0.8.0',
+653 silly addNameRange     '0.8.1',
+653 silly addNameRange     '0.8.2',
+653 silly addNameRange     '0.8.3',
+653 silly addNameRange     '0.8.4',
+653 silly addNameRange     '0.8.5',
+653 silly addNameRange     '0.9.0',
+653 silly addNameRange     '0.9.1',
+653 silly addNameRange     '0.10.0',
+653 silly addNameRange     '0.10.1',
+653 silly addNameRange     '0.11.0',
+653 silly addNameRange     '0.11.1',
+653 silly addNameRange     '0.11.2',
+653 silly addNameRange     '0.11.3',
+653 silly addNameRange     '0.11.4',
+653 silly addNameRange     '0.11.5',
+653 silly addNameRange     '0.11.6',
+653 silly addNameRange     '0.11.7',
+653 silly addNameRange     '0.11.8',
+653 silly addNameRange     '0.11.9',
+653 silly addNameRange     '0.12.0',
+653 silly addNameRange     '0.12.1',
+653 silly addNameRange     '0.12.2',
+653 silly addNameRange     '0.12.3',
+653 silly addNameRange     '0.12.4',
+653 silly addNameRange     '0.12.5',
+653 silly addNameRange     '0.12.6',
+653 silly addNameRange     '0.12.7',
+653 silly addNameRange     '0.12.8',
+653 silly addNameRange     '0.12.9',
+653 silly addNameRange     '0.12.10',
+653 silly addNameRange     '0.12.11',
+653 silly addNameRange     '0.12.12',
+653 silly addNameRange     '0.12.13',
+653 silly addNameRange     '0.12.14',
+653 silly addNameRange     '0.12.15',
+653 silly addNameRange     '0.12.16',
+653 silly addNameRange     '0.12.17',
+653 silly addNameRange     '0.12.18',
+653 silly addNameRange     '0.13.0',
+653 silly addNameRange     '0.13.1',
+653 silly addNameRange     '0.13.2',
+653 silly addNameRange     '0.13.3',
+653 silly addNameRange     '0.13.4',
+653 silly addNameRange     '0.13.5',
+653 silly addNameRange     '0.13.6',
+653 silly addNameRange     '0.13.7',
+653 silly addNameRange     '0.13.8',
+653 silly addNameRange     '0.13.9',
+653 silly addNameRange     '0.13.10',
+653 silly addNameRange     '0.13.11',
+653 silly addNameRange     '0.13.12',
+653 silly addNameRange     '0.14.0',
+653 silly addNameRange     '0.14.1',
+653 silly addNameRange     '0.14.2',
+653 silly addNameRange     '0.14.3',
+653 silly addNameRange     '0.14.4',
+653 silly addNameRange     '0.14.5',
+653 silly addNameRange     '0.15.0',
+653 silly addNameRange     '1.0.0-alpha1',
+653 silly addNameRange     '0.15.1',
+653 silly addNameRange     '1.0.0-alpha2',
+653 silly addNameRange     '0.15.2',
+653 silly addNameRange     '1.0.0-alpha3',
+653 silly addNameRange     '0.15.3',
+653 silly addNameRange     '0.15.4',
+653 silly addNameRange     '1.0.0-alpha4',
+653 silly addNameRange     '1.0.0-alpha5',
+653 silly addNameRange     '1.0.0',
+653 silly addNameRange     '1.0.1',
+653 silly addNameRange     '1.0.2',
+653 silly addNameRange     '1.0.3',
+653 silly addNameRange     '1.0.4',
+653 silly addNameRange     '1.1.0',
+653 silly addNameRange     '1.1.1',
+653 silly addNameRange     '1.1.2',
+653 silly addNameRange     '1.2.0',
+653 silly addNameRange     '1.2.1',
+653 silly addNameRange     '1.2.2',
+653 silly addNameRange     '1.2.3',
+653 silly addNameRange     '1.2.5',
+653 silly addNameRange     '1.2.6',
+653 silly addNameRange     '1.2.7',
+653 silly addNameRange     '1.2.8',
+653 silly addNameRange     '1.2.9',
+653 silly addNameRange     '1.2.10',
+653 silly addNameRange     '1.2.11',
+653 silly addNameRange     '1.3.0',
+653 silly addNameRange     '1.3.1',
+653 silly addNameRange     '1.3.2',
+653 silly addNameRange     '1.4.0',
+653 silly addNameRange     '1.5.0',
+653 silly addNameRange     ... 88 more items ] ]
+654 silly addNamed @tensorflow/tfjs-core@4.22.0
+655 verbose addNamed "4.22.0" is a plain semver version for @tensorflow/tfjs-core
+656 http 200 https://registry.npmjs.org/fabric
+657 verbose headers { date: 'Thu, 24 Apr 2025 00:50:30 GMT',
+657 verbose headers   'content-type': 'application/json',
+657 verbose headers   'transfer-encoding': 'chunked',
+657 verbose headers   connection: 'keep-alive',
+657 verbose headers   'cf-ray': '93519b5b1e038f4b-ORD',
+657 verbose headers   'cf-cache-status': 'HIT',
+657 verbose headers   'access-control-allow-origin': '*',
+657 verbose headers   age: '281',
+657 verbose headers   'cache-control': 'public, max-age=300',
+657 verbose headers   etag: 'W/"75554d08159c4aab8ee9029913841d8d"',
+657 verbose headers   'last-modified': 'Tue, 15 Apr 2025 13:03:45 GMT',
+657 verbose headers   vary: 'accept-encoding, accept',
+657 verbose headers   'set-cookie': [ '_cfuvid=mQ.G14eirGFmOaORM_XTjy8.X.em6Dq1c37CtkiANqM-1745455830290-0.0.1.1-604800000; path=/; domain=.npmjs.org; HttpOnly; Secure; SameSite=None' ],
+657 verbose headers   server: 'cloudflare',
+657 verbose headers   'content-encoding': 'gzip' }
+658 silly get cb [ 200,
+658 silly get   { date: 'Thu, 24 Apr 2025 00:50:30 GMT',
+658 silly get     'content-type': 'application/json',
+658 silly get     'transfer-encoding': 'chunked',
+658 silly get     connection: 'keep-alive',
+658 silly get     'cf-ray': '93519b5b1e038f4b-ORD',
+658 silly get     'cf-cache-status': 'HIT',
+658 silly get     'access-control-allow-origin': '*',
+658 silly get     age: '281',
+658 silly get     'cache-control': 'public, max-age=300',
+658 silly get     etag: 'W/"75554d08159c4aab8ee9029913841d8d"',
+658 silly get     'last-modified': 'Tue, 15 Apr 2025 13:03:45 GMT',
+658 silly get     vary: 'accept-encoding, accept',
+658 silly get     'set-cookie': [ '_cfuvid=mQ.G14eirGFmOaORM_XTjy8.X.em6Dq1c37CtkiANqM-1745455830290-0.0.1.1-604800000; path=/; domain=.npmjs.org; HttpOnly; Secure; SameSite=None' ],
+658 silly get     server: 'cloudflare',
+658 silly get     'content-encoding': 'gzip' } ]
+659 verbose get saving fabric to /Users/heewonahn/.npm/registry.npmjs.org/fabric/.cache.json
+660 verbose correctMkdir /Users/heewonahn/.npm correctMkdir not in flight; initializing
+661 silly mapToRegistry name @tensorflow/tfjs-core
+662 silly mapToRegistry scope (from package name) @tensorflow
+663 verbose mapToRegistry no registry URL found in name for scope @tensorflow
+664 silly mapToRegistry using default registry
+665 silly mapToRegistry registry https://registry.npmjs.org/
+666 silly mapToRegistry data Result {
+666 silly mapToRegistry   raw: '@tensorflow/tfjs-core',
+666 silly mapToRegistry   scope: '@tensorflow',
+666 silly mapToRegistry   escapedName: '@tensorflow%2ftfjs-core',
+666 silly mapToRegistry   name: '@tensorflow/tfjs-core',
+666 silly mapToRegistry   rawSpec: '',
+666 silly mapToRegistry   spec: 'latest',
+666 silly mapToRegistry   type: 'tag' }
+667 silly mapToRegistry uri https://registry.npmjs.org/@tensorflow%2ftfjs-core
+668 verbose addRemoteTarball https://registry.npmjs.org/@tensorflow/tfjs-core/-/tfjs-core-4.22.0.tgz not in flight; adding
+669 verbose addRemoteTarball [ 'https://registry.npmjs.org/@tensorflow/tfjs-core/-/tfjs-core-4.22.0.tgz',
+669 verbose addRemoteTarball   'fc4b45d2377410fa3a42c88ca77d8f23d83cffc3' ]
+670 verbose afterAdd /Users/heewonahn/.npm/@number-flow/svelte/0.3.7/package/package.json written
+671 info retry fetch attempt 1 at 8:50:31 PM
+672 info attempt registry request try #1 at 8:50:31 PM
+673 http fetch GET https://registry.npmjs.org/@tensorflow/tfjs-core/-/tfjs-core-4.22.0.tgz
+674 verbose request using bearer token for auth
+675 silly cache afterAdd svelte-image@0.2.9
+676 verbose afterAdd /Users/heewonahn/.npm/svelte-image/0.2.9/package/package.json not in flight; writing
+677 verbose correctMkdir /Users/heewonahn/.npm correctMkdir not in flight; initializing
+678 silly resolveWithNewModule fabric@6.6.4 checking installable status
+679 verbose afterAdd /Users/heewonahn/.npm/svelte-image/0.2.9/package/package.json written
+680 http fetch 200 https://registry.npmjs.org/@tensorflow/tfjs-core/-/tfjs-core-4.22.0.tgz
+681 silly cache afterAdd @vercel/analytics@1.5.0
+682 verbose afterAdd /Users/heewonahn/.npm/@vercel/analytics/1.5.0/package/package.json not in flight; writing
+683 verbose correctMkdir /Users/heewonahn/.npm correctMkdir not in flight; initializing
+684 silly cache afterAdd embla-carousel-svelte@8.6.0
+685 verbose afterAdd /Users/heewonahn/.npm/embla-carousel-svelte/8.6.0/package/package.json not in flight; writing
+686 verbose correctMkdir /Users/heewonahn/.npm correctMkdir not in flight; initializing
+687 silly cache afterAdd glob@10.4.5
+688 verbose afterAdd /Users/heewonahn/.npm/glob/10.4.5/package/package.json not in flight; writing
+689 verbose correctMkdir /Users/heewonahn/.npm correctMkdir not in flight; initializing
+690 verbose afterAdd /Users/heewonahn/.npm/@vercel/analytics/1.5.0/package/package.json written
+691 verbose afterAdd /Users/heewonahn/.npm/embla-carousel-svelte/8.6.0/package/package.json written
+692 verbose afterAdd /Users/heewonahn/.npm/glob/10.4.5/package/package.json written
+693 http 200 https://registry.npmjs.org/pdfjs-dist
+694 verbose headers { date: 'Thu, 24 Apr 2025 00:50:30 GMT',
+694 verbose headers   'content-type': 'application/json',
+694 verbose headers   'transfer-encoding': 'chunked',
+694 verbose headers   connection: 'keep-alive',
+694 verbose headers   'cf-ray': '93519b5acb78731b-ORD',
+694 verbose headers   'cf-cache-status': 'HIT',
+694 verbose headers   'access-control-allow-origin': '*',
+694 verbose headers   age: '209',
+694 verbose headers   'cache-control': 'public, max-age=300',
+694 verbose headers   etag: 'W/"167f22022901c6231560f87d315de4b7"',
+694 verbose headers   'last-modified': 'Sun, 30 Mar 2025 13:28:16 GMT',
+694 verbose headers   vary: 'accept-encoding, accept',
+694 verbose headers   'set-cookie': [ '_cfuvid=hnVnM6Oui3bOSL86VftuO1JaC4StZAWsPlPoY_b_HJw-1745455830234-0.0.1.1-604800000; path=/; domain=.npmjs.org; HttpOnly; Secure; SameSite=None' ],
+694 verbose headers   server: 'cloudflare',
+694 verbose headers   'content-encoding': 'gzip' }
+695 silly get cb [ 200,
+695 silly get   { date: 'Thu, 24 Apr 2025 00:50:30 GMT',
+695 silly get     'content-type': 'application/json',
+695 silly get     'transfer-encoding': 'chunked',
+695 silly get     connection: 'keep-alive',
+695 silly get     'cf-ray': '93519b5acb78731b-ORD',
+695 silly get     'cf-cache-status': 'HIT',
+695 silly get     'access-control-allow-origin': '*',
+695 silly get     age: '209',
+695 silly get     'cache-control': 'public, max-age=300',
+695 silly get     etag: 'W/"167f22022901c6231560f87d315de4b7"',
+695 silly get     'last-modified': 'Sun, 30 Mar 2025 13:28:16 GMT',
+695 silly get     vary: 'accept-encoding, accept',
+695 silly get     'set-cookie': [ '_cfuvid=hnVnM6Oui3bOSL86VftuO1JaC4StZAWsPlPoY_b_HJw-1745455830234-0.0.1.1-604800000; path=/; domain=.npmjs.org; HttpOnly; Secure; SameSite=None' ],
+695 silly get     server: 'cloudflare',
+695 silly get     'content-encoding': 'gzip' } ]
+696 verbose get saving pdfjs-dist to /Users/heewonahn/.npm/registry.npmjs.org/pdfjs-dist/.cache.json
+697 verbose correctMkdir /Users/heewonahn/.npm correctMkdir not in flight; initializing
+698 silly fetchAndShaCheck shasum 47fa2245cac5fd44b0b64316a26aedef6ff221a4
+699 silly resolveWithNewModule pdfjs-dist@4.10.38 checking installable status
+700 http fetch 200 https://registry.npmjs.org/@tensorflow-models/pose-detection/-/pose-detection-2.1.3.tgz
+701 http fetch 200 https://registry.npmjs.org/@unpic/svelte/-/svelte-1.0.0.tgz
+702 silly fetchAndShaCheck shasum 9c3634c0608ae0034a398da676cb39a686291698
+703 verbose addTmpTarball /var/folders/r0/v3n9h_kn1zzfy112f53bk5qw0000gn/T/npm-67428-0599656d/registry.npmjs.org/_40unpic/svelte/-/svelte-1.0.0.tgz not in flight; adding
+704 verbose addTmpTarball already have metadata; skipping unpack for @unpic/svelte@1.0.0
+705 verbose correctMkdir /Users/heewonahn/.npm correctMkdir not in flight; initializing
+706 verbose addTmpTarball /var/folders/r0/v3n9h_kn1zzfy112f53bk5qw0000gn/T/npm-67428-0599656d/registry.npmjs.org/turn.js/-/turn.js-1.0.5.tgz not in flight; adding
+707 verbose addTmpTarball already have metadata; skipping unpack for turn.js@1.0.5
+708 verbose correctMkdir /Users/heewonahn/.npm correctMkdir not in flight; initializing
+709 silly fetchAndShaCheck shasum 5b57f5fe290f7b2c0abbee07607e39a30d3cf3ac
+710 verbose addTmpTarball /var/folders/r0/v3n9h_kn1zzfy112f53bk5qw0000gn/T/npm-67428-0599656d/registry.npmjs.org/_40tensorflow-models/pose-detection/-/pose-detection-2.1.3.tgz not in flight; adding
+711 verbose addTmpTarball already have metadata; skipping unpack for @tensorflow-models/pose-detection@2.1.3
+712 verbose correctMkdir /Users/heewonahn/.npm correctMkdir not in flight; initializing
+713 silly cache afterAdd @unpic/svelte@1.0.0
+714 verbose afterAdd /Users/heewonahn/.npm/@unpic/svelte/1.0.0/package/package.json not in flight; writing
+715 verbose correctMkdir /Users/heewonahn/.npm correctMkdir not in flight; initializing
+716 silly fetchAndShaCheck shasum 65ae8693550b9f789036bd4cf29e775f1bd389ed
+717 verbose afterAdd /Users/heewonahn/.npm/@unpic/svelte/1.0.0/package/package.json written
+718 silly cache afterAdd turn.js@1.0.5
+719 verbose afterAdd /Users/heewonahn/.npm/turn.js/1.0.5/package/package.json not in flight; writing
+720 verbose correctMkdir /Users/heewonahn/.npm correctMkdir not in flight; initializing
+721 silly cache afterAdd @tensorflow-models/pose-detection@2.1.3
+722 verbose afterAdd /Users/heewonahn/.npm/@tensorflow-models/pose-detection/2.1.3/package/package.json not in flight; writing
+723 verbose correctMkdir /Users/heewonahn/.npm correctMkdir not in flight; initializing
+724 verbose afterAdd /Users/heewonahn/.npm/turn.js/1.0.5/package/package.json written
+725 verbose afterAdd /Users/heewonahn/.npm/@tensorflow-models/pose-detection/2.1.3/package/package.json written
+726 verbose addTmpTarball /var/folders/r0/v3n9h_kn1zzfy112f53bk5qw0000gn/T/npm-67428-0599656d/registry.npmjs.org/material-icons/-/material-icons-1.13.14.tgz not in flight; adding
+727 verbose addTmpTarball already have metadata; skipping unpack for material-icons@1.13.14
+728 verbose correctMkdir /Users/heewonahn/.npm correctMkdir not in flight; initializing
+729 silly cache afterAdd material-icons@1.13.14
+730 verbose afterAdd /Users/heewonahn/.npm/material-icons/1.13.14/package/package.json not in flight; writing
+731 verbose correctMkdir /Users/heewonahn/.npm correctMkdir not in flight; initializing
+732 verbose afterAdd /Users/heewonahn/.npm/material-icons/1.13.14/package/package.json written
+733 http 200 https://registry.npmjs.org/vercel
+734 verbose headers { date: 'Thu, 24 Apr 2025 00:50:30 GMT',
+734 verbose headers   'content-type': 'application/json',
+734 verbose headers   'transfer-encoding': 'chunked',
+734 verbose headers   connection: 'keep-alive',
+734 verbose headers   'cf-ray': '93519b5ace33f15d-ORD',
+734 verbose headers   'cf-cache-status': 'HIT',
+734 verbose headers   'access-control-allow-origin': '*',
+734 verbose headers   age: '214',
+734 verbose headers   'cache-control': 'public, max-age=300',
+734 verbose headers   etag: 'W/"f9d6e5ee39815ccca0105973ed313ed1"',
+734 verbose headers   'last-modified': 'Tue, 22 Apr 2025 15:09:13 GMT',
+734 verbose headers   vary: 'accept-encoding, accept',
+734 verbose headers   'set-cookie': [ '_cfuvid=7irFtgPhPfZTGHqEH1R749DwaSZ6B7nhvPmAZx.ZVIU-1745455830228-0.0.1.1-604800000; path=/; domain=.npmjs.org; HttpOnly; Secure; SameSite=None' ],
+734 verbose headers   server: 'cloudflare',
+734 verbose headers   'content-encoding': 'gzip' }
+735 silly get cb [ 200,
+735 silly get   { date: 'Thu, 24 Apr 2025 00:50:30 GMT',
+735 silly get     'content-type': 'application/json',
+735 silly get     'transfer-encoding': 'chunked',
+735 silly get     connection: 'keep-alive',
+735 silly get     'cf-ray': '93519b5ace33f15d-ORD',
+735 silly get     'cf-cache-status': 'HIT',
+735 silly get     'access-control-allow-origin': '*',
+735 silly get     age: '214',
+735 silly get     'cache-control': 'public, max-age=300',
+735 silly get     etag: 'W/"f9d6e5ee39815ccca0105973ed313ed1"',
+735 silly get     'last-modified': 'Tue, 22 Apr 2025 15:09:13 GMT',
+735 silly get     vary: 'accept-encoding, accept',
+735 silly get     'set-cookie': [ '_cfuvid=7irFtgPhPfZTGHqEH1R749DwaSZ6B7nhvPmAZx.ZVIU-1745455830228-0.0.1.1-604800000; path=/; domain=.npmjs.org; HttpOnly; Secure; SameSite=None' ],
+735 silly get     server: 'cloudflare',
+735 silly get     'content-encoding': 'gzip' } ]
+736 verbose get saving vercel to /Users/heewonahn/.npm/registry.npmjs.org/vercel/.cache.json
+737 verbose correctMkdir /Users/heewonahn/.npm correctMkdir not in flight; initializing
+738 silly resolveWithNewModule vercel@41.6.2 checking installable status
+739 http 200 https://registry.npmjs.org/langchain
+740 verbose headers { date: 'Thu, 24 Apr 2025 00:50:30 GMT',
+740 verbose headers   'content-type': 'application/json',
+740 verbose headers   'transfer-encoding': 'chunked',
+740 verbose headers   connection: 'keep-alive',
+740 verbose headers   'cf-ray': '93519b5ac88e0008-ORD',
+740 verbose headers   'cf-cache-status': 'HIT',
+740 verbose headers   'access-control-allow-origin': '*',
+740 verbose headers   age: '129',
+740 verbose headers   'cache-control': 'public, max-age=300',
+740 verbose headers   etag: 'W/"aa41ff20bd48ef4bbb3c0b3fa0bdcb8d"',
+740 verbose headers   'last-modified': 'Thu, 24 Apr 2025 00:15:08 GMT',
+740 verbose headers   vary: 'accept-encoding, accept',
+740 verbose headers   'set-cookie': [ '_cfuvid=ujEdY03Hl1AFCt_U537_HMlNEzxNYEs7spCZPHq.AzI-1745455830231-0.0.1.1-604800000; path=/; domain=.npmjs.org; HttpOnly; Secure; SameSite=None' ],
+740 verbose headers   server: 'cloudflare',
+740 verbose headers   'content-encoding': 'gzip' }
+741 silly get cb [ 200,
+741 silly get   { date: 'Thu, 24 Apr 2025 00:50:30 GMT',
+741 silly get     'content-type': 'application/json',
+741 silly get     'transfer-encoding': 'chunked',
+741 silly get     connection: 'keep-alive',
+741 silly get     'cf-ray': '93519b5ac88e0008-ORD',
+741 silly get     'cf-cache-status': 'HIT',
+741 silly get     'access-control-allow-origin': '*',
+741 silly get     age: '129',
+741 silly get     'cache-control': 'public, max-age=300',
+741 silly get     etag: 'W/"aa41ff20bd48ef4bbb3c0b3fa0bdcb8d"',
+741 silly get     'last-modified': 'Thu, 24 Apr 2025 00:15:08 GMT',
+741 silly get     vary: 'accept-encoding, accept',
+741 silly get     'set-cookie': [ '_cfuvid=ujEdY03Hl1AFCt_U537_HMlNEzxNYEs7spCZPHq.AzI-1745455830231-0.0.1.1-604800000; path=/; domain=.npmjs.org; HttpOnly; Secure; SameSite=None' ],
+741 silly get     server: 'cloudflare',
+741 silly get     'content-encoding': 'gzip' } ]
+742 verbose get saving langchain to /Users/heewonahn/.npm/registry.npmjs.org/langchain/.cache.json
+743 verbose correctMkdir /Users/heewonahn/.npm correctMkdir not in flight; initializing
+744 silly resolveWithNewModule langchain@0.3.24 checking installable status
+745 silly fetchAndShaCheck shasum c6ffb8c5e737b1b1ef7fab8f721328b5b2e658c0
+746 silly fetchAndShaCheck shasum fc4b45d2377410fa3a42c88ca77d8f23d83cffc3
+747 verbose addTmpTarball /var/folders/r0/v3n9h_kn1zzfy112f53bk5qw0000gn/T/npm-67428-0599656d/registry.npmjs.org/_40tensorflow/tfjs-backend-webgl/-/tfjs-backend-webgl-4.22.0.tgz not in flight; adding
+748 verbose addTmpTarball already have metadata; skipping unpack for @tensorflow/tfjs-backend-webgl@4.22.0
+749 verbose correctMkdir /Users/heewonahn/.npm correctMkdir not in flight; initializing
+750 silly cache afterAdd @tensorflow/tfjs-backend-webgl@4.22.0
+751 verbose afterAdd /Users/heewonahn/.npm/@tensorflow/tfjs-backend-webgl/4.22.0/package/package.json not in flight; writing
+752 verbose correctMkdir /Users/heewonahn/.npm correctMkdir not in flight; initializing
+753 verbose afterAdd /Users/heewonahn/.npm/@tensorflow/tfjs-backend-webgl/4.22.0/package/package.json written
+754 verbose addTmpTarball /var/folders/r0/v3n9h_kn1zzfy112f53bk5qw0000gn/T/npm-67428-0599656d/registry.npmjs.org/_40tensorflow/tfjs-core/-/tfjs-core-4.22.0.tgz not in flight; adding
+755 verbose addTmpTarball already have metadata; skipping unpack for @tensorflow/tfjs-core@4.22.0
+756 verbose correctMkdir /Users/heewonahn/.npm correctMkdir not in flight; initializing
+757 silly cache afterAdd @tensorflow/tfjs-core@4.22.0
+758 verbose afterAdd /Users/heewonahn/.npm/@tensorflow/tfjs-core/4.22.0/package/package.json not in flight; writing
+759 verbose correctMkdir /Users/heewonahn/.npm correctMkdir not in flight; initializing
+760 verbose afterAdd /Users/heewonahn/.npm/@tensorflow/tfjs-core/4.22.0/package/package.json written
+761 silly rollbackFailedOptional Starting
+762 silly rollbackFailedOptional Finishing
+763 silly runTopLevelLifecycles Finishing
+764 silly install printInstalled
+765 verbose stack Error: Unsupported engine for svelte-preprocess@6.0.3: wanted: {"node":">= 18.0.0"} (current: {"node":"6.13.1","npm":"3.10.10"})
+765 verbose stack     at checkEngine (/Users/heewonahn/opt/anaconda3/lib/node_modules/npm/node_modules/npm-install-checks/index.js:13:14)
+765 verbose stack     at module.exports.isInstallable (/Users/heewonahn/opt/anaconda3/lib/node_modules/npm/lib/install/validate-args.js:38:3)
+765 verbose stack     at resolveWithNewModule (/Users/heewonahn/opt/anaconda3/lib/node_modules/npm/lib/install/deps.js:511:10)
+765 verbose stack     at /Users/heewonahn/opt/anaconda3/lib/node_modules/npm/lib/install/deps.js:454:9
+765 verbose stack     at /Users/heewonahn/opt/anaconda3/lib/node_modules/npm/node_modules/iferr/index.js:13:50
+765 verbose stack     at /Users/heewonahn/opt/anaconda3/lib/node_modules/npm/lib/fetch-package-metadata.js:37:12
+765 verbose stack     at addRequestedAndFinish (/Users/heewonahn/opt/anaconda3/lib/node_modules/npm/lib/fetch-package-metadata.js:67:5)
+765 verbose stack     at returnAndAddMetadata (/Users/heewonahn/opt/anaconda3/lib/node_modules/npm/lib/fetch-package-metadata.js:121:7)
+765 verbose stack     at pickVersionFromRegistryDocument (/Users/heewonahn/opt/anaconda3/lib/node_modules/npm/lib/fetch-package-metadata.js:146:20)
+765 verbose stack     at /Users/heewonahn/opt/anaconda3/lib/node_modules/npm/node_modules/iferr/index.js:13:50
+766 verbose pkgid svelte-preprocess@6.0.3
+767 verbose cwd /Users/heewonahn/Creative Cloud Files/ Github/Gallery
+768 error Darwin 24.3.0
+769 error argv "/Users/heewonahn/opt/anaconda3/bin/node" "/Users/heewonahn/opt/anaconda3/bin/npm" "install"
+770 error node v6.13.1
+771 error npm  v3.10.10
+772 error code ENOTSUP
+773 error notsup Unsupported engine for svelte-preprocess@6.0.3: wanted: {"node":">= 18.0.0"} (current: {"node":"6.13.1","npm":"3.10.10"})
+774 error notsup Not compatible with your version of node/npm: svelte-preprocess@6.0.3
+775 error notsup Not compatible with your version of node/npm: svelte-preprocess@6.0.3
+775 error notsup Required: {"node":">= 18.0.0"}
+775 error notsup Actual:   {"npm":"3.10.10","node":"6.13.1"}
+776 verbose exit [ 1, true ]

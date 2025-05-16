@@ -7,7 +7,7 @@ blurb: "I spent 3+ weeks charting the history of human civilization, by region /
 card: null
 preview: bento-timeline
 rating: 4
-date: '2023-7-22'
+date: '2024-10-31'
 author: 'Dantès'
 theme: dark
 categories:

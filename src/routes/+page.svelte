@@ -35,422 +35,9 @@
 
 	themeColor.set('f3f4f7')
 
-	setTimeout(() => {
-		val = 17945
-	}, 400);
-
-	setTimeout(() => {
-		loading.set(false)
-	}, 100);
-
-
-	// Functions
-
-	function throttle(func, limit) {
-		let inThrottle;
-		return function() {
-			const args = arguments;
-			const context = this;
-			if (!inThrottle) {
-				func.apply(context, args);
-				inThrottle = true;
-				setTimeout(() => inThrottle = false, limit);
-			}
-		};
-	}
-
-	function updateReflections(lightX, lightY) {
-		// Update reflections based on light position
-		// Only do this calculation for visible elements to save CPU
-		const reflections = document.querySelectorAll('.sec');
-
-		// Create a lightweight version for mobile devices
-		const isMobile = window.innerWidth <= 800;
-		if (isMobile) {
-			// On mobile just add a static reflection effect for better performance
-			reflections.forEach(reflection => {
-				const reflectionElement = reflection.querySelector('.light-reflection');
-				if (!reflectionElement) return;
-
-				reflectionElement.style.background = `linear-gradient(
-					125deg,
-					rgba(255, 255, 255, 0.2) 0%,
-					rgba(255, 255, 255, 0.05) 30%,
-					rgba(255, 255, 255, 0) 60%)`;
-				reflectionElement.style.opacity = "0.2";
-			});
-			return;
-		}
-
-		// For desktop, calculate more detailed reflections
-		const viewportHeight = window.innerHeight;
-
-		// Get viewport dimensions once to avoid recalculating
-		const maxDistance = Math.sqrt(window.innerWidth * window.innerWidth + viewportHeight * viewportHeight);
-
-		reflections.forEach(reflection => {
-			// Skip shadow calculation if section is far from viewport (performance optimization)
-			const rect = reflection.getBoundingClientRect();
-			if (rect.bottom < -200 || rect.top > viewportHeight + 200) {
-				return;
-			}
-
-			const reflectionCenterX = rect.left + rect.width / 2;
-			const reflectionCenterY = rect.top + rect.height / 2;
-
-			// Calculate angle from light to reflection
-			const dx = lightX - reflectionCenterX;
-			const dy = lightY - reflectionCenterY;
-			const angle = Math.atan2(dy, dx) * (180 / Math.PI);
-
-			// Calculate distance to light (for intensity)
-			const distanceToLight = Math.sqrt(dx * dx + dy * dy);
-			const normalizedDistance = Math.min(distanceToLight / maxDistance, 1);
-
-			// Intensity based on distance - brighter when closer to light
-			const reflectionIntensity = Math.max(0.2, 0.4 - normalizedDistance * 0.3);
-
-			// Set the gradient angle based on light position
-			// This makes the reflection appear to come from the light source
-			const gradientAngle = (angle + 180) % 360;
-
-			// Apply the reflection gradient
-			const reflectionElement = reflection.querySelector('.light-reflection');
-			if (!reflectionElement) return;
-
-			// Use CSS variables for better performance by reducing style recalculation
-			reflectionElement.style.setProperty('--reflection-angle', `${gradientAngle}deg`);
-			reflectionElement.style.setProperty('--reflection-intensity-primary', reflectionIntensity.toString());
-			reflectionElement.style.setProperty('--reflection-intensity-secondary', (reflectionIntensity * 0.3).toString());
-			reflectionElement.style.setProperty('--reflection-opacity', (0.25 - normalizedDistance * 0.15).toString());
-		});
-	}
-
-	function setAnimationIndexes() {
-		// Set animation indexes for staggered animations
-		const sections = document.querySelectorAll('.sec');
-		sections.forEach((section, index) => {
-			section.style.setProperty('--index', index);
-		});
-	}
-
-	function changeView(v){
-		// Don't transition if we're already on this view
-		if ($view === v) return;
-
-		// Store the current active object and its position before view change
-		const currentObject = $activeObject;
-		let currentPosition = null;
-
-		if (currentObject) {
-			const elem = document.getElementById(currentObject.meta.title);
-			if (elem) {
-				const rect = elem.getBoundingClientRect();
-				currentPosition = {
-					id: currentObject.meta.title,
-					top: rect.top
-				};
-			}
-		}
-
-		// For better performance, remove some of the checks that aren't needed
-		// and combine operations where possible
-		const applyViewChange = () => {
-			// Set the new view
-			view.set(v);
-
-			// Apply staggered animations
-			requestAnimationFrame(() => {
-				setAnimationIndexes();
-
-				// After view changes, scroll to keep current project visible if we had one
-				if (currentPosition) {
-					setTimeout(() => {
-						const targetElem = document.getElementById(currentPosition.id);
-						if (targetElem) {
-							// Calculate how to position the element similarly in the viewport
-							const newRect = targetElem.getBoundingClientRect();
-							const scrollAdjustment = newRect.top - currentPosition.top;
-
-							// Smooth scroll to the adjusted position
-							window.scrollBy({
-								top: scrollAdjustment,
-								behavior: 'smooth'
-							});
-						}
-					}, 100);
-				}
-			});
-		};
-
-		// Check if View Transitions API is supported - simpler check
-		if ('startViewTransition' in document) {
-			document.startViewTransition(applyViewChange);
-		} else {
-			applyViewChange();
-		}
-
-		// Play the click sound if available
-		if (Click) {
-			Click.currentTime = 0;
-			Click.play().catch(() => {
-				// Silently handle playback failures (common in some browsers)
-			});
-		}
-	}
-
-	function updateActiveSection() {
-		// Update Active
-		let closest = null;
-		let object = null
-		let minDistance = Infinity;
-
-		// Calculate light position relative to scroll with a dynamic component
-		const scrollY = document.documentElement.scrollTop || document.body.scrollTop;
-		const viewportHeight = window.innerHeight;
-		const viewportWidth = window.innerWidth;
-
-		// Find the #page element to use its width for light positioning
-		const pageElement = document.getElementById('page') || document.getElementById('sections');
-
-		// Get the actual content bounds to position light properly
-		let pageLeft = 0;
-		let pageWidth = viewportWidth * 0.8;
-		let pageTop = 0;
-
-		if (pageElement) {
-			const rect = pageElement.getBoundingClientRect();
-			pageLeft = rect.left;
-			pageWidth = rect.width;
-			pageTop = rect.top + window.scrollY; // Account for scrolled position
-		}
-
-		// Responsive offset scaled to page width
-		const lightXOffset = Math.min(100, pageWidth * 0.08);
-
-		// Parallax effect for light source - moves slower than scroll for a nice effect
-		// Light stays positioned relative to the content area, not the viewport
-		const lightX = pageLeft + pageWidth - lightXOffset - (scrollY * 0.02);
-
-		// Light moves down slightly as user scrolls, but stays within reasonable bounds
-		// This creates a subtle sun-like movement
-		const lightParallaxY = Math.min(viewportHeight * 0.3, scrollY * 0.15);
-		const lightY = 100 + lightParallaxY;
-
-		// Update CSS variables for the light position
-		document.documentElement.style.setProperty('--light-x', `${lightX}px`);
-		document.documentElement.style.setProperty('--light-y', `${lightY}px`);
-
-		// Update reflections based on light position - check if we need to run this operation
-		// Create or update reflections less frequently than shadow calculations for better performance
-		// Only run this on desktop devices for better mobile performance
-		if (sections && window.innerWidth > 800) {
-			// Run this less frequently - once every 200ms is enough for reflection effects
-			throttle(function() {
-				sections.forEach(section => {
-					// Skip if section is far from viewport (performance optimization)
-					const rect = section.getBoundingClientRect();
-					if (rect.bottom < -200 || rect.top > viewportHeight + 200) {
-						return;
-					}
-
-					// Only create the reflection element if it doesn't exist
-					if (!section.querySelector('.light-reflection')) {
-						const reflectionDiv = document.createElement('div');
-						reflectionDiv.className = 'light-reflection';
-						section.appendChild(reflectionDiv);
-					}
-				});
-
-				// Call the reflection update with a longer throttle time
-				updateReflections(lightX, lightY);
-			}, 200)();
-		}
-
-
-
-		function updateShadows(){}
-
-		// Execute the throttled shadow update
-		updateShadows();
-
-		// Use all sections for non-shadow calculations at a reduced frequency
-		// We don't need to update active section on every scroll event
-		if (sections) {
-			throttle(() => {
-				sections.forEach((sec, index) => {
-					const rect = sec.getBoundingClientRect();
-					const distance = Math.abs(rect.top + window.innerHeight * .25);
-
-					if (distance < minDistance) {
-						minDistance = distance;
-						closest = sec;
-						object = data.posts[index];
-					}
-				});
-
-				// Reactivity - only update if the value changes to prevent unnecessary re-renders
-				if (closest !== $activeElem) {
-					activeElem.set(closest);
-				}
-
-				if (object !== $activeObject) {
-					activeObject.set(object);
-
-					// Only update the theme color if there's a new active object
-					if ($activeObject && $activeObject.meta.color){
-						themeColor.set(object.meta.color)
-					}
-					else{
-						themeColor.set('f3f4f7')
-					}
-				}
-
-				if (document.documentElement.scrollTop < window.innerHeight*.5){
-					themeColor.set('f3f4f7')
-					activeObject.set(null)
-				}
-			}, 80)(); // Update active section at most 12.5 times per second - smooth enough for UI changes
-		}
-
-		// Scrollbar - update less frequently
-		throttle(() => {
-			let scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
-			let scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-			let percent = (scrollTop / scrollHeight);
-
-			if (Bar && Scroll){
-				Bar.style.height = Scroll.getBoundingClientRect().height * percent + 'px'
-			}
-		}, 100)();
-
-		// Parallax - only run on desktop for better performance
-		if (window.innerWidth > 800) {
-			throttle(() => {
-				let pieces = document.querySelectorAll('.piece')
-				const parallax = 0.1 // Controls separation between scroll speeds
-				pieces.forEach((piece, index) => {
-					const scrollSpeed = -.2 - (index * parallax) // Each piece scrolls progressively faster
-					piece.style.top = document.documentElement.scrollTop * scrollSpeed + 200 + 'px'
-				})
-			}, 100)();
-		}
-	}
-
-
-
-	// Mounted
-
-	onMount(() => {
-		// Initialize elements right away
-		initElems();
-
-		// Use requestAnimationFrame for smoother animations
-		// This better coordinates with the browser's rendering cycle
-		requestAnimationFrame(() => {
-			updateActiveSection();
-		});
-
-		loading.subscribe(v => {
-			if (!v) {
-				// Use setTimeout with a short delay to ensure DOM is ready
-				setTimeout(() => {
-					changeView(1);
-					setAnimationIndexes();
-
-					// Get pill position
-					const elem = Class('v3')[0];
-					if (!elem) return;
-
-					const container = Id('view')?.getBoundingClientRect();
-					if (!container) return;
-
-					const rect = elem.getBoundingClientRect();
-
-					// Update pill position with batched style changes
-					// This reduces layout thrashing
-					if (Pill) {
-						Object.assign(Pill.style, {
-							position: 'fixed',
-							top: `${rect.top - container.top - 3}px`,
-							left: `${rect.left - container.left - 3}px`,
-							width: `${rect.width}px`,
-							height: `${rect.height}px`
-						});
-					}
-				}, 500);
-			}
-		});
-
-		view.subscribe(v => {
-			const elem = Class(`v${v}`)[0];
-
-			if (!elem || !Pill) {
-				return;
-			}
-
-			const container = Id('view')?.getBoundingClientRect();
-			if (!container) return;
-
-			const rect = elem.getBoundingClientRect();
-
-			// Batch style changes to improve performance
-			// Check if View Transitions API is supported
-			if ('startViewTransition' in document) {
-				document.startViewTransition(() => {
-					Object.assign(Pill.style, {
-						position: 'fixed',
-						top: `${rect.top - container.top - 3}px`,
-						left: `${rect.left - container.left - 3}px`,
-						width: `${rect.width}px`,
-						height: `${rect.height}px`
-					});
-				});
-			} else {
-				Object.assign(Pill.style, {
-					position: 'fixed',
-					top: `${rect.top - container.top - 3}px`,
-					left: `${rect.left - container.left - 3}px`,
-					width: `${rect.width}px`,
-					height: `${rect.height}px`
-				});
-			}
-		});
-
-		// Use passive flag to improve scroll performance
-		window.addEventListener("scroll", updateActiveSection, { passive: true });
-
-		function initElems() {
-			sections = document.querySelectorAll(".sec");
-			previews = document.querySelectorAll(".preview");
-		}
-
-		// Use a more efficient way to set up initial state
-		// Combining multiple setTimeout calls into a single Promise chain
-		Promise.resolve()
-			.then(() => {
-				splash.set(true);
-				updateActiveSection();
-			})
-			.then(() => new Promise(resolve => setTimeout(resolve, 200)))
-			.then(() => {
-				initElems();
-				updateActiveSection();
-			})
-			.then(() => new Promise(resolve => setTimeout(resolve, 4600)))
-			.then(() => {
-				initElems();
-				updateActiveSection();
-			});
-
-		return () => window.removeEventListener("scroll", updateActiveSection);
-	});
-
 </script>
 
 <svelte:head>
-
-
 	<!-- Resource hints for performance -->
 	<link rel="preconnect" href="https://fonts.googleapis.com" />
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -458,23 +45,6 @@
 	<!-- Preload critical assets -->
 	<link rel="preload" href="ahnheewon3.png" as="image" />
 
-	<!-- Use font-display: swap to improve font loading performance -->
-	<style>
-		@font-face {
-			font-family: 'Inter';
-			font-style: normal;
-			font-weight: 400;
-			font-display: swap;
-			/* Font URLs would be here */
-		}
-	</style>
-
-	<!-- Prevent layout shift by defining image dimensions -->
-	<style>
-		img, video {
-			aspect-ratio: attr(width) / attr(height);
-		}
-	</style>
 </svelte:head>
 
 
@@ -483,56 +53,24 @@
 
 	<section class = 'splash' >
 
-		<img src="bidam.png" id="bidam" class="piece" alt="Logo" width="350" height="197" loading="lazy"
-			in:fly={{y: 100, duration: 400, delay: 300}} />
-		<img src="heewon9.png" id="chunchu" class="piece" alt="Logo" width="250" height="141" loading="lazy" />
-
-		<video id="video" class="piece" alt="Logo" width="350" height="197" autoplay muted playsinline preload="metadata">
-			<source src="bidam.mp4" type="video/mp4">
-		</video>
-
-		<div id = 'card' class = 'piece'>
-			<h2> Total Earned </h2>
-			<!-- Temporary replacement for NumberFlow -->
-			<span class="number">{val.toLocaleString()}</span>
-		</div>
-
 		<div class = 'screen'>
-			<img src="smiley.svg" id="logo" alt="Logo" width="140" height="140" loading="eager"
-				in:fly={{y: 100, duration: 600, delay: 100}} />
 
-			<img src="heewon9.png" id="pfp" alt="Logo" width="100" height="100" loading="lazy"
-				in:fly={{y: 100, duration: 600, delay: 100}} />
-			<img src="ahnheewon3.png" id="ahw" alt="Logo" width="200" height="67" fetchpriority="high"
-				in:fly={{y: 100, duration: 600, delay: 100}} />
+			<img src="heewon8.png" id="heewon" alt="Logo" width="200" height="67" fetchpriority="high"
+				in:fly={{y: 50, duration: 600, delay: 100}} />
 			<div class = 'expo'>
-				<div class = 'tagline'
-				in:fly={{y: 100, duration: 600, delay: 200}}
-				>
-				<!--
-					<h1> Design </h1>
-					<img src="arrow.svg" alt="arrow" />
-					<h1> Code </h1>
-					-->
-					<h1> Design to Code </h1>
+				<div class = 'tagline' in:fly={{y: 50, duration: 600, delay: 200}}>
+					<h1>
+						<i>Hi!</i> I'm Heewon.
+					</h1>
 				</div>
 
-				<div class = 'status' in:fly={{y: 100, duration: 600, delay: 250}}>
-					<div class = 'dot'></div>
-					<h2>
-						Building...
-					</h2>
-				</div>
-				<h2 in:fly={{y: 100, duration: 600, delay: 300}}>
-					Web Design Studio
-				</h2>
-				<!--
-				<p in:fly={{y: 100, duration: 600, delay: 350}}>
-					I also work for <a href = 'https://stan.store'>startups</a>, draw <a href = 'https://www.instagram.com/_heewonahn'>comics</a>, and write <a href = 'https://www.instagram.com/ahnheewon_comics'>essays</a>.
+				<p>
+					I'm a designer and developer.
 				</p>
-				-->
-				<p in:fly={{y: 100, duration: 600, delay: 400}}>
-					Let's work together! You can reach me at <a href = 'mailto:h@ahnheewon.com'>h@ahnheewon.com</a>.
+
+
+				<p in:fly={{y: 50, duration: 600, delay: 400}}>
+					Let's work together! You can reach me at <a href = 'mailto:shelost.off@gmail.com'>shelost.off@gmail.com</a>.
 				</p>
 
 
@@ -540,11 +78,13 @@
 
 		</div>
 
+		<!--
 		<button id = 'cta'
-			in:fly={{y: 100, duration: 400, delay: 450}}
+			in:fly={{y: 50, duration: 400, delay: 450}}
 			on:click = { () => {document.documentElement.scrollTo({top: Flex.getBoundingClientRect().top, behavior: 'smooth'})}}>
 			<h2> View Projects </h2>
 		</button>
+		-->
 
 		<div id = 'search'>
 			<input placeholder = 'Search...'>
@@ -718,68 +258,9 @@
 		<div id = 'bar' bind:this={Bar}></div>
 	</div>
 
-	<section id = 'footer'>
-		<h3>
-			Copyright 2025 ahnheewon. All rights reserved.
-		</h3>
-	</section>
 </section>
 
-
-
-
-{#if $openDrawer}
-	<div id = 'overlay' transition:fade={{duration: 200}} on:click = {() => {openDrawer.set(false)}}>
-		<div id = 'drawer' bind:this={Drawer} transition:fly={{y: 500, duration: 300, easing: quintOut}}>
-			<div class = 'drawer-top'>
-
-				<div class = 'x' on:click = {() => {openDrawer.set(false)}}>
-					<p> close </p>
-				</div>
-
-			</div>
-
-			<h1> {$expandedPost.meta.title} </h1>
-
-			<div class="prose">
-				<svelte:component this={$expandedPost.content} />
-			</div>
-		</div>
-	</div>
 {/if}
-
-
-
-<div id = 'view' in:fly={{y: 100, duration: 500, delay: 600}} on:load = {() => {changeView(1)}}>
-
-	<audio bind:this={Click} src="audio/click-1.mp3"></audio>
-
-	<div id = 'pill' bind:this={Pill}></div>
-	<div class = 'view v2' class:active={$view == 2} on:click = {() => {changeView(2)}}>
-		<img src="view-list.svg" class="view-icon" alt="view" />
-		<h2>
-			List
-		</h2>
-	</div>
-
-	<div class = 'view v3' class:active={$view == 3} on:click = {() => {changeView(3)}}>
-		<img src="view-grid.svg" class="view-icon" alt="view" />
-		<h2>
-			Grid
-		</h2>
-	</div>
-
-	<div class = 'view v1' class:active={$view == 1} on:click = {() => {changeView(1)}}>
-		<img src="view-sections.svg" class="view-icon" alt="view" />
-		<h2>
-			Preview
-		</h2>
-	</div>
-
-</div>
-{/if}
-
-
 
 
 <style lang="scss">
@@ -788,6 +269,7 @@
 	::view-transition-new(root) {
 		animation-duration: 0.5s;
 	}
+
 
 	:root {
 		/* Light source properties */
@@ -798,6 +280,7 @@
 		--shadow-transition-duration: 0.3s;
 		--filter-transition-duration: 0.3s;
 		--reflection-opacity: 0.4; /* Default reflection opacity */
+		color: white;
 	}
 
 	// Floating animation for the "gentle butterfly" effect
@@ -813,92 +296,10 @@
 		}
 	}
 
-	/* Light reflection animation - only plays on hover */
-	@keyframes reflectionMove {
-		0% {
-			background-position: 120% 0%;
-		}
-		100% {
-			background-position: -20% 100%;
-		}
-	}
 
-	/* Only apply float animation on desktop for better performance */
-	@media (min-width: 800px) {
-		.sec {
-			animation: float 6s ease-in-out infinite;
-			animation-play-state: paused; /* Only animate on hover for better performance */
-
-			&:hover {
-				animation-play-state: running;
-			}
-		}
-	}
-
-	/* Add optimized mobile styles */
-	@media (max-width: 800px) {
-		.sec {
-			/* Disable animations on mobile for better performance */
-			animation: none;
-
-			&::after {
-				animation: none;
-				background: linear-gradient(
-					125deg,
-					rgba(255, 255, 255, 0.15) 0%,
-					rgba(255, 255, 255, 0.05) 30%,
-					rgba(255, 255, 255, 0) 60%
-				);
-				opacity: 0.2;
-			}
-		}
-
-		.light-reflection {
-			/* Simpler reflection for mobile */
-			background: linear-gradient(
-				125deg,
-				rgba(255, 255, 255, 0.2) 0%,
-				rgba(255, 255, 255, 0.05) 30%,
-				rgba(255, 255, 255, 0) 60%
-			) !important; /* Override any dynamic styles */
-			opacity: 0.2 !important;
-			transition: none;
-		}
-	}
-
-	.light-reflection {
-		position: absolute;
-		top: 0;
-		left: 0;
-		right: 0;
-		bottom: 0;
-		/* Use CSS variables for better performance */
-		--reflection-angle: 125deg;
-		--reflection-intensity-primary: 0.3;
-		--reflection-intensity-secondary: 0.1;
-		--reflection-opacity: 0.3;
-
-		background: linear-gradient(
-			var(--reflection-angle),
-			rgba(255, 255, 255, var(--reflection-intensity-primary)) 0%,
-			rgba(255, 255, 255, var(--reflection-intensity-secondary)) 30%,
-			rgba(255, 255, 255, 0) 60%
-		);
-		background-size: 200% 200%;
-		opacity: var(--reflection-opacity);
-		border-radius: inherit;
-		pointer-events: none;
-		z-index: 10; /* Place above other content but below interactive elements */
-		transition: opacity 0.5s ease;
-		/* Removed background transition for better performance */
-	}
 
 	.sec {
 		view-transition-name: section-card;
-		transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
-			           opacity 0.3s cubic-bezier(0.22, 1, 0.36, 1),
-			           filter 0.3s cubic-bezier(0.22, 1, 0.36, 1),
-			           background 0.3s ease;
 		will-change: transform, filter;
 		position: relative;
 		overflow: hidden;
@@ -956,9 +357,8 @@
 
 
 	#app{
-		//display: flex;
-		//width: clamp(50vw, 1200px, 99vw);
-		width: 100%;
+		width: 100vw;
+		max-width: 1400px;
 		margin: auto;
 		transition: .2s ease;
 	}
@@ -986,8 +386,6 @@
 		width: clamp(25%, 640px, 100%);
 		height: 600px;
 		border-radius: 18px;
-
-
 
 		box-shadow: -12px 48px 100px rgba(black, .5), -8px 12px 18px rgba(black, .1), inset -4px -4px 4px rgba(#030025, .1);
 		//border: 2px solid white;
@@ -1238,12 +636,11 @@
 	#flex{
 		flex: 1;
 		position: relative;
-		display: flex;
+		display: none; /* Ensured it is a flex container */
 		flex-direction: row;
 		justify-content: center;
-		align-items: space-between;
+		align-items: flex-start; /* Changed from space-between for potentially more stable alignment */
 		width: 100%;
-		margin: auto;
 		gap: 36px;
 		min-height: 100vh;
 		transition: 0.3s cubic-bezier(0.22, 1, 0.36, 1);
@@ -1952,62 +1349,16 @@
 		justify-content: center;
 		align-items: center;
 		position: relative;
-		padding: 0px;
+			padding: 0px;
+			width: 100%;
+			height: 100vh;
+			margin: 0;
 
-		.piece{
-			width: 300px;
-			position: absolute;
-			top: 50px;
-			border-radius: 8px;
-			z-index: 1;
-			filter: drop-shadow(-10px 20px 30px rgba(#030025, .15));
-			transition: .2s ease;
-			display: none;
-
-			&:hover{
-				transform: scale(1.02);
-			}
-		}
-
-		#bidam{
-			right: calc(50% - 600px);
-			width: 350px;
-		}
-
-		#card{
-			left: calc(50% - 500px);
-			margin-top: -100px;
-
-			background: white;
-			padding: 24px;
-			height: fit-content;
-			width: 200px;
-			border-radius: 8px;
-		}
-
-		#video{
-			right: calc(50% - 600px);
-			margin-top: -150px;
-			mix-blend-mode: multiply;
-			filter: none;
-			z-index: -2;
-		}
-
-		#chunchu{
-			width: 250px;
-			left: calc(50% - 600px);
-			margin-top: 100px;
-		}
-
-		#logo{
-			height: 160px;
-			margin-top: 20px;
-			margin-bottom: -48px;
-		}
-
-		#ahw{
-			height: 120px;
+		#heewon{
+			height: 240px;
 			width: auto;
+			border-radius: 200px;
+			margin-bottom: 40px;
 		}
 
 		.screen{
@@ -2040,24 +1391,23 @@
 
 
 				.tagline{
-					display: none;
+					color: white;
+					display: flex;
 					justify-content: center;
 					align-items: center;
 					gap: 8px;
 					margin: 12px 0 36px 0;
-					img{
-						height: 80px;
+					h1{
+						font-family: 'Newsreader', sans-serif;
+						color: white;
+						font-size: 90px;
+						font-weight: 650;
+						letter-spacing: -3px;
+						margin: 0;
 					}
 				}
 
-				h1{
-					font-size: 90px;
-					font-weight: 800;
-					letter-spacing: -5px;
-					margin: 0;
-					text-shadow: -10px 30px 40px rgba(#030025, .15);
-					display: none;
-				}
+
 				h2{
 					font-size: 28px;
 					font-weight: 800;
@@ -2090,12 +1440,13 @@
 
 				p{
 					font-size: 14px;
-					font-weight: 500;
-					letter-spacing: -.4px;
+					font-weight: 300;
+					letter-spacing: -.1px;
 					text-align: center;
 					margin: 12px auto;
 					line-height: 125%;
 					max-width: 360px;
+					color: rgba(white, .5);
 				}
 			}
 		}

@@ -25,8 +25,9 @@
     });
 
     function goBack(){
-        goto('/')
+        history.back()
     }
+
 
 </script>
 
@@ -40,8 +41,11 @@
 {#if visible}
 <div id = 'container'>
     <div id = 'sidebar'>
-        <button class = 'button light back' on:click = {goBack}>
-            Back
+        <button class = 'button text back' on:click = {goBack}>
+            <img src = 'arrow.svg' alt = 'Back' />
+            <h2>
+                Back
+            </h2>
         </button>
     </div>
     <div id = 'main'>
@@ -79,6 +83,7 @@
         flex-direction: row;
         justify-content: space-between;
         box-sizing: border-box;
+
         //border: 1px solid red;
     }
 
@@ -97,7 +102,7 @@
     #main{
         width: calc(100% - 160px);
         width: clamp(50%, 800px, 90%);
-        padding: 0 0 100px 0;
+        padding: 0 0 200px 0;
         border-radius: 12px;
         margin: auto;
         //box-shadow: 0 10px 40px rgba(black, .05);
@@ -112,23 +117,25 @@
     }
 
     hgroup{
-        padding: 0px 0;
-        padding-bottom: 24px;
+        padding: 60px 0 60px 0;
+        color: white;
 
         h1{
-            font-size: 36px;
-            letter-spacing: -.8px;
-            font-weight: 600;
-            text-align: left;
-            margin: 0 0 4px 0;
+            font-family: 'Newsreader', sans-serif;
+            font-size: 64px;
+            letter-spacing: -1px;
+            font-weight: 650;
+            text-align: center;
+            margin: 0 0 24px 0;
+            color: white;
         }
 
         h2{
-            font-size: 24px;
-            letter-spacing: -.6px;
-            font-weight: 500;
-            text-align: left;
-            color: rgba(#030025, .25);
+            font-size: 20px;
+            letter-spacing: -.2px;
+            font-weight: 300;
+            text-align: center;
+            color: rgba(white, .36);
             margin-bottom: 20px;
         }
 
@@ -136,7 +143,7 @@
             font-size: 14px;
             letter-spacing: -.32px;
             font-weight: 450;
-            text-align: left;
+            text-align: center;
             margin-top: 32px;
             background: white;
             border-radius: 12px;

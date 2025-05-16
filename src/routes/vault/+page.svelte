@@ -34,26 +34,26 @@
 </script>
 
 <svelte:head>
-	<title>Blog</title>
+	<title>Comics</title>
 	<meta name="description" content="Blog posts by Heewon" />
 </svelte:head>
 
 {#if visible}
-	<div class="text-column">
-
+	<div class="text-column" in:fade={{duration: 200}} out:fade={{duration: 100}}>
 		<div class = 'header'>
-			<h1>
-				Blog
+			<h1 in:fly={{y: 100, duration: 200}} out:fade={{duration: 50}}>
+				Comics
 			</h1>
-			<h2>
-				My thoughts on history, tech, and more.
+			<h2 in:fly={{y: 100, duration: 200, delay: 100}} out:fade={{duration: 50}}>
+				Comics I've made.
 			</h2>
 		</div>
 
+
 		{#if data.posts && data.posts.length > 0}
 			<div class="posts">
-				{#each blog as post, i (post.slug)}
-					{#if post.meta?.type == 'blog' && visible}
+				{#each data.posts as post, i (post.slug)}
+					{#if visible}
 						<div class="post"
 							on:click={() => navigateToBlogPost(post.slug)}
 							in:fly={{y: 100, duration: 300, delay: 100 + (25 * i)}}
@@ -88,21 +88,26 @@
 	.text-column{
 		padding: 100px 0;
 		width: 100%;
-		max-width: 600px;
+		max-width: 800px;
 		margin: auto;
+	}
+
+	.posts{
+		margin-top: 40px;
 	}
 
 	.post{
 		margin-bottom: 12px;
-		padding: 24px;
+		padding: 16px;
 		border-radius: 8px;
 		transition: background-color 0.2s;
 		cursor: pointer;
 
-
+		background: white;
+		box-shadow: -8px 24px 32px rgba(#030025, 0.12), inset -2px -4px 8px rgba(#030025, 0.03);
 
 		&:hover {
-			background: rgba(white, .03);
+			//background-color: rgba(0, 0, 0, 0.03);
 		}
 
 		hgroup{
@@ -111,34 +116,33 @@
 				justify-content: flex-start;
 				align-items: center;
 				gap: 8px;
-				margin-bottom: 12px;
+				margin-bottom: 6px;
 				h2{
-					font-family: 'Newsreader', sans-serif;
-					font-size: 24px;
+					font-size: 18px;
 					font-weight: 600;
-					letter-spacing: -.2px;
-					color: rgba(white, .8);
+					letter-spacing: -.6px;
 				}
 				h3{
-					font-size: 14px;
-					font-weight: 300;
-					letter-spacing: -.1px;
-					color: rgba(white, .3);
+					color: rgba(black, .3);
 					margin-bottom: 4px;
+					display: none;
 				}
 			}
-		}
-		p{
-			font-size: 14px;
-			font-weight: 300;
-			letter-spacing: -.1px;
-			line-height: 130%;
-			color: rgba(white, .4);
+			p{
+				font-family: 'DM Sans', 'Inter', sans-serif;
+				font-size: 14px;
+				font-weight: 500;
+				letter-spacing: -0.4px;
+				line-height: 120%;
+				color: rgba(#030025, .4);
+			}
 		}
 		.content{
 			display: none;
 		}
 	}
+
+
 
 
 	ul {
