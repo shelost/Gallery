@@ -56,9 +56,9 @@
 		<div class = 'screen'>
 
 			<img src="heewon8.png" id="heewon" alt="Logo" width="200" height="67" fetchpriority="high"
-				in:fly={{y: 50, duration: 600, delay: 100}} />
+				in:fly={{y: 50, duration: 600, delay: 50}} />
 			<div class = 'expo'>
-				<div class = 'tagline' in:fly={{y: 50, duration: 600, delay: 200}}>
+				<div class = 'tagline' in:fly={{y: 50, duration: 600, delay: 100}}>
 					<h1>
 						<i>Hi!</i> I'm Heewon.
 					</h1>

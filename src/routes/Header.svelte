@@ -99,10 +99,11 @@
 		left: 0;
 		width: 100%;
 		z-index: 10;
-		margin-top: 10px;
-		padding: 0 12px;
+		height: 48px;
+		padding: 0 8px;
 		box-sizing: border-box;
 		color: white;
+		background: #121223;
 	}
 
 	#pill{
@@ -222,19 +223,19 @@
 		gap: 4px;
 
 		h3{
-			font-size: 18px;
-			font-weight: 400;
-			letter-spacing: -0px;
+			font-size: 16px;
+			font-weight: 300;
+			letter-spacing: 0px;
 			color: rgba(white, .6);
 		}
 	}
 
 	#logo{
 		width: auto;
-		height: 24px;
+		height: 22px;
 		border-radius: 8px;
 		object-fit: contain;
-        margin-bottom: 2.5px;
+        margin-bottom: 2px;
         cursor: pointer;
 		filter: drop-shadow( -6px 6px 6px rgba(#030025, 0.1));
 	}
