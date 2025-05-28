@@ -2,10 +2,11 @@
 type: game
 title: Wordchain
 description: A Fun Word Game
+blurb: "Hello"
 url: https://shelost.github.io/wordchain
-banner: banner-platformr
+banner: null
 card: card-wordchain
-preview: bento-platformr
+preview: null
 video: wordchain
 rating: 2
 color: E7F7FF

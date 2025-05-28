@@ -3,8 +3,7 @@ series: Stan
 type: design
 title: Stan
 description: All-in-One Creator Store
-blurb: "I was Stan's first UI/UX Designer, working at the company for 2 years.
-Together, we defined the brand's iconic identity."
+blurb: "I was the first Product Designer @ Stan and created Stanley, the best mascot."
 card: card-stan
 banner: null
 preview: bento-stan
@@ -18,7 +17,6 @@ tags:
 categories:
   - figma
   - vue
-  - sass
 published: true
 ---
 

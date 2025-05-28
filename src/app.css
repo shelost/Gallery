@@ -1,6 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=DM+Serif+Display:ital@0;1&family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Lora:ital,wght@0,400..700;1,400..700&family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap");
 :root {
-  --font-headers: "DM Sans", Arial, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-headers: "ivypresto-headline", "DM Sans", Arial, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --font-body: "Inter", Arial, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu,
   	Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   --font-mono: "Fira Mono", monospace;
@@ -15,7 +15,7 @@
   color: var(--color-text);
   color: white;
   transition: 0.2s ease;
-  background: #121223;
+  background: #0c0c17;
 }
 
 body {
@@ -82,10 +82,11 @@ textarea {
   margin: 20px 0 80px 0;
 }
 .header h1 {
-  font-family: "Newsreader", sans-serif;
+  font-family: "ivypresto-headline", "Newsreader", sans-serif;
   font-size: 120px;
+  font-weight: 500;
   letter-spacing: -3px;
-  color: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.8);
 }
 .header h2 {
   font-size: 16px;
@@ -93,7 +94,6 @@ textarea {
   letter-spacing: -0.3px;
   color: rgba(255, 255, 255, 0.4);
   text-align: center;
-  display: none;
 }
 
 #overlay ::-webkit-scrollbar {
@@ -147,8 +147,6 @@ p {
 }
 
 a {
-  font-family: var(--font-body);
-  color: var(--color-theme-1);
   text-decoration: none;
 }
 
@@ -224,119 +222,47 @@ a:hover {
   border-bottom: 1px solid rgba(255, 255, 255, 0.3);
 }
 
-button, .button {
+button {
+  color: #030025;
+  cursor: pointer;
+  border-radius: 6px;
+  padding: 6px 10px 8px 12px;
+  margin: 12px 0;
   outline: none;
   border: none;
-  background: #35306c;
-  width: -moz-fit-content;
-  width: fit-content;
-  overflow: hidden;
-  box-sizing: border-box;
-  position: relative;
-  cursor: pointer;
-  border-radius: 18px;
-  padding: 8px 16px 9px 16px;
-  box-shadow: -2px 8px 18px rgba(3, 0, 37, 0.4), inset 1px 2px 3px rgba(255, 255, 255, 0.15), inset -1px -3px 8px rgba(3, 0, 37, 0.5);
-  font-family: var(--font-body);
-  border: 2px solid transparent;
   transition: 0.2s ease;
+  background: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 2px 4px rgba(255, 255, 255, 0.2), inset -1px -2px 4px rgba(0, 0, 0, 0.25);
 }
-button h2, .button h2 {
-  color: white;
-  font-size: 15px;
-  font-weight: 550;
-  letter-spacing: -0.16px;
-  transition: 0.2s ease;
-  font-family: var(--font-headers);
-  text-shadow: 1px 2px 6px rgba(255, 255, 255, 0.2);
+button h2 {
+  display: block;
+  font-family: "ivypresto-headline", "Newsreader", sans-serif;
+  color: #030025 !important;
+  text-shadow: -0.3px 0 0 #030025;
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: 0.3px;
 }
-button::before, .button::before {
-  content: "";
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 0%;
-  background: rgba(255, 255, 255, 0.2);
-  z-index: 0;
-  transition: 0.25s ease-in-out;
-}
-button:hover, .button:hover {
-  background: #282360;
-  box-shadow: 2px 8px 18px rgba(255, 255, 255, 0.3), inset 0px 6px 8px rgba(255, 255, 255, 0.5), inset -2px -3px 6px rgba(255, 255, 255, 0.25);
-}
-button:hover h2, .button:hover h2 {
-  transform: translateY(0.5px);
-}
-button.text, .button.text {
-  background: none;
-  box-shadow: none;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 6px;
-  transition: 0.2s ease;
-}
-button.text img, .button.text img {
-  height: 18px;
-  transform: rotate(180deg);
-  transition: 0.2s ease;
-}
-button.text h2, .button.text h2 {
-  font-size: 18px;
-  font-weight: 600;
-  color: #030025;
-  text-shadow: none;
-}
-button.text:hover img, .button.text:hover img {
-  transform: rotate(180deg) translateX(2px);
-}
-button.mini, .button.mini {
-  padding: 5px 12px 6px 12px;
-}
-button.light, .button.light {
-  background: rgba(3, 0, 37, 0.1);
-  box-shadow: none;
-}
-button.light h2, .button.light h2 {
-  text-shadow: none;
-}
-button.secondary, .button.secondary {
-  background: rgba(3, 0, 37, 0.1);
-  box-shadow: none;
-}
-button.secondary h1, button.secondary h2, button.secondary h3, button.secondary p, .button.secondary h1, .button.secondary h2, .button.secondary h3, .button.secondary p {
-  color: #030025;
-  text-shadow: none;
-}
-button.secondary:hover, .button.secondary:hover {
-  background: rgba(3, 0, 37, 0.15);
-}
-button.highlight, .button.highlight {
-  background: #6355FF;
-}
-button.highlight:hover, .button.highlight:hover {
-  background: #584af4;
+button:hover {
+  opacity: 0.8;
 }
 
 .prose {
   text-align: left;
-  color: rgba(255, 255, 255, 0.5);
-  font-family: var(--font-body);
-  font-size: 13px;
-  font-weight: 300;
-  letter-spacing: -0.1px;
+  font-family: "DM Sans", serif;
+  font-size: 15px;
+  font-weight: 250;
+  letter-spacing: 0.2px;
   line-height: 160%;
-  margin: 18px auto;
   padding: 0;
   max-inline-size: 100%;
-  color: rgba(255, 255, 255, 0.45);
+  color: rgba(255, 255, 255, 0.5);
 }
 .prose h1 {
   font-family: var(--font-headers);
   letter-spacing: -0.64px;
   font-size: 28px;
-  font-weight: 700;
+  font-weight: 500;
   margin: 48px 0 24px 0;
   padding-bottom: 4px;
   width: 100%;
@@ -349,39 +275,47 @@ button.highlight:hover, .button.highlight:hover {
   font-family: var(--font-headers);
   letter-spacing: 0px;
   font-size: 22px;
-  font-weight: 800;
+  font-weight: 500;
   margin: 40px 0 16px 0;
   color: rgba(255, 255, 255, 0.7);
 }
 .prose h3 {
-  font-family: "Newsreader", sans-serif;
-  font-size: 22px;
+  font-family: var(--font-headers);
+  font-size: 32px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
   line-height: 110%;
-  margin: 32px 0 0 0;
-  color: rgba(255, 255, 255, 0.8);
+  margin: 60px 0 10px 0;
+  color: rgba(255, 255, 255, 0.6);
 }
 .prose h4 {
   font-family: var(--font-headers);
   font-size: 16px;
-  font-weight: 700;
+  font-weight: 500;
   margin: 16px 0;
   color: rgba(255, 255, 255, 0.7);
 }
 .prose p {
   font-family: var(--font-body);
-  font-size: 13px;
-  font-weight: 300;
-  letter-spacing: -0.1px;
+  font-family: "DM Sans", serif;
+  font-size: 15px;
+  font-weight: 250;
+  letter-spacing: 0.2px;
   line-height: 160%;
-  margin: 18px auto;
+  margin: 28px auto;
   padding: 0;
   max-inline-size: 100%;
-  color: rgba(255, 255, 255, 0.45);
+  text-shadow: -2px 2px 4px rgba(3, 0, 37, 0.8);
+  color: rgba(255, 255, 255, 0.5);
 }
 .prose b {
-  font-family: var(--font-body) !important;
+  font-family: "DM Sans", serif !important;
   font-weight: 500;
-  color: rgba(255, 255, 255, 0.65);
+  letter-spacing: 0px;
+  color: rgba(255, 255, 255, 0.7);
+}
+.prose a {
+  font-weight: 400;
 }
 .prose .shiki {
   padding: 12px 24px 16px 16px;
@@ -462,6 +396,9 @@ button.highlight:hover, .button.highlight:hover {
 }
 .prose .gallery {
   gap: 16px !important;
+}
+.prose.prose-preview h1, .prose.prose-preview h2, .prose.prose-preview h3, .prose.prose-preview h4, .prose.prose-preview p {
+  display: none;
 }
 .prose.prose-text {
   pointer-events: none;

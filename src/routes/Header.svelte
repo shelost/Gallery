@@ -92,18 +92,18 @@
 
 	header {
 		display: flex;
+		flex-direction: column;
 		align-items: center;
 		justify-content: space-between;
 		position: fixed;
 		top: 0;
-		left: 0;
-		width: 100%;
+		right: 0;
+		width: 100px;
 		z-index: 10;
-		height: 48px;
+		height: 100vh;
 		padding: 0 8px;
 		box-sizing: border-box;
 		color: white;
-		background: #121223;
 	}
 
 	#pill{
@@ -151,7 +151,9 @@
 
 	nav {
 		display: flex;
-		justify-content: center;
+		flex-direction: column;
+		justify-content: flex-end;
+		align-items: flex-end;
 		position: relative;
 
 		padding: 5px 5px;
@@ -175,17 +177,19 @@
 		justify-content: center;
 		cursor: pointer;
 		z-index: 4;
-		padding: 7px 12px 8px 12px;
+		padding: 4px 12px 5px 12px;
 		border-radius: 50px;
-		gap: 4px;
+		gap: 0px;
 		transition: .2s ease;
 		cursor: pointer;
 
 		h2{
-			font-size: 14px;
-			font-weight: 400;
-			letter-spacing: -.1px;
-			color: rgba(white, .5);
+			font-family: "ivypresto-headline", 'Newsreader', sans-serif;
+			font-size: 18px;
+			font-weight: 100;
+			letter-spacing: .5px;
+			color: rgba(white, .3);
+			text-shadow: none;
 			transition: .2s ease;
 		}
 		span{

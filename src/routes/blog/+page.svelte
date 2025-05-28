@@ -113,10 +113,10 @@
 				gap: 8px;
 				margin-bottom: 12px;
 				h2{
-					font-family: 'Newsreader', sans-serif;
+					font-family: "ivypresto-headline", 'Newsreader', sans-serif;
 					font-size: 24px;
-					font-weight: 600;
-					letter-spacing: -.2px;
+					font-weight: 400;
+					letter-spacing: 0.5px;
 					color: rgba(white, .8);
 				}
 				h3{

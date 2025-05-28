@@ -3,7 +3,7 @@ series: Stan
 type: design
 title: CUApts
 description: University Housing Database
-blurb: "As part of the Cornell Design & Tech Initiative (DTI), I designed the search engine for off-campus housing in Ithaca."
+blurb: "I designed the search engine for off-campus housing in Ithaca."
 card: card-cuapts
 banner: null
 preview: bento-cuapts

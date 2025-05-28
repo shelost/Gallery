@@ -1,5 +1,4 @@
 <script>
-
 	import Header from './Header.svelte';
 	import Navbar from './Navbar.svelte';
 	import { dev } from '$app/environment';
@@ -21,41 +20,6 @@
 	let currentPath = $page.url.pathname;
 	let prevRouteId = null;
 
-	/*
-	// Ensure page content transitions properly between routes
-	beforeNavigate(({ from, to }) => {
-		if (from && to && from.route.id !== to.route.id) {
-			// Remember previous route
-			prevRouteId = from.route.id;
-
-			// Make sure global state is reset between different routes
-			if (from.route.id === '/[slug]') {
-				// Immediately reset critical styles
-				document.body.style.overflow = '';
-				showHeader.set(true);
-			}
-		}
-	});
-
-	afterNavigate(({ to }) => {
-		currentPath = to?.url.pathname || $page.url.pathname;
-
-		// Force a slight delay for DOM cleanup after navigating from [slug] pages
-		if (prevRouteId === '/[slug]') {
-			// Delay needed to ensure proper cleanup
-			setTimeout(() => {
-				// Remove any orphaned elements that might be from [slug] page
-				const orphanedEls = document.querySelectorAll('.main');
-				orphanedEls.forEach(el => {
-					if (el.closest('[data-sveltekit-preload-data]') === null) {
-						el.remove();
-					}
-				});
-			}, 200);
-		}
-	});
-	*/
-
 	let mouseX = -1000, mouseY = -1000; // Initial off-screen position
     let intensity = .35; // Control the effect strength
     let radius = 300; // Control the effect radius
@@ -63,134 +27,11 @@
 
 	themeColor.set('FAFBFD')
 
-
 	let Bar, Scroll
 	let loadingProgress = writable(0);
 	let logoMask;
 	let percentageText;
 
-
-    onMount(() => {
-		// Simulate realistic loading with staggered progress
-		const loadSteps = [
-			{progress: 15, delay: 100},  // Initial quick progress
-			{progress: 60, delay: 300},  // Processing phase
-			{progress: 85, delay: 300},  // Nearly complete
-			{progress: 100, delay: 100}  // Final completion
-		];
-
-		let currentStep = 0;
-
-		themeColor.subscribe((color) => {
-			if (typeof document !== 'undefined') {
-				//document.documentElement.style.backgroundColor = '#' + color;
-			}
-		});
-
-		function updateLoading() {
-			if (currentStep >= loadSteps.length) {
-				setTimeout(() => {
-					loading.set(false); // Set loading to false after reaching 100%
-				}, 300); // Small delay to let the user see 100% before hiding
-				return;
-			}
-
-			const step = loadSteps[currentStep];
-			let currentProgress = $loadingProgress;
-
-			const interval = setInterval(() => {
-				if (currentProgress < step.progress) {
-					currentProgress++;
-					loadingProgress.set(currentProgress);
-
-					if (logoMask) {
-						// Update the mask height from bottom to top
-						logoMask.style.height = `${currentProgress}%`;
-						logoMask.style.bottom = '0'; // Ensure it fills from bottom
-					}
-
-					if (percentageText) {
-						percentageText.textContent = `${currentProgress}%`;
-					}
-				} else {
-					clearInterval(interval);
-					currentStep++;
-					setTimeout(updateLoading, step.delay);
-				}
-			}, 20);
-		}
-
-		// Start the loading animation
-		updateLoading();
-
-		themeColor.subscribe((color) => {
-			if (typeof document !== 'undefined') {
-				//document.documentElement.style.backgroundColor = '#' + color;
-			}
-		});
-
-
-        let W = window.innerWidth * 2;
-        let H = window.innerHeight * 2;
-
-        let canvas = document.getElementById("canvas");
-        let ctx = canvas.getContext("2d");
-
-        canvas.width = W;
-        canvas.height = H;
-
-        let dotSpacing = 50;
-        let dotSize = 4;
-        let dots = [];
-
-        // Generate the grid of dots
-        for (let i = 0; i < W; i += dotSpacing) {
-            for (let j = 0; j < H; j += dotSpacing) {
-                dots.push({ x: i, y: j });
-            }
-        }
-
-        // Track mouse position
-        window.addEventListener("mousemove", (event) => {
-            const rect = canvas.getBoundingClientRect();
-            mouseX = (event.clientX - rect.left) * 2; // Scale for high-res canvas
-            mouseY = (event.clientY - rect.top) * 2;
-            draw();
-        });
-
-        function draw() {
-            ctx.clearRect(0, 0, W, H);
-
-            dots.forEach(dot => {
-                let dx = dot.x - mouseX;
-                let dy = dot.y - mouseY;
-                let distance = Math.sqrt(dx * dx + dy * dy);
-
-                // Normalize darkness: closer dots are darker
-                let alpha = Math.max(0.25, 1 - (distance / radius)) * intensity;
-
-                ctx.beginPath();
-                ctx.fillStyle = `rgba(0, 0, 0, ${alpha})`;
-                ctx.arc(dot.x, dot.y, dotSize, 0, Math.PI * 2);
-                ctx.fill();
-            });
-        }
-
-        draw();
-
-		function updateScroll(){
-			let scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
-			let scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-			let percent = (scrollTop / scrollHeight);
-
-			if (Bar && Scroll){
-				Bar.style.height = Scroll.getBoundingClientRect().height * percent + 'px'
-			}
-		}
-
-		window.addEventListener("scroll", updateScroll);
-		updateScroll(); // Initialize on load
-    });
 
 </script>
 
@@ -199,6 +40,10 @@
 	<title>Heewon</title>
 	<meta name="description" content="Heewon's Portfolio" />
 	<link rel="icon" href="ahwsq.png" />
+	<link href="https://fonts.googleapis.com/css2?family=Hedvig+Letters+Serif:opsz@12..24&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400..700;1,400..700&family=Inter:wght@100..900&family=Newsreader:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
+
+	<link rel="stylesheet" href="https://use.typekit.net/kqx0rwr.css">
 </svelte:head>
 
 
@@ -208,9 +53,9 @@
 	</canvas>
 
 	{#key $page.url.pathname}
-			<main class="main-content" in:scale={{start: .95, duration: 300}}>
-				{@render children()}
-			</main>
+		<main class="main-content">
+			{@render children()}
+		</main>
 	{/key}
 
 
