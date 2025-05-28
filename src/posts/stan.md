@@ -4,6 +4,7 @@ type: design
 title: Stan
 description: All-in-One Creator Store
 blurb: "I was the first Product Designer @ Stan and created Stanley, the best mascot."
+url: https://stan.store
 card: card-stan
 banner: null
 preview: bento-stan

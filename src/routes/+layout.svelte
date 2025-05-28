@@ -59,8 +59,6 @@
 	{/key}
 
 
-	<Header />
-
 </div>
 
 

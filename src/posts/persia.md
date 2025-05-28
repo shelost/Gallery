@@ -2,7 +2,7 @@
 series: History
 type: blog
 title: Rome, Persia, and Trump
-description: Research Project
+description: Article
 blurb: "My predictions on the US-China conflict, based on the greatest rivalry of classical antiquity."
 card: null
 preview: bento-timeline

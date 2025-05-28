@@ -4,6 +4,7 @@ type: design
 title: Wolf Financial
 description: Media Franchise
 blurb: "I created the branding for Wolf Financial, a finance newsletter & podcast with 400K+ followers on Twitter/X."
+url: https://wolf.financial
 card: card-wolf
 banner: null
 preview: bento-wolf

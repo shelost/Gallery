@@ -86,7 +86,7 @@
 	.text-column{
 		padding: 100px 0;
 		width: 100%;
-		max-width: 1200px;
+		max-width: 1100px;
 		margin: auto;
 	}
 
@@ -117,10 +117,10 @@
 				gap: 8px;
 				margin-bottom: 12px;
 				h2{
-					font-family: 'Newsreader', sans-serif;
-					font-size: 40px;
-					font-weight: 600;
-					letter-spacing: -.8px;
+					font-family: "ivypresto-headline", 'Newsreader', sans-serif;
+					font-size: 48px;
+					font-weight: 500;
+					letter-spacing: -.0px;
 					color: rgba(white, .8);
 				}
 				h3{

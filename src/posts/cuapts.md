@@ -4,6 +4,7 @@ type: design
 title: CUApts
 description: University Housing Database
 blurb: "I designed the search engine for off-campus housing in Ithaca."
+url: https://www.cuapts.org
 card: card-cuapts
 banner: null
 preview: bento-cuapts
@@ -15,7 +16,7 @@ tags:
   - university
 categories:
   - figma
-published: true
+published: false
 ---
 
 <script>

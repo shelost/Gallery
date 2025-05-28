@@ -3,7 +3,7 @@ series: Canvas — Lesson 1
 type: gallery
 title: Cornell L+R Lab
 description: Graphic Design
-blurb: "I created logos for the Learning & Recursion Lab (LRL), an AI research lab led by Prof. Kevin Ellis at Cornell University."
+blurb: "I created logos for the Learning & Recursion Lab, an AI research lab led by Prof. Kevin Ellis at Cornell."
 card: card-lab
 banner: null
 color: DEE3EA

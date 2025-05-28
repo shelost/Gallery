@@ -91,7 +91,7 @@
         width: 140px;
 		height: 100vh;
 		border-radius: 6px;
-		padding: 60px 0;
+		padding: 0px 0;
 		position: fixed;
 		top: 10px;
 		left: 10px;
@@ -108,8 +108,23 @@
         //box-shadow: 0 10px 40px rgba(black, .05);
     }
 
-    #back{
-        margin-top: 40px;
+    .back{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 4px;
+        background: none;
+        color: white;
+        box-shadow: none;
+        h2{
+            color: white !important;
+            font-size: 18px;
+        }
+        img{
+            filter: invert(1) brightness(10);
+            height: 20px;
+            transform: rotate(180deg);
+        }
     }
 
     .banner{

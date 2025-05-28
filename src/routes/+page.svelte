@@ -35,6 +35,21 @@
 
 	themeColor.set('f3f4f7')
 
+	function typeDisplay(str){
+		switch(str){
+			case 'comic':
+				return {title: 'Comics', icon: 'comic', description: "I've been getting into drawing comics as a hobby."}
+			case 'game':
+				return {title: 'Games', icon: 'game', description: 'I sometimes make JavaScript <canvas> games.'}
+			case 'design':
+				return {title: 'Products', icon: 'design', description: 'I do Product Design work for startups.'}
+			case 'gallery':
+				return {title: 'Design', icon: 'gallery', description: "I've dabbled in graphic design."}
+			default:
+				return {title: titleCase(str), icon: str, description: 'Hello'}
+		}
+	}
+
 </script>
 
 <svelte:head>
@@ -63,7 +78,7 @@
 					<i>Hi!</i> I'm Heewon.
 				</h1>
 				<p>
-					I have a lot of random interests, including
+					I have a lot of random interests.
 				</p>
 				<p>
 
@@ -85,12 +100,11 @@
 
 			{#each data.posts as link, i}
 
-
-
 				{#if i == 0 || i > 0 && link.meta.type != data.posts[i-1].meta.type }
 					<div class = 'head'
 					in:fly={{y: 100, duration: 300, delay: 20*i}}>
-						<h1> {titleCase(link.meta.type)} </h1>
+						<h1> {typeDisplay(link.meta.type).title} </h1>
+						<p> {typeDisplay(link.meta.type).description} </p>
 					</div>
 				{/if}
 
@@ -98,6 +112,13 @@
 					id = '{link.meta.title}'
 					class = 'sec r{link.meta.rating} {link.meta.type}'
 					in:fly={{y: 100, duration: 300, delay: 100*i}}
+					on:click={() => {
+						if (link.meta.url) {
+							window.location = link.meta.url
+						}else{
+							goto('/' + link.slug)
+						}
+					}}
 					>
 
 					<hgroup class = 'hgroup'>
@@ -184,6 +205,7 @@
 					</div>
 				</section>
 
+
 			{/each}
 			</section>
 
@@ -208,12 +230,12 @@
 	}
 
 	.splash{
-		width: 800px;
+		width: 1080px;
 		max-width: 90%;
 		margin: 80px auto;
 		display: flex;
 		flex-direction: column;
-		align-items: center;
+		align-items: flex-start;
 		justify-content: center;
 
 		img{
@@ -223,51 +245,77 @@
 		}
 		.screen{
 			display: flex;
-			flex-direction: column;
 			align-items: center;
-			justify-content: center;
-			gap: 24px;
+			justify-content: flex-start;
+			gap: 40px;
+			@media screen and (max-width: 800px) {
+				flex-direction: column;
+			}
 		}
 		.expo{
 			h1{
 				font-family: "ivypresto-headline", 'Newsreader', sans-serif;
-				font-size: 80px;
+				text-align: left;
+				font-size: 60px;
 				font-weight: 300;
 				letter-spacing: 0px;
-				margin-bottom: 32px;
+				margin-bottom: 24px;
 			}
 			p{
 				color: rgba(white, .5);
-				text-align: center;
+				text-align: left;
 				font-size: 15px;
 				font-weight: 250;
 				letter-spacing: .1px;
 				margin: 12px 0;
 			}
+			@media screen and (max-width: 800px) {
+				h1{
+					text-align: center;
+				}
+				p{
+					text-align: center;
+				}
+			}
 		}
 	}
 
 	.head{
-		grid-column: 1 / 3;
-		width: 800px;
-		max-width: 90%;
-		margin: 80px auto;
+		grid-column: 1 / 4;
+		width: 100%;
+		margin: 80px 0 60px 0;
 		h1{
 			font-family: "ivypresto-headline", 'Newsreader', sans-serif;
-			font-size: 64px;
+			font-size: 48px;
 			font-weight: 300;
 			letter-spacing: .25px;
-			// /text-align: left;
+			text-align: left;
+			margin-bottom: 12px;
+		}
+		p{
+			font-family: "utopia-std-display", 'Newsreader', sans-serif;
+			font-size: 18px;
+			font-weight: 100;
+			letter-spacing: 0px;
+			color: rgba(white, .2);
+			text-align: left;
 		}
 	}
 
 	#sections{
 		display: grid;
-		grid-template-columns: 1fr 1fr;
-		gap: 40px 80px;
-		width: 900px;
+		grid-template-columns: 1fr 1fr 1fr;
+		gap: 40px 90px;
+		width: 1080px;
 		max-width: 90%;
 		margin: 40px auto;
+		padding-bottom: 100px;
+
+		@media screen and (max-width: 800px) {
+			display: flex;
+			flex-direction: column;
+			gap: 40px;
+		}
 	}
 
 .sec{
@@ -276,40 +324,83 @@
 	flex-direction: column;
 	gap: 24px;
 	height: fit-content;
+	cursor: pointer;
 
 	background: #121223;
-	background: rgba(white, .04);
-	box-shadow: -12px 48px 72px rgba(black, .2);
-	border-radius: 10px;
-	padding: 20px;
+	background: rgba(white, .03);
+	box-shadow: -24px 80px 60px rgba(black, .3);
+	border-radius: 8px;
+	padding: 10px 20px 20px 20px;
 
-	max-height: 800px;
+	max-height: 540px;
+	transition: .2s ease;
+
+	&:hover{
+		background: rgba(white, .05);
+		transform: translateY(-4px);
+	}
+
+	&#Stan{
+		.title{
+			h1{
+				font-family: 'Plus Jakarta Sans', sans-serif;
+				font-weight: 700;
+				letter-spacing: -.5px;
+			}
+		}
+	}
+
+	&#Soteria{
+		.title{
+			h1{
+				font-family: 'DM Serif Display', 'Newsreader', sans-serif;
+				font-weight: 500;
+				letter-spacing: -0px;
+				text-transform: uppercase;
+				transform: translateY(1px);
+			}
+		}
+	}
+
+	&#Wolf\ Financial {
+		.title{
+			h1{
+				font-family: 'Poppins', sans-serif;
+				font-weight: 600;
+				letter-spacing: -.8px;
+			}
+		}
+	}
 
 	hgroup{
 		display: flex;
 		.left{
+			margin: 0;
+			padding: 0;
 			.mast{
 				.card{
-					height: 80px;
+					height: 64px;
 					border-radius: 6px;
-					box-shadow: -2px 6px 12px rgba(black, .25);
+					margin-top: -18px;
+					box-shadow: -6px 12px 24px rgba(black, .25);
 				}
 				.title{
-					margin: 18px 0 12px 0;
+					margin: 18px 0 8px 0;
 					h1{
 						font-family: "ivypresto-headline", 'Newsreader', sans-serif;
-						font-size: 36px;
+						font-size: 32px;
 						font-weight: 500;
-						letter-spacing: .25px;
+						letter-spacing: .3px;
 						text-align: left;
 					}
 
 				}
 				h2{
-					font-size: 16px;
-					font-weight: 250;
-					letter-spacing: .2px;
-					color: rgba(white, .4);
+					font-family: "utopia-std-display", "ivypresto-headline", 'Newsreader', sans-serif;
+					font-size: 18px;
+					font-weight: 100;
+					letter-spacing: 0px;
+					color: rgba(white, .2);
 					margin-bottom: 12px;
 				}
 

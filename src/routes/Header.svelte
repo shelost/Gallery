@@ -49,23 +49,23 @@
 
 
 	<nav>
-		<div class = 'tab' on:click={() => {goto('/games')}}>
+		<div class = 'tab' class:active={page.url.pathname === '/games'} on:click={() => {goto('/games')}}>
 			<h2>Games</h2>
 		</div>
 
-		<div class = 'tab' on:click={() => {goto('/design')}}>
+		<div class = 'tab' class:active={page.url.pathname === '/design'} on:click={() => {goto('/design')}}>
 			<h2>Design</h2>
 		</div>
 
-		<div class = 'tab' on:click={() => {goto('/blog')}}>
+		<div class = 'tab' class:active={page.url.pathname === '/blog'} on:click={() => {goto('/blog')}}>
 			<h2>Blog</h2>
 		</div>
 
-		<div class = 'tab' on:click={() => {goto('/comics')}}>
+		<div class = 'tab' class:active={page.url.pathname === '/comics'} on:click={() => {goto('/comics')}}>
 			<h2>Comics</h2>
 		</div>
 
-		<div class = 'tab' on:click={() => {goto('/apps')}}>
+		<div class = 'tab' class:active={page.url.pathname === '/apps'} on:click={() => {goto('/apps')}}>
 			<h2>Apps</h2>
 		</div>
 	</nav>
