@@ -8,7 +8,8 @@
 		"build": "vite build",
 		"preview": "vite preview",
 		"prepare": "svelte-kit sync || echo ''",
-		"generate-thumbnails": "node scripts/generate-thumbnails.js"
+		"generate-thumbnails": "node scripts/generate-thumbnails.js",
+		"generate-images": "node scripts/generate-image-metadata.js"
 	},
 	"devDependencies": {
 		"@fontsource/dm-sans": "^5.2.5",

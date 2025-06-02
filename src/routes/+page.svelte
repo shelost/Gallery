@@ -4,6 +4,7 @@
 	import welcome from '$lib/images/svelte-welcome.webp';
 	import welcomeFallback from '$lib/images/svelte-welcome.png';
 	import * as Config from '$lib/config.ts'
+	import SmartImage from '$lib/components/SmartImage.svelte'
 	import { activeElem, activeObject, themeColor, loading, openDrawer, expandedPost } from '$lib/store'
     import { goto } from '$app/navigation';
 	import { titleCase, tagIcon, Class, Id } from '$lib/utils'
@@ -58,7 +59,10 @@
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
 	<!-- Preload critical assets -->
-	<link rel="preload" href="ahnheewon3.png" as="image" />
+	<link rel="preload" href="heewon8.png" as="image" />
+
+	<!-- Prefetch optimized image formats -->
+	<link rel="prefetch" as="image" type="image/webp" />
 
 </svelte:head>
 
@@ -127,7 +131,10 @@
 
 							<div class = 'mast'>
 								{#if link.meta.card}
-									<img src="card/{link.meta.card}.png" alt="card" class="card" />
+									<SmartImage
+										src="card/card-{link.meta.card}.png"
+										alt="{link.meta.title} card"
+										className="card" />
 								{/if}
 
 								<div class = 'title'>
@@ -194,7 +201,10 @@
 									<source src = 'video/{link.meta.video}.mp4' type = 'video/mp4'>
 								</video>
 							{:else if link.meta.preview}
-								<img src="bento/{link.meta.preview}.svg" class="banner" alt="banner" />
+								<SmartImage
+									src="bento/{link.meta.preview}.svg"
+									alt="{link.meta.title} banner"
+									className="banner" />
 								<div class = 'gradient'></div>
 							{:else}
 								<div class="prose prose-preview">
@@ -379,8 +389,9 @@
 			margin: 0;
 			padding: 0;
 			.mast{
-				.card{
+				:global(.card){
 					height: 64px;
+					width: 64px;
 					border-radius: 6px;
 					margin-top: -18px;
 					box-shadow: -6px 12px 24px rgba(black, .25);
@@ -452,7 +463,7 @@
 			overflow: visible;
 			filter: drop-shadow(0 40px 40px rgba(#030025, .2));
 		}
-		img{
+		:global(.banner){
 			width: 100%;
 		}
 		video{
@@ -495,4 +506,3 @@
 
 
 </style>
-
