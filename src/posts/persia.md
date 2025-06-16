@@ -5,7 +5,7 @@ title: Rome, Persia, and Trump
 description: Article
 blurb: "My predictions on the US-China conflict, based on the greatest rivalry of classical antiquity."
 card: null
-preview: bento-timeline
+preview: null
 rating: 4
 date: '2025-4-11'
 author: 'Dantès'
@@ -34,11 +34,11 @@ Rome needs no introduction, particularly to Western audiences.
 
 For our purposes, I would like to highlight <b> 3 key moments </b> in Roman history that may be of interest to this conversation.
 
-<b> 509 BC: </b> Marcus Junius Brutus overthrows the last King of Rome, establishing the <b>Roman Republic </b>. <br><br>
+**509 BC:** Marcus Junius Brutus overthrows the last King of Rome, establishing the **Roman Republic**.
 
-<b> 27 BC: </b> Augustus becomes the first emperor, marking the creation of the  <b>Roman Empire </b>. <br><br>
+**27 BC:**  Augustus becomes the first emperor, marking the creation of the  **Roman Empire**.
 
-<b> 284 AD: </b> Diocletian reunites the empire, adopting a more absolute form of rule known as the <b>Dominate</b>.
+**184 AD:**  Diocletian reunites the empire, adopting a more absolute form of rule known as the **Dominate**.
 
 What we can see in Roman history, is the story of an idealistic nation that was constantly struggling with its own political identity. The conflict between liberty and autocracy, between chaos and stability, proved to be a constant point of tension as the empire grew and extended itself to cover the entire Mediterranean basin.
 

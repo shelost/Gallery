@@ -5,7 +5,7 @@ title: The Master Timeline
 description: Research Project
 blurb: "I spent 3+ weeks charting the history of human civilization, by region / country."
 card: null
-preview: bento-timeline
+preview: null
 rating: 4
 date: '2024-10-31'
 author: 'Dantès'

@@ -429,7 +429,7 @@
 		margin: 80px 0 20px 0;
 		h1{
 			font-family: "ivypresto-text", 'Newsreader', sans-serif;
-			font-size: 40px;
+			font-size: 36px;
 			font-weight: 500;
 			letter-spacing: -2px;
 			text-align: left;
@@ -471,7 +471,7 @@
 
 	background: #000064;
 	background: rgba(white, .5);
-	box-shadow: -8px 32px 48px rgba(#030025, .12);
+	box-shadow: -8px 24px 48px rgba(#030025, .1);
 	border-radius: 8px;
 
 	max-height: 400px;
@@ -483,6 +483,7 @@
 		transform: translateY(-2px);
 	}
 
+	/*
 	&#Stan{
 		.title{
 			h1{
@@ -514,6 +515,14 @@
 			}
 		}
 	}
+		*/
+
+
+	&.blog{
+		.preview{
+			//display: none;
+		}
+	}
 
 	hgroup{
 		display: flex;
@@ -526,17 +535,17 @@
 					height: 60px;
 					width: 60px;
 					background-size: cover;
-					border-radius: 4px;
+					border-radius: 8px;
 					margin-top: -18px;
-					box-shadow: -6px 8px 18px rgba($text, .1);
+					box-shadow: -4px 8px 12px rgba($text, .1);
 				}
 				.title{
 					margin: 18px 0 8px 0;
 					h1{
 						font-family: "ivypresto-text", 'Newsreader', sans-serif;
-						font-size: 28px;
+						font-size: 24px;
 						font-weight: 500;
-						letter-spacing: -1.2px;
+						letter-spacing: -.9px;
 						text-align: left;
 						//color: #030025;
 					}
@@ -544,10 +553,10 @@
 				}
 				h2{
 					font-family: "ivypresto-text", 'Newsreader', sans-serif;
-					font-size: 18px;
+					font-size: 16px;
 					font-weight: 300;
-					letter-spacing: -.6px;
-					color: rgba($text, .4);
+					letter-spacing: -.5px;
+					color: rgba($text, .3);
 					//color: rgba(#030025, .5);
 					margin-bottom: 12px;
 				}
