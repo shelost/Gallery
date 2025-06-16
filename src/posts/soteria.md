@@ -14,7 +14,7 @@ author: 'Dantès'
 categories:
   - figma
   - illustrator
-published: true
+published: false
 ---
 
 <script>
