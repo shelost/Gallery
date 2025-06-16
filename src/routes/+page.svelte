@@ -403,8 +403,8 @@
 			box-shadow: -16px 32px 60px rgba(#030025, .08);
 			padding: 60px;
 			border-radius: 8px;
-			transition: .2s ease;
 			cursor: pointer;
+			transition: .2s ease;
 			.logo{
 				height: 52px;
 				width: fit-content;
@@ -418,18 +418,28 @@
 				}
 			}
 			.expo{
+				border: 1px solid rgba($text, .5);
+				padding: 4px 12px;
+				border-radius: 16px;
+				transition: .2s ease;
+				opacity: .5;
 				h3{
-					font-weight: 300;
-					letter-spacing: 0px;
+					font-size: 14px;
+					font-weight: 400;
+					letter-spacing: -.1px;
 				}
 			}
 			&:hover{
+				//box-shadow: -16px 32px 60px rgba(#030025, .1);
 				.logo{
 					svg{
 						path{
-							fill: rgba($text, 1);
+							fill: rgba($text, .5);
 						}
 					}
+				}
+				.expo{
+					//padding: 4px 14px;
 				}
 			}
 		}

@@ -12,7 +12,7 @@ author: 'Dantès'
 theme: dark
 categories:
   - figma
-published: true
+published: false
 ---
 
 <script>
