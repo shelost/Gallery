@@ -21,6 +21,7 @@ $dark: #030025;
 	transition: .2s ease;
 	background: #0e0e18;
 	background: #07070d;
+	background: white;
 	//background: #1c1f2f;
 	//background: #d7c4b5;
 }
@@ -67,7 +68,7 @@ label,
 input,
 textarea {
 	font-family: 'DM Sans', 'Inter', sans-serif;
-	font-weight: 400;
+	font-weight: 600;
 	margin: 0;
 	color: #0e0a33;
 }
@@ -128,8 +129,8 @@ textarea {
 
 
 ::selection{
-	background: white;
-	color: black;
+	background: #030025;
+	color: white;
 	font-weight: 500;
 }
 
@@ -284,6 +285,7 @@ button {
 	}
 }
 
+$text: #030025;
 
 .prose{
 
@@ -295,7 +297,7 @@ button {
 	line-height: 160%;
 	padding: 0;
 	max-inline-size: 100%;
-	color: rgba(white, .5);
+	color: rgba($text, .5);
 
 
 	h1{
@@ -309,7 +311,7 @@ button {
 		max-inline-size: 100%;
 		border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 		text-align: left;
-		color: rgba(white, .7);
+		color: rgba($text, .7);
 	}
 	h2{
 		font-family: var(--font-headers);
@@ -317,7 +319,7 @@ button {
 		font-size: 22px;
 		font-weight: 500;
 		margin: 40px 0 16px 0;
-		color: rgba(white, .7);
+		color: rgba($text, .7);
 	}
 	h3{
 		font-family:  var(--font-headers);
@@ -326,42 +328,44 @@ button {
 		letter-spacing: .5px;
 		line-height: 110%;
 		margin: 60px 0 10px 0;
-		color: rgba(white, .6);
+		color: rgba($text, .6);
 	}
 	h4{
 		font-family: var(--font-headers);
 		font-size: 16px;
 		font-weight: 500;
 		margin: 16px 0;
-		color: rgba(white, .7);
+		color: rgba($text, .7);
 	}
 	p{
 		font-family: var(--font-body);
 		font-family: "DM Sans", serif;
 		font-size: 15px;
-		font-weight: 250;
-		letter-spacing: .2px;
+		font-weight: 400;
+		letter-spacing: -.25px;
 		line-height: 160%;
 		margin: 28px auto;
 		padding: 0;
 		max-inline-size: 100%;
-		text-shadow: -2px 2px 4px rgba(#030025, .8);
-		color: rgba(white, .5);
+		//text-shadow: -2px 2px 4px rgba(#030025, .8);
+		color: rgba($text, .8);
 	}
 	b{
 		font-family: "DM Sans", serif !important;
 		font-weight: 500;
 		letter-spacing: 0px;
-		color: rgba(white, .7);
+		color: rgba($text, .7);
 	}
 	a{
-		font-weight: 400;
+		color: $text;
+		font-weight: 500;
+		text-decoration: underline;
 	}
 
 	.shiki{
 		padding: 12px 24px 16px 16px;
 		border-radius: 8px;
-		box-shadow: 0 6px 12px rgba(white, 0.25);
+		box-shadow: 0 6px 12px rgba($text, 0.25);
 		margin: 18px 0;
 	}
 
@@ -375,9 +379,8 @@ button {
 		margin: 24px 0;
 		padding: 0 18px;
 		width: 100%;
-		border-left: 3px solid rgba(white, 0.2);
+		border-left: 3px solid rgba($text, 0.2);
 
-		background: rgba(white, 1);
 		p{
 			margin: 0;
 			width: 100%;

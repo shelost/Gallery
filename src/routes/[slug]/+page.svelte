@@ -78,6 +78,8 @@
 
 <style lang="scss">
 
+    $text: #030025;
+
     #container{
         display: flex;
         flex-direction: row;
@@ -133,24 +135,24 @@
 
     hgroup{
         padding: 20px 0 60px 0;
-        color: white;
+        color: $text;
 
         h1{
             font-family: "ivypresto-headline", 'Newsreader', sans-serif;
             font-size: 64px;
-            letter-spacing: -.1px;
+            letter-spacing: -.25px;
             font-weight: 500;
             text-align: center;
             margin: 0 0 24px 0;
-            color: rgba(white, .8);
+            color: rgba($text, .8);
         }
 
         h2{
-            font-size: 20px;
-            letter-spacing: -.2px;
-            font-weight: 300;
+            font-size: 18px;
+            letter-spacing: -.25px;
+            font-weight: 400;
             text-align: center;
-            color: rgba(white, .36);
+            color: rgba($text, .4);
             margin-bottom: 20px;
         }
 
@@ -160,7 +162,7 @@
             font-weight: 450;
             text-align: center;
             margin-top: 32px;
-            background: white;
+            background: $text;
             border-radius: 12px;
             box-shadow: -16px 28px 40px rgba(black, 0.1);
             padding: 18px;
