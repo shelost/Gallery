@@ -43,7 +43,7 @@
 			case 'game':
 				return {title: 'Games', icon: 'game', description: 'I sometimes make JavaScript <canvas> games.'}
 			case 'design':
-				return {title: 'Products', icon: 'design', description: 'I do Product Design work for startups.'}
+				return {title: 'Professional Work', icon: 'design', description: 'I do Product Design work for startups.'}
 			case 'gallery':
 				return {title: 'Design', icon: 'gallery', description: "I've dabbled in graphic design."}
 			default:
@@ -83,13 +83,13 @@
 					<i>Hi!</i> I'm Heewon.
 				</h1>
 				<p>
-					I have a lot of random interests.
+					I design websites.
 				</p>
 				<p>
 
 				</p>
 				<p >
-					Let's work together! You can reach me at <a href = 'mailto:shelost.off@gmail.com'>shelost.off@gmail.com</a>.
+					You can always reach me at <a href = 'mailto:shelost.off@gmail.com'>shelost.off@gmail.com</a>!
 				</p>
 
 			</div>
@@ -346,11 +346,12 @@
 				margin: 8px 0 24px 0;
 			}
 			p{
+				font-family: "ivypresto-text", "ivypresto-headline", 'Newsreader', sans-serif;
 				color: rgba($text, .8);
 				text-align: left;
-				font-size: 16px;
+				font-size: 18px;
 				font-weight: 400;
-				letter-spacing: -.25px;
+				letter-spacing: -.7px;
 				margin: 12px 0;
 				a{
 					color: $text;
