@@ -1,5 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte';
+  import { browser } from '$app/environment';
 
   const totalLayers = 8;
   const imagePaths: string[] = Array.from({ length: totalLayers }, (_, i) => `/stan/stan-hero-${i + 1}.png`);
@@ -134,47 +135,36 @@
 
   // Download composite (base stack) as high-res PNG
   let isDownloading = false;
+  // reference to the live rendered stack for screenshotting
+  let stackEl: HTMLElement | null = null;
+
+  /**
+   * Capture the current visual representation of the stack (including overlay-proxy)
+   * at high-resolution via html2canvas. We lazily import the library so it
+   * doesn’t affect initial bundle size or performance.
+   */
   async function downloadStack(scale = 2) {
-    if (isDownloading) return;
+    if (isDownloading || !stackEl) return;
     isDownloading = true;
     try {
-      const canvas = document.createElement('canvas');
-      const size = 600 * scale;
-      canvas.width = size;
-      canvas.height = size;
-      const ctx = canvas.getContext('2d');
-      if (!ctx) throw new Error('Canvas not supported');
+      // Lazy-load only in browser
+      const { default: html2canvas } = await import('html2canvas');
 
-      // Draw 8 base layers bottom to top, preserving each layer's natural aspect ratio
-      for (let i = 1; i <= totalLayers; i++) {
-        await new Promise<void>((resolve, reject) => {
-          const img = new Image();
-          img.crossOrigin = 'anonymous';
-          img.onload = () => {
-            const iw = img.naturalWidth || img.width;
-            const ih = img.naturalHeight || img.height;
-            const ar = iw / ih;
-            let dw = size, dh = size, dx = 0, dy = 0;
-            if (ar >= 1) {
-              dh = size / ar; // fit height
-              dy = (size - dh) / 2; // center vertically
-            } else {
-              dw = size * ar; // fit width
-              dx = (size - dw) / 2; // center horizontally
-            }
-            ctx.drawImage(img, dx, dy, dw, dh);
-            resolve();
-          };
-          img.onerror = () => reject(new Error('Failed loading layer ' + i));
-          img.src = `/stan/stan-hero-${i}.png`;
-        });
-      }
+      const canvas = await html2canvas(stackEl, {
+        backgroundColor: null,
+        scale
+      });
 
       const url = canvas.toDataURL('image/png');
       const a = document.createElement('a');
-      a.href = url;
-      const safeTitle = (overlayTitle || 'image').toString().trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+      const safeTitle = (overlayTitle || 'image')
+        .toString()
+        .trim()
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-+|-+$/g, '');
       a.download = `stan-hero-${safeTitle || 'image'}.png`;
+      a.href = url;
       document.body.appendChild(a);
       a.click();
       a.remove();
@@ -470,7 +460,7 @@
       <button class="link-btn" on:click={restoreDefaults}>Restore Default</button>
     </div>
 
-    <div class="stack" role="img" aria-label="Stan hero composite">
+    <div class="stack" role="img" aria-label="Stan hero composite" bind:this={stackEl}>
       {#each imagePaths as src, idx}
         {#if idx === 1}
           <img
@@ -667,7 +657,12 @@
           display: grid;
           gap: 8px;
 
-          .pos-readout { font-size: 12px; color: #6b7280; }
+          .pos-readout {
+            font-family: 'Geist', 'Inter', sans-serif; 
+            font-size: 12px; 
+            font-weight: 500;
+            color: #6b7280; 
+        }
 
           .cropper {
             position: relative;
