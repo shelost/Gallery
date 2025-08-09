@@ -149,12 +149,32 @@
     try {
       // Lazy-load html-to-image which preserves CSS transforms more reliably
       const htmlToImage = await import('html-to-image');
+
+      // Fetch Google Font CSS explicitly and pass to html-to-image to avoid
+      // cross-origin stylesheet cssRules access while still embedding fonts.
+      const FONT_CSS_URLS = [
+        'https://fonts.googleapis.com/css2?family=Hedvig+Letters+Serif:opsz@12..24&display=swap',
+        'https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap',
+        'https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@200..800;1,200..800&display=swap'
+      ];
+      const fontEmbedCSS = (
+        await Promise.all(
+          FONT_CSS_URLS.map((u) =>
+            fetch(u, { cache: 'no-store' })
+              .then((r) => (r.ok ? r.text() : ''))
+              .catch(() => '')
+          )
+        )
+      ).join('\n');
+
       const dataUrl = await htmlToImage.toPng(stackEl as HTMLElement, {
         cacheBust: true,
         backgroundColor: 'transparent',
         width: 600,
         height: 600,
-        pixelRatio: scale
+        pixelRatio: scale,
+        fontEmbedCSS,
+        skipFonts: false
       });
 
       const url = dataUrl;
