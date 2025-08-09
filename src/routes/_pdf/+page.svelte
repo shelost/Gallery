@@ -8,7 +8,7 @@
   import { sineInOut } from 'svelte/easing';
   import * as THREE from 'three';
   import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
-  import { fabric } from 'fabric';
+  import { Canvas, Rect, Circle, Image as FabricImage, Line, IText } from 'fabric';
 
   // Set the worker source path
   pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@4.8.69/legacy/build/pdf.worker.min.mjs';
@@ -204,7 +204,7 @@
         wrapperDiv.appendChild(annotationCanvas);
 
         try {
-          fabricCanvas = new fabric.Canvas(annotationCanvas);
+          fabricCanvas = new Canvas(annotationCanvas);
           fabricCanvases[pageNum - 1] = fabricCanvas;
 
           // Setup event listeners for fabric canvas
@@ -290,7 +290,7 @@
         canvas.freeDrawingBrush.opacity = 1;
       } else if (tool === 'rectangle') {
         canvas.isDrawingMode = false;
-        currentShape = new fabric.Rect({
+        currentShape = new Rect({
           left: startX,
           top: startY,
           width: 1,
@@ -302,7 +302,7 @@
         canvas.add(currentShape);
       } else if (tool === 'circle') {
         canvas.isDrawingMode = false;
-        currentShape = new fabric.Circle({
+        currentShape = new Circle({
           left: startX,
           top: startY,
           radius: 1,
@@ -314,7 +314,7 @@
       } else if (tool === 'arrow') {
         canvas.isDrawingMode = false;
         // Create arrow with line and triangle
-        const line = new fabric.Line([startX, startY, startX + 1, startY + 1], {
+        const line = new Line([startX, startY, startX + 1, startY + 1], {
           stroke: color,
           strokeWidth: size
         });
@@ -403,7 +403,7 @@
   }
 
   function addTextAnnotation(pointer, style) {
-    const text = new fabric.IText('Click to edit text', {
+    const text = new IText('Click to edit text', {
       left: pointer.x,
       top: pointer.y,
       fontSize: style.size * 10,

@@ -5,11 +5,19 @@
   const imagePaths: string[] = Array.from({ length: totalLayers }, (_, i) => `/stan/stan-hero-${i + 1}.png`);
 
   // Toggle visibility of the second image (stan-hero-2)
-  let showSecondImage: boolean = true;
+  let showSecondImage: boolean = false;
 
   // Background image and title for the overlay card
-  let overlayImageUrl: string = '/stan/woman.jpg';
-  let overlayTitle: string = 'Alexandra Silva';
+  const DEFAULT_IMAGE = '/stan/woman.jpg';
+  const DEFAULT_TITLE = 'Alexandra Silva';
+  let overlayImageUrl: string = DEFAULT_IMAGE;
+  let overlayTitle: string = DEFAULT_TITLE;
+
+  // Foreground content color (for overlay text/icons)
+  let contentColor: 'black' | 'white' = 'white';
+
+  // Use CSS cover by default; disable once the user crops/pans
+  let useCover: boolean = true;
 
   // Background position (percent)
   let bgPosX = 50;
@@ -71,6 +79,23 @@
     input.value = '';
   }
 
+  function restoreDefaults() {
+    overlayTitle = DEFAULT_TITLE;
+    contentColor = 'white';
+    useCover = true;
+    bgPosX = 50;
+    bgPosY = 50;
+    cropW = 0; // re-init size
+    cropH = 0;
+    overlayImageUrl = DEFAULT_IMAGE;
+    // Keep only the default image in storage
+    savedImages = [{ id: generateId(), url: DEFAULT_IMAGE, createdAt: Date.now() }];
+    persistImages();
+    activeImageId = savedImages[0].id;
+    loadNaturalSize(overlayImageUrl);
+    updateCropVars();
+  }
+
   // natural image size for precise crop positioning
   let natW = 1;
   let natH = 1;
@@ -93,17 +118,72 @@
       }
     } catch {}
 
-    // Ensure default exists and is selectable on first load
+    // seed with default if empty
     if (!savedImages.length) {
-      addImage(overlayImageUrl);
-    } else {
-      const first = savedImages[0];
-      if (first) selectImage(first);
-      else loadNaturalSize(overlayImageUrl);
+      savedImages = [{ id: generateId(), url: DEFAULT_IMAGE, createdAt: Date.now() }];
+      persistImages();
     }
+    const current = savedImages.find((s) => s.url === overlayImageUrl) ?? savedImages[0];
+    selectImage(current);
 
-  	window.addEventListener('resize', updateCropVars);
+    window.addEventListener('resize', updateCropVars);
   });
+
+  // Computed: show carousel only if at least one custom (non-default) image exists
+  $: showCarousel = savedImages.some((s) => s.url !== DEFAULT_IMAGE);
+
+  // Download composite (base stack) as high-res PNG
+  let isDownloading = false;
+  async function downloadStack(scale = 2) {
+    if (isDownloading) return;
+    isDownloading = true;
+    try {
+      const canvas = document.createElement('canvas');
+      const size = 600 * scale;
+      canvas.width = size;
+      canvas.height = size;
+      const ctx = canvas.getContext('2d');
+      if (!ctx) throw new Error('Canvas not supported');
+
+      // Draw 8 base layers bottom to top, preserving each layer's natural aspect ratio
+      for (let i = 1; i <= totalLayers; i++) {
+        await new Promise<void>((resolve, reject) => {
+          const img = new Image();
+          img.crossOrigin = 'anonymous';
+          img.onload = () => {
+            const iw = img.naturalWidth || img.width;
+            const ih = img.naturalHeight || img.height;
+            const ar = iw / ih;
+            let dw = size, dh = size, dx = 0, dy = 0;
+            if (ar >= 1) {
+              dh = size / ar; // fit height
+              dy = (size - dh) / 2; // center vertically
+            } else {
+              dw = size * ar; // fit width
+              dx = (size - dw) / 2; // center horizontally
+            }
+            ctx.drawImage(img, dx, dy, dw, dh);
+            resolve();
+          };
+          img.onerror = () => reject(new Error('Failed loading layer ' + i));
+          img.src = `/stan/stan-hero-${i}.png`;
+        });
+      }
+
+      const url = canvas.toDataURL('image/png');
+      const a = document.createElement('a');
+      a.href = url;
+      const safeTitle = (overlayTitle || 'image').toString().trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+      a.download = `stan-hero-${safeTitle || 'image'}.png`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+    } catch (err) {
+      console.error('Download failed:', err);
+    } finally {
+      isDownloading = false;
+    }
+  }
 
   // Crop/pan & resize interactions
   let cropEl: HTMLElement | null = null;
@@ -120,19 +200,21 @@
 
   function onCropDown(e: PointerEvent) {
     if (resizing) return;
+    useCover = false;
     dragging = true;
     startPoint = { x: e.clientX, y: e.clientY };
     startPos = { x: bgPosX, y: bgPosY };
-    (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
+    if (cropEl) cropEl.setPointerCapture(e.pointerId);
   }
 
   function onHandleDown(dir: 'nw'|'ne'|'sw'|'se', e: PointerEvent) {
     e.stopPropagation();
+    useCover = false;
     resizing = true;
     resizeDir = dir;
     startPoint = { x: e.clientX, y: e.clientY };
     startRect = { left: cropLeft, top: cropTop, w: cropW, h: cropH };
-    (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
+    if (cropEl) cropEl.setPointerCapture(e.pointerId);
   }
 
   function onCropMove(e: PointerEvent) {
@@ -143,8 +225,8 @@
       const dy = e.clientY - startPoint.y;
       const nx = clamp(startPos.x + (dx / rect.width) * 100, 0, 100);
       const ny = clamp(startPos.y + (dy / rect.height) * 100, 0, 100);
-      bgPosX = Math.round(nx);
-      bgPosY = Math.round(ny);
+      bgPosX = nx;
+      bgPosY = ny;
       updateCropVars();
       return;
     }
@@ -162,9 +244,10 @@
       let w = startRect.w;
       let h = startRect.h;
 
-      const maxW_se = Math.min(dW - left, (dH - top) * R);
-      const maxW_ne = Math.min(dW - left, (bottom - oY) * R);
-      const maxW_sw = Math.min(right - oX, (dH - top) * R);
+      // Maximum width by staying inside the displayed image box
+      const maxW_se = Math.min((oX + dW) - left, ((oY + dH) - top) * R);
+      const maxW_ne = Math.min((oX + dW) - left, (bottom - oY) * R);
+      const maxW_sw = Math.min(right - oX, ((oY + dH) - top) * R);
       const maxW_nw = Math.min(right - oX, (bottom - oY) * R);
 
       const MIN_W = 30; // min size for UX
@@ -202,8 +285,8 @@
       // convert rect center back to position percents
       const centerXRel = ((left - oX) + w / 2) / dW;
       const centerYRel = ((top - oY) + h / 2) / dH;
-      bgPosX = Math.round(clamp(centerXRel * 100, 0, 100));
-      bgPosY = Math.round(clamp(centerYRel * 100, 0, 100));
+      bgPosX = clamp(centerXRel * 100, 0, 100);
+      bgPosY = clamp(centerYRel * 100, 0, 100);
 
       updateCropVars();
     }
@@ -214,7 +297,7 @@
       dragging = false;
       resizing = false;
       resizeDir = null;
-      try { (e.currentTarget as HTMLElement).releasePointerCapture(e.pointerId); } catch {}
+      try { if (cropEl) cropEl.releasePointerCapture(e.pointerId); } catch {}
     }
   }
 
@@ -247,6 +330,31 @@
     }
 
     const R = 27 / 59; // overlay-proxy aspect ratio (w/h)
+
+    // When in cover mode, preview should match CSS cover: centered ROI of overlay aspect
+    if (useCover) {
+      // ROI in original image coordinates
+      let roiWImg: number;
+      let roiHImg: number;
+      if (natW / natH >= R) {
+        // image is wider: scale to height, full height visible
+        roiHImg = natH;
+        roiWImg = natH * R;
+      } else {
+        // image is taller/narrower: scale to width, full width visible
+        roiWImg = natW;
+        roiHImg = natW / R;
+      }
+      // scale into cropper "contain" size
+      const t = Math.min(dW / natW, dH / natH);
+      cropW = roiWImg * t;
+      cropH = roiHImg * t;
+      cropLeft = oX + (dW - cropW) / 2;
+      cropTop = oY + (dH - cropH) / 2;
+
+      // No need to update bg mapping here (overlay uses cover); exit early
+      return;
+    }
 
     // Initialize crop size once (if zero) else preserve and clamp
     const MAX_H = Math.min(140, dH);
@@ -285,63 +393,86 @@
 </script>
 
 <div class="viewport">
+    <!--
   <div class="controls">
     <label>
       <input type="checkbox" bind:checked={showSecondImage} />
       Show stan-hero-2
     </label>
   </div>
+  -->
 
   <div class="workspace">
     <div class="sidebar">
-      <label class="upload-btn">
-        <input type="file" accept="image/*" on:change={handleUpload} />
-        Upload Overlay
-      </label>
-
-      <div class="title-field">
-        <label>Title</label>
-        <input type="text" bind:value={overlayTitle} placeholder="Enter title" />
-      </div>
-
-      <div class="thumbs" aria-label="Previously uploaded overlays">
-        {#each savedImages as img (img.id)}
-          <button
-            class="thumb {activeImageId === img.id ? 'active' : ''}"
-            style={`background-image:url('${img.url}')`}
-            aria-label="Select overlay image"
-            on:click={() => selectImage(img)}
-          />
-        {/each}
-      </div>
-
-      <div class="crop-section">
-        <div class="cropper {dragging || resizing ? 'grabbing' : ''}"
-             bind:this={cropEl}
-             on:pointerdown={onCropDown}
-             on:pointermove={onCropMove}
-             on:pointerup={onCropEnd}
-             on:pointerleave={onCropEnd}
-             aria-label="Drag to pan; use handles to resize">
-          <div class="full-image" style={`background-image:url('${overlayImageUrl}')`}></div>
-          <div class="mask"
-               style={`--crop-left:${cropLeft}px; --crop-top:${cropTop}px; --crop-w:${cropW}px; --crop-h:${cropH}px;`}></div>
-          <div class="frame" style={`left:${cropLeft}px; top:${cropTop}px; width:${cropW}px; height:${cropH}px;`}>
-            <div class="handle nw" on:pointerdown={(e)=>onHandleDown('nw', e)}></div>
-            <div class="handle ne" on:pointerdown={(e)=>onHandleDown('ne', e)}></div>
-            <div class="handle sw" on:pointerdown={(e)=>onHandleDown('sw', e)}></div>
-            <div class="handle se" on:pointerdown={(e)=>onHandleDown('se', e)}></div>
-          </div>
+      <!-- Text Section -->
+      <div class="section">
+        <h3>Text</h3>
+        <div class="title-field">
+          <input type="text" bind:value={overlayTitle} placeholder="Enter title" />
         </div>
-        <div class="pos-readout">{bgPosX}% · {bgPosY}%</div>
+
+        <div class="toggle-row">
+          <label class="switch theme" aria-label="Toggle text color">
+            <input type="checkbox" checked={contentColor==='white'} on:change={(e:any)=> contentColor = e.currentTarget.checked ? 'white' : 'black'} />
+            <span class="slider round"></span>
+          </label>
+          <span class="toggle-label">{contentColor === 'white' ? 'White' : 'Black'}</span>
+        </div>
       </div>
+
+      <!-- Image Section -->
+      <div class="section">
+        <h3>Image</h3>
+        <label class="upload-btn">
+          <input type="file" accept="image/*" on:change={handleUpload} />
+          <h2>+ Upload Image</h2>
+        </label>
+
+        {#if showCarousel}
+          <div class="thumbs" aria-label="Previously uploaded overlays">
+            {#each savedImages as img (img.id)}
+              <button
+                class="thumb {activeImageId === img.id ? 'active' : ''}"
+                style={`background-image:url('${img.url}')`}
+                aria-label="Select overlay image"
+                on:click={() => selectImage(img)}
+              />
+            {/each}
+          </div>
+        {/if}
+      </div>
+
+      <!-- Crop Section -->
+      <div class="section">
+        <h3>Crop</h3>
+        <div class="crop-section">
+          <div class="cropper {dragging || resizing ? 'grabbing' : ''}"
+               bind:this={cropEl}
+               on:pointerdown={onCropDown}
+               on:pointermove={onCropMove}
+               on:pointerup={onCropEnd}
+               on:pointerleave={onCropEnd}
+               aria-label="Drag to pan; use handles to resize">
+            <div class="full-image" style={`background-image:url('${overlayImageUrl}')`}></div>
+            <div class="mask"
+                 style={`--crop-left:${cropLeft}px; --crop-top:${cropTop}px; --crop-w:${cropW}px; --crop-h:${cropH}px;`}></div>
+            <div class="frame" style={`left:${cropLeft}px; top:${cropTop}px; width:${cropW}px; height:${cropH}px;`}>
+              <div class="handle nw" on:pointerdown={(e)=>onHandleDown('nw', e)}></div>
+              <div class="handle ne" on:pointerdown={(e)=>onHandleDown('ne', e)}></div>
+              <div class="handle sw" on:pointerdown={(e)=>onHandleDown('sw', e)}></div>
+              <div class="handle se" on:pointerdown={(e)=>onHandleDown('se', e)}></div>
+            </div>
+          </div>
+          <div class="pos-readout">{Math.round(bgPosX)}% · {Math.round(bgPosY)}%</div>
+        </div>
+      </div>
+
+      <button class="link-btn" on:click={restoreDefaults}>Restore Default</button>
     </div>
 
     <div class="stack" role="img" aria-label="Stan hero composite">
       {#each imagePaths as src, idx}
         {#if idx === 1}
-          <!-- Image 2 with toggleable visibility -->
-
           <img
             src={src}
             alt={`Stan hero layer ${idx + 1}`}
@@ -351,16 +482,23 @@
             decoding="async"
             loading="eager"
           />
-          <!-- Rotated overlay positioned immediately above image 2 in the stacking order -->
+
           <div
             class="overlay-proxy card-transform"
             aria-hidden="true"
             data-idx={idx + 1}
-            style={`z-index:${idx + 1}; background-image:url('${overlayImageUrl}'); background-size:${bgSizeX}% ${bgSizeY}%; background-position:${bgPosXPx}px ${bgPosYPx}px;`}
+            style={`z-index:${idx + 1}; background-image:url('${overlayImageUrl}'); ${useCover ? 'background-size: cover; background-position: 50% 50%;' : `background-size:${bgSizeX}% ${bgSizeY}%; background-position:${bgPosXPx}px ${bgPosYPx}px;`} --content-color:${contentColor==='white' ? '#fff' : '#000'}; --icon-filter:${contentColor==='white' ? 'invert(1) brightness(2)' : 'none'};`}
           >
-            <div class="overlay-content">
+            <div class="overlay-content" class:white={contentColor==='white'}>
               <h1>{overlayTitle}</h1>
               <p>The man who made Marvel</p>
+              <div class = 'social-icons'>
+                <img class = 'icon' src = 'youtube.svg' alt = 'YouTube' />
+                <img class = 'icon' src = 'tiktok.svg' alt = 'TikTok' />
+                <img class = 'icon' src = 'twitter.svg' alt = 'YouTube' />
+                <img class = 'icon' src = 'icon/linkedin.svg' alt = 'LinkedIn' />
+                <img  class = 'icon' src = 'instagram.svg' alt = 'Instagram' />
+              </div>
             </div>
           </div>
 
@@ -378,6 +516,14 @@
       {/each}
     </div>
   </div>
+
+  <button class="fab" title="Download high‑res stack" on:click={() => downloadStack(2)} disabled={isDownloading}>
+
+    <h2>
+        ⬇ Download
+    </h2>
+
+  </button>
 </div>
 
 <style lang="scss">
@@ -403,22 +549,66 @@
     .workspace {
       display: flex;
       align-items: flex-start;
-      gap: 20px;
+      gap: 24px;
 
       .sidebar {
         display: flex;
         flex-direction: column;
-        gap: 14px;
-        min-width: 220px;
+        gap: 32px;
+        min-width: 280px;
+        max-width: 280px;
+
+        .section {
+          display: grid;
+          gap: 10px;
+
+          h3 { 
+                margin: 0;
+                font-size: 12px;
+                font-weight: 700;
+                letter-spacing: .2px; 
+                text-transform: uppercase;
+                color: #6b7280;
+            }
+        }
+
+        .toggle-row {
+          display: grid;
+          grid-template-columns: auto auto 1fr;
+          align-items: center;
+          gap: 10px;
+
+          .toggle-label { font-size: 12px; color: #6b7280; }
+
+          // Toggle switch (adapted) https://www.w3schools.com/howto/howto_css_switch.asp
+          .switch {
+            position: relative; display: inline-block; width: 32px; height: 20px;
+
+            input { opacity: 0; width: 0; height: 0; }
+
+            .slider {
+              position: absolute; cursor: pointer; inset: 0; border-radius: 30px; transition: .2s;
+              background: #000; border: 1px solid #111;
+
+              &::before {
+                content: ""; position: absolute; width: 14px; height: 14px; left: 2px; top: 50%; transform: translateY(-50%);
+                background: #fff; border-radius: 50%; transition: .2s;
+              }
+            }
+
+            input:checked + .slider { background: #fff; border-color: #d0d0d0; }
+            input:checked + .slider::before { background: #000; transform: translate(12px, -50%); }
+          }
+        }
 
         .upload-btn {
           position: relative;
           display: inline-flex;
           align-items: center;
           justify-content: center;
-          height: 40px;
-          padding: 0 14px;
-          border-radius: 999px;
+          height: 34px;
+          padding: 0 12px;
+          border-radius: 6px;
           background: #f3f4f6;
           color: #111827;
           border: 1px solid #e5e7eb;
@@ -427,6 +617,13 @@
           user-select: none;
           overflow: hidden;
 
+
+          h2{
+            font-size: 13px;
+            font-weight: 550;
+            letter-spacing: -.15px;
+          }
+
           input[type="file"] {
             position: absolute;
             inset: 0;
@@ -434,6 +631,10 @@
             width: 100%;
             height: 100%;
             cursor: pointer;
+          }
+
+          &:hover{
+            background: #edf1f9;
           }
         }
 
@@ -445,7 +646,7 @@
           input {
             height: 36px;
             padding: 0 10px;
-            border-radius: 8px;
+            border-radius: 6px;
             border: 1px solid #e5e7eb;
             outline: none;
             color: black;
@@ -454,25 +655,11 @@
         }
 
         .thumbs {
-          display: grid;
-          grid-template-columns: repeat(2, 72px);
-          gap: 10px;
-
+          display: flex; gap: 10px; overflow-x: auto; padding-bottom: 6px;
           .thumb {
-            width: 72px;
-            height: 72px;
-            border-radius: 10px;
-            border: 2px solid transparent;
-            background-size: cover;
-            background-position: 50% 50%;
-            background-repeat: no-repeat;
-            box-shadow: 0 6px 14px rgba(0,0,0,0.08);
-            cursor: pointer;
-
-            &.active {
-              border-color: #6366f1;
-              box-shadow: 0 0 0 3px rgba(99,102,241,.15);
-            }
+            flex: 0 0 auto; width: 48px; height: 48px; border-radius: 6px; border: 2px solid transparent;
+            background-size: cover; background-position: center; background-repeat: no-repeat; box-shadow: 0 6px 14px rgba(0,0,0,0.08); cursor: pointer;
+            &.active { border-color: #6355FF; }
           }
         }
 
@@ -484,10 +671,11 @@
 
           .cropper {
             position: relative;
-            width: 200px;
+            width: 280px;
             aspect-ratio: 1 / 1; // viewport for entire image
             border: 1px solid #e5e7eb;
-            border-radius: 12px;
+            border-radius: 6px;
+            box-shadow: -4px 8px 16px rgba(black,0.15);
             background: #fff;
             overflow: hidden;
             user-select: none;
@@ -496,52 +684,40 @@
 
             &.grabbing { cursor: grabbing; }
 
-            .full-image {
-              position: absolute;
-              inset: 0;
-              background-size: contain;
-              background-position: 50% 50%;
-              background-repeat: no-repeat;
-            }
+            .full-image { position: absolute; inset: 0; background-size: contain; background-position: 50% 50%; background-repeat: no-repeat; }
 
             // translucent outside mask with a clear rectangular hole
             .mask { position:absolute; inset:0; pointer-events:none; }
             .mask::before {
-              content:"";
-              position:absolute;
-              left: var(--crop-left);
-              top: var(--crop-top);
-              width: var(--crop-w);
-              height: var(--crop-h);
-              box-shadow: 0 0 0 9999px rgba(0,0,0,0.45);
-              border: 2px solid #fff;
-              border-radius: 16px;
+              content:""; position:absolute; left: var(--crop-left); top: var(--crop-top); width: var(--crop-w); height: var(--crop-h);
+              box-shadow: 0 0 0 9999px rgba(0,0,0,0.45); border: 2px solid #fff; border-radius: 16px;
             }
 
             // visible frame (with resize handles)
             .frame {
-              position: absolute;
-              border: 2px solid #7c3aed;
-              border-radius: 16px;
-              pointer-events: none; // allow base drag
-
-              .handle {
-                pointer-events: all; // enable on handles
-                position: absolute;
-                width: 12px;
-                height: 12px;
-                border-radius: 50%;
-                background: #7c3aed;
-                border: 2px solid #fff;
-                transform: translate(-50%, -50%);
-                box-shadow: 0 1px 2px rgba(0,0,0,0.2);
-              }
-              .nw { left: 0; top: 0; cursor: nwse-resize; }
-              .ne { left: 100%; top: 0; cursor: nesw-resize; }
-              .sw { left: 0; top: 100%; cursor: nesw-resize; }
-              .se { left: 100%; top: 100%; cursor: nwse-resize; }
+              position: absolute; border: 2px solid #7c3aed; border-radius: 16px; pointer-events: none; // allow base drag
+              .handle { pointer-events: all; position: absolute; width: 12px; height: 12px; border-radius: 50%; background: #7c3aed; border: 2px solid #fff; transform: translate(-50%, -50%); box-shadow: 0 1px 2px rgba(0,0,0,0.2); }
+              .nw { left: 0; top: 0; cursor: nwse-resize; } .ne { left: 100%; top: 0; cursor: nesw-resize; }
+              .sw { left: 0; top: 100%; cursor: nesw-resize; } .se { left: 100%; top: 100%; cursor: nwse-resize; }
             }
           }
+        }
+
+        .link-btn { 
+            box-shadow: none;
+            appearance: none; 
+            background: transparent; 
+            border: none; 
+            color: #6355FF; 
+            font-weight: 600; 
+            cursor: pointer;
+            text-align: left;
+            padding: 0;
+            margin: 0;
+            font-size: 13px;
+            font-weight: 500;
+            text-align: center;
+            font-family: 'Geist', 'Inter', sans-serif;
         }
       }
 
@@ -574,23 +750,46 @@
 
           // background-size/background-position set inline for exact mapping
           background-repeat: no-repeat;
-        }
 
-        .overlay-content{
-          text-align: center;
-          box-sizing: border-box;
-          padding: 28px;
+          .overlay-content{
+            text-align: center;
+            box-sizing: border-box;
+            padding: 36px;
+            color: var(--content-color, #000);
 
-          h1{
-            width: 100%;
-            font-size: 26px;
-            font-weight: 600;
-            color: #000;
-            overflow-wrap: anywhere;
+            &.white{
+                filter: drop-shadow(0 12px 16px rgba(black,0.4));
+            }
+
+            .social-icons{ margin-top: 18px; display: flex; justify-content: center; gap: 10px; .icon{ width: 24px; filter: var(--icon-filter, none); } }
+
+            h1{ width: 100%; font-size: 28px; font-weight: 600; color: inherit; overflow-wrap: anywhere; }
+            p{ font-size: 16px; font-weight: 400; color: inherit; display: none; }
           }
-          p{ font-size: 16px; font-weight: 400; color: #000; display: none; }
         }
       }
     }
+
+    .fab {
+      position: fixed;
+      right: 20px;
+      bottom: 20px;
+      border: none;
+      border-radius: 999px;
+      padding: 10px 18px;
+      background: #6355FF;
+      color: #fff;
+      font-weight: 500;
+      cursor: pointer;
+      box-shadow: 0 10px 24px rgba(black, 0.25);
+      h2{
+        font-family: 'Geist', 'Inter', sans-serif;
+        font-size: 14px;
+        font-weight: 550;
+        letter-spacing: -.1px;
+        color: white !important;
+      }
+    }
+    .fab[disabled] { opacity: .6; cursor: default; }
   }
 </style>
