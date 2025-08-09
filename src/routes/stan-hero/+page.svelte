@@ -147,15 +147,17 @@
     if (isDownloading || !stackEl) return;
     isDownloading = true;
     try {
-      // Lazy-load only in browser
-      const { default: html2canvas } = await import('html2canvas');
-
-      const canvas = await html2canvas(stackEl, {
-        backgroundColor: null,
-        scale
+      // Lazy-load html-to-image which preserves CSS transforms more reliably
+      const htmlToImage = await import('html-to-image');
+      const dataUrl = await htmlToImage.toPng(stackEl as HTMLElement, {
+        cacheBust: true,
+        backgroundColor: 'transparent',
+        width: 600,
+        height: 600,
+        pixelRatio: scale
       });
 
-      const url = canvas.toDataURL('image/png');
+      const url = dataUrl;
       const a = document.createElement('a');
       const safeTitle = (overlayTitle || 'image')
         .toString()
