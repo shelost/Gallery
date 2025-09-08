@@ -2,6 +2,10 @@
   let { children } = $props();
 </script>
 
+<svelte:head>
+  <link rel="icon" href="orange-gradient.png" />
+</svelte:head>
+
 <style lang="scss">
   :global(html, body) {
     background: rgb(255, 238, 201) !important;

@@ -391,6 +391,11 @@
   };
 </script>
 
+<svelte:head>
+  <title>Letter</title>
+  <link rel="icon" href="orange-gradient.png" />
+</svelte:head>
+
 <div class="scene-container" bind:this={container}></div>
 
 <style>

@@ -367,6 +367,10 @@
 	}
 </script>
 
+<svelte:head>
+    <title>Neon</title>
+    <link rel="icon" href="orange-gradient.png" />
+</svelte:head>
 <canvas bind:this={canvas}></canvas>
 
 <style>

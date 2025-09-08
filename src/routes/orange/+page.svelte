@@ -37,8 +37,8 @@
 </script>
 
 <svelte:head>
-  <title>Orange Projects</title>
-  <link rel="icon" href="orange.png" />
+  <title>Orange</title>
+  <link rel="icon" href="orange-gradient.png" />
 </svelte:head>
 
 <div class="container">

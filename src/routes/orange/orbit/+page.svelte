@@ -419,12 +419,14 @@
 			--button-color: {interpolatedProfile.splashButton};
 		}
 	</style>
+    <title>Orbit</title>
+    <link rel="icon" href="orange-gradient.png" />
 </svelte:head>
 
 <canvas bind:this={canvas}></canvas>
 <div class='splash'>
     <div class = 'mast'>
-        <h1 style="color: {interpolatedProfile.splashTitle}"> Discover More </h1>
+        <h1 style="color: {interpolatedProfile.splashTitle}"> Unlock Yourself </h1>
         <button style="background-color: {interpolatedProfile.splashButton}">
             <h2> Start Simulation </h2>
         </button>
@@ -466,10 +468,12 @@
             color: white;
             z-index: 10;
             h1 {
-                font-size: 48px;
-                font-weight: 700;
-                letter-spacing: -2.5px;
+                font-size: 90px;
+                font-weight: 500;
+                letter-spacing: -3px;
                 margin-bottom: 18px;
+                font-family: "Instrument Serif", sans-serif;
+                text-shadow: -1px 4px 8px rgba(0, 0, 0, 0.1);
                 /* Color transition is now handled by JS interpolation */
             }
             button {
