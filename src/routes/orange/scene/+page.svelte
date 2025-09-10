@@ -586,7 +586,8 @@
 </script>
 
 <svelte:head>
-  <title>iPhone on Table - 3D Scene</title>
+  <title>Scene</title>
+  <link rel="icon" href="/orange-gradient.png" />
 </svelte:head>
 
 <div class="scene-container" bind:this={containerEl}>

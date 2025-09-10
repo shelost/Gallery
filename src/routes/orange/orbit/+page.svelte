@@ -420,7 +420,7 @@
 		}
 	</style>
     <title>Orbit</title>
-    <link rel="icon" href="orange-gradient.png" />
+    <link rel="icon" href="/orange-gradient.png" />
 </svelte:head>
 
 <canvas bind:this={canvas}></canvas>
@@ -474,7 +474,6 @@
                 margin-bottom: 18px;
                 font-family: "Instrument Serif", sans-serif;
                 text-shadow: -1px 4px 8px rgba(0, 0, 0, 0.1);
-                /* Color transition is now handled by JS interpolation */
             }
             button {
                 border: none;
