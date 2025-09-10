@@ -3,7 +3,7 @@
 	import Navbar from './Navbar.svelte';
 	import { dev } from '$app/environment';
 	import { onMount } from 'svelte'
-	import { themeColor } from '$lib/store'
+	import { themeColor, animationsEnabled } from '$lib/store'
 	import { writable } from 'svelte/store'
 	import { fade, fly, scale } from 'svelte/transition'
 	import { loading, openDrawer, showHeader } from '$lib/store'
@@ -16,14 +16,12 @@
 
 	let { children } = $props();
 
-	// Track current route for key block
 	let currentPath = $page.url.pathname;
 	let prevRouteId = null;
 
-	let mouseX = -1000, mouseY = -1000; // Initial off-screen position
-    let intensity = .35; // Control the effect strength
-    let radius = 300; // Control the effect radius
-
+	let mouseX = -1000, mouseY = -1000; 
+    let intensity = .35;
+    let radius = 300; 
 
 	themeColor.set('FAFBFD')
 
@@ -38,8 +36,9 @@
 
 <svelte:head>
 	<title>Heewon</title>
-	<meta name="description" content="Heewon's Portfolio" />
-	<link rel="icon" href="ahwsq.png" />
+	<meta name="description" content="Ahn Heewon's Portfolio" />
+	<meta property="og:title" content="Heewon" />
+	<link rel="icon" href="/ahwsq.png" />
 	<link href="https://fonts.googleapis.com/css2?family=Hedvig+Letters+Serif:opsz@12..24&display=swap" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400..700;1,400..700&family=Inter:wght@100..900&family=Newsreader:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
 
@@ -48,6 +47,7 @@
 
 
 <div class="app" >
+
 
 	<canvas id = 'canvas'>
 	</canvas>
@@ -76,6 +76,19 @@
 		transition: .2s ease;
 	}
 
+	.animation-toggle {
+		position: fixed;
+		bottom: 20px;
+		right: 20px;
+		padding: 8px 16px;
+		background-color: white;
+		color: #030025;
+		border: 1px solid #030025;
+		border-radius: 8px;
+		cursor: pointer;
+		z-index: 1000;
+		font-family: 'Inter', sans-serif;
+	}
 
 
 	#loading{

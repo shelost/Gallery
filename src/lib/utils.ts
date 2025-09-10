@@ -1,3 +1,6 @@
+import { animationsEnabled } from '$lib/store';
+import { get } from 'svelte/store';
+
 type DateStyle = Intl.DateTimeFormatOptions['dateStyle']
 
 export function formatDate(date: string, dateStyle: DateStyle = 'medium', locales = 'en') {
@@ -90,6 +93,8 @@ export function viewportAnimate(node: HTMLElement, options: {
 	once?: boolean;
 	rootMargin?: string;
 } = {}) {
+	let unsubscribe;
+
 	const {
 		y = 50,
 		x = 0,
@@ -104,13 +109,7 @@ export function viewportAnimate(node: HTMLElement, options: {
 
 	let hasAnimated = false;
 	let animationFrameId: number;
-
-	// Set initial state with better performance
-	node.style.opacity = '0';
-	node.style.transform = `translate3d(${x}px, ${y}px, 0) scale(${scale === 1 ? 0.96 : scale})`;
-	node.style.transition = `opacity ${duration}ms ${easing}, transform ${duration}ms ${easing}`;
-	node.style.willChange = 'opacity, transform';
-	node.style.backfaceVisibility = 'hidden'; // Better performance on mobile
+	let observer: IntersectionObserver;
 
 	const animate = () => {
 		node.style.opacity = '1';
@@ -123,48 +122,81 @@ export function viewportAnimate(node: HTMLElement, options: {
 		}, duration + 50);
 	};
 
-	const observer = new IntersectionObserver(
-		(entries) => {
-			entries.forEach((entry) => {
-				if (entry.isIntersecting && (!once || !hasAnimated)) {
-					hasAnimated = true;
+	const setupAnimation = () => {
+		// Set initial state with better performance
+		node.style.opacity = '0';
+		node.style.transform = `translate3d(${x}px, ${y}px, 0) scale(${scale === 1 ? 0.96 : scale})`;
+		node.style.transition = `opacity ${duration}ms ${easing}, transform ${duration}ms ${easing}`;
+		node.style.willChange = 'opacity, transform';
+		node.style.backfaceVisibility = 'hidden'; // Better performance on mobile
 
-					if (delay > 0) {
-						setTimeout(() => {
+		observer = new IntersectionObserver(
+			(entries) => {
+				entries.forEach((entry) => {
+					if (entry.isIntersecting && (!once || !hasAnimated)) {
+						hasAnimated = true;
+	
+						if (delay > 0) {
+							setTimeout(() => {
+								animationFrameId = requestAnimationFrame(animate);
+							}, delay);
+						} else {
 							animationFrameId = requestAnimationFrame(animate);
-						}, delay);
-					} else {
-						animationFrameId = requestAnimationFrame(animate);
+						}
+	
+						// Disconnect observer after animation if once is true
+						if (once) {
+							observer.disconnect();
+						}
+					} else if (!entry.isIntersecting && !once && hasAnimated) {
+						// Reset animation if once is false and element leaves viewport
+						if (animationFrameId) {
+							cancelAnimationFrame(animationFrameId);
+						}
+						node.style.opacity = '0';
+						node.style.transform = `translate3d(${x}px, ${y}px, 0) scale(${scale === 1 ? 0.96 : scale})`;
+						hasAnimated = false;
 					}
+				});
+			},
+			{
+				threshold,
+				rootMargin
+			}
+		);
+	
+		observer.observe(node);
+	};
 
-					// Disconnect observer after animation if once is true
-					if (once) {
-						observer.disconnect();
-					}
-				} else if (!entry.isIntersecting && !once && hasAnimated) {
-					// Reset animation if once is false and element leaves viewport
-					if (animationFrameId) {
-						cancelAnimationFrame(animationFrameId);
-					}
-					node.style.opacity = '0';
-					node.style.transform = `translate3d(${x}px, ${y}px, 0) scale(${scale === 1 ? 0.96 : scale})`;
-					hasAnimated = false;
-				}
-			});
-		},
-		{
-			threshold,
-			rootMargin
+	const cleanupAnimation = () => {
+		if (observer) {
+			observer.disconnect();
 		}
-	);
+		if (animationFrameId) {
+			cancelAnimationFrame(animationFrameId);
+		}
+		node.style.opacity = '1';
+		node.style.transform = 'none';
+		node.style.transition = 'none';
+		node.style.willChange = 'auto';
+		node.style.backfaceVisibility = 'visible';
+	};
 
-	observer.observe(node);
+	const handleAnimation = (enabled) => {
+		if (enabled) {
+			setupAnimation();
+		} else {
+			cleanupAnimation();
+		}
+	};
+
+	unsubscribe = animationsEnabled.subscribe(handleAnimation);
 
 	return {
 		destroy() {
-			observer.disconnect();
-			if (animationFrameId) {
-				cancelAnimationFrame(animationFrameId);
+			cleanupAnimation();
+			if (unsubscribe) {
+				unsubscribe();
 			}
 		},
 		update(newOptions: typeof options) {

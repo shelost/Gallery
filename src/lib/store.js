@@ -16,4 +16,7 @@ export const openDrawer = writable(false)
 
 export const Posts = writable([])
 
+export const currentContentCategoryStore = writable(null);
+export const animationsEnabled = writable(false)
+
 // export const screen = { w: 900}

@@ -4,7 +4,6 @@
 	import welcome from '$lib/images/svelte-welcome.webp';
 	import welcomeFallback from '$lib/images/svelte-welcome.png';
 	import * as Config from '$lib/config.ts'
-	import SmartImage from '$lib/components/SmartImage.svelte'
 	import { activeElem, activeObject, themeColor, loading, openDrawer, expandedPost } from '$lib/store'
     import { goto } from '$app/navigation';
 	import { titleCase, tagIcon, Class, Id, viewportAnimate } from '$lib/utils'
@@ -41,9 +40,9 @@
 			case 'comic':
 				return {title: 'Comics', icon: 'comic', description: "I've been getting into drawing comics as a hobby."}
 			case 'game':
-				return {title: 'Games', icon: 'game', description: 'I sometimes make JavaScript <canvas> games.'}
+				return {title: 'Games', icon: 'game', description: 'I enjoy simple, fun games in the spirit of the Gameboy and Atari.'}
 			case 'design':
-				return {title: 'Professional Work', icon: 'design', description: 'I do Product Design work for startups.'}
+				return {title: 'Employment', icon: 'design', description: "Design Engineer™"}
 			case 'gallery':
 				return {title: 'Design', icon: 'gallery', description: "I've dabbled in graphic design."}
 			default:
@@ -80,16 +79,10 @@
 			use:viewportAnimate={{y: 30, duration: 500, delay: 100, rootMargin: '120px 0px'}}>
 
 				<h1>
-					<i>Hi!</i> I'm Heewon.
+					Heewon Ahn
 				</h1>
 				<p>
 					I design websites.
-				</p>
-				<p>
-
-				</p>
-				<p >
-					You can always reach me at <a href = 'mailto:shelost.off@gmail.com'>shelost.off@gmail.com</a>!
 				</p>
 
 			</div>
@@ -190,10 +183,10 @@
 
 							<div class = 'mast'>
 								{#if link.meta.card}
-									<SmartImage
-										src="card/card-{link.meta.card}.png"
+									<img
+										src="card/{link.meta.card}.png"
 										alt="{link.meta.title} card"
-										className="card" />
+										class="card" />
 								{/if}
 
 								<div class = 'title'>
@@ -260,10 +253,10 @@
 									<source src = 'video/{link.meta.video}.mp4' type = 'video/mp4'>
 								</video>
 							{:else if link.meta.preview}
-								<SmartImage
+								<img
 									src="bento/{link.meta.preview}.svg"
 									alt="{link.meta.title} banner"
-									className="banner" />
+									class="banner" />
 								<div class = 'gradient'></div>
 							{:else}
 								<div class="prose prose-preview">
@@ -292,6 +285,11 @@
 
 	$text: #030025;
 
+
+	:global(html) {
+		background: rgb(248, 251, 255) !important;
+	}
+
 	#app{
 		color: $text;
 	}
@@ -314,12 +312,13 @@
 		}
 
 		img{
-			height: 180px;
-			width: 180px;
+			height: 160px;
+			width: 160px;
 			border-radius: 100px;
 			filter: brightness(1.3);
-			box-shadow: -8px 24px 40px rgba(#030025, .2);
+			box-shadow: -8px 24px 40px rgba(#030025, .1);
 			position: relative;
+			display: none;
 			@media screen and (max-width: 800px) {
 				height: 70vw;
 				width: 70vw;
@@ -329,30 +328,37 @@
 		}
 		.screen{
 			display: flex;
+			flex-direction: column;
 			align-items: center;
 			justify-content: flex-start;
 			gap: 40px;
+			width: 100%;
 			@media screen and (max-width: 800px) {
 				flex-direction: column;
 			}
 		}
 		.expo{
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			gap: 0px;
+			
 			h1{
-				font-family: "ivypresto-text", "ivypresto-headline", 'Newsreader', sans-serif;
+				font-family: "Inter", "ivypresto-headline", 'Newsreader', sans-serif;
 				text-align: left;
-				font-size: 60px;
-				font-weight: 500;
-				letter-spacing: -4px;
-				margin: 8px 0 24px 0;
+				font-size: 54px;
+				font-weight: 600;
+				letter-spacing: -1.5px;
+				margin-bottom: 16px;
 			}
 			p{
-				font-family: "ivypresto-text", "ivypresto-headline", 'Newsreader', sans-serif;
+				font-family: 'Inter', sans-serif;
 				color: rgba($text, .8);
 				text-align: left;
-				font-size: 18px;
-				font-weight: 400;
-				letter-spacing: -.7px;
-				margin: 12px 0;
+				font-size: 16px;
+				font-weight: 450;
+				letter-spacing: -.4px;
+				margin: 0;
 				a{
 					color: $text;
 					background: rgba($text, .05);
@@ -451,21 +457,20 @@
 		width: 100%;
 		margin: 80px 0 20px 0;
 		h1{
-			font-family: "ivypresto-text", 'Newsreader', sans-serif;
-			font-size: 40px;
-			font-weight: 500;
-			letter-spacing: -2px;
+			font-family: "Inter", "ivypresto-text", 'Newsreader', sans-serif;
+			font-size: 36px;
+			font-weight: 600;
+			letter-spacing: -1px;
 			text-align: left;
 			margin-bottom: 12px;
 		}
 		p{
-			font-family: "ivypresto-text", sans-serif;
-			font-size: 18px;
-			font-weight: 300;
+			font-family: "Inter",  "ivypresto-text", sans-serif;
+			font-size: 16px;
+			font-weight: 400;
 			letter-spacing: -.5px;
 			color: rgba($text, .5);
 			text-align: left;
-			display: none;
 		}
 	}
 
@@ -494,9 +499,9 @@
 	cursor: pointer;
 
 	background: #000064;
-	background: rgba(white, .5);
-	box-shadow: -8px 24px 48px rgba(#030025, .1);
-	border-radius: 8px;
+	background: rgba(white, 1);
+	box-shadow: -12px 36px 48px rgba(#030025, .1);
+	border-radius: 6px;
 
 	max-height: 400px;
 	//overflow: hidden;
@@ -559,7 +564,7 @@
 					height: 60px;
 					width: 60px;
 					background-size: cover;
-					border-radius: 8px;
+					border-radius: 6px;
 					margin-top: -18px;
 					box-shadow: -4px 8px 12px rgba($text, .1);
 					position: relative;
@@ -569,22 +574,20 @@
 				.title{
 					margin: 18px 0 8px 0;
 					h1{
-						font-family: "ivypresto-text", 'Newsreader', sans-serif;
-						font-size: 24px;
-						font-weight: 500;
-						letter-spacing: -.9px;
+						font-family: "Inter", "Lora", 'Newsreader', serif;
+						font-size: 18px;
+						font-weight: 600;
+						letter-spacing: -.5px;
 						text-align: left;
-						//color: #030025;
 					}
 
 				}
 				h2{
-					font-family: "ivypresto-text", 'Newsreader', sans-serif;
-					font-size: 16px;
-					font-weight: 300;
+					font-family: "Inter", "ivypresto-text", 'Newsreader', sans-serif;
+					font-size: 14px;
+					font-weight: 500;
 					letter-spacing: -.5px;
-					color: rgba($text, .3);
-					//color: rgba(#030025, .5);
+					color: rgba($text, .35);
 					margin-bottom: 12px;
 				}
 
@@ -636,12 +639,12 @@
 		}
 		:global(.banner){
 			width: 100%;
-			filter: drop-shadow(-10px 24px 30px rgba(#030025, .15));
+			//filter: drop-shadow(-10px 24px 30px rgba(#030025, .15));
 		}
 		video{
 			width: 100%;
-			border-radius: 6px;
-			filter: drop-shadow(-10px 40px 30px rgba(#030025, .1));
+			border-radius: 4px;
+			filter: drop-shadow(-4px 12px 24px rgba(#030025, .05));
 		}
 	}
 

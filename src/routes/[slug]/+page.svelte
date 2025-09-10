@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { writable } from 'svelte/store'
-	import * as Store from '$lib/store';
+	import * as Store from '$lib/store.js';
 	import { formatDate } from '$lib/utils';
 	import {onMount} from 'svelte'
     import { goto } from '$app/navigation';

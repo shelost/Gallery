@@ -89,13 +89,13 @@
 			ctx.beginPath();
 			ctx.arc(this.currentX, this.currentY, this.radius, 0, Math.PI * 2);
 			ctx.fillStyle = '#FF6B47';
-            ctx.fillStyle = 'white';
+            ctx.fillStyle = 'black';
 			ctx.fill();
 			
 			// Add subtle glow
-			ctx.shadowBlur = 24;
-			ctx.shadowColor = 'rgba(255, 107, 71, 0.4)';
-			ctx.fill();
+			ctx.shadowBlur = 20;
+			ctx.shadowColor = 'rgba(255, 107, 71, 1)';
+			//ctx.fill();
 			ctx.shadowBlur = 0;
 		}
 	}
@@ -149,9 +149,9 @@
 		ctx.lineTo(dots[0].currentX, dots[0].currentY);
 		
 		ctx.strokeStyle = 'rgba(255, 107, 71, 0.3)';
-        ctx.strokeStyle = 'white';
-		ctx.lineWidth = 5;
-        ctx.globalAlpha = 0.2;
+        ctx.strokeStyle = 'black';
+		ctx.lineWidth = 1;
+        ctx.globalAlpha = 0.1;
 		ctx.stroke();
         ctx.globalAlpha = 1;
 	}
@@ -243,10 +243,24 @@
 
 <svelte:head>
     <title>Dots</title>
-    <link rel="icon" href="orange-gradient.png" />
+    <link rel="icon" href="/orange-gradient.png" />
 </svelte:head>
 
 <div class="container">
+    <div class = 'mast'>
+        <p>
+            Orange is built on a simple idea: who you are is found in what you do. Not in the boxes you check, but in the choices you make when the stakes are real.
+           <br> <br>
+            We believe personality isn’t a static label. It’s a living system, an unfolding story.
+
+            <br> <br>
+            
+            This is not a personality test. It is a series of small worlds, simulations designed to be played. The result is not a score, but a reflection.
+            <br> <br>
+             A new way to see the judgment, creativity and taste that makes you, you.
+
+        </p>
+    </div>
 	<canvas bind:this={canvas}></canvas>
 </div>
 
@@ -259,15 +273,22 @@
         background: white;
 	}
 
+    .mast{
+        width: 400px;
+        p{
+            font-family: 'Lora', serif;
+        }
+    }
+
 	.container {
 		display: flex;
-		flex-direction: column;
 		justify-content: center;
 		align-items: center;
 		width: 100vw;
 		height: 100vh;
 		position: relative;
-        background: linear-gradient(160deg, #ffa42d 0%, #ff9436 100%);
+        background: white;
+        //background: linear-gradient(160deg, #ffa42d 0%, #ff9436 100%);
 	}
 
 	canvas {

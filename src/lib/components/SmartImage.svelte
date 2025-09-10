@@ -2,6 +2,7 @@
 	import { onMount } from 'svelte';
 	import { fade } from 'svelte/transition';
 	import imageMetadata from '$lib/imageMetadata.json';
+	import { animationsEnabled } from '$lib/store';
 
 	export let src = '';
 	export let alt = '';
@@ -15,6 +16,7 @@
 	let loaded = false;
 	let inView = false;
 	let error = false;
+	let unsubscribe;
 
 	// Parse the src to determine the directory and file
 	$: parsedSrc = parseSrc(src);
@@ -98,7 +100,7 @@
 
 	// Determine what to show based on loading state
 	$: showPlaceholder = !loaded && metadata?.placeholder;
-	$: shouldLoad = inView || fetchpriority === 'high';
+	$: shouldLoad = inView || fetchpriority === 'high' || !$animationsEnabled;
 </script>
 
 <div class="smart-image-container {className}" bind:this={pictureElement}>
@@ -128,7 +130,7 @@
 				on:error={handleError}
 				class:loaded
 				class:error
-				transition:fade={{ duration: 300 }}
+				transition:fade={{ duration: $animationsEnabled ? 300 : 0 }}
 			/>
 		</picture>
 	{/if}

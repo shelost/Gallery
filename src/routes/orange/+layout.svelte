@@ -3,7 +3,7 @@
 </script>
 
 <svelte:head>
-  <link rel="icon" href="orange-gradient.png" />
+  <link rel="icon" href="/orange-gradient.png" />
 </svelte:head>
 
 <style lang="scss">
