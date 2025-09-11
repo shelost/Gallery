@@ -505,12 +505,14 @@ $text: #030025;
 
 	&.prose-img{
 		pointer-events: none;
+		background: red;
 		.grid{
-			column-gap: 1% !important;
+			column-gap: 0% !important;
 			row-gap: 0% !important;
 			margin: 0 !important;
 		}
 		.gallery{
+			
 			.elem{
 				margin: 0;
 			}

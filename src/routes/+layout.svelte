@@ -114,17 +114,12 @@
 		position: fixed;
 		top: 10px;
 		right: 10px;
-
-
 		width: 12px;
 		height: calc(100vh - 28px);
-		//height: 500px;
 		margin: 12px;
-		//margin-right: 48px;
 		background: rgba(#030025, .3);
 		background: white;
 		border-radius: 5px;
-		//border: 1px solid rgba(white, .2);
 		box-shadow: 20px 8px 32px rgba(black, .5);
 		z-index: 2;
 		overflow: hidden;

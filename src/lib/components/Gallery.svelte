@@ -57,11 +57,6 @@
 
     .gallery{
 		display: flex;
-		//justify-content: space-between;
-		//flex-wrap: wrap;
-		// width: 114%;
-	    // transform: translateX(-6%);
-        //border: 1px solid red;
 		margin: 32px 0;
         display: grid;
         grid-template-columns: repeat(3, 1fr);
@@ -121,9 +116,21 @@
 	}
 
 
+	:global(.preview .gallery) {
+		column-gap: 8px !important;
+		row-gap: 0px !important;
+		margin: 0;
+       
+	}
+
+    :global(.preview .gallery .elem img) {
+        border-radius: 4px;
+        margin: 0;
+    }
+
+
     @media screen and (max-width: 800px){
         .gallery{
-            //border: 2px solid red;
 
             display: flex;
             flex-direction: column;

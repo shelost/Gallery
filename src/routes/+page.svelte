@@ -254,7 +254,7 @@
 								</video>
 							{:else if link.meta.preview}
 								<img
-									src="bento/{link.meta.preview}.svg"
+									src="bento/{link.meta.preview}-1.png"
 									alt="{link.meta.title} banner"
 									class="banner" />
 								<div class = 'gradient'></div>
@@ -549,7 +549,6 @@
 
 	&.blog{
 		.preview{
-			//display: none;
 		}
 	}
 
@@ -572,7 +571,7 @@
 
 				}
 				.title{
-					margin: 18px 0 8px 0;
+					margin: 18px 0 6px 0;
 					h1{
 						font-family: "Inter", "Lora", 'Newsreader', serif;
 						font-size: 18px;
@@ -639,7 +638,6 @@
 		}
 		:global(.banner){
 			width: 100%;
-			//filter: drop-shadow(-10px 24px 30px rgba(#030025, .15));
 		}
 		video{
 			width: 100%;
