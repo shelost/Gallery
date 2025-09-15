@@ -6,7 +6,11 @@ export default defineConfig({
 	plugins: [
 		sveltekit(),
 	],
+	optimizeDeps: {
+		exclude: ['@xyflow/svelte', 'sharp', '@node-loader/babel', '@babel/core']
+	},
 	ssr: {
-		noExternal: ['three']
+		noExternal: ['three', '@xyflow/svelte'],
+		external: ['sharp', '@node-loader/babel', '@babel/core']
 	}
 });

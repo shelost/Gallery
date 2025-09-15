@@ -35,6 +35,9 @@ const config = {
 			return { bypass: true };
 		  }
 		}
+	},
+	vitePlugin: {
+		prebundleSvelteLibraries: false
 	}
 };
 
