@@ -1,86 +1,109 @@
 <script>
 	import { SvelteFlow, Background } from '@xyflow/svelte';
 	import '@xyflow/svelte/dist/style.css';
+	import ElementNode from './ElementNode.svelte';
+	import TextNode from './TextNode.svelte';
 
-	const initialNodes = [
-		{
-			id: '1',
-			type: 'input',
-			data: { label: 'Start' },
-			position: { x: 250, y: 5 }
+	export let data;
+
+	const nodeTypes = { element: ElementNode, text: TextNode };
+
+	const posts = data?.posts ?? [];
+
+	const columnWidth = 300;
+	const rowHeight = 140;
+
+	// Build nodes: title, subtitle, section headers, grouped posts
+	let yCursor = 20;
+	/** @type {any[]} */
+	const nodes = [];
+
+	// Title
+	nodes.push({
+		id: 'title',
+		type: 'text',
+		data: {
+			text: 'Heewon Ahn',
+			fontSize: '36px',
+			fontWeight: '600',
+			textAlign: 'left'
 		},
-		{
-			id: '2',
-			data: { label: 'A process' },
-			position: { x: 250, y: 100 }
+		position: { x: 100, y: yCursor }
+	});
+	yCursor += 44;
+
+	// Subtitle
+	nodes.push({
+		id: 'subtitle',
+		type: 'text',
+		data: {
+			text: 'I design websites',
+			fontSize: '16px',
+			fontWeight: '450',
+			color: 'rgba(0,0,0,0.6)',
+			textAlign: 'left'
 		},
-		{
-			id: '3',
-			data: { label: 'Another process' },
-			position: { x: 250, y: 200 }
-		},
-		{
-			id: '4',
-			data: { label: 'Yet another process' },
-			position: { x: 250, y: 300 }
-		},
-		{
-			id: '5',
-			data: { label: 'Something else' },
-			position: { x: 250, y: 400 }
-		},
-		{
-			id: '6',
-			data: { label: 'More things' },
-			position: { x: 250, y: 500 }
-		},
-		{
-			id: '7',
-			data: { label: 'Keep going' },
-			position: { x: 250, y: 600 }
-		},
-		{
-			id: '8',
-			data: { label: 'Almost there' },
-			position: { x: 250, y: 700 }
-		},
-		{
-			id: '9',
-			data: { label: 'Last one' },
-			position: { x: 250, y: 800 }
-		},
-		{
-			id: '10',
-			type: 'output',
-			data: { label: 'End' },
-			position: { x: 250, y: 950 }
+		position: { x: 100, y: yCursor }
+	});
+	yCursor += 60;
+
+	// Group by type with section headers
+	let currentType = undefined;
+	let sectionIndex = 0;
+	let indexWithinSection = 0;
+
+	for (let i = 0; i < posts.length; i++) {
+		const post = posts[i];
+		const type = post?.meta?.type ?? 'misc';
+
+		if (i === 0 || type !== currentType) {
+			currentType = type;
+			indexWithinSection = 0;
+			const titleCase = (s) => s?.charAt(0).toUpperCase() + s?.slice(1);
+
+			nodes.push({
+				id: `section-${sectionIndex}`,
+				type: 'text',
+				data: {
+					text: titleCase(currentType),
+					fontSize: '20px',
+					fontWeight: '600',
+					textAlign: 'left'
+				},
+				position: { x: 100, y: yCursor }
+			});
+			sectionIndex += 1;
+			yCursor += 40;
 		}
-	];
 
-	const initialEdges = [
-		{ id: 'e1-2', source: '1', target: '2' },
-		{ id: 'e2-3', source: '2', target: '3' },
-		{ id: 'e3-4', source: '3', target: '4' },
-		{ id: 'e4-5', source: '4', target: '5' },
-		{ id: 'e5-6', source: '5', target: '6' },
-		{ id: 'e6-7', source: '6', target: '7' },
-		{ id: 'e7-8', source: '7', target: '8' },
-		{ id: 'e8-9', source: '8', target: '9' },
-		{ id: 'e9-10', source: '9', target: '10' }
-	];
+		const col = indexWithinSection % 3;
+		const row = Math.floor(indexWithinSection / 3);
+		nodes.push({
+			id: `post-${i}`,
+			type: 'element',
+			data: post,
+			position: { x: 100 + col * columnWidth, y: yCursor + row * rowHeight }
+		});
+		indexWithinSection += 1;
 
-	const lastNode = initialNodes.reduce((last, node) =>
-		node.position.y > last.position.y ? node : last
-	);
-	// Add some padding for the last node's height and some bottom margin
-	const contentHeight = lastNode.position.y + 150;
+		const nextType = posts[i + 1]?.meta?.type;
+		if (!nextType || nextType !== currentType) {
+			const rowsUsed = Math.ceil(indexWithinSection / 3);
+			yCursor += rowsUsed * rowHeight + 40;
+		}
+	}
+
+	const edges = [];
+
+	const contentHeight = nodes.length ? yCursor + 40 : 1000;
 </script>
 
 <div class="page-container">
 	<div class="flow-wrapper" style="height: {contentHeight}px">
 		<SvelteFlow
-			nodes={initialNodes}
-			edges={initialEdges}
+			nodes={nodes}
+			edges={edges}
+			nodeTypes={nodeTypes}
 			fitView
 			pannable={false}
 			zoomOnScroll={false}
