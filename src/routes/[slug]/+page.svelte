@@ -49,25 +49,25 @@
         </button>
     </div>
     <div id = 'main'>
-
         <hgroup>
-            <h1>
+            <h1 class = 'title'>
                 {data.meta.title}
             </h1>
-            <h2>
-                {data.meta.description}
-            </h2>
-            <p>
-                {data.meta.blurb}
-            </p>
+          
+            {#if data.meta.type == 'blog'}
+                <p class = 'blurb'>
+                    {data.meta.blurb}
+                </p>
+                <h3 class = 'date'>
+                    {formatDate(data.meta.date)}
+                </h3>
+            {:else}
+                <h2 class = 'description'>
+                    {data.meta.description}
+                </h2>
+            {/if}
+           
         </hgroup>
-
-
-        <!--
-        {#if data.meta.preview}
-            <img class = 'banner' src = 'bento/{data.meta.preview}.svg'>
-        {/if}
-        -->
         <div class="prose preview">
                 <svelte:component this={data.content} />
             </div>
@@ -81,12 +81,10 @@
     $text: #030025;
 
     #container{
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
+        width: 100dvw;
+        max-width: 1000px;
+        margin: 80px auto;
         box-sizing: border-box;
-
-        //border: 1px solid red;
     }
 
     #sidebar{
@@ -136,7 +134,7 @@
         padding: 20px 0 60px 0;
         color: $text;
 
-        h1{
+        .title{
             font-family: "ivypresto-text", 'Newsreader', sans-serif;
             font-size: 48px;
             letter-spacing: -2.2px;
@@ -146,7 +144,7 @@
             color: rgba($text, .8);
         }
 
-        h2{
+        .description{
             font-size: 18px;
             letter-spacing: -.25px;
             font-weight: 400;
@@ -155,30 +153,39 @@
             margin-bottom: 20px;
         }
 
-        p{
-            font-family: 'Lora', 'Inter', sans-serif;
-            font-size: 14px;
-            letter-spacing: -.32px;
+        .date{
+            font-family: var(--font-body);
+            font-size: 16px;
+            letter-spacing: -.2px;
+            font-weight: 500;
+            text-align: center;
+            margin: auto;
+            color: rgba($text, 1);
+        }
+
+        .blurb{
+            font-family: var(--font-body);
+            font-size: 16px;
+            letter-spacing: -.2px;
             font-weight: 450;
             text-align: center;
-            margin-top: 32px;
+            margin: 32px auto 24px auto;
             background: $text;
             border-radius: 12px;
-            box-shadow: -16px 28px 40px rgba(black, 0.1);
-            padding: 18px;
-            display: none;
+            background: none;
+            width: 400px;
+            max-width: 100%;
+            line-height: 115%;
+            color: rgba($text, .5);
         }
     }
 
 
 
     @media screen and (max-width: 800px) {
+  
         #container{
-            flex-direction: column;
-            width: 90vw;
-            padding: 0;
             margin: 40px auto;
-
         }
 
         #sidebar{

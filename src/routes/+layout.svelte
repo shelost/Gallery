@@ -160,14 +160,7 @@
 		display: none;
 	}
 
-	.app {
-		display: flex;
-		position: relative;
-		justify-content: center !important;
-		align-items:  center !important;
-		width: clamp(400px, 100%, 1800px);
-		margin: auto;
-	}
+
 
 	main {
 		flex: 1;

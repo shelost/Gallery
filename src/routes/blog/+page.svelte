@@ -113,34 +113,38 @@
 			.title{
 				display: flex;
 				justify-content: flex-start;
-				align-items: center;
+				align-items: flex-end;
 				gap: 8px;
 				margin-bottom: 12px;
 				h2{
 					font-family: "ivypresto-headline", 'Newsreader', sans-serif;
 					font-size: 24px;
-					font-weight: 400;
-					letter-spacing: 0.5px;
+					font-weight: 600;
+					letter-spacing: 0px;
 					color: rgba(black, .8);
 				}
 				h3{
-					font-size: 14px;
-					font-weight: 300;
-					letter-spacing: -.1px;
-					color: rgba(black, .3);
-					margin-bottom: 4px;
+					font-family: "ivypresto-headline", 'Newsreader', sans-serif;
+					font-family: "Hedvig Letters Serif", 'Newsreader', sans-serif;
+					font-size: 18px;
+					font-weight: 600;
+					letter-spacing: -.2px;
+					color: rgba(black, .4);
+					margin-bottom: 2px;
 				}
 			}
 		}
 		p{
-			font-size: 14px;
-			font-weight: 300;
-			letter-spacing: -.1px;
-			line-height: 130%;
-			color: rgba(black, .4);
+			font-family: "Hedvig Letters Serif", 'Newsreader', sans-serif;
+			font-family: 'DM Sans', 'Inter', sans-serif;
+			font-size: 16px;
+			font-weight: 400;
+			letter-spacing: -.2px;
+			line-height: 120%;
+			color: rgba(black, .5);
 		}
 		.content{
-			//display: none;
+			display: none;
 		}
 	}
 
