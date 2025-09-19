@@ -8,6 +8,8 @@
 	// Properly receive the data from the load function
 	export let data;
 
+	console.log(data);
+
 	let blog = data.posts.filter(post => post.meta?.type == 'blog');
 	let visible = false;
 
@@ -84,6 +86,10 @@
 
 <style lang="scss">
 
+	.text-column{
+		color: black;
+	}
+
 
 	.text-column{
 		padding: 100px 0;
@@ -99,10 +105,8 @@
 		transition: background-color 0.2s;
 		cursor: pointer;
 
-
-
 		&:hover {
-			background: rgba(white, .03);
+			background: rgba(black, .03);
 		}
 
 		hgroup{
@@ -117,13 +121,13 @@
 					font-size: 24px;
 					font-weight: 400;
 					letter-spacing: 0.5px;
-					color: rgba(white, .8);
+					color: rgba(black, .8);
 				}
 				h3{
 					font-size: 14px;
 					font-weight: 300;
 					letter-spacing: -.1px;
-					color: rgba(white, .3);
+					color: rgba(black, .3);
 					margin-bottom: 4px;
 				}
 			}
@@ -133,10 +137,10 @@
 			font-weight: 300;
 			letter-spacing: -.1px;
 			line-height: 130%;
-			color: rgba(white, .4);
+			color: rgba(black, .4);
 		}
 		.content{
-			display: none;
+			//display: none;
 		}
 	}
 

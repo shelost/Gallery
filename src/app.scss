@@ -5,7 +5,7 @@ $dark: #030025;
 
 :root {
 	--font-headers: "ivypresto-text", 'DM Sans', Arial, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-	--font-body: 'Inter', Arial, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
+	--font-body:  'Hedvig Letters Serif', 'Inter', Arial, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
 		Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 	--font-mono: 'Fira Mono', monospace;
 	--color-bg-0: rgb(202, 216, 228);
@@ -22,8 +22,6 @@ $dark: #030025;
 	background: #0e0e18;
 	background: #07070d;
 	background: white;
-	//background: #1c1f2f;
-	//background: #d7c4b5;
 }
 
 body {
@@ -103,13 +101,13 @@ textarea {
 		font-weight: 500;
 		letter-spacing: -3px;
 		margin-bottom: 36px;
-		color: rgba(white, .8);
+		color: rgba(black, .8);
 	}
 	h2{
 		font-size: 18px;
 		font-weight: 200;
 		letter-spacing: 0px;
-		color: rgba(white, .25);
+		color: rgba(black, .25);
 		text-align: center;
 	}
 }
@@ -290,14 +288,12 @@ $text: #030025;
 .prose{
 
 	text-align: left;
-	font-family: "DM Sans", serif;
-	font-size: 15px;
-	font-weight: 250;
-	letter-spacing: .2px;
+	font-family: var(--font-body);
+	font-size: 16px;
+	font-weight: 400;
+	letter-spacing: -.1px;
 	line-height: 160%;
-	padding: 0;
-	max-inline-size: 100%;
-	color: rgba($text, .5);
+	color: rgba($text, 1);
 
 
 	h1{
@@ -325,8 +321,8 @@ $text: #030025;
 	h3{
 		font-family:  var(--font-headers);
 		font-size: 32px;
-		font-weight: 500;
-		letter-spacing: -1.5px;
+		font-weight: 600;
+		letter-spacing: -1px;
 		line-height: 110%;
 		margin: 48px 0 24px 0;
 		color: rgba($text, 1);
@@ -340,30 +336,34 @@ $text: #030025;
 	}
 	p{
 		font-family: var(--font-body);
-		font-family: "DM Sans", serif;
 		font-size: 16px;
 		font-weight: 400;
-		letter-spacing: -.24px;
-		line-height: 150%;
-		margin: 16px auto;
+		letter-spacing: -.1px;
+		line-height: 160%;
+		margin: 24px auto;
 		padding: 0;
 		max-inline-size: 100%;
-		//text-shadow: -2px 2px 4px rgba(#030025, .8);
-		color: rgba($text, .8);
 	}
 	li{
 		font-weight: 400;
 	}
 	b{
-		font-family: "DM Sans", serif !important;
-		font-weight: 500;
+		font-family: var(--font-body);
+		font-weight: 900 !important;
+		text-shadow: -0.2px 0.2px 0px $text;
 		letter-spacing: 0px;
-		color: rgba($text, .7);
 	}
 	a{
+		font-family: var(--font-body);
 		color: $text;
 		font-weight: 500;
-		text-decoration: underline;
+		text-decoration: none;
+		stroke-linecap: round;
+		border-bottom: 1.5px solid rgba($text, 0.2);
+
+		&:hover{
+			background: rgba($text, 0.05);
+		}
 	}
 
 	.shiki{

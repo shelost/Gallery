@@ -41,7 +41,7 @@
 {#if visible}
 <div id = 'container'>
     <div id = 'sidebar'>
-        <button class = 'button text back' on:click = {goBack}>
+        <button class = 'back' on:click = {goBack}>
             <img src = 'arrow.svg' alt = 'Back' />
             <h2>
                 Back
@@ -116,15 +116,14 @@
         align-items: center;
         gap: 4px;
         background: none;
-        color: white;
+        color: black;
         box-shadow: none;
         h2{
-            color: white !important;
+            color: black;
             font-size: 18px;
         }
         img{
-            filter: invert(1) brightness(10);
-            height: 20px;
+            height: 16px;
             transform: rotate(180deg);
         }
     }
@@ -139,9 +138,9 @@
 
         h1{
             font-family: "ivypresto-text", 'Newsreader', sans-serif;
-            font-size: 64px;
-            letter-spacing: -4px;
-            font-weight: 500;
+            font-size: 48px;
+            letter-spacing: -2.2px;
+            font-weight: 600;
             text-align: center;
             margin: 0 0 24px 0;
             color: rgba($text, .8);
@@ -157,6 +156,7 @@
         }
 
         p{
+            font-family: 'Lora', 'Inter', sans-serif;
             font-size: 14px;
             letter-spacing: -.32px;
             font-weight: 450;
