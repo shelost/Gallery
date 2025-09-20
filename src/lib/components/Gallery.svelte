@@ -98,7 +98,7 @@
                 margin-bottom: 6px;
                 background: white;
 
-                box-shadow: -12px 18px 24px rgba(black, 0.1);
+                box-shadow: -4px 12px 24px rgba(black, 0.05);
                 //border: 1px solid rgba(white, 0.4);
                 width: 100%;
             }
@@ -107,6 +107,7 @@
                 font-size: 13px;
                 font-weight: 500;
                 margin: 0;
+                margin-bottom: 12px;
             }
 
             &:hover{

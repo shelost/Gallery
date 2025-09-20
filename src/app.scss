@@ -97,17 +97,18 @@ textarea {
 	margin: 20px 0 80px 0;
 	h1{
 		font-family: "ivypresto-headline", 'Newsreader', sans-serif;
-		font-size: 84px;
+		font-size: 80px;
 		font-weight: 600;
 		letter-spacing: -2px;
 		margin-bottom: 36px;
 		color: rgba(black, .8);
 	}
 	h2{
-		font-size: 18px;
-		font-weight: 200;
+		font-family: "ivypresto-headline", 'Newsreader', sans-serif;
+		font-size: 24px;
+		font-weight: 300;
 		letter-spacing: 0px;
-		color: rgba(black, .25);
+		color: rgba(black, .5);
 		text-align: center;
 	}
 }
@@ -289,7 +290,7 @@ $text: #030025;
 
 	text-align: left;
 	font-family: var(--font-body);
-	font-size: 16px;
+	font-size: 15px;
 	font-weight: 400;
 	letter-spacing: -.1px;
 	line-height: 160%;
@@ -336,7 +337,7 @@ $text: #030025;
 	}
 	p{
 		font-family: var(--font-body);
-		font-size: 16px;
+		font-size: 15px;
 		font-weight: 400;
 		letter-spacing: -.1px;
 		line-height: 160%;
@@ -344,8 +345,21 @@ $text: #030025;
 		padding: 0;
 		max-inline-size: 100%;
 	}
+	ul{
+		margin: 0;
+	}
+	ol{
+		margin: 0;
+	}
 	li{
+		font-family: var(--font-body);
+		font-size: 15px;
 		font-weight: 400;
+		letter-spacing: -.1px;
+		line-height: 160%;
+		margin: 4px auto;
+		padding: 0;
+		max-inline-size: 100%;
 	}
 	b{
 		font-family: var(--font-body);
@@ -373,8 +387,6 @@ $text: #030025;
 		margin: 18px 0;
 	}
 
-
-
 	code{
 		font-size: 12px;
 	}
@@ -399,19 +411,7 @@ $text: #030025;
 		transition: 0.2s ease;
 		width: 100%;
 
-		/*
-		&::after{
-			content: '#';
-			background: rgba(white, 0.9);
-			width: 24px;
-			height: 24px;
-			position: absolute;
-			bottom: 0;
-			right: 0;
-		}
-			*/
 		&:hover{
-			//transform: scale(1.01);
 			opacity: 0.98;
 		}
 	}
@@ -421,7 +421,6 @@ $text: #030025;
 		max-width: 100%;
 		aspect-ratio: 16/9;
 		border: 1px solid rgba(white, 0.2);
-		//box-shadow: 0 16px 32px rgba(white, 0.12);
 		border-radius: 8px;
 		margin: 40px auto;
 	}

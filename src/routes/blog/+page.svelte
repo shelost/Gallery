@@ -64,7 +64,7 @@
 							<hgroup>
 								<div class = 'title'>
 									<h2>{post.meta?.title}</h2>
-									<h3>{formatDate(post.meta?.date)}</h3>
+									
 								</div>
 								<p>{post.meta?.blurb}</p>
 							</hgroup>
@@ -73,6 +73,7 @@
 									<svelte:component this={post.content} />
 								</div>
 							</div>
+							<h3>{formatDate(post.meta?.date)}</h3>
 						</div>
 					{/if}
 				{/each}
@@ -100,7 +101,7 @@
 
 	.post{
 		margin-bottom: 12px;
-		padding: 24px;
+		padding: 20px;
 		border-radius: 8px;
 		transition: background-color 0.2s;
 		cursor: pointer;
@@ -118,30 +119,32 @@
 				margin-bottom: 12px;
 				h2{
 					font-family: "ivypresto-headline", 'Newsreader', sans-serif;
-					font-size: 24px;
-					font-weight: 600;
-					letter-spacing: 0px;
-					color: rgba(black, .8);
-				}
-				h3{
-					font-family: "ivypresto-headline", 'Newsreader', sans-serif;
 					font-family: "Hedvig Letters Serif", 'Newsreader', sans-serif;
-					font-size: 18px;
-					font-weight: 600;
-					letter-spacing: -.2px;
-					color: rgba(black, .4);
-					margin-bottom: 2px;
+					font-size: 20px;
+					font-weight: 900;
+					letter-spacing: 0px;
+					color: rgba(black, 1);
 				}
+				
 			}
 		}
 		p{
 			font-family: "Hedvig Letters Serif", 'Newsreader', sans-serif;
-			font-family: 'DM Sans', 'Inter', sans-serif;
-			font-size: 16px;
-			font-weight: 400;
+			//font-family: 'DM Sans', 'Inter', sans-serif;
+			font-size: 14px;
+			font-weight: 100;
 			letter-spacing: -.2px;
 			line-height: 120%;
-			color: rgba(black, .5);
+			color: rgba(black, .4);
+		}
+		h3{
+			font-family: "ivypresto-headline", 'Newsreader', sans-serif;
+			font-family: "Hedvig Letters Serif", 'Newsreader', sans-serif;
+			font-size: 14px;
+			font-weight: 600;
+			letter-spacing: -.2px;
+			color: rgba(black, 1);
+			margin-top: 12px;
 		}
 		.content{
 			display: none;

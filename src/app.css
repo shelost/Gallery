@@ -85,17 +85,18 @@ textarea {
 }
 .header h1 {
   font-family: "ivypresto-headline", "Newsreader", sans-serif;
-  font-size: 84px;
+  font-size: 80px;
   font-weight: 600;
   letter-spacing: -2px;
   margin-bottom: 36px;
   color: rgba(0, 0, 0, 0.8);
 }
 .header h2 {
-  font-size: 18px;
-  font-weight: 200;
+  font-family: "ivypresto-headline", "Newsreader", sans-serif;
+  font-size: 24px;
+  font-weight: 300;
   letter-spacing: 0px;
-  color: rgba(0, 0, 0, 0.25);
+  color: rgba(0, 0, 0, 0.5);
   text-align: center;
 }
 
@@ -253,7 +254,7 @@ button:hover {
 .prose {
   text-align: left;
   font-family: var(--font-body);
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 400;
   letter-spacing: -0.1px;
   line-height: 160%;
@@ -299,7 +300,7 @@ button:hover {
 }
 .prose p {
   font-family: var(--font-body);
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 400;
   letter-spacing: -0.1px;
   line-height: 160%;
@@ -307,8 +308,21 @@ button:hover {
   padding: 0;
   max-inline-size: 100%;
 }
+.prose ul {
+  margin: 0;
+}
+.prose ol {
+  margin: 0;
+}
 .prose li {
+  font-family: var(--font-body);
+  font-size: 15px;
   font-weight: 400;
+  letter-spacing: -0.1px;
+  line-height: 160%;
+  margin: 4px auto;
+  padding: 0;
+  max-inline-size: 100%;
 }
 .prose b {
   font-family: var(--font-body);
@@ -353,17 +367,6 @@ button:hover {
   position: relative;
   transition: 0.2s ease;
   width: 100%;
-  /*
-  &::after{
-  	content: '#';
-  	background: rgba(white, 0.9);
-  	width: 24px;
-  	height: 24px;
-  	position: absolute;
-  	bottom: 0;
-  	right: 0;
-  }
-  	*/
 }
 .prose img:hover {
   opacity: 0.98;
