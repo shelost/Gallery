@@ -201,6 +201,10 @@
 		}
 	}
 
+	ul{
+		padding-inline-start: 18px;
+	}
+
 
 	li{
 		font-size: 15px;
