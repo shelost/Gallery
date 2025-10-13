@@ -80,10 +80,10 @@ textarea {
   background: #030025;
 }
 
-.header {
+.headerr {
   margin: 20px 0 80px 0;
 }
-.header h1 {
+.headerr h1 {
   font-family: "ivypresto-headline", "Newsreader", sans-serif;
   font-size: 80px;
   font-weight: 600;
@@ -91,7 +91,7 @@ textarea {
   margin-bottom: 36px;
   color: rgba(0, 0, 0, 0.8);
 }
-.header h2 {
+.headerr h2 {
   font-family: "ivypresto-headline", "Newsreader", sans-serif;
   font-size: 24px;
   font-weight: 300;
