@@ -16,12 +16,18 @@
 				<h1>Heewon Ahn</h1>
 
 				<a>
-					<h3> shelost.off@gmail.com </h3>
+					<h3> A Wandering Webdev </h3>
 				</a>
 			</div>
 			
-		</div>
+	</div>
 	
+	<p>
+		Hi! I'm Heewon, a developer based in Ithaca, NY.  <br> <br>
+		Currently, I'm interested in building a new <a href="https://x.com/karpathy/status/1917920257257459899?lang=en">UI paradigm</a> for generative AI applications. <br> <br>
+		I believe the future of the web will not be contained in &lt;div&gt;s and grid layouts, but in a more ephemeral & magical interface that fully captures the capabilities of modern agentic technologies. <br> <br>
+		Let's collaborate! Reach out anytime at <a href="mailto:shelost.off@gmail.com">shelost.off@gmail.com</a>.
+	</p>
 
 
 	<div class = 'header'>	
@@ -81,7 +87,7 @@
 	<div class = 'header'>
 		<h2> Comics </h2>
 		<h3>
-			My life goal is to finish a comic someday.
+			My life goal is to finish my comic masterpiece someday — if I had one!
 		</h3>
 	</div>
 
@@ -159,7 +165,7 @@
 		font-weight: 650;
 		letter-spacing: -.2px;
 		line-height: 130%;
-		margin-bottom: 2px;
+		margin-bottom: 3px;
 		color: #030025;
 	}
 
@@ -183,10 +189,23 @@
 	
 	}
 
+	p{
+		font-size: 15px;
+		font-weight: 400;
+		letter-spacing: -0.25px;
+		line-height: 130%;
+		margin: 48px 0;
+		color: #030025;
+		a{
+			letter-spacing: -0.4px;
+		}
+	}
+
+
 	li{
 		font-size: 15px;
 		font-weight: 400;
-		letter-spacing: -0.3px;
+		letter-spacing: -0.25px;
 		line-height: 130%;
 		margin: 4px 0;
 		color: #030025;
