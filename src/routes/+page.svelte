@@ -103,10 +103,10 @@
 
 	<ul> 
 		<li>
-			<a href="https://www.stan.store">The Super Mario Bros. Movie Review</a> 
+			<a href="https://chancellorax.substack.com/p/so-i-just-saw-the-super-mario-bros">The Super Mario Bros. Movie Review</a> 
 		</li>
 		<li>
-			<a href="https://www.stan.store">The Roman-Persian War and its Implications on Geopolitical Conflict in the 21st Century</a>
+			<a href="https://chancellorax.substack.com/p/rome-persia-and-trump">The Roman-Persian War and its Implications on Geopolitical Conflict in the 21st Century</a>
 		</li>
 	</ul>
 
