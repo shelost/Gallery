@@ -114,6 +114,9 @@
 		<li>
 			<a href="https://chancellorax.substack.com/p/rome-persia-and-trump">The Roman-Persian War and its Implications on Geopolitical Conflict in the 21st Century</a>
 		</li>
+		<li>
+			<a href="/aiconomy">The Future of the AI Economy, or the Great Orb</a>
+		</li>
 	</ul>
 
 </div>
@@ -136,7 +139,8 @@
 		gap: 18px;
 		img{
 			width: 64px;
-			border-radius: 4px;
+			border-radius: 2px;
+			box-shadow: -4px 8px 16px rgba(#030025, .15);
 		}
 	}
 

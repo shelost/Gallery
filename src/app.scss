@@ -4,8 +4,8 @@ $main: 1400px;
 $dark: #030025;
 
 :root {
-	--font-headers: "ivypresto-text", 'DM Sans', Arial, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-	--font-body:  'Hedvig Letters Serif', 'Inter', Arial, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
+	--font-headers: "hedvig letters serif", "ivypresto-text", 'DM Sans', Arial, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+	--font-body: 'DM Sans', Arial, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
 		Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 	--font-mono: 'Fira Mono', monospace;
 	--color-bg-0: rgb(202, 216, 228);
@@ -290,10 +290,10 @@ $text: #030025;
 
 	text-align: left;
 	font-family: var(--font-body);
-	font-size: 15px;
+	font-size: 16px;
 	font-weight: 400;
-	letter-spacing: -.1px;
-	line-height: 160%;
+	letter-spacing: -.3px;
+	line-height: 140%;
 	color: rgba($text, 1);
 
 
@@ -314,9 +314,9 @@ $text: #030025;
 		font-family: var(--font-headers);
 		letter-spacing: 0px;
 		font-size: 22px;
-		letter-spacing: -1px;
-		font-weight: 500;
-		margin: 40px 0 16px 0;
+		letter-spacing: -.1px;
+		font-weight: 600;
+		margin: 48px 0 8px 0;
 		color: rgba($text, 1);
 	}
 	h3{
@@ -337,10 +337,10 @@ $text: #030025;
 	}
 	p{
 		font-family: var(--font-body);
-		font-size: 15px;
+		font-size: 16px;
 		font-weight: 400;
-		letter-spacing: -.1px;
-		line-height: 160%;
+		letter-spacing: -.25px;
+		line-height: 140%;
 		margin: 24px auto;
 		padding: 0;
 		max-inline-size: 100%;
@@ -353,9 +353,9 @@ $text: #030025;
 	}
 	li{
 		font-family: var(--font-body);
-		font-size: 15px;
+		font-size: 16px;
 		font-weight: 400;
-		letter-spacing: -.1px;
+		letter-spacing: -.25px;
 		line-height: 160%;
 		margin: 4px auto;
 		padding: 0;
