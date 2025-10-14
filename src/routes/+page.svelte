@@ -112,10 +112,10 @@
 			<a href="https://chancellorax.substack.com/p/so-i-just-saw-the-super-mario-bros">The Super Mario Bros. Movie Review</a> 
 		</li>
 		<li>
-			<a href="https://chancellorax.substack.com/p/rome-persia-and-trump">The Roman-Persian War and its Implications on Geopolitical Conflict in the 21st Century</a>
+			<a href="/persia">The Roman-Persian War and its Implications on Geopolitical Conflict in the 21st Century</a>
 		</li>
 		<li>
-			<a href="/aiconomy">The Future of the AI Economy, or the Great Orb</a>
+			<a href="/palace">The Future of the AI Economy, or the Great Orb</a>
 		</li>
 	</ul>
 

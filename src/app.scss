@@ -5,7 +5,7 @@ $dark: #030025;
 
 :root {
 	--font-headers: "hedvig letters serif", "ivypresto-text", 'DM Sans', Arial, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-	--font-body: 'DM Sans', Arial, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
+	--font-body:  "hedvig letters serif", 'DM Sans', Arial, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
 		Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 	--font-mono: 'Fira Mono', monospace;
 	--color-bg-0: rgb(202, 216, 228);
@@ -286,29 +286,34 @@ button {
 
 $text: #030025;
 
-.prose{
-
+@mixin paragraph{
 	text-align: left;
 	font-family: var(--font-body);
 	font-size: 16px;
 	font-weight: 400;
-	letter-spacing: -.3px;
-	line-height: 140%;
-	color: rgba($text, 1);
+	letter-spacing: -0.15px;
+	line-height: 160%;
+	color: rgba($text, 0.8);
+	max-inline-size: 100%;
+	margin: 24px 0;
+}
+
+.prose{
+	@include paragraph;
 
 
 	h1{
 		font-family: var(--font-headers);
-		letter-spacing: -0.64px;
-		font-size: 28px;
-		font-weight: 500;
-		margin: 48px 0 24px 0;
-		padding-bottom: 4px;
+		letter-spacing: -0.25px;
+		font-size: 32px;
+		font-weight: 900;
+		margin: 72px 0 36px 0;
+		padding-bottom: 8px;
 		width: 100%;
 		max-inline-size: 100%;
-		border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+		border-bottom: 2px solid rgba(0, 0, 0, 0.1);
 		text-align: left;
-		color: rgba($text, .7);
+		color: $text;
 	}
 	h2{
 		font-family: var(--font-headers);
@@ -316,14 +321,14 @@ $text: #030025;
 		font-size: 24px;
 		letter-spacing: -.1px;
 		font-weight: 600;
-		margin: 48px 0 8px 0;
+		margin: 72px 0 24px 0;
 		color: rgba($text, 1);
 	}
 	h3{
 		font-family:  var(--font-headers);
 		font-size: 32px;
 		font-weight: 600;
-		letter-spacing: -1px;
+		letter-spacing: -0px;
 		line-height: 110%;
 		margin: 48px 0 24px 0;
 		color: rgba($text, 1);
@@ -336,35 +341,24 @@ $text: #030025;
 		color: rgba($text, 1);
 	}
 	p{
-		font-family: var(--font-body);
-		font-size: 16.5px;
-		font-weight: 400;
-		letter-spacing: -.2px;
-		line-height: 140%;
-		margin: 24px auto;
-		padding: 0;
-		max-inline-size: 100%;
+		@include paragraph;
 	}
 	ul{
 		margin: 0;
+		padding-inline-start: 24px;
 	}
 	ol{
 		margin: 0;
 	}
 	li{
-		font-family: var(--font-body);
-		font-size: 16px;
-		font-weight: 400;
-		letter-spacing: -.25px;
-		line-height: 160%;
-		margin: 4px auto;
-		padding: 0;
-		max-inline-size: 100%;
+		@include paragraph;
+		margin: 8px 0;
 	}
 	b, strong{
-		font-family: var(--font-body);
 		font-weight: 700 !important;
-		letter-spacing: -.4px;
+		color: rgba($text, 1);
+		text-shadow: -0.25px 0 0 rgba($text, 1);
+		letter-spacing: -0px;
 	}
 	a{
 		font-family: var(--font-body);
@@ -392,30 +386,34 @@ $text: #030025;
 	}
 
 	blockquote{
-		margin: 24px 0;
+		margin: 40px 0;
 		padding: 0 18px;
 		width: 100%;
-		font-weight: 400;
-		border-left: 3px solid rgba($text, 0.2);
+		letter-spacing: -0px;
+		border-left: 2px solid rgba($text, 0.2);
 
 		p{
 			margin: 0;
+			letter-spacing: -0px;
 			width: 100%;
 		}
 	}
 
 	img {
 		border-radius: 8px;
-		border: 1px solid rgba(black, 0.2);
-		//box-shadow: -6px 24px 48px rgba(black, 0.3);
+		border: 1px solid rgba(black, 0.1);
+		box-shadow: -4px 18px 32px rgba(black, 0.03);
+		margin: 16px 0;
+		
 		position: relative;
 		transition: 0.2s ease;
 		width: 100%;
 
 		&:hover{
-			opacity: 0.98;
+			opacity: 0.9;
 		}
 	}
+
 
 	iframe{
 		width: 100%;

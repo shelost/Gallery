@@ -51,10 +51,11 @@
             visible = true;
         }, 10);
         
-        // Generate table of contents after content is rendered
+        // Generate table of contents and add image captions after content is rendered
         setTimeout(() => {
             generateTOC();
             setupIntersectionObserver();
+            addImageCaptions();
         }, 100);
 
         // Restore scroll position on initial mount
@@ -118,6 +119,31 @@
         });
 
         tocItems = items;
+    }
+
+    function addImageCaptions() {
+        const prose = document.querySelector('.prose');
+        if (!prose) return;
+
+        const images = prose.querySelectorAll('img[title]');
+        
+        images.forEach((img) => {
+            const title = img.getAttribute('title');
+            if (!title) return;
+
+            // Check if already wrapped in a figure
+            if (img.parentElement?.tagName === 'FIGURE') return;
+
+            // Create figure and figcaption elements
+            const figure = document.createElement('figure');
+            const figcaption = document.createElement('figcaption');
+            figcaption.textContent = title;
+
+            // Replace img with figure containing img and caption
+            img.parentNode?.insertBefore(figure, img);
+            figure.appendChild(img);
+            figure.appendChild(figcaption);
+        });
     }
 
     let isScrolling = false;
@@ -437,6 +463,25 @@
         }
     }
 
+    // Image captions
+    .prose :global(figure) {
+        margin: 32px 0;
+        text-align: center;
+
+        :global(img) {
+            margin: 0 auto;
+            display: block;
+        }
+
+        :global(figcaption) {
+            margin-top: 12px;
+            font-size: 14px;
+            color: rgba($text, .6);
+            font-style: italic;
+            line-height: 140%;
+            letter-spacing: -.2px;
+        }
+    }
 
 
     @media screen and (max-width: 800px) {
