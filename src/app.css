@@ -60,10 +60,6 @@ textarea {
   color: #0e0a33;
 }
 
-::-webkit-scrollbar {
-  width: 0px;
-}
-
 ::-webkit-scrollbar-track {
   background: rgba(255, 255, 255, 0);
 }
@@ -300,9 +296,9 @@ button:hover {
 }
 .prose p {
   font-family: var(--font-body);
-  font-size: 16px;
+  font-size: 16.5px;
   font-weight: 400;
-  letter-spacing: -0.25px;
+  letter-spacing: -0.2px;
   line-height: 140%;
   margin: 24px auto;
   padding: 0;
@@ -362,8 +358,8 @@ button:hover {
   width: 100%;
 }
 .prose img {
-  border-radius: 6px;
-  box-shadow: -6px 24px 48px rgba(0, 0, 0, 0.3);
+  border-radius: 8px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
   position: relative;
   transition: 0.2s ease;
   width: 100%;

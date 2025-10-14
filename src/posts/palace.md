@@ -1,7 +1,7 @@
 ---
 series: History
 type: blog
-title: The Future of the AI Economy
+title: The AI Palace Economy
 description: Article
 blurb: "The AI Revolution and its Potential Implications as a Universal Liquidity Provider of a New Market Economy"
 card: null
@@ -19,17 +19,39 @@ published: true
   import Counter from './counter.svelte'
 </script>
 
+![alt text](blog/faces.png "Title")
 
-In the Late Bronze Age (~12th century BC), the leading civilizations of the era instituted what historians call a <a href =''> Palace Economy </a>. The Pharaohs of Ancient Egypt would collect all of the grain produced during each harvest to a large centralized grain stores, and would redistribute them to their populace to ensure sustainability.
 
-In 2025, OpenAI's latest release, Sora 2, has recently hit the App Store with its ability to feature real-world people in its videos in a feature they're calling "Cameos."
+In the <a href ='https://en.wikipedia.org/wiki/Ancient_Near_East'>Late Bronze Age </a> (~12th century BC), the leading civilizations of the era instituted what historians call a <a href ='https://en.wikipedia.org/wiki/Palace_economy'> Palace Economy </a>, a method of taxation and redistribution of grain harvests. 
+
+In 2025, OpenAI's latest release, <a href = 'https://openai.com/index/sora-2/'> Sora 2 </a>, has recently hit the App Store with its ability to feature real-world people in its videos in a feature they're calling "Cameos."
 
 What do these two things have to do with each other? Well, I believe they both offer their own glimpses what the future of an AI-driven economy would actually look like. 
+
+
+## The Palace
+
+> Let Pharaoh do this, and let him appoint officers over the land, and take up the fifth part of the land of Egypt in the seven plenteous years. <br><br>
+> And let them gather all the food of those good years that come, and lay up corn under the hand of Pharaoh, and let them keep food in the cities. <br><br> 
+> And that food shall be for store to the land against the seven years of famine, which shall be in the land of Egypt; that the land perish not through the famine. <br><br> **Genesis 40:34-36**
+
+I'll let Wikipedia explain it better than I can:
+
+> A **palace economy** or **redistribution economy** is a system of economic organization in which a substantial share of the wealth flows into the control of a centralized administration, the palace, and out from there to the general population. In turn the population may be allowed its own sources of income but relies heavily on the wealth distributed by the palace. <br> <br> It was traditionally justified on the principle that **the palace was most capable of distributing wealth efficiently for the benefit of society.**
+
+![alt text](blog/palace-1.png "Title")
+
+![alt text](blog/palace-2.png "Title")
+
+
+The Pharaohs of Ancient Egypt would collect all of the grain produced during each harvest to a large centralized grain stores, and would redistribute them to their populace to ensure sustainability.
 
 
 ## The Market
 
 Look at this chart. It goes up very quickly.
+
+![alt text](blog/global_gdp.png "Title")
 
 
 Most of this exponential growth has come down to a singular invention: the market. The idea that 
@@ -93,6 +115,8 @@ The Orb becomes the **universal third buyer**, the <a href =''>market maker</a> 
 
 ## The Signs
 
+> Eventually, everyone will be in the Creator Economy. - Naval
+
 We already have a few early signs into how — namely, with streaming platforms.
 
 Whereas film studios and record labels used to sell the rights to movies & songs via a licensing agreement (e.g. Marvel sold the film rights to its most famous characters for around $50M), the rise of streaming platforms has slowly set a new standard when it comes to artist compensation.
@@ -116,9 +140,9 @@ However, the difference is, you may never know whose work you're implicitly payi
 
 Anyone who makes money by taking advantage of market friction (as opposed to creation or consumption) is in for a rough ride.
 
-Citadel, in addition to being a hedge fund, is the largest market maker in the United States, which means they make money by providing liquidity to the stock market. When you buy a share of GOOGL, you probably aren't buying from another investor who wants to sell. Instead, a market maker (such as Citadel) has bought a large amount of GOOGL from sellers, and then sells it back to you at the requested price.
+<a href = 'https://en.wikipedia.org/wiki/Citadel_LLC'><b>Citadel</b></a>, in addition to being a hedge fund, is the largest market maker in the United States, which means they make money by providing liquidity to the stock market. When you buy a share of GOOGL, you probably aren't buying from another investor who wants to sell. Instead, a market maker (such as Citadel) has bought a large amount of GOOGL from sellers, and then sells it back to you at the requested price. <br> <br>
 
-Robinhood makes most of its money via Payment for Order Flow (PFOF), which
+<a href = 'https://en.wikipedia.org/wiki/Robinhood_Markets'><b>Robinhood</b></a> makes most of its money via <a href = 'https://en.wikipedia.org/wiki/Payment_for_order_flow'>Payment for Order Flow (PFOF) </a>, which is a fancy way of saying market makers pay them to own their customers.
 
 Amazon
 
@@ -127,10 +151,14 @@ Marketing as a profession would greatly be impacted, since it largely depends on
 
 ## The Winners
 
-OpenAI — wow, Sam Altman can't stop winning, can't he? Obviously, if there's a winner in this scenario, it would be the company which creates and controls the Orb. My bet is on OpenAI, if only for the fact that this entire AI boom has been primarily led by them from the beginning.
+<br>
+
+<a href = 'https://en.wikipedia.org/wiki/OpenAI'><b>OpenAI</b></a>  — wow, Sam Altman can't stop winning, can't he? Obviously, if there's a winner in this scenario, it would be the company which creates and controls the Orb. My bet is on OpenAI, if only for the fact that this entire AI boom has been primarily led by them from the beginning.
 Maybe that's why he's planning to spend $1T+ on data centers...
 
 Stripe is already one of the biggest beneficiaries of the AI boom, and their recent collaboration with OpenAI means that their technology will likely underwrite a large portion of the future AI economy for decades to come. Fast internet payments are literally what Stripe was built for, so don't be surprised if the "Orb" also prefers Stripe to handle all of its invoicing and payments.
+
+Solopreneurs have already figured this out — except that in an odd way, instead of marketing to humans via social media, they may need to try their best to have the almighty Orb notice their works so it will redirect more requests to their services.
 
 
 ## We've Been Here Before
