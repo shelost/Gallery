@@ -313,7 +313,7 @@ $text: #030025;
 	h2{
 		font-family: var(--font-headers);
 		letter-spacing: 0px;
-		font-size: 22px;
+		font-size: 24px;
 		letter-spacing: -.1px;
 		font-weight: 600;
 		margin: 48px 0 8px 0;
@@ -361,19 +361,19 @@ $text: #030025;
 		padding: 0;
 		max-inline-size: 100%;
 	}
-	b{
+	b, strong{
 		font-family: var(--font-body);
-		font-weight: 900 !important;
-		text-shadow: -0.2px 0.2px 0px $text;
-		letter-spacing: 0px;
+		font-weight: 700 !important;
+		letter-spacing: -.4px;
 	}
 	a{
 		font-family: var(--font-body);
 		color: $text;
-		font-weight: 500;
+		font-weight: 600;
 		text-decoration: none;
 		stroke-linecap: round;
-		border-bottom: 1.5px solid rgba($text, 0.2);
+		letter-spacing: -.3px;
+		border-bottom: 2px solid rgba($text, 0.15);
 
 		&:hover{
 			background: rgba($text, 0.05);

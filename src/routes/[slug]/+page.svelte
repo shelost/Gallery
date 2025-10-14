@@ -4,6 +4,7 @@
 	import { formatDate } from '$lib/utils';
 	import {onMount} from 'svelte'
     import { goto } from '$app/navigation';
+	import { beforeNavigate, afterNavigate } from '$app/navigation';
 	import {
 		blur,
 		crossfade,
@@ -17,15 +18,172 @@
 	export let data
 
     let visible = false;
+    let tocItems: Array<{id: string, text: string, level: number}> = [];
+    let activeId: string = '';
+
+    // Save scroll position before navigating away (internal navigation)
+    beforeNavigate(() => {
+        if (typeof window !== 'undefined') {
+            sessionStorage.setItem(`scroll-${data.slug}`, window.scrollY.toString());
+        }
+    });
+
+    // Restore scroll position after navigating back
+    afterNavigate(() => {
+        if (typeof window !== 'undefined') {
+            const savedScroll = sessionStorage.getItem(`scroll-${data.slug}`);
+            if (savedScroll !== null) {
+                setTimeout(() => {
+                    window.scrollTo(0, parseInt(savedScroll, 10));
+                }, 100);
+            }
+        }
+    });
 
     onMount(() => {
+        // Save scroll position before navigating to external links or closing tab
+        const handleBeforeUnload = () => {
+            sessionStorage.setItem(`scroll-${data.slug}`, window.scrollY.toString());
+        };
+        window.addEventListener('beforeunload', handleBeforeUnload);
+
         setTimeout(() => {
             visible = true;
         }, 10);
+        
+        // Generate table of contents after content is rendered
+        setTimeout(() => {
+            generateTOC();
+            setupIntersectionObserver();
+        }, 100);
+
+        // Restore scroll position on initial mount
+        const savedScroll = sessionStorage.getItem(`scroll-${data.slug}`);
+        if (savedScroll !== null) {
+            setTimeout(() => {
+                window.scrollTo(0, parseInt(savedScroll, 10));
+            }, 150);
+        }
+
+        return () => {
+            // Cleanup
+            window.removeEventListener('beforeunload', handleBeforeUnload);
+            
+            if (typeof window !== 'undefined') {
+                const headings = document.querySelectorAll('.prose h1, .prose h2, .prose h3, .prose h4, .prose h5, .prose h6');
+                headings.forEach(heading => {
+                    observer?.unobserve(heading);
+                });
+            }
+        };
     });
 
     function goBack(){
         history.back()
+    }
+
+    function generateTOC() {
+        const prose = document.querySelector('.prose');
+        if (!prose) return;
+
+        const headings = prose.querySelectorAll('h1, h2, h3, h4, h5, h6');
+        const items: Array<{id: string, text: string, level: number}> = [];
+
+        headings.forEach((heading, index) => {
+            const level = parseInt(heading.tagName.substring(1));
+            const text = heading.textContent || '';
+            
+            // Generate a slug from the heading text
+            let id = text.toLowerCase()
+                .replace(/[^\w\s-]/g, '')
+                .replace(/\s+/g, '-')
+                .replace(/--+/g, '-')
+                .trim();
+            
+            // Ensure unique IDs
+            if (!heading.id) {
+                let uniqueId = id;
+                let counter = 1;
+                while (document.getElementById(uniqueId)) {
+                    uniqueId = `${id}-${counter}`;
+                    counter++;
+                }
+                heading.id = uniqueId;
+                id = uniqueId;
+            } else {
+                id = heading.id;
+            }
+
+            items.push({ id, text, level });
+        });
+
+        tocItems = items;
+    }
+
+    let isScrolling = false;
+
+    function scrollToHeading(id: string) {
+        const element = document.getElementById(id);
+        if (element) {
+            // Temporarily disable observer during manual scroll
+            isScrolling = true;
+            activeId = id;
+            
+            element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            
+            // Re-enable observer after scroll completes
+            setTimeout(() => {
+                isScrolling = false;
+            }, 1000);
+        }
+    }
+
+    let observer: IntersectionObserver | null = null;
+    let visibleHeadings = new Set<string>();
+
+    function setupIntersectionObserver() {
+        const headings = document.querySelectorAll('.prose h1, .prose h2, .prose h3, .prose h4, .prose h5, .prose h6');
+        
+        if (headings.length === 0) return;
+
+        // Set the first heading as active initially
+        if (headings[0].id) {
+            activeId = headings[0].id;
+        }
+
+        observer = new IntersectionObserver(
+            (entries) => {
+                // Skip updates if we're currently scrolling from a click
+                if (isScrolling) return;
+
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        visibleHeadings.add(entry.target.id);
+                    } else {
+                        visibleHeadings.delete(entry.target.id);
+                    }
+                });
+
+                // Find the topmost visible heading
+                if (visibleHeadings.size > 0) {
+                    const allHeadings = Array.from(headings);
+                    for (const heading of allHeadings) {
+                        if (visibleHeadings.has(heading.id)) {
+                            activeId = heading.id;
+                            break;
+                        }
+                    }
+                }
+            },
+            {
+                rootMargin: '-100px 0px -66%',
+                threshold: [0, 0.25, 0.5, 0.75, 1]
+            }
+        );
+
+        headings.forEach((heading) => {
+            observer?.observe(heading);
+        });
     }
 
 
@@ -42,11 +200,25 @@
 <div id = 'container'>
     <div id = 'sidebar'>
         <button class = 'back' on:click = {goBack}>
-            <img src = 'arrow.svg' alt = 'Back' />
+            <span class="material-icons">arrow_back</span>
             <h2>
                 Back
             </h2>
         </button>
+        
+        {#if tocItems.length > 0}
+            <nav class="toc">
+                <ul>
+                    {#each tocItems as item}
+                        <li class="toc-item toc-level-{item.level}" class:active={activeId === item.id}>
+                            <button on:click={() => scrollToHeading(item.id)}>
+                                {item.text}
+                            </button>
+                        </li>
+                    {/each}
+                </ul>
+            </nav>
+        {/if}
     </div>
     <div id = 'main'>
         <hgroup>
@@ -116,13 +288,98 @@
         background: none;
         color: black;
         box-shadow: none;
-        h2{
-            color: black;
-            font-size: 18px;
+
+        span{
+            font-size: 16px;
+            line-height: 100%;
         }
-        img{
-            height: 16px;
-            transform: rotate(180deg);
+        h2{
+            font-family: var(--font-headers);
+            font-size: 16px;
+            letter-spacing: -.3px;
+        }
+        
+        &:hover{
+            opacity: .6;
+        }
+    }
+
+    .toc{
+        padding-top: 16px;
+        padding-left: 8px;
+
+        .toc-title{
+            font-size: 14px;
+            font-weight: 600;
+            color: rgba($text, .6);
+            margin: 0 0 16px 0;
+            text-transform: uppercase;
+            letter-spacing: .5px;
+        }
+
+        ul{
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .toc-item{
+            margin: 0;
+            padding: 0;
+
+            button{
+                width: 100%;
+                text-align: left;
+                background: none;
+                border: none;
+                padding: 0px 0;
+                color: rgba($text, .5);
+                font-size: 14px;
+                line-height: 140%;
+                cursor: pointer;
+                transition: color 0.2s ease;
+                box-shadow: none;
+                margin: 6px 0;
+                font-weight: 400;
+                letter-spacing: -.3px;
+                font-family: var(--font-headers);
+
+                &:hover{
+                    color: rgba($text, 1);
+                    font-weight: 900;
+                    text-decoration: underline;
+                }
+            }
+
+            &.active button{
+                color: rgba($text, 1);
+                font-weight: 600;
+            }
+
+            &.toc-level-1 button{
+                font-weight: 500;
+                padding-left: 0;
+            }
+
+            &.toc-level-2 button{
+                padding-left: 12px;
+            }
+
+            &.toc-level-3 button{
+                padding-left: 24px;
+                font-size: 12px;
+            }
+
+            &.toc-level-4 button{
+                padding-left: 36px;
+                font-size: 12px;
+            }
+
+            &.toc-level-5 button, 
+            &.toc-level-6 button{
+                padding-left: 48px;
+                font-size: 11px;
+            }
         }
     }
 
@@ -135,9 +392,9 @@
         color: $text;
 
         .title{
-            font-family: "ivypresto-text", 'Newsreader', sans-serif;
+            font-family: 'Hedvig Letters Serif', "ivypresto-text", 'Newsreader', sans-serif;
             font-size: 48px;
-            letter-spacing: -2.2px;
+            letter-spacing: -1px;
             font-weight: 600;
             text-align: center;
             margin: 0 0 24px 0;
@@ -189,6 +446,10 @@
         }
 
         #sidebar{
+            display: none;
+        }
+
+        .toc{
             display: none;
         }
 

@@ -272,7 +272,7 @@ button:hover {
 .prose h2 {
   font-family: var(--font-headers);
   letter-spacing: 0px;
-  font-size: 22px;
+  font-size: 24px;
   letter-spacing: -0.1px;
   font-weight: 600;
   margin: 48px 0 8px 0;
@@ -320,19 +320,19 @@ button:hover {
   padding: 0;
   max-inline-size: 100%;
 }
-.prose b {
+.prose b, .prose strong {
   font-family: var(--font-body);
-  font-weight: 900 !important;
-  text-shadow: -0.2px 0.2px 0px #030025;
-  letter-spacing: 0px;
+  font-weight: 700 !important;
+  letter-spacing: -0.4px;
 }
 .prose a {
   font-family: var(--font-body);
   color: #030025;
-  font-weight: 500;
+  font-weight: 600;
   text-decoration: none;
   stroke-linecap: round;
-  border-bottom: 1.5px solid rgba(3, 0, 37, 0.2);
+  letter-spacing: -0.3px;
+  border-bottom: 2px solid rgba(3, 0, 37, 0.15);
 }
 .prose a:hover {
   background: rgba(3, 0, 37, 0.05);

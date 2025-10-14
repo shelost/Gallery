@@ -19,21 +19,25 @@ published: true
   import Counter from './counter.svelte'
 </script>
 
+> Let Pharaoh do this, and let him appoint officers over the land, and take up the fifth part of the land of Egypt in the seven plenteous years. <br><br>
+> And let them gather all the food of those good years that come, and lay up corn under the hand of Pharaoh, and let them keep food in the cities. <br><br> 
+> And that food shall be for store to the land against the seven years of famine, which shall be in the land of Egypt; that the land perish not through the famine. <br><br> **Genesis 40:34-36**
+
 ![alt text](blog/faces.png "Title")
 
 
-In the <a href ='https://en.wikipedia.org/wiki/Ancient_Near_East'>Late Bronze Age </a> (~12th century BC), the leading civilizations of the era instituted what historians call a <a href ='https://en.wikipedia.org/wiki/Palace_economy'> Palace Economy </a>, a method of taxation and redistribution of grain harvests. 
+In the Late Bronze Age (~12th century BC), the leading civilizations of the era instituted what historians call a <a href ='https://en.wikipedia.org/wiki/Palace_economy'> Palace Economy </a>, a method of taxation and redistribution of grain harvests. 
 
 In 2025, OpenAI's latest release, <a href = 'https://openai.com/index/sora-2/'> Sora 2 </a>, has recently hit the App Store with its ability to feature real-world people in its videos in a feature they're calling "Cameos."
 
 What do these two things have to do with each other? Well, I believe they both offer their own glimpses what the future of an AI-driven economy would actually look like. 
 
 
+# Past
+
+
 ## The Palace
 
-> Let Pharaoh do this, and let him appoint officers over the land, and take up the fifth part of the land of Egypt in the seven plenteous years. <br><br>
-> And let them gather all the food of those good years that come, and lay up corn under the hand of Pharaoh, and let them keep food in the cities. <br><br> 
-> And that food shall be for store to the land against the seven years of famine, which shall be in the land of Egypt; that the land perish not through the famine. <br><br> **Genesis 40:34-36**
 
 I'll let Wikipedia explain it better than I can:
 
@@ -67,10 +71,10 @@ The Internet is the "final form" of the market — even more abstraction, at eve
 
 A great deal of how humans use the internet is for discovery. We're looking for something that suits our needs, whether it be simple entertainment or a specific piece of information. The most successful internet companies all take advantage of this central premise, building some combination of a **search engine** and a **discovery platform.**
 
-- Google is the universal search engine for information.
-- Amazon is a search + discovery + checkout for purchases.
-- YouTube is a discovery platform for entertainment.
-- Instagram and Facebook are search + discovery platform for social updates.
+- Google is the universal search engine for **information**.
+- Amazon is a search + discovery + checkout for **purchases**.
+- YouTube is a discovery platform for **entertainment**.
+- Instagram and Facebook are search + discovery platform for **social**.
 
 As fun as "surfing the web" may be, most people agree that it can be a waste of time + is simply a roadblock in the way of accomplishing our actual goal. Anyone who's ever tried to write a research paper will know how excruciating the research process acutally is. Why can't my sources ever cite themselves?
 
@@ -92,6 +96,9 @@ Every film, research paper, painting, excel spreadsheet, NFT, and widget ever pr
 
 Then, whenever a human requires anything new to be created, they would simply ask the Orb to generate something tailored for their purposes.
 - Give me a
+
+
+# Present
 
 
 ## What This Means
@@ -136,9 +143,16 @@ The fundamentals of work remain the same: you get paid more if your work is popu
 However, the difference is, you may never know whose work you're implicitly paying for, since they won't be a single. If your "Generate an image of a porcupine" prompt used 14% inspiration from National Geographic and 7% inspiration from the paintings of Vincent van Gogh, that's exactly how much each of them would be paid.
 
 
+
+# Future
+
+
 ## The Losers
 
 Anyone who makes money by taking advantage of market friction (as opposed to creation or consumption) is in for a rough ride.
+
+![alt text](blog/palace_pfof_2.png "Title")
+![alt text](blog/palace_pfof_1.png "Title")
 
 <a href = 'https://en.wikipedia.org/wiki/Citadel_LLC'><b>Citadel</b></a>, in addition to being a hedge fund, is the largest market maker in the United States, which means they make money by providing liquidity to the stock market. When you buy a share of GOOGL, you probably aren't buying from another investor who wants to sell. Instead, a market maker (such as Citadel) has bought a large amount of GOOGL from sellers, and then sells it back to you at the requested price. <br> <br>
 
@@ -156,7 +170,9 @@ Marketing as a profession would greatly be impacted, since it largely depends on
 <a href = 'https://en.wikipedia.org/wiki/OpenAI'><b>OpenAI</b></a>  — wow, Sam Altman can't stop winning, can't he? Obviously, if there's a winner in this scenario, it would be the company which creates and controls the Orb. My bet is on OpenAI, if only for the fact that this entire AI boom has been primarily led by them from the beginning.
 Maybe that's why he's planning to spend $1T+ on data centers...
 
-Stripe is already one of the biggest beneficiaries of the AI boom, and their recent collaboration with OpenAI means that their technology will likely underwrite a large portion of the future AI economy for decades to come. Fast internet payments are literally what Stripe was built for, so don't be surprised if the "Orb" also prefers Stripe to handle all of its invoicing and payments.
+<br> <br>
+
+<a href = 'https://en.wikipedia.org/wiki/Stripe,_Inc.'><b>Stripe</b></a> is already one of the biggest beneficiaries of the AI boom, and their recent collaboration with OpenAI means that their technology will likely underwrite a large portion of the future AI economy for decades to come. Fast internet payments are literally what Stripe was built for, so don't be surprised if the "Orb" also prefers Stripe to handle all of its invoicing and payments.
 
 Solopreneurs have already figured this out — except that in an odd way, instead of marketing to humans via social media, they may need to try their best to have the almighty Orb notice their works so it will redirect more requests to their services.
 
