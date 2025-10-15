@@ -380,6 +380,7 @@
             &.active button{
                 color: rgba($text, 1);
                 font-weight: 600;
+                text-shadow: -0.25px 0 0 rgba($text, 1);
             }
 
             &.toc-level-1 button{
@@ -448,7 +449,7 @@
 
         .blurb{
             font-family: var(--font-body);
-            font-size: 16px;
+            font-size: 18px;
             letter-spacing: -.2px;
             font-weight: 450;
             text-align: center;
@@ -456,9 +457,9 @@
             background: $text;
             border-radius: 12px;
             background: none;
-            width: 400px;
+            width: 600px;
             max-width: 100%;
-            line-height: 115%;
+            line-height: 1.3;
             color: rgba($text, .5);
         }
     }

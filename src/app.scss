@@ -289,10 +289,10 @@ $text: #030025;
 @mixin paragraph{
 	text-align: left;
 	font-family: var(--font-body);
-	font-size: 16px;
+	font-size: 16.5px;
 	font-weight: 400;
-	letter-spacing: -0.15px;
-	line-height: 160%;
+	letter-spacing: -0.1px;
+	line-height: 1.65;
 	color: rgba($text, 0.8);
 	max-inline-size: 100%;
 	margin: 24px 0;
@@ -308,10 +308,10 @@ $text: #030025;
 		font-size: 32px;
 		font-weight: 900;
 		margin: 72px 0 36px 0;
-		padding-bottom: 8px;
+		padding-bottom: 16px;
 		width: 100%;
 		max-inline-size: 100%;
-		border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+		border-bottom: 1px solid rgba(black, .15);
 		text-align: left;
 		color: $text;
 	}
@@ -342,6 +342,7 @@ $text: #030025;
 	}
 	p{
 		@include paragraph;
+		margin: 32px 0;
 	}
 	ul{
 		margin: 0;
@@ -382,7 +383,12 @@ $text: #030025;
 	}
 
 	code{
-		font-size: 12px;
+		font-size: 14px;
+		font-weight: 550;
+		padding: 2px 4px;
+		border-radius: 4px;
+		margin: 0 2px;
+		background: rgba($text, 0.08);
 	}
 
 	blockquote{
@@ -402,7 +408,7 @@ $text: #030025;
 	img {
 		border-radius: 8px;
 		border: 1px solid rgba(black, 0.1);
-		box-shadow: -4px 18px 32px rgba(black, 0.03);
+		//box-shadow: -4px 18px 32px rgba(black, 0.03);
 		margin: 16px 0;
 		
 		position: relative;

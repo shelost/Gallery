@@ -72,11 +72,9 @@ published: true
 </script>
 
 
-**Pandemonium** is my first attempt at a real comic, hand-drawn on Procreate and assembled on Figma on the web.
+**Pandemonium** was my first attempt at drawing a real comic chapter, hand-drawn on Procreate and assembled in Figma.
 
 The story is a fusion of various classical stories (Romance of the Three Kingdoms, Water Margin, Hong Gildong, etc.)
-
-[a relative link](platformr)
 
 
 <Gallery images = {images} col = 2/>

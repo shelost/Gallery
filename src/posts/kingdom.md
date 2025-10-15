@@ -62,11 +62,9 @@ published: true
 
 This is a collection of early drawings / concept art for the **King of Samhan**, a comic project that I'm currently working on.
 
-The story is based on the 7th-century Unification Wars in Korea, when
+The story is loosely based on the 2009 K-Drama series [Queen Seondeok](https://en.wikipedia.org/wiki/Queen_Seondeok_(TV_series)), which covers the 7th century Unification Wars in Korea.
 
-[a relative link](platformr)
 
-# Gallery
 
 <Gallery images = {images} />
 <Gallery images = {images2} col = 2 />

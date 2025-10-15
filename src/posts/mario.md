@@ -15,7 +15,7 @@ categories:
 published: true
 ---
 
-### Introduction
+## Introduction
 
 The Super Mario Bros. Movie has a heavy burden on its shoulders.
 
@@ -34,7 +34,7 @@ Then, perhaps more importantly, there’s the question of what our favorite Ital
 Nintendo is notoriously strict with their IP. There have been countless tales of YouTubers getting banned for everything from playing Mario soundtracks in their videos, to even simply talking about their games in public. The fact that they would license out their most valuable character at all is frankly mind-blowing.
 
 
-### So how was the movie?
+## So how was the movie?
 
 It was… OK.
 
@@ -65,7 +65,7 @@ The one interesting thing that the movie does, in my opinion, is to give Princes
 So in conclusion: 3/10. I enjoyed the inside jokes, but I was expecting more.
 
 
-### Nintendo's Gambit
+## Nintendo's Gambit
 
 So what’s Nintendo’s plan here?
 

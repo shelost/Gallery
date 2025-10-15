@@ -23,7 +23,7 @@
 	</div>
 	
 	<p>
-		Hi! I'm Heewon, a developer based in Ithaca, NY.  <br> <br>
+		Hi! I'm Heewon.  <br> <br>
 		Currently, I'm interested in building a new <a href="https://x.com/karpathy/status/1917920257257459899?lang=en">UI paradigm</a> for generative AI applications. <br> <br>
 		I believe the future of the web will not be contained in &lt;div&gt;s and grid layouts, but in a more ephemeral & magical interface that fully captures the capabilities of modern agentic technologies. <br> <br>
 		Let's collaborate! Reach out anytime at <a href="mailto:shelost.off@gmail.com">shelost.off@gmail.com</a>.
@@ -38,7 +38,7 @@
 
 	<ul> 
 		<li> 
-			<a href="https://www.stan.store">Stan</a> — I was the first designer, helping to build the future of work.
+			<a href="https://www.stan.store">Stan</a> — I was the designer, helping to build the future of work.
 		</li>
 	</ul>
 
@@ -53,7 +53,7 @@
 
 	<ul> 
 		<li>	
-		<a href="https://shelost.github.io/marc">MARC</a> — an unfinished research dataset, based on ARC.
+		<a href="/marc">MARC</a> — an unfinished research dataset, based on ARC.
 		</li>
 		<li>
 			<a href="https://shelost.github.io/arcaide2">Arcaide</a> — an ARC annotation web tool.
@@ -65,13 +65,13 @@
 			Games
 		</h2>
 		<h3>
-			I enjoyed making Javascript games in high school.
+			I enjoyed making JavaScript games in high school.
 		</h3>
 	</div>
 
 	<ul> 
 		<li>
-			<a href="https://shelost.github.io/platformr">Platformr</a> — a 2D platformer game, with a twist.
+			<a href="/platformr">Platformr</a> — a 2D platformer game, with a twist.
 		</li>
 		<li>
 			<a href="https://shelost.github.io/wordchain">Wordchain</a> — a timed vocabulary brain game.
@@ -109,14 +109,39 @@
 
 	<ul> 
 		<li>
-			<a href="https://chancellorax.substack.com/p/so-i-just-saw-the-super-mario-bros">The Super Mario Bros. Movie Review</a> 
+			<a href="/mario">The Super Mario Bros. Movie Review</a> 
 		</li>
 		<li>
 			<a href="/persia">The Roman-Persian War and its Implications on Geopolitical Conflict in the 21st Century</a>
 		</li>
 		<li>
-			<a href="/palace">The Future of the AI Economy, or the Great Orb</a>
+			<a href="/palace"> The AI Palace Economy </a>
 		</li>
+	</ul>
+
+	<div class = 'header'>	
+		<h2> 
+			Random
+		</h2>
+	</div>
+
+	<ul> 
+		<li> 
+			<a href="https://www.sketchdreamer.com/canvas">AI Canvas</a> — realtime AI image generation, based on Tldraw's <a href="https://drawfast.tldraw.com/">Drawfast</a>
+		</li>
+		<li> 
+			<a href="https://www.sketchdreamer.com/phone">iPhone 3D Creator </a> — a helper tool for UX designers
+		</li>
+		<li>
+			<a href="https://tryorange.vercel.app/">Orange</a> — morphing HTML Canvas shapes
+		</li>
+		<li>
+			<a href="https://dido-ui.vercel.app/">Dido UI</a> — a minimalistic UI library
+		</li>
+		<li>
+			<a href="https://dido-ui.vercel.app/">Dido UI</a> — a minimalistic UI library
+		</li>
+		
 	</ul>
 
 </div>
