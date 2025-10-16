@@ -21,9 +21,11 @@ Based on the ARC challenge, our goal with MARC was to create a dataset of line-b
 
 We made 200+ questions, which we presented briefly to the CS department in order to move forward with the research.
 
-Unfortunately, my Cornell email account was revoked without notice, under which all of this data was being stored. So the following 8 puzzles, which I managed to salvage because they were saved in a separate Google Slides presentation, are all that is left of the MARC dataset.
+Unfortunately, my Cornell email account was revoked without notice, under which all of this data was being stored. So the following puzzles, which I managed to salvage because they were saved in a separate Google Slides presentation, are all that is left of the MARC dataset.
 
+![alt text](img/MARC-3.png "The MARC Homepage")
 ![alt text](img/MARC-1.png "")
-![alt text](img/MARC-1.png "")
+![alt text](img/MARC-2.png "")
+
 
 One day, I hope to return to developing similar datasets that are simultaneously fun, beautiful, and relevant to the development of AI systems that can truly reason without neededing to be pre-trained on large amounts of data.

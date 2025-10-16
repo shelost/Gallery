@@ -1,9 +1,9 @@
 ---
 series: History
 type: blog
-title: The Palace Economy
+title: The AI Palace Economy
 description: Article
-blurb: "The AI Revolution and its Potential Implications as the Universal Liquidity Provider of a Market Economy"
+blurb: "The Intelligence Revolution and its Potential Implications as a Universal Liquidity Provider for the Digital Economy"
 card: null
 preview: null
 rating: 4
@@ -26,15 +26,17 @@ published: true
 ![alt text](blog/faces.png "The Mount Rushmore of Liquidity Providers")
 
 
-In the Late Bronze Age, the leading civilizations of the era instituted what historians call a [Palace Economy](https://en.wikipedia.org/wiki/Palace_economy), a method of taxation and redistribution of grain harvests. The Pharaohs of Ancient Egypt would gather most of a year's harvest in centralized granaries each year, and then distribute it back to the populace according to their needs.
+In the Late Bronze Age, the leading civilizations of the era instituted what historians call a [Palace Economy](https://en.wikipedia.org/wiki/Palace_economy), a method of taxation and redistribution of grain harvests. As the most prominent example, the Pharaohs of Ancient Egypt would collect most of a year's harvest in large centralized granaries, and then distribute it back to the populace according to their needs.
 
 In the 21st century AD, OpenAI's latest release, [Sora 2](https://openai.com/index/sora-2/), has recently hit the App Store with its ability to feature real-world people in its videos in a feature they're calling "Cameos."
 
 OK, so how exactly are these two facts related?
 
-I believe they both offer their own glimpses what the future of an AI-driven economy would actually look like, and by the end of this essay, I hope to convince you in this essay that Sam Altman actually has the same dream in mind.
+I believe hey both offer their own glimpses what the future of an AI-driven economy would actually look like, and by the end of this essay, I hope to convince you in this essay that Sam Altman actually has the same dream in mind.
 
-I also hope to offer my own thoughts on a question that's looming over many people right now:
+**In short, AI will be to digital markets what Pharaoh's granaries were to grain — a centralized store of surplus value from which all employment, transactions, and political power ultimately draw from.**
+
+With this extended metaphor, I also hope to offer my own thoughts on a question that's looming over many people right now:
 
 > **What exactly can I *do* with my life in the age of AI?**
 

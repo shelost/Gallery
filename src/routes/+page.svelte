@@ -38,7 +38,7 @@
 
 	<ul> 
 		<li> 
-			<a href="https://www.stan.store">Stan</a> — I was the designer, helping to build the future of work.
+			<a href="https://www.stan.store">Stan</a> — I was the first designer @ Stan, helping to build the future of work.
 		</li>
 	</ul>
 
@@ -112,7 +112,7 @@
 			<a href="/mario">The Super Mario Bros. Movie Review</a> 
 		</li>
 		<li>
-			<a href="/persia">The Roman-Persian War and its Implications on Geopolitical Conflict in the 21st Century</a>
+			<a href="/persia">The Roman-Persian Wars and the Future of Great Power Conflict</a>
 		</li>
 		<li>
 			<a href="/palace"> The AI Palace Economy </a>
@@ -139,9 +139,8 @@
 			<a href="https://dido-ui.vercel.app/">Dido UI</a> — a minimalistic UI library
 		</li>
 		<li>
-			<a href="https://dido-ui.vercel.app/">Dido UI</a> — a minimalistic UI library
+			<a href="https://mathwsteve.web.app/">Math With Steve</a> — a website for my HS precalc teacher
 		</li>
-		
 	</ul>
 
 </div>

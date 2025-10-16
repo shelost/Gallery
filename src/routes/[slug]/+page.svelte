@@ -422,6 +422,7 @@
             font-family: 'Hedvig Letters Serif', "ivypresto-text", 'Newsreader', sans-serif;
             font-size: 48px;
             letter-spacing: -1px;
+            line-height: 1.1;
             font-weight: 600;
             text-align: center;
             margin: 0 0 24px 0;
