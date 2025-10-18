@@ -249,7 +249,7 @@
     <div id = 'main'>
         <hgroup>
 
-            {#if data.meta.banner}
+            {#if data.meta.banner && data.meta.type == 'blog'}
                 <div class = 'banner'>  <img src = 'blog/{data.meta.banner}.png' alt = 'Banner'> </div>
             {/if}
 
