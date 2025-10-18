@@ -64,9 +64,6 @@
 		<h2> 
 			Games
 		</h2>
-		<h3>
-			I enjoyed making JavaScript games in high school.
-		</h3>
 	</div>
 
 	<ul> 
@@ -86,9 +83,6 @@
 
 	<div class = 'header'>
 		<h2> Comics </h2>
-		<h3>
-			My life goal is to finish my comic masterpiece someday — if I had one!
-		</h3>
 	</div>
 
 	<ul> 
@@ -102,9 +96,6 @@
 
 	<div class = 'header'>
 		<h2> Blog </h2>
-		<h3>
-			Thoughts on the most important issues of our time.
-		</h3>
 	</div>
 
 	<ul> 
@@ -198,10 +189,10 @@
 	}
 
 	h2{
-		font-family: 'Hedvig Letters Serif', sans-serif;
-		font-size: 20px;
-		font-weight: 600;
-		letter-spacing: -0px;
+		font-family: 'Instrument Serif', sans-serif;
+		font-size: 28px;
+		font-weight: 400;
+		letter-spacing: -.25px;
 		line-height: 130%;
 		//margin: 40px 0 4px 0;
 		margin: 0 0 8px 0;
@@ -209,41 +200,33 @@
 	}
 
 	h3{
-		font-size: 15px;
+		font-family: "Hedvig Letters Serif", 'Newsreader', sans-serif;
+		font-size: 14px;
 		font-weight: 400;
-		letter-spacing: -0.3px;
-		line-height: 130%;
+		letter-spacing: -.2px;
+		line-height: 1.5;
 		margin-bottom: 0px;
-	
 	}
 
-	p{
-		font-size: 15px;
-		font-weight: 400;
-		letter-spacing: -0.25px;
-		line-height: 130%;
+	p, li{
+		font-family: "Hedvig Letters Serif", 'Newsreader', sans-serif;
+		font-size: 14px;
+		font-weight: 100;
+		letter-spacing: -.2px;
+		line-height: 1.5;
 		margin: 48px 0;
 		color: #030025;
 		a{
-			letter-spacing: -0.4px;
+			//letter-spacing: -0.4px;
 		}
+	}
+
+	li{
+		margin: 4px 0;
 	}
 
 	ul{
 		padding-inline-start: 18px;
-	}
-
-
-	li{
-		font-size: 15px;
-		font-weight: 400;
-		letter-spacing: -0.25px;
-		line-height: 130%;
-		margin: 4px 0;
-		color: #030025;
-		a{
-			letter-spacing: -0.4px;
-		}
 	}
 
 	@media (max-width: 768px) {
