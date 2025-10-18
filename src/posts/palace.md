@@ -6,6 +6,7 @@ description: Article
 blurb: "The Intelligence Revolution and its Potential Implications as a Universal Liquidity Provider for the Digital Economy"
 card: null
 preview: null
+banner: faces
 rating: 4
 date: '2025-10-13'
 author: 'Dantès'
@@ -23,8 +24,6 @@ published: true
 > And let them gather all the food of those good years that come, and lay up corn under the hand of Pharaoh, and let them keep food in the cities. <br><br> 
 > And that food shall be for store to the land against the seven years of famine, which shall be in the land of Egypt; that the land perish not through the famine. <br><br> **Genesis 40:34-36**
 
-![alt text](blog/faces.png "The Mount Rushmore of Liquidity Providers")
-
 
 In the Late Bronze Age, the leading civilizations of the era instituted what historians call a [Palace Economy](https://en.wikipedia.org/wiki/Palace_economy), a method of taxation and redistribution of grain harvests. As the most prominent example, the Pharaohs of Ancient Egypt would collect most of a year's harvest in large centralized granaries, and then distribute it back to the populace according to their needs.
 
@@ -33,6 +32,7 @@ In the 21st century AD, OpenAI's latest release, [Sora 2](https://openai.com/ind
 OK, so how exactly are these two facts related?
 
 I believe hey both offer their own glimpses what the future of an AI-driven economy would actually look like, and by the end of this essay, I hope to convince you in this essay that Sam Altman actually has the same dream in mind.
+
 
 **In short, AI will be to digital markets what Pharaoh's granaries were to grain — a centralized store of surplus value from which all employment, transactions, and political power ultimately draw from.**
 
@@ -145,7 +145,7 @@ It's the 2020s, and computers can now think, see, and reason.
 
 LLMs can now read your research paper, spreadsheet, or essay — and give detailed feedback based on the amalgamated preferences of all of humanity latent within its training dataset.
 
-**I believe that the future economy will be overseen be a centralized AI model, which will facilitate all economic interactions based on its own judgment.**
+**I believe that the future economy will be overseen by a centralized AI model, which will facilitate all economic interactions based on its own judgment.**
 
 For convenience, let's call this omniscient AI system **"the Orb"**. The Orb's training dataset wille be a universal repository of all work output produced by both humans and AI. 
 
@@ -185,6 +185,8 @@ We already have a few early signs into how this new economy may work — namely,
 Whereas film studios and record labels used to sell the rights to movies & songs via a licensing agreement (e.g. Marvel sold the film rights to its most famous characters for around $50M), the rise of streaming platforms has slowly set a new standard when it comes to artist compensation.
 
 Instead of getting ``$10M`` for the rights, Mariah Carey receives something like ``$0.003`` every time someone streams "All I Want for Christmas is You" on Spotify. That may not seem like a lot, but over millions of streams (including corporate uses, which charge more), many people have earned quite a living through this streaming structure.
+
+![alt text](blog/palace_spotify.png "The Spotify Model")
 
 Imagine if every time someone generated another Studio Ghibli image via OpenAI, Hayao Miyazaki personally received ``$0.001`` in royalty fees. Or whenever scenes from The Godfather are used as training data for a specific Sora 2 generation, the estate of the film crew receives ``$0.003``.
 

@@ -248,6 +248,11 @@
     </div>
     <div id = 'main'>
         <hgroup>
+
+            {#if data.meta.banner}
+                <div class = 'banner'>  <img src = 'blog/{data.meta.banner}.png' alt = 'Banner'> </div>
+            {/if}
+
             <h1 class = 'title'>
                 {data.meta.title}
             </h1>
@@ -256,6 +261,10 @@
                 <p class = 'blurb'>
                     {data.meta.blurb}
                 </p>
+                <div class = 'author'>
+                    <img src = 'heewon9.png' alt = 'Heewon' />
+                    <h3>Heewon Ahn</h3>
+                </div>
                 <h3 class = 'date'>
                     {formatDate(data.meta.date)}
                 </h3>
@@ -264,6 +273,8 @@
                     {data.meta.description}
                 </h2>
             {/if}
+
+         
            
         </hgroup>
         <div class="prose preview">
@@ -412,6 +423,15 @@
 
     .banner{
         width: 100%;
+        img{
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            object-position: center;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 24px;
+        }
     }
 
     hgroup{
@@ -419,11 +439,11 @@
         color: $text;
 
         .title{
-            font-family: 'Hedvig Letters Serif', "ivypresto-text", 'Newsreader', sans-serif;
-            font-size: 48px;
-            letter-spacing: -1px;
-            line-height: 1.1;
-            font-weight: 600;
+            font-family: "ivypresto-text", 'Newsreader', sans-serif;
+            font-size: 60px;
+            letter-spacing: -4px;
+            line-height: 1;
+            font-weight: 500;
             text-align: center;
             margin: 0 0 24px 0;
             color: rgba($text, .8);
@@ -446,6 +466,34 @@
             text-align: center;
             margin: auto;
             color: rgba($text, 1);
+        }
+
+        .author{
+            border: 1px solid rgba($text, .2);
+            padding: 8px 14px 8px 10px;
+            border-radius: 40px;
+            margin: 0 auto;
+            gap: 10px;
+            margin-bottom: 16px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: fit-content;
+
+            img{
+                width: 24px;
+                height: 24px;
+                border-radius: 50%;
+            }
+
+            h3{
+                font-family: var(--font-body);
+                font-size: 16px;
+                letter-spacing: -.2px;
+                font-weight: 450;
+                text-align: center;
+            }
         }
 
         .blurb{
