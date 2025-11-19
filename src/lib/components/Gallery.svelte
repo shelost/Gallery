@@ -97,9 +97,6 @@
                 border-radius: 6px;
                 margin-bottom: 6px;
                 background: white;
-
-                box-shadow: -4px 12px 24px rgba(black, 0.05);
-                //border: 1px solid rgba(white, 0.4);
                 width: 100%;
             }
             p{
@@ -111,7 +108,7 @@
             }
 
             &:hover{
-                opacity: 0.95;
+                opacity: 0.99;
             }
         }
 	}

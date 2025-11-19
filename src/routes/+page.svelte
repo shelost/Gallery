@@ -100,13 +100,28 @@
 
 	<ul> 
 		<li>
-			<a href="/mario">The Super Mario Bros. Movie Review</a> 
+			<a href="/palace">
+				The AI Palace Economy
+				<span class = 'date'>2025</span>
+			</a>
 		</li>
 		<li>
-			<a href="/persia">The Roman-Persian Wars and the Future of Great Power Conflict</a>
+			<a href="/persia">
+				The Roman-Persian Wars
+				<span class = 'date'>2025</span>
+			</a>
 		</li>
 		<li>
-			<a href="/palace"> The AI Palace Economy </a>
+			<a href="/timeline">
+				The Civilization Timeline
+				<span class = 'date'>2024</span>
+			</a>
+		</li>
+		<li>
+			<a href="/mario">
+				The Super Mario Bros. Movie Review
+				<span class = 'date'>2023</span>
+			</a>
 		</li>
 	</ul>
 
@@ -216,6 +231,12 @@
 		line-height: 1.5;
 		margin: 48px 0;
 		color: #030025;
+		span{
+			font-family: "Hedvig Letters Serif", 'Newsreader', sans-serif;
+			font-size: 14px;
+			color: rgba(#030025, .4);
+			margin-left: 2px;
+		}
 		a{
 			//letter-spacing: -0.4px;
 		}
