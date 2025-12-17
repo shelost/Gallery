@@ -95,8 +95,29 @@
 	</ul>
 
 	<div class = 'header'>
-		<h2> Blog </h2>
+		<h2> Personal </h2>
 	</div>
+
+	<ul> 
+		<li>
+			<a href="/gapyear">
+				My Gap Year
+				<span class = 'date'>2025</span>
+			</a>
+		</li>
+		<li>
+			<a href="/anorexia">
+				Anorexia
+				<span class = 'date'>2025</span>
+			</a>
+		</li>
+	</ul>
+
+	<div class = 'header'>
+		<h2> Writing </h2>
+	</div>
+
+	
 
 	<ul> 
 		<li>
