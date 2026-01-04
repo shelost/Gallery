@@ -52,7 +52,7 @@
 				<h1>
 					Hi! My name is Heewon. <br>
 
-					I'm a <a href = '/design'>designer</a>, <a href = '/code'>engineer </a>, and occasional <a href = '/comics'>artist. </a>
+					I'm a <a href = '#experience'>designer</a>, <a href = '#games'>engineer </a>, and occasional <a href = '#comics'>artist. </a>
 				</h1>
 			</div>
 			
@@ -64,7 +64,7 @@
 	</p>
 
 
-	<div class = 'title'>	
+	<div class = 'title' id = 'experience'>	
 		<h2> 
 			Experience
 		</h2>
@@ -149,7 +149,7 @@
 
 	</ul>
 
-	<div class = 'title'>	
+	<div class = 'title' id = 'games'>	
 		<h2> 
 			Games
 		</h2>
@@ -187,7 +187,7 @@
 
 	</div>
 
-	<div class = 'title'>
+	<div class = 'title' id = 'comics'>
 		<h2> Comics </h2>
 	</div>
 
