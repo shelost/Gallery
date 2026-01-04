@@ -16,11 +16,41 @@ published: true
 ---
 
 <script>
+
     import Gallery from '$lib/components/Gallery.svelte'
 
-    let images = [
-        { url: 'anorexia', type: 'jpeg', caption: "Not me, but a similar anorexia patient" },
+    let pandemonium = [
+      [
+        { url: 'p1', caption: 'Prologue' },
+        { url: 'p20', caption: 'Epic Spread' },
+        { url: 'p28', caption: 'I called Cao Cao "Jojo" lol' },
+      ],
+      [
+        { url: 'px-1', caption: 'Prologue' },
+        { url: 'px-5', caption: 'Epic Spread' },
+        { url: 'px-22', caption: 'Prologue' },
+        { url: 'px-37', caption: 'Epic Spread' },
+      ],
+      [
+        { url: 'banner-pandemonium', caption: 'Banner' },
+      ]
     ]
+
+    let samhan = [
+      [
+        { url: 'img-253', caption: 'The Three Kingdoms' },
+        { url: 'img-240', caption: 'The Kings' },
+        { url: 'img-234', caption: 'Gyebek' },
+      ],
+      [
+        { url: 'samhan', caption: 'Banner' },
+      ]
+    ]
+
+    let stanley = [
+      { url: 'banner-stanley', caption: 'Stanley' },
+    ]
+
 </script>
 
 
@@ -33,6 +63,10 @@ Also, as a Google News app addict, it was hard to turn away from the fact that t
 
 ### Pandemonium
 
+<Gallery images = {pandemonium[0]} col = 3 />
+<Gallery images = {pandemonium[1]} col = 2 />
+<Gallery images = {pandemonium[2]} col = 1 />
+
 My original comic idea was called [Pandemonium](pandemonium), and it was a fusion of several different ancient Asian classic novels. I had a really big Three Kingdoms / Journey to the West phase in 2023, so it was only natural for me that I try my hand at creating the epic story that's always been lurking around in my head.
 
 I got pretty far with the outline — but the experience of writing that first 40-page chapter over 1 month was a very good learning experience as to why more peple don't attempt comics. It's a pretty intensive operation, especially when you're as perfectionistic as I am.
@@ -42,6 +76,10 @@ I got pretty far with the outline — but the experience of writing that first 4
 
 So after a few weeks of that, I turned my attention toward another comic idea.
 
+<Gallery images = {samhan[0]} col = 3 />
+<Gallery images = {samhan[1]} col = 1 />
+
+
 I've always loved the K-Drama [Queen Seondeok](https://en.wikipedia.org/wiki/Queen_Seondeok_(TV_series)), which briefly covers the Unification Wars in Korea from 642-668 AD. It's always been a personal fascination of mine, and it seemed similar enough to my original Pandemonium idea that I thought it was worth a shot.
 
 I did finish the [concept art](kingdom) and story outline for the comic, and I do plan on finishing it one day. 
@@ -50,6 +88,9 @@ However, I think starting it now may be a waste of effort, given how quickly AI-
 
 
 ### Stanley
+
+<Gallery images = {stanley} col = 1 />
+
 
 Yes, I did kind of end up working for Stan again. But I had two good reasons:
 
@@ -65,6 +106,7 @@ Rather than struggle with product development on my own, I figured it would be b
 
 
 ### Sketchdreamer
+<iframe src = "https://sketchdreamer.com" style="border: 1px solid #d0d0d0"></iframe>
 
 I also started my own little project, which I am calling **Sketchdreamer.**
 

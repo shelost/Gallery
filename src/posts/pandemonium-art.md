@@ -60,7 +60,6 @@ published: true
     { url: 'px-37', caption: "Page 37" },
     { url: 'px-38', caption: 'Page 38' },
     { url: 'px-39', caption: "Page 39" },
-    { url: 'px-40', caption: 'Page 40' },
   ]
 
 

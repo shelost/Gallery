@@ -57,17 +57,22 @@
 
     .gallery{
 		display: flex;
-		margin: 32px 0;
+		margin: 0px 0;
         display: grid;
         grid-template-columns: repeat(3, 1fr);
-        column-gap: 36px;
-        row-gap: 32px;
+        column-gap: 6px;
+        row-gap: 2px;
         transition: 0.2s ease;
+
+        &.col-1{
+            grid-template-columns: repeat(1, 1fr);
+        }
 
         &.col-2{
             grid-template-columns: repeat(2, 1fr);
             //gap: 24px;
         }
+        
 
         &.col-4{
             grid-template-columns: repeat(4, 1fr);
@@ -94,7 +99,7 @@
             transition: 0.2s ease;
             img{
                 box-shadow: none;
-                border-radius: 6px;
+                border-radius: 4px;
                 margin-bottom: 6px;
                 background: white;
                 width: 100%;

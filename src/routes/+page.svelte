@@ -1,5 +1,41 @@
 <script>
 
+	import Gallery from '$lib/components/Gallery.svelte'
+
+	let pandemonium = [
+      [
+        { url: 'p1', caption: '' },
+        { url: 'p20', caption: '' },
+        { url: 'p28', caption: '' },
+      ],
+      [
+        { url: 'px-1', caption: '' },
+        { url: 'px-5', caption: '' },
+      ],
+      [
+        { url: 'banner-pandemonium', caption: '' },
+      ]
+    ]
+
+    let samhan = [
+      [
+        { url: 'img-253', caption: '' },
+        { url: 'img-240', caption: '' },
+        { url: 'img-234', caption: '' },
+      ],
+      [
+        { url: 'samhan', caption: '' },
+      ]
+    ]
+
+    let stanley = [
+      { url: 'banner-stanley', caption: '' },
+    ]
+
+	let marc = [
+		{url: 'MARC-1', caption: ''}
+	]
+
 </script>
 
 
@@ -10,91 +46,233 @@
 
 		<div class = 'mast'>
 
-			<img src = 'heewon9.png' alt = 'Heewon' />
-
+	
 			<div class = 'expo'>
-				<h1>Heewon Ahn</h1>
+				<img src = 'smiley.png' alt = 'Smiley' class = 'avatar'>
+				<h1>
+					Hi! My name is Heewon. <br>
 
-				<a>
-					<h3> A Wandering Webdev </h3>
-				</a>
+					I'm a <a href = '/design'>designer</a>, <a href = '/code'>engineer </a>, and occasional <a href = '/comics'>artist. </a>
+				</h1>
 			</div>
 			
 	</div>
 	
 	<p>
-		Hi! I'm Heewon.  <br> <br>
 		Currently, I'm interested in building a new <a href="https://x.com/karpathy/status/1917920257257459899?lang=en">UI paradigm</a> for generative AI applications. <br> <br>
-		I believe the future of the web will not be contained in &lt;div&gt;s and grid layouts, but in a more ephemeral & magical interface that fully captures the capabilities of modern agentic technologies. <br> <br>
 		Let's collaborate! Reach out anytime at <a href="mailto:shelost.off@gmail.com">shelost.off@gmail.com</a>.
 	</p>
 
 
-	<div class = 'header'>	
+	<div class = 'title'>	
 		<h2> 
 			Experience
 		</h2>
 	</div>
 
 	<ul> 
-		<li> 
-			<a href="https://www.stan.store">Stan</a> — I was the first designer @ Stan, helping to build the future of work.
-		</li>
+		<div class = 'elem'>
+			<div class = 'header'>
+				<h3> Stan </h3>
+				<p>
+					I was the <b>Founding Designer @ Stan, </b> collaborating with Creators to build the future of work.
+					
+				</p>
+				<p>
+					Stan allows you to set up a custom mobile store in minutes,
+					allowing you to focus on what you do best (Creating!) while we take care of the business logistics.
+				</p>
+				<p>
+					We scaled from <b>0 to $30M ARR </b> in 3 years, led by the mega duo of John & Vitalii.
+				</p>
+				<div class = 'tags'>
+					<a href = 'https://stan.store' class = 'noud'>
+						<div class = 'tag stan'>
+							<h2> Homepage </h2>
+						</div>
+					</a>
+					<a href = 'https://gmv.stan.store' class = 'noud'>
+						<div class = 'tag'>
+							<h2> GMV (Live) </h2>
+						</div>
+					</a>
+				</div>
+			</div>
+			<div class = 'space'>
+				<img class = "banner" src="stan4.svg" alt="">
+			</div>
+		</div>
 	</ul>
 
-	<div class = 'header'>
+	<div class = 'title'>
 		<h2> 
 			Research
 		</h2>
-		<h3>
+		<p>
 			While in school, I worked on solving the ARC challenge with <a href="https://www.cs.cornell.edu/~ellisk/">Prof. Kevin Ellis</a>.
-		</h3>
+		</p>
 	</div>
 
 	<ul> 
-		<li>	
-		<a href="/marc">MARC</a> — an unfinished research dataset, based on ARC.
-		</li>
-		<li>
-			<a href="https://shelost.github.io/arcaide2">Arcaide</a> — an ARC annotation web tool.
-		</li>
+
+		
+			<div class = 'elem'>
+				<div class = 'header'>
+					<h3>MARC</h3>
+					<p>
+						The Markings Analysis & Reasoning Corpus (MARC) is a visual reasoning dataset, inspired by François Chollet's <a href = 'https://arcprize.org/arc-agi'> ARC Challenge. </a>
+						Instead of grid-based datasets, it consists of stroke- and drawing-based data.
+					</p>
+				</div>
+				<a href = 'https://shelost.github.io/arcaide2/'>
+					<div class = 'space'>
+						<Gallery images = {marc} col = 1 />
+					</div>
+				</a>
+			</div>
+	
+
+
+		<a href = 'https://shelost.github.io/arcaide2/'>
+			<div class = 'elem'>
+				<div class = 'header'>
+					<h3>Arcaide</h3>
+					<p>
+						An extremely cleverly named ARC annotation web tool, which generates JSON files with specially annotated objects from raw ARC data.
+					</p>
+				</div>
+				<div class = 'space'>
+					<img class = 'banner' src = 'arcaide.png' >
+				</div>
+			</div>
+		</a>
+
 	</ul>
 
-	<div class = 'header'>	
+	<div class = 'title'>	
 		<h2> 
 			Games
 		</h2>
 	</div>
 
-	<ul> 
-		<li>
-			<a href="/platformr">Platformr</a> — a 2D platformer game, with a twist.
-		</li>
-		<li>
-			<a href="https://shelost.github.io/wordchain">Wordchain</a> — a timed vocabulary brain game.
-		</li>
-		<li>
-			<a href="https://shelost.github.io/11rooms">11 Rooms</a> — a mini Zelda-like RPG.
-		</li>
-		<li>
-			<a href="https://shelost.github.io/orbiting">Just Orbiting By</a> — fun with circles.
-		</li>
-	</ul>
+	<div class = 'flex'>
 
-	<div class = 'header'>
+		<a href = 'https://shelost.github.io/platformr' class = 'noud'>
+			<div class = 'icon'>
+				<img class = 'app' src = 'icon-platformr.png' alt = ''>
+				<h4> Platformr </h4>
+			</div>
+		</a>
+
+		<a href = 'https://shelost.github.io/11rooms' class = 'noud'>
+			<div class = 'icon'>
+				<img class = 'app' src = 'icon-rooms.png' alt = ''>
+				<h4> 11 Rooms </h4>
+			</div>
+		</a>
+
+		<a href = 'https://shelost.github.io/orbiting' class = 'noud'>
+			<div class = 'icon'>
+				<img class = 'app' src = 'icon-orbiting.png' alt = ''>
+				<h4> Just Orbiting By </h4>
+			</div>
+		</a>
+
+		<a href = 'https://shelost.github.io/wordchain' class = 'noud'>
+			<div class = 'icon'>
+				<img class = 'app' src = 'icon-wordchain.png' alt = ''>
+				<h4> Wordchain </h4>
+			</div>
+		</a>
+
+	</div>
+
+	<div class = 'title'>
 		<h2> Comics </h2>
 	</div>
 
 	<ul> 
-		<li>
-			<a href="/pandemonium">Pandemonium</a> — my first chapter
-		</li>
-		<li>
-			<a href="/kingdom">Kingdom</a> — concept art for a historical adventure series
-		</li>
+
+
+			<div class = 'elem'>
+				<div class = 'header'>
+					<a href="/pandemonium">
+						<h3>Pandemonium</h3>
+					</a>
+					<p>
+						This was my first real comics chapter, based on a combination of classic Eastern novels such as "Three Kingdoms" and "Journey to the West."
+					</p>
+					<p>
+						I only ended up writing one chapter so far — but the full
+						 <a href = "https://ahnheewon.notion.site/All-Nations-b63d9a85eb1147cd8ae4545bf0f98627?pvs=143">story outline</a> can be found below!
+					</p>
+					<div class = 'tags'>
+						<a href = "https://comic.naver.com/challenge/detail?titleId=846439&no=1" class = 'noud'>
+							<div class = 'tag naver'>
+								<img src = '/naver.svg' alt = 'Naver Logo'>
+								<h2> Naver Webtoon </h2>
+							</div>
+						</a>
+						<a href = "https://ahnheewon.notion.site/All-Nations-b63d9a85eb1147cd8ae4545bf0f98627?pvs=143" class = 'noud'>
+							<div class = 'tag'>
+								<h2> Story Outline </h2>
+							</div>
+						</a>
+						<a href = "/pandemonium-art" class = 'noud'>
+							<div class = 'tag'>
+								<h2> Character Sheets </h2>
+							</div>
+						</a>
+					</div>
+				</div>
+
+				<a href="/pandemonium">
+					<div class = 'space'>
+						<Gallery images = {pandemonium[0]} col = 3 />
+						<Gallery images = {pandemonium[1]} col = 2 />
+						<Gallery images = {pandemonium[2]} col = 1 />
+					</div>
+				</a>
+			</div>
+	
+			
+
+		
+			<div class = 'elem'>
+				<div class = 'header'>
+					<h3>Kingdom</h3>
+					<p>
+						This is my concept for a historical adventure series, loosely based on the 2009 historical K-Drama
+						<a href = 'https://en.wikipedia.org/wiki/Queen_Seondeok_(TV_series)'>Queen Seondeok</a> set in 7th-century Korea.
+					</p>
+					<p>
+						I did a lot of research for this project, which may one day materialize.
+					</p>
+
+					<div class = 'tags'>
+						<a href = "https://notion.so/668-Novel-1b67696bef164e83ae68cd3cb095d33b?pvs=74&assetsVersion=23.13.20251208.1257&cookie_sync_completed=true" class = 'noud'>
+							<div class = 'tag'>
+								<h2> Story Outline </h2>
+							</div>
+						</a>
+						<a href = "/kingdom" class = 'noud'>
+							<div class = 'tag'>
+								<h2> Concept Art</h2>
+							</div>
+						</a>
+					</div>
+				</div>
+				<div class = 'space'>
+					<Gallery images = {samhan[0]} col = 3 />
+					<Gallery images = {samhan[1]} col = 1 />
+				</div>
+			</div>
+	
+			
+
 	</ul>
 
-	<div class = 'header'>
+	<div class = 'title'>
 		<h2> Personal </h2>
 	</div>
 
@@ -113,11 +291,9 @@
 		</li>
 	</ul>
 
-	<div class = 'header'>
+	<div class = 'title'>
 		<h2> Writing </h2>
 	</div>
-
-	
 
 	<ul> 
 		<li>
@@ -146,7 +322,7 @@
 		</li>
 	</ul>
 
-	<div class = 'header'>	
+	<div class = 'title'>	
 		<h2> 
 			Random
 		</h2>
@@ -179,8 +355,41 @@
 
 <style lang="scss">
 
+	@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Geist:wght@100..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+	@import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,200..900;1,200..900&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Geist:wght@100..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+	$default: 'DM Sans', 'Inter', sans-serif;
+
 	main{
 	
+	}
+
+	.flex{
+		width: 90%;
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: space-between;
+		margin: 60px auto 100px auto;
+		.icon{
+			.app{
+				width: 150px;
+				border: 2px solid white;
+				border-radius: 36px;
+				filter: drop-shadow(-4px 16px 16px rgba(black, .15));
+				transition: .2s ease;
+				&:hover{
+					transform: translateY(-4px);
+				}
+			}
+			h4{
+				font-family: 'Inter', sans-serif;
+				font-weight: 600;
+				font-size: 17px;
+				letter-spacing: -.3px;
+				margin: 12px;
+				text-align: center;
+			}
+		}
 	}
 
 	.mast{
@@ -188,74 +397,148 @@
 		align-items: center;
 		justify-content: flex-start;
 		gap: 18px;
+		margin-bottom: 32px;
 		img{
-			width: 64px;
-			border-radius: 2px;
-			box-shadow: -4px 8px 16px rgba(#030025, .15);
+			width: 120px;
+			border-radius: 18px;
+			border: 1px solid white;
+	
 		}
 	}
 
 	.container{
 		padding: 60px 0 100px 0;
-		max-width: 600px;
+		max-width: 800px;
 		margin: auto;
 	}
 
 	a{
 		color: #6355FF;
+		color: black;
 		font-weight: 600;
+		border-bottom: 1px solid rgba(#030025, .15);
 		&:hover{
 			color: #5200FF;
 		}
 	}
 
+	.title{
+		margin: 80px 0 16px 0;
+		box-sizing: border-box;
+		border-bottom: 2px solid rgba(black, .05);
+	}
+
 	.header{
-		margin: 40px 0 16px 0;
+		margin: 48px 0 12px 0;
+	}
+
+	.space{
+		width: 80%;
+		margin: 40px auto;
+		padding: 24px;
+		border-radius: 8px;
+		background: white;
+		box-shadow: -12px 24px 60px rgba(black, .1), inset -2px -4px 6px rgba(black, .05);
 	}
 
 	h1{
-		font-family: 'Hedvig Letters Serif', sans-serif;
+		font-family: 'Crimson Pro', sans-serif;
 		text-align: left;
-		font-size: 28px;
-		font-weight: 650;
-		letter-spacing: -.2px;
-		line-height: 130%;
-		margin-bottom: 3px;
+		font-size: 40px;
+		font-weight: 400;
+		letter-spacing: -1.5px;
+		line-height: 100%;
+		margin-bottom: 32px;
 		color: #030025;
 	}
 
 	h2{
-		font-family: 'Instrument Serif', sans-serif;
-		font-size: 28px;
+		font-family: 'Crimson Pro', sans-serif;
+		font-size: 44px;
 		font-weight: 400;
-		letter-spacing: -.25px;
+		letter-spacing: -1.25px;
 		line-height: 130%;
-		//margin: 40px 0 4px 0;
-		margin: 0 0 8px 0;
+		margin: 60px 0 8px 0;
 		color: #030025;
 	}
 
 	h3{
-		font-family: "Hedvig Letters Serif", 'Newsreader', sans-serif;
-		font-size: 14px;
-		font-weight: 400;
-		letter-spacing: -.2px;
+		font-family: $default;
+		font-size: 28px;
+		font-weight: 600;
+		letter-spacing: -1px;
 		line-height: 1.5;
 		margin-bottom: 0px;
 	}
 
+	.banner{
+		width: 100%;
+		border-radius: 8px;
+	}
+
+	.noud{
+		border: none;
+	}
+
+	.tags{
+		margin: 24px 0 12px 0;
+		display: flex;
+		flex-wrap: wrap;
+		gap: 8px;
+		border-bottom: none;
+		.tag{
+			background: rgba(black, .1);
+			color: black;
+			font-weight: 400;
+			border-radius: 40px;
+			padding: 10px 16px;
+			width: fit-content;
+			display: flex;
+			align-items: center;
+			gap: 8px;
+			&.stan{
+				background: #6355FF;
+				h2{
+					font-weight: 700;
+					color: white;
+				}
+			}
+			&.naver{
+				background: #00D05C;
+				h2{
+					font-weight: 700;
+					color: white;
+				}
+			}
+			img{
+				height: 18px;
+			}
+			h2{
+				color: black;
+				font-family: 'DM Sans', sans-serif;
+				font-weight: 600;
+				font-size: 16px;
+				margin: 0;
+				letter-spacing: -.3px;
+				white-space: nowrap;
+			}
+		}
+	}
+
 	p, li{
-		font-family: "Hedvig Letters Serif", 'Newsreader', sans-serif;
-		font-size: 14px;
-		font-weight: 100;
-		letter-spacing: -.2px;
+		font-family: $default;
+		font-size: 17px;
+		font-weight: 400;
+		letter-spacing: -.3px;
 		line-height: 1.5;
-		margin: 48px 0;
+		margin: 0 0 0px 0;
 		color: #030025;
+		list-style: none;
 		span{
-			font-family: "Hedvig Letters Serif", 'Newsreader', sans-serif;
+			font-family: $default;
 			font-size: 14px;
 			color: rgba(#030025, .4);
+			font-weight: 800;
 			margin-left: 2px;
 		}
 		a{
@@ -263,12 +546,17 @@
 		}
 	}
 
+	p{
+		margin: 18px 0;
+		line-height: 1.3;
+	}
+
 	li{
-		margin: 4px 0;
+		margin: 0 0;
 	}
 
 	ul{
-		padding-inline-start: 18px;
+		padding-inline-start: 0px;
 	}
 
 	@media (max-width: 768px) {

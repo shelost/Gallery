@@ -1,11 +1,17 @@
 <script>
   import { T } from '@threlte/core';
-  import { ContactShadows, OrbitControls, Float, GLTF } from '@threlte/extras';
+  import { ContactShadows, OrbitControls, Float, GLTF, interactivity } from '@threlte/extras';
   import { RectAreaLightUniformsLib } from 'three/examples/jsm/lights/RectAreaLightUniformsLib.js';
+  import { onMount } from 'svelte';
   import Item from './Item.svelte';
 
   // Initialize RectAreaLight uniforms
   RectAreaLightUniformsLib.init();
+
+  // Initialize interactivity for click events
+  onMount(() => {
+    interactivity();
+  });
 
   const items = [
     { label: 'Stan', link: 'https://www.stan.store', category: 'Experience', color: '#c084fc' },

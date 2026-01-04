@@ -3,18 +3,34 @@
   import { Text, Float, Billboard } from '@threlte/extras';
   import { goto } from '$app/navigation';
 
-  export let position = [0, 0, 0];
-  export let color = '#ffffff';
-  export let label = '';
-  export let link = '';
+  let { position = [0, 0, 0], color = '#ffffff', label = '', link = '' } = $props();
   
-  let hovered = false;
+  let hovered = $state(false);
+  let pointerDownTime = 0;
+  let pointerDownPos = { x: 0, y: 0 };
+  const CLICK_THRESHOLD = 200; // ms
+  const MOVE_THRESHOLD = 5; // pixels
 
-  const handleClick = () => {
-    if (link.startsWith('http')) {
-      window.location.href = link;
-    } else {
-      goto(link);
+  const handlePointerDown = (e) => {
+    pointerDownTime = Date.now();
+    pointerDownPos = { x: e.clientX, y: e.clientY };
+  };
+
+  const handlePointerUp = (e) => {
+    const timeDiff = Date.now() - pointerDownTime;
+    const moveDiff = Math.sqrt(
+      Math.pow(e.clientX - pointerDownPos.x, 2) + 
+      Math.pow(e.clientY - pointerDownPos.y, 2)
+    );
+
+    // Only trigger click if it was quick and didn't move much (not a drag)
+    if (timeDiff < CLICK_THRESHOLD && moveDiff < MOVE_THRESHOLD) {
+      console.log('Navigating to:', link); // Debug log
+      if (link.startsWith('http')) {
+        window.location.href = link;
+      } else {
+        goto(link);
+      }
     }
   };
 </script>
@@ -25,13 +41,20 @@
     <T.Mesh
       on:pointerenter={() => (hovered = true)}
       on:pointerleave={() => (hovered = false)}
-      on:click={handleClick}
+      on:pointerdown={handlePointerDown}
+      on:pointerup={handlePointerUp}
       scale={hovered ? 1.1 : 1}
       castShadow
       receiveShadow
     >
       <T.BoxGeometry args={[1.5, 0.5, 1.5]} />
-      <T.MeshStandardMaterial {color} roughness={0.1} metalness={0.2} />
+      <T.MeshStandardMaterial 
+        {color} 
+        roughness={0.1} 
+        metalness={0.2}
+        emissive={hovered ? color : '#000000'}
+        emissiveIntensity={hovered ? 0.3 : 0}
+      />
     </T.Mesh>
   </Float>
 
@@ -40,7 +63,7 @@
     <Billboard position.y={1.2}>
       <Text
         text={label}
-        fontSize={0.5}
+        fontSize={hovered ? 0.55 : 0.5}
         color="#030025"
         anchorX="center"
         anchorY="middle"

@@ -52,6 +52,7 @@
         z-index: 10;
         padding: 32px;
         box-sizing: border-box;
+        pointer-events: none;
 
         display: flex;
         flex-direction: column;
@@ -66,6 +67,7 @@
             line-height: 130%;
             margin-bottom: 2px;
             color: #030025;
+            pointer-events: auto;
         }
     }
 
@@ -75,10 +77,17 @@
         align-items: flex-start;
         justify-content: flex-start;
         gap: 12px;
+        pointer-events: auto;
       
         a{
             font-size: 16px;
             color: black;
+            text-decoration: none;
+            transition: opacity 0.2s;
+
+            &:hover {
+                opacity: 0.7;
+            }
         }
     }
 
@@ -87,6 +96,15 @@
         padding: 16px 32px;
         border-radius: 100px;
         box-shadow: 0 2px 4px rgba(black, .2);
+        cursor: pointer;
+        border: none;
+        pointer-events: auto;
+        transition: transform 0.2s, box-shadow 0.2s;
+
+        &:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(black, .3);
+        }
 
         h2{
             font-family: 'Source Serif 4', sans-serif;
