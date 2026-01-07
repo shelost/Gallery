@@ -20,6 +20,7 @@
     let visible = false;
     let tocItems: Array<{id: string, text: string, level: number}> = [];
     let activeId: string = '';
+    let mobileTocOpen = false;
 
     // Save scroll position before navigating away (internal navigation)
     beforeNavigate(() => {
@@ -47,6 +48,14 @@
         };
         window.addEventListener('beforeunload', handleBeforeUnload);
 
+        // Handle Escape key to close mobile TOC
+        const handleEscape = (e: KeyboardEvent) => {
+            if (e.key === 'Escape' && mobileTocOpen) {
+                mobileTocOpen = false;
+            }
+        };
+        window.addEventListener('keydown', handleEscape);
+
         setTimeout(() => {
             visible = true;
         }, 10);
@@ -69,6 +78,7 @@
         return () => {
             // Cleanup
             window.removeEventListener('beforeunload', handleBeforeUnload);
+            window.removeEventListener('keydown', handleEscape);
             
             if (typeof window !== 'undefined') {
                 const headings = document.querySelectorAll('.prose h1, .prose h2, .prose h3, .prose h4, .prose h5, .prose h6');
@@ -157,11 +167,22 @@
             
             element.scrollIntoView({ behavior: 'smooth', block: 'start' });
             
+            // Close mobile TOC after clicking
+            mobileTocOpen = false;
+            
             // Re-enable observer after scroll completes
             setTimeout(() => {
                 isScrolling = false;
             }, 1000);
         }
+    }
+
+    function toggleMobileToc() {
+        mobileTocOpen = !mobileTocOpen;
+    }
+
+    function closeMobileToc() {
+        mobileTocOpen = false;
     }
 
     let observer: IntersectionObserver | null = null;
@@ -282,6 +303,45 @@
             </div>
         </div>
     </div>
+
+    <!-- Mobile Floating Action Button -->
+    {#if tocItems.length > 0}
+        <button class="mobile-fab" on:click={toggleMobileToc} aria-label="Table of Contents">
+            <span class="material-icons">{mobileTocOpen ? 'close' : 'menu'}</span>
+        </button>
+    {/if}
+
+    <!-- Mobile TOC Slide-in Panel -->
+    {#if tocItems.length > 0}
+        {#if mobileTocOpen}
+            <div 
+                class="mobile-toc-backdrop" 
+                on:click={closeMobileToc}
+                on:keydown={(e) => e.key === 'Escape' && closeMobileToc()}
+                role="button"
+                tabindex="-1"
+                aria-label="Close table of contents"
+                transition:fade={{ duration: 200 }}
+            ></div>
+            <nav class="mobile-toc-panel" transition:slide={{ axis: 'x', duration: 300 }}>
+                <div class="mobile-toc-header">
+                    <h3>Table of Contents</h3>
+                    <button class="mobile-toc-close" on:click={closeMobileToc} aria-label="Close">
+                        <span class="material-icons">close</span>
+                    </button>
+                </div>
+                <ul class="mobile-toc-list">
+                    {#each tocItems as item}
+                        <li class="mobile-toc-item mobile-toc-level-{item.level}" class:active={activeId === item.id}>
+                            <button on:click={() => scrollToHeading(item.id)}>
+                                {item.text}
+                            </button>
+                        </li>
+                    {/each}
+                </ul>
+            </nav>
+        {/if}
+    {/if}
 {/if}
 
 
@@ -371,20 +431,18 @@
                 border: none;
                 padding: 0px 0;
                 color: rgba($text, .5);
-                font-size: 14px;
+                font-size: 13px;
                 line-height: 140%;
                 cursor: pointer;
                 transition: color 0.2s ease;
                 box-shadow: none;
-                margin: 6px 0;
-                font-weight: 400;
-                letter-spacing: -.3px;
-                font-family: var(--font-headers);
+                margin: 2px 0;
+                font-weight: 500;
+                letter-spacing: -.2px;
+                font-family: 'Geist', sans-serif;
 
                 &:hover{
                     color: rgba($text, 1);
-                    font-weight: 900;
-                    text-decoration: underline;
                 }
             }
 
@@ -400,7 +458,7 @@
             }
 
             &.toc-level-2 button{
-                padding-left: 12px;
+                padding-left: 8px;
             }
 
             &.toc-level-3 button{
@@ -439,14 +497,15 @@
         color: $text;
 
         .title{
-            font-family: "ivypresto-text", 'Newsreader', sans-serif;
-            font-size: 60px;
-            letter-spacing: -4px;
-            line-height: 1;
-            font-weight: 500;
+            font-family: 'Instrument Serif', 'Newsreader', sans-serif;
+            font-size: 72px;
+            letter-spacing: -3px;
+            line-height: .85;
+            font-weight: 550;
             text-align: center;
             margin: 0 0 24px 0;
-            color: rgba($text, .8);
+            color: rgba($text, 1);
+            text-shadow: -0.5px 0 0 rgba($text, 1);
         }
 
         .description{
@@ -459,17 +518,17 @@
         }
 
         .date{
-            font-family: var(--font-body);
-            font-size: 16px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 15px;
             letter-spacing: -.2px;
             font-weight: 500;
             text-align: center;
             margin: auto;
-            color: rgba($text, 1);
+            color: rgba($text, .5);
         }
 
         .author{
-            border: 1px solid rgba($text, .2);
+            //border: 1px solid rgba($text, .1);
             padding: 8px 14px 8px 10px;
             border-radius: 40px;
             margin: 0 auto;
@@ -481,6 +540,10 @@
             justify-content: center;
             width: fit-content;
 
+            background: white;
+
+            box-shadow: -4px 8px 24px rgba(black, 0.1);
+
             img{
                 width: 24px;
                 height: 24px;
@@ -488,27 +551,27 @@
             }
 
             h3{
-                font-family: var(--font-body);
+                font-family: 'DM Sans', sans-serif;
                 font-size: 16px;
-                letter-spacing: -.2px;
-                font-weight: 450;
+                font-weight: 600;
+                letter-spacing: -.3px;
                 text-align: center;
             }
         }
 
         .blurb{
             font-family: var(--font-body);
-            font-size: 18px;
-            letter-spacing: -.2px;
-            font-weight: 450;
+            font-size: 24px;
+            letter-spacing: -.6px;
+            font-weight: 300;
             text-align: center;
-            margin: 32px auto 24px auto;
+            margin: 32px auto 32px auto;
             background: $text;
             border-radius: 12px;
             background: none;
             width: 600px;
             max-width: 100%;
-            line-height: 1.3;
+            line-height: 1.05;
             color: rgba($text, .5);
         }
     }
@@ -553,6 +616,204 @@
             padding: 0;
         }
 
+    }
+
+    /* Mobile Floating Action Button */
+    .mobile-fab {
+        display: none;
+        position: fixed;
+        bottom: 24px;
+        right: 24px;
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        background: $text;
+        color: white;
+        border: none;
+        box-shadow: 0 4px 12px rgba(black, 0.2), 0 8px 24px rgba(black, 0.15);
+        cursor: pointer;
+        z-index: 1000;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+
+        span {
+            font-size: 24px;
+            line-height: 1;
+        }
+
+        &:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 16px rgba(black, 0.25), 0 12px 32px rgba(black, 0.2);
+        }
+
+        &:active {
+            transform: scale(0.95);
+        }
+
+        @media screen and (max-width: 800px) {
+            display: flex;
+        }
+    }
+
+    /* Mobile TOC Backdrop */
+    .mobile-toc-backdrop {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(black, 0.5);
+        z-index: 1001;
+        backdrop-filter: blur(4px);
+    }
+
+    /* Mobile TOC Slide-in Panel */
+    .mobile-toc-panel {
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        width: min(320px, 85vw);
+        max-width: 320px;
+        background: white;
+        background-image: radial-gradient(
+            50% 50% at 50% 50%,
+            rgba(255, 255, 255, 0.75) 0%,
+            rgba(255, 255, 255, 0) 100%
+        ),
+        linear-gradient(180deg, rgb(202, 216, 228) 0%, hsl(209, 36%, 86%) 15%, hsl(224, 44%, 95%) 50%);
+        z-index: 1002;
+        box-shadow: -4px 0 24px rgba(black, 0.15);
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+
+        .mobile-toc-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 20px 16px 20px;
+            border-bottom: 1px solid rgba($text, 0.1);
+
+            h3 {
+                font-family: var(--font-headers);
+                font-size: 18px;
+                font-weight: 600;
+                letter-spacing: -0.3px;
+                color: $text;
+                margin: 0;
+            }
+
+            .mobile-toc-close {
+                background: none;
+                border: none;
+                padding: 4px;
+                cursor: pointer;
+                color: rgba($text, 0.6);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: 4px;
+                transition: background 0.2s ease, color 0.2s ease;
+
+                span {
+                    font-size: 24px;
+                    line-height: 1;
+                }
+
+                &:hover {
+                    background: rgba($text, 0.05);
+                    color: $text;
+                }
+            }
+        }
+
+        .mobile-toc-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            overflow-y: auto;
+            flex: 1;
+            padding: 16px 0 16px 8px;
+
+            /* Custom scrollbar */
+            &::-webkit-scrollbar {
+                width: 6px;
+            }
+
+            &::-webkit-scrollbar-track {
+                background: rgba($text, 0.05);
+            }
+
+            &::-webkit-scrollbar-thumb {
+                background: rgba($text, 0.2);
+                border-radius: 3px;
+
+                &:hover {
+                    background: rgba($text, 0.3);
+                }
+            }
+        }
+
+        .mobile-toc-item {
+            margin: 0;
+            padding: 0;
+
+            button {
+                width: 100%;
+                text-align: left;
+                background: none;
+                border: none;
+                padding: 0px 0;
+                color: rgba($text, .5);
+                font-size: 13px;
+                line-height: 140%;
+                cursor: pointer;
+                transition: color 0.2s ease;
+                box-shadow: none;
+                margin: 2px 0;
+                font-weight: 500;
+                letter-spacing: -.2px;
+                font-family: 'Geist', sans-serif;
+
+                &:hover {
+                    color: rgba($text, 1);
+                }
+            }
+
+            &.active button {
+                color: rgba($text, 1);
+                font-weight: 600;
+                text-shadow: -0.25px 0 0 rgba($text, 1);
+            }
+
+            &.mobile-toc-level-1 button {
+                font-weight: 500;
+                padding-left: 0;
+            }
+
+            &.mobile-toc-level-2 button {
+                padding-left: 8px;
+            }
+
+            &.mobile-toc-level-3 button {
+                padding-left: 24px;
+                font-size: 12px;
+            }
+
+            &.mobile-toc-level-4 button {
+                padding-left: 36px;
+                font-size: 12px;
+            }
+
+            &.mobile-toc-level-5 button,
+            &.mobile-toc-level-6 button {
+                padding-left: 48px;
+                font-size: 11px;
+            }
+        }
     }
 
 
