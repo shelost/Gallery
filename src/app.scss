@@ -53,7 +53,7 @@ h3,
 h4,
 h5,
 h6 {
-	font-family: 'DM Sans', 'Inter', sans-serif;
+	font-family: var(--font-headers);
 	font-weight: 400;
 	margin: 0;
 	color: #0e0a33;
@@ -359,7 +359,7 @@ $text: #030025;
 	}
 	p{
 		@include paragraph;
-		margin: 32px 0;
+		margin: 24px 0;
 		line-height: 1.3;
 	}
 	ul{
@@ -371,7 +371,7 @@ $text: #030025;
 	}
 	li{
 		@include paragraph;
-		margin: 8px 0;
+		margin: 0px 0;
 	}
 	b, strong{
 		font-weight: 500 !important;
@@ -416,7 +416,7 @@ $text: #030025;
 
 		p{
 			@include paragraph;
-			line-height: 1.1;
+			line-height: 1.3;
 		}
 	}
 
@@ -543,10 +543,7 @@ $text: #030025;
 			display: none;
 		}
 	}
-
 }
-
-
 
 .content-card{
 	background: white;
@@ -597,10 +594,6 @@ input[type="range"] {
 
 	background: rgba(#030025, .08);
 	background: rgba(#6355FF, .2);
-
-
-
-   // border: 4px solid white;
 	border-radius: 10px;
 
 	outline: none;

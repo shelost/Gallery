@@ -229,6 +229,24 @@
 					<Battery percentage={100} />
 				</div>
 			</a>
+
+			<a href="https://shelost.github.io/trails" class="noud">
+				<div class="icon">
+					<img class="app" src="icon-trails.png" alt="">
+					<h4>Trails</h4>
+					<Battery percentage={100} />
+				</div>
+			</a>
+
+			<a href="https://shelost.github.io/superpong" class="noud">
+				<div class="icon">
+					<img class="app" src="icon-pong.png" alt="">
+					<h4>Super Pong</h4>
+					<Battery percentage={100} />
+				</div>
+			</a>
+
+
 		</div>
 
 		<div class = 'grid'>
@@ -250,7 +268,7 @@
 
 			<div class = 'video'>
 				<a href="https://www.sketchdreamer.com/phone">
-					<video src = 'iphone.mov' autoplay loop muted playsinline></video>
+					<video src = 'iphone3d.mov' autoplay loop muted playsinline></video>
 				</a>
 				<h4> 
 					iPhone 3D Creator
@@ -309,7 +327,6 @@
 					<img src="stan.svg" alt="Pandemonium" class="logo horizontal">
 					<div class="title-row">
 						<h3>Stan</h3>
-						<Battery percentage={routeCompletion['/stan']} />
 					</div>
 
 					<div class = 'expo'>
@@ -609,8 +626,10 @@
 </main>
 
 <style lang="scss">
+
 	@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Geist:wght@100..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
 	@import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,200..900;1,200..900&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Geist:wght@100..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+	@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Serif+Text:ital@0;1&display=swap');
 
 	$default: 'DM Sans', 'Inter', sans-serif;
 
@@ -668,17 +687,17 @@
 		bottom: 24px;
 		left: 50%;
 		transform: translateX(-50%);
-		border-radius: 18px;
+		border-radius: 28px;
 		height: 72px;
-		background: rgba(white, 1);
-		border: 1px solid rgba(white, .9);
+		background: rgba(black, .9);
+		border: 1px solid rgba(white, .1);
 		backdrop-filter: blur(16px);
 		display: flex;
 		align-items: center;
 		gap: 4px;
 		padding: 4px;
 		overflow: hidden;
-		box-shadow: -12px 32px 60px rgba(#030025, .4);
+		box-shadow: -12px 32px 60px rgba(black, .9);
 	}
 
 	.row{
@@ -701,13 +720,14 @@
 
 	.indicator {
 		position: absolute;
-		top: 8px;
+		top: 6px;
 		bottom: 8px;
-		background: white;
-		border-radius: 12px;
+		background: rgba(white, .2);
+		border-radius: 22px;
 		transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1), width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 		z-index: 0;
-		box-shadow: -4px 12px 24px rgba(black, .3);
+		border: 1.5px solid rgba(white, .05);
+		box-shadow: -4px 36px 40px rgba(#030025, .75), inset -1px -2px 4px rgba(black, .05);
 		height: calc(100% - 16px);
 	}
 
@@ -729,7 +749,7 @@
 		z-index: 1;
 		background: transparent;
 		border: none;
-		border-radius: 24px;
+		border-radius: 40px;
 		padding: 12px 16px;
 		display: flex;
 		align-items: center;
@@ -739,7 +759,7 @@
 		font-family: $default;
 		font-size: 14px;
 		font-weight: 600;
-		color: rgba(#030025, .6);
+		color: rgba(white, .6);
 		white-space: nowrap;
 		box-shadow: none;
 		width: 80px;
@@ -756,6 +776,7 @@
 			font-size: 14px;
 			font-weight: 500;
 			letter-spacing: -.3px;
+			color: white;
 			transition: color 0.2s ease;
 		}
 
@@ -893,9 +914,9 @@
 	h1 {
 		font-family: 'Crimson Pro', sans-serif;
 		text-align: left;
-		font-size: 48px;
+		font-size: 52px;
 		font-weight: 400;
-		letter-spacing: -2px;
+		letter-spacing: -2.5px;
 		line-height: 90%;
 		margin-bottom: 32px;
 		color: #030025;
