@@ -1,0 +1,479 @@
+@use '../../lib/styles/variables' as *;
+
+$novel-heading: 'DM Serif Text', Georgia, serif;
+$novel-body: 'Crimson Pro', Georgia, serif;
+$novel-color: #0e0a33;
+$novel-muted: rgba($novel-color, 0.45);
+$novel-body-color: rgba($novel-color, 0.92);
+$novel-border: rgba($novel-color, 0.08);
+$novel-accent: rgba(99, 85, 255, 0.45);
+
+.novel__cover {
+	width: 100%;
+	height: auto;
+	border-radius: 10px;
+	//box-shadow: 0 8px 32px rgba(0, 0, 0, 0.28);
+}
+
+/* ── Sidebar (ticker + TOC) ── */
+.novel-sidebar {
+	position: fixed;
+	top: max(12px, env(safe-area-inset-top, 0px));
+	left: max(12px, env(safe-area-inset-left, 0px));
+	z-index: 50;
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+	pointer-events: none;
+
+	> * {
+		pointer-events: auto;
+	}
+}
+
+/* ── Year ticker ── */
+.novel-year-ticker {
+	display: flex;
+	align-items: baseline;
+	gap: 6px;
+	padding: 10px 14px;
+	border-radius: 10px;
+	background: rgba(255, 255, 255, 0.88);
+	backdrop-filter: blur(10px);
+	box-shadow: 0 4px 24px rgba($novel-color, 0.1), 0 0 0 1px rgba($novel-color, 0.06);
+	font-family: $novel-heading;
+	user-select: none;
+}
+
+.novel-year-ticker__label {
+	font-size: 0.7rem;
+	font-weight: 700;
+	letter-spacing: 0.12em;
+	color: $novel-muted;
+}
+
+.novel-year-ticker__flow {
+	display: inline-flex;
+	align-items: baseline;
+	font-size: 1.35rem;
+	font-weight: 800;
+	letter-spacing: -0.03em;
+	color: $novel-color;
+	font-variant-numeric: tabular-nums;
+}
+
+/* ── TOC toggle ── */
+.novel-toc-toggle {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 36px;
+	height: 36px;
+	border-radius: 10px;
+	background: rgba(255, 255, 255, 0.88);
+	backdrop-filter: blur(10px);
+	box-shadow: 0 4px 24px rgba($novel-color, 0.1), 0 0 0 1px rgba($novel-color, 0.06);
+	border: none;
+	cursor: pointer;
+	color: rgba($novel-color, 0.5);
+	transition: color 0.15s, background 0.15s;
+	padding: 0;
+	margin: 0;
+
+	&:hover {
+		color: $novel-color;
+		background: rgba(255, 255, 255, 0.95);
+	}
+
+	&--open {
+		color: $novel-color;
+		background: rgba(255, 255, 255, 0.95);
+	}
+}
+
+/* ── TOC panel ── */
+.novel-toc {
+	background: rgba(255, 255, 255, 0.92);
+	backdrop-filter: blur(12px);
+	border-radius: 10px;
+	box-shadow: 0 4px 24px rgba($novel-color, 0.1), 0 0 0 1px rgba($novel-color, 0.06);
+	padding: 10px 0;
+	max-height: calc(100vh - 140px);
+	overflow-y: auto;
+	animation: tocSlideIn 0.15s ease-out;
+}
+
+.novel-toc__list {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.novel-toc__item {
+	a {
+		display: block;
+		padding: 4px 14px;
+		font-family: $novel-body;
+		font-size: 0.72rem;
+		line-height: 1.4;
+		color: rgba($novel-color, 0.5);
+		text-decoration: none;
+		transition: color 0.12s, background 0.12s;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		max-width: 220px;
+
+		&:hover {
+			color: $novel-color;
+			background: rgba($novel-color, 0.04);
+		}
+	}
+
+	&--h1 a {
+		font-family: $novel-heading;
+		font-size: 0.78rem;
+		font-weight: 400;
+		color: rgba($novel-color, 0.7);
+		padding-top: 6px;
+		padding-bottom: 6px;
+	}
+
+	&--h2 a {
+		padding-left: 22px;
+	}
+
+	&--active a {
+		color: $novel-color;
+		font-weight: 700;
+	}
+}
+
+@keyframes tocSlideIn {
+	from {
+		opacity: 0;
+		transform: translateY(-4px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+/* ── Tooltip ── */
+.novel-tip {
+	position: fixed;
+	z-index: 100;
+	pointer-events: none;
+	transform: translateX(-50%);
+	max-width: 320px;
+	width: max-content;
+	animation: tipFadeIn 0.15s ease-out;
+
+	&--above {
+		transform: translate(-50%, -100%);
+	}
+
+	&--below {
+		transform: translateX(-50%);
+	}
+}
+
+.novel-tip__inner {
+	background: rgba($novel-color, 0.96);
+	backdrop-filter: blur(12px);
+	color: #f0eef7;
+	padding: 12px 14px;
+	border-radius: 10px;
+	box-shadow: 0 8px 32px rgba(0, 0, 0, 0.28);
+	font-family: $novel-body;
+	line-height: 1.45;
+}
+
+.novel-tip__kingdom {
+	display: inline-block;
+	font-size: 0.6rem;
+	font-weight: 700;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+	padding: 2px 6px;
+	border-radius: 4px;
+	color: #fff;
+	margin-bottom: 6px;
+}
+
+.novel-tip__title {
+	font-family: $novel-heading;
+	font-size: 0.82rem;
+	font-weight: 700;
+	margin: 0 0 2px;
+	color: #fff;
+}
+
+.novel-tip__era {
+	font-size: 0.68rem;
+	font-weight: 500;
+	color: rgba(#f0eef7, 0.55);
+	margin: 0 0 6px;
+}
+
+.novel-tip__body {
+	font-size: 0.72rem;
+	font-weight: 400;
+	line-height: 1.55;
+	color: rgba(#f0eef7, 0.82);
+	margin: 0;
+}
+
+@keyframes tipFadeIn {
+	from {
+		opacity: 0;
+		transform: translateX(-50%) translateY(4px);
+	}
+	to {
+		opacity: 1;
+		transform: translateX(-50%) translateY(0);
+	}
+}
+
+/* ── Novel layout ── */
+.novel {
+	width: 100%;
+	max-width: 44rem;
+	margin: 0 auto;
+	padding: 4.5rem 1.25rem 5rem;
+	color: $novel-color;
+	font-family: $novel-body;
+}
+
+.novel__header {
+	padding-bottom: 2rem;
+}
+
+.novel__eyebrow {
+	font-family: $novel-body;
+	font-size: 0.75rem;
+	font-weight: 600;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: $novel-muted;
+	margin: 0 0 0.75rem;
+}
+
+.novel h1 {
+	font-family: $novel-heading;
+	font-size: clamp(2rem, 5vw, 2.75rem);
+	font-weight: 700;
+	letter-spacing: -0.02em;
+	line-height: 1.1;
+	margin: 0 0 1rem;
+
+}
+
+.novel__lede {
+	font-family: $novel-body;
+	font-size: 1.05rem;
+	font-weight: 400;
+	line-height: 1.65;
+	color: rgba($novel-color, 0.72);
+	margin: 0;
+
+	a {
+		color: #4075a6;
+		font-weight: 600;
+		text-decoration: underline;
+		text-underline-offset: 3px;
+
+		&:hover {
+			color: $novel-color;
+		}
+	}
+}
+
+/* ── Prose styles ── */
+.novel__body {
+	font-family: $novel-body;
+	font-size: 1.05rem;
+	line-height: 1.75;
+	color: $novel-body-color;
+
+	// Override global app.css element selectors that set DM Sans on bare elements.
+	:global(p),
+	:global(span),
+	:global(li),
+	:global(label),
+	:global(blockquote),
+	:global(td),
+	:global(th),
+	:global(a) {
+		font-family: $novel-body;
+	}
+
+	:global(h1),
+	:global(h2),
+	:global(h3),
+	:global(h4),
+	:global(h5),
+	:global(h6) {
+		font-family: $novel-heading;
+	}
+
+	:global(h1) {
+		font-size: 40px;
+		font-weight: 700;
+		margin: 160px 0;
+		line-height: 1.2;
+		letter-spacing: -0.02em;
+		border-bottom: none;
+
+	
+	}
+
+	:global(h2) {
+		font-size: 32px;
+		font-weight: 700;
+		letter-spacing: -0.01em;
+	}
+
+	:global(h3) {
+		font-size: 28px;
+		font-weight: 700;
+		margin: 60px 0 32px 0;
+	}
+
+	:global(h4) {
+		font-size: 0.95rem;
+		font-weight: 700;
+		margin: 1.25rem 0 0.4rem;
+	}
+
+	:global(p) {
+		font-size: 17px;
+		font-weight: 300;
+		margin: 0 0 1rem;
+	}
+
+	:global(ul),
+	:global(ol) {
+		margin: 0 0 1rem;
+		padding-left: 1.35rem;
+	}
+
+	:global(li) {
+		margin-bottom: 0.35rem;
+	}
+
+	:global(blockquote) {
+		margin: 1.25rem 0;
+		padding: 0.85rem 1.15rem;
+		border-left: 3px solid rgba($novel-color, 0.15);
+		background: rgba($novel-color, 0.025);
+		font-style: italic;
+		border-radius: 0 6px 6px 0;
+	}
+
+	:global(blockquote p) {
+		margin: 0 0 0.5rem;
+	}
+
+	:global(hr) {
+		border: none;
+		border-top: 1px solid rgba($novel-color, 0.1);
+		margin: 2.5rem 0;
+	}
+
+	:global(table) {
+		width: 100%;
+		border-collapse: collapse;
+		font-family: $novel-body;
+		font-size: 0.82rem;
+		margin: 1.25rem 0 1.75rem;
+		background: rgba($novel-color, 0.02);
+		border-radius: 8px;
+		overflow: hidden;
+	}
+
+	:global(th),
+	:global(td) {
+		border: 1px solid $novel-border;
+		padding: 0.5rem 0.65rem;
+		text-align: left;
+		vertical-align: top;
+	}
+
+	:global(th) {
+		background: rgba($novel-color, 0.05);
+		font-weight: 600;
+	}
+
+	// ── Section hero (character image + heading) ──
+	:global(.novel-section-hero) {
+		display: flex;
+		align-items: center;
+		gap: 1.25rem;
+		margin: 2.5rem 0 0.75rem;
+	}
+
+	:global(.novel-section-hero__img) {
+		width: 140px;
+		min-width: 80px;
+		height: auto;
+		object-fit: cover;
+		box-shadow: 0 4px 16px rgba($novel-color, 0.1);
+		margin: 0;
+	}
+
+	:global(.novel-section-hero h2) {
+		margin: 0;
+	}
+
+	@media (max-width: 600px) {
+		:global(.novel-section-hero__img) {
+			width: 60px;
+			min-width: 60px;
+			height: 60px;
+		}
+	}
+
+	:global(aside) {
+		margin: 1.5rem 0;
+		padding: 1.15rem 1.25rem;
+		border-radius: 8px;
+		background: rgba(99, 85, 255, 0.05);
+		border: 1px solid rgba(99, 85, 255, 0.12);
+		font-size: 0.95rem;
+	}
+
+	:global(aside h3) {
+		margin-top: 0;
+		font-size: 0.92rem;
+	}
+
+	:global(img) {
+		display: block;
+		max-width: 100%;
+		height: auto;
+		margin: 1.25rem auto;
+		border-radius: 4px;
+	}
+
+	:global(strong) {
+		font-weight: 700;
+		color: rgba($novel-color, 1);
+	}
+
+	:global(.has-info) {
+		border-bottom: 1.5px dotted $novel-accent;
+		cursor: help;
+		transition: border-color 0.15s;
+
+		&:hover {
+			border-bottom-color: rgba(99, 85, 255, 0.85);
+		}
+	}
+
+	:global(a) {
+		color: #4075a6;
+		font-weight: 600;
+	}
+}
