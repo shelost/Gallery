@@ -1,3 +1,9 @@
+<script>
+	import BoneRanksDiagram from '$lib/components/novel/BoneRanksDiagram.svelte';
+	import EightClansDiagram from '$lib/components/novel/EightClansDiagram.svelte';
+	import FiveCommanderiesDiagram from '$lib/components/novel/FiveCommanderiesDiagram.svelte';
+</script>
+
 # Part I: The Three Kingdoms <br> 삼국시대
 
 <aside>
@@ -31,6 +37,8 @@ Meanwhile, her husband **Chunchu (29)** and young son **Bupmin (6**) and daughte
 **King Jinpyung (65)** is dead, after years of expanding Silla against Baekje.
 
 Silla is a class society dominated by the **Bone Rank System**, where everything is determined by one's rank. There are the **6 Common Ranks**, and then the **Nobles** and **Royals**. A Sacred Bone royal may sit the throne; a True Bone noble may hold office but never wear the crown. The system decides the size of your house, the color of your clothing, the width of your carriage -- and, most importantly, whether your ambition is called "duty" or "treason."
+
+<BoneRanksDiagram />
 
 There are now only 3 Royals left -- **Princess Dukman (37), Princess Seungman (32)**, and **Princess Chunmyung (49).**
 
@@ -129,6 +137,8 @@ Baekje is dominated by the **8 Great Clans**, who compete for influence over the
 
 They fight for power in the **Ministers' Assembly**, who each control some of the king's 50+ sons in order to gain more power for their families. The result is a court where the king proposes and eight families dispose -- where every policy is a negotiation, every war is a vote, and every prince is a hostage to a balance of power that benefits no one except the families old enough to have written the rules.
 
+<EightClansDiagram />
+
 | 王 King | **Mu** (51) |  | **의자왕 (부여의자)** |
 | --- | --- | --- | --- |
 | 太 Crown Prince | **Euija** (32) |  |  |
@@ -158,6 +168,8 @@ The barbarians run away if they even hear his name!*
 > 
 
 Yeon prepares to head to Pyongyang for the **High Summit**, a gathering of all **Five Commanderies** of Goguryeo.
+
+<FiveCommanderiesDiagram />
 
 | 王 King | **Youngryu** (59) | **영류왕 (고건무)** |
 | --- | --- | --- |

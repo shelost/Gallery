@@ -1,4 +1,5 @@
 @use '../../lib/styles/variables' as *;
+@use '../../lib/components/novel/novel-graphics';
 
 $novel-heading: 'DM Serif Text', Georgia, serif;
 $novel-body: 'Crimson Pro', Georgia, serif;
@@ -350,7 +351,7 @@ $novel-accent: rgba(99, 85, 255, 0.45);
 	:global(p) {
 		font-size: 17px;
 		font-weight: 300;
-		margin: 0 0 1rem;
+		margin: 0 0 32px;
 	}
 
 	:global(ul),
@@ -410,16 +411,21 @@ $novel-accent: rgba(99, 85, 255, 0.45);
 	:global(.novel-section-hero) {
 		display: flex;
 		align-items: center;
+		justify-content: center;
+		background: rgba($novel-color, 0.05);
+		border: 1px solid rgba($novel-color, 0.1);
+		border-radius: 12px;
+		padding: 24px;
 		gap: 1.25rem;
 		margin: 2.5rem 0 0.75rem;
 	}
 
 	:global(.novel-section-hero__img) {
-		width: 140px;
+		width: 180px;
 		min-width: 80px;
 		height: auto;
 		object-fit: cover;
-		box-shadow: 0 4px 16px rgba($novel-color, 0.1);
+		box-shadow: -8px 24px 36px rgba($novel-color, 0.2);
 		margin: 0;
 	}
 

@@ -1,0 +1,82 @@
+$ng-bg: #2d2b3a;
+$ng-bg-light: #3a3849;
+$ng-text: #e8e6f0;
+$ng-text-muted: rgba(#e8e6f0, 0.5);
+$ng-accent-silla: #8b7cee;
+$ng-accent-baekje: #d4564e;
+$ng-accent-goguryeo: #2e86ab;
+$ng-heading: 'DM Serif Text', Georgia, serif;
+$ng-body: 'Crimson Pro', Georgia, serif;
+$ng-sans: 'DM Sans', 'Inter', sans-serif;
+$ng-radius: 14px;
+
+/* ── Wrapper card ── */
+:global(.novel-graphic) {
+	margin: 2rem 0;
+}
+
+:global(.novel-graphic__card) {
+	background: $ng-bg;
+	border-radius: $ng-radius;
+	padding: 2rem 1.5rem;
+	overflow: hidden;
+	box-shadow: 0 8px 40px rgba(0, 0, 0, 0.18);
+}
+
+:global(.novel-graphic__header) {
+	text-align: center;
+	margin-bottom: 1.5rem;
+}
+
+:global(.novel-graphic__title) {
+	font-family: $ng-sans;
+	font-size: 1.35rem;
+	font-weight: 700;
+	color: $ng-text;
+	margin: 0 0 0.15rem;
+	letter-spacing: -0.01em;
+}
+
+:global(.novel-graphic__subtitle) {
+	font-family: $ng-sans;
+	font-size: 0.95rem;
+	font-weight: 500;
+	color: $ng-text-muted;
+	margin: 0;
+}
+
+:global(.novel-graphic__content) {
+	width: 100%;
+}
+
+/* ── Shared tier / item styles ── */
+:global(.ng-label) {
+	font-family: $ng-sans;
+	font-size: 0.72rem;
+	font-weight: 600;
+	color: $ng-text-muted;
+	text-transform: uppercase;
+	letter-spacing: 0.06em;
+}
+
+:global(.ng-cjk) {
+	font-family: 'Noto Sans KR', 'Noto Sans CJK', sans-serif;
+	font-weight: 700;
+}
+
+:global(.ng-icon) {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+}
+
+/* ── Responsive ── */
+@media (max-width: 600px) {
+	:global(.novel-graphic__card) {
+		padding: 1.25rem 1rem;
+	}
+
+	:global(.novel-graphic__title) {
+		font-size: 1.1rem;
+	}
+}
