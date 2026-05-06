@@ -3,20 +3,91 @@
 
 $novel-heading: 'DM Serif Text', Georgia, serif;
 $novel-body: 'Crimson Pro', Georgia, serif;
-$novel-color: #0e0a33;
-$novel-muted: rgba($novel-color, 0.45);
-$novel-body-color: rgba($novel-color, 0.92);
-$novel-border: rgba($novel-color, 0.08);
-$novel-accent: rgba(99, 85, 255, 0.45);
+
+// Apply Zhi Mang Xing to CJK Unified Ideographs (Chinese/Hanja) across the novel page.
+// Uses @font-face with unicode-range so only Chinese characters use this brush font;
+// Korean Hangul and Latin remain unaffected.
+@font-face {
+	font-family: 'Novel CJK';
+	src: local('Zhi Mang Xing');
+	unicode-range: U+2E80-2EFF, U+3000-303F, U+3200-33FF, U+3400-4DBF, U+4E00-9FFF, U+F900-FAFF, U+FE30-FE4F, U+20000-2A6DF;
+}
+
+// ── Dark palette (default) ──
+$dk-bg: #0c0b14;
+$dk-text: #e2dff0;
+$dk-muted: rgba($dk-text, 0.4);
+$dk-body: rgba($dk-text, 0.85);
+$dk-border: rgba($dk-text, 0.08);
+$dk-accent: rgba(120, 105, 255, 0.55);
+$dk-glass: rgba(22, 20, 38, 0.85);
+
+// ── Light palette ──
+$lt-bg: #f8f6f1;
+$lt-text: #0e0a33;
+$lt-muted: rgba($lt-text, 0.4);
+$lt-body: rgba($lt-text, 0.88);
+$lt-border: rgba($lt-text, 0.08);
+$lt-glass: rgba(255, 255, 255, 0.88);
+
+// ── CSS custom properties for theming ──
+.novel-page {
+	--novel-bg: #{$dk-bg};
+	--novel-text: #{$dk-text};
+	--novel-muted: #{$dk-muted};
+	--novel-body: #{$dk-body};
+	--novel-border: #{$dk-border};
+	--novel-glass: #{$dk-glass};
+	--novel-accent: #{$dk-accent};
+	--novel-link: #7b9fc9;
+	--novel-shadow: rgba(0, 0, 0, 0.25);
+	--novel-glass-border: rgba(255, 255, 255, 0.06);
+	--novel-blockquote-bg: rgba(255, 255, 255, 0.03);
+	--novel-table-bg: rgba(255, 255, 255, 0.02);
+	--novel-table-th-bg: rgba(255, 255, 255, 0.04);
+	--novel-aside-bg: rgba(120, 105, 255, 0.06);
+	--novel-aside-border: rgba(120, 105, 255, 0.15);
+	--novel-hero-bg: rgba(255, 255, 255, 0.03);
+
+	background: var(--novel-bg);
+	min-height: 100vh;
+	transition: background 0.4s ease, color 0.4s ease;
+	font-family: 'Novel CJK', $novel-body;
+}
+
+.novel-page--light {
+	--novel-bg: #{$lt-bg};
+	--novel-text: #{$lt-text};
+	--novel-muted: #{$lt-muted};
+	--novel-body: #{$lt-body};
+	--novel-border: #{$lt-border};
+	--novel-glass: #{$lt-glass};
+	--novel-accent: rgba(99, 85, 255, 0.45);
+	--novel-link: #4075a6;
+	--novel-shadow: rgba(0, 0, 0, 0.08);
+	--novel-glass-border: rgba(0, 0, 0, 0.06);
+	--novel-blockquote-bg: rgba(0, 0, 0, 0.025);
+	--novel-table-bg: rgba(0, 0, 0, 0.02);
+	--novel-table-th-bg: rgba(0, 0, 0, 0.04);
+	--novel-aside-bg: rgba(99, 85, 255, 0.05);
+	--novel-aside-border: rgba(99, 85, 255, 0.12);
+	--novel-hero-bg: rgba(0, 0, 0, 0.03);
+}
 
 .novel__cover {
 	width: 100%;
 	height: auto;
 	border-radius: 10px;
-	//box-shadow: 0 8px 32px rgba(0, 0, 0, 0.28);
 }
 
-/* ── Sidebar (ticker + TOC) ── */
+:global(.title_img) {
+	height: 160px !important;
+	width: auto;
+	border-radius: 10px;
+	margin: 0;
+}
+
+/* ── Sidebar ── */
 .novel-sidebar {
 	position: fixed;
 	top: max(12px, env(safe-area-inset-top, 0px));
@@ -26,22 +97,18 @@ $novel-accent: rgba(99, 85, 255, 0.45);
 	flex-direction: column;
 	gap: 6px;
 	pointer-events: none;
-
-	> * {
-		pointer-events: auto;
-	}
+	> * { pointer-events: auto; }
 }
 
-/* ── Year ticker ── */
 .novel-year-ticker {
 	display: flex;
 	align-items: baseline;
 	gap: 6px;
 	padding: 10px 14px;
 	border-radius: 10px;
-	background: rgba(255, 255, 255, 0.88);
-	backdrop-filter: blur(10px);
-	box-shadow: 0 4px 24px rgba($novel-color, 0.1), 0 0 0 1px rgba($novel-color, 0.06);
+	background: var(--novel-glass);
+	backdrop-filter: blur(12px);
+	box-shadow: 0 4px 24px var(--novel-shadow), 0 0 0 1px var(--novel-glass-border);
 	font-family: $novel-heading;
 	user-select: none;
 }
@@ -50,7 +117,7 @@ $novel-accent: rgba(99, 85, 255, 0.45);
 	font-size: 0.7rem;
 	font-weight: 700;
 	letter-spacing: 0.12em;
-	color: $novel-muted;
+	color: var(--novel-muted);
 }
 
 .novel-year-ticker__flow {
@@ -59,11 +126,39 @@ $novel-accent: rgba(99, 85, 255, 0.45);
 	font-size: 1.35rem;
 	font-weight: 800;
 	letter-spacing: -0.03em;
-	color: $novel-color;
+	color: var(--novel-text);
 	font-variant-numeric: tabular-nums;
 }
 
-/* ── TOC toggle ── */
+.novel-mode-switcher {
+	display: flex;
+	border-radius: 10px;
+	background: var(--novel-glass);
+	backdrop-filter: blur(12px);
+	box-shadow: 0 4px 24px var(--novel-shadow), 0 0 0 1px var(--novel-glass-border);
+	overflow: hidden;
+}
+
+.novel-mode-btn {
+	flex: 1;
+	padding: 6px 10px;
+	border: none;
+	background: none;
+	cursor: pointer;
+	font-family: 'DM Sans', 'Inter', sans-serif;
+	font-size: 0.6rem;
+	font-weight: 600;
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+	color: var(--novel-muted);
+	transition: color 0.15s, background 0.15s;
+	&:hover { color: var(--novel-text); }
+	&--active {
+		color: var(--novel-text);
+		background: rgba(128, 128, 128, 0.12);
+	}
+}
+
 .novel-toc-toggle {
 	display: flex;
 	align-items: center;
@@ -71,44 +166,30 @@ $novel-accent: rgba(99, 85, 255, 0.45);
 	width: 36px;
 	height: 36px;
 	border-radius: 10px;
-	background: rgba(255, 255, 255, 0.88);
-	backdrop-filter: blur(10px);
-	box-shadow: 0 4px 24px rgba($novel-color, 0.1), 0 0 0 1px rgba($novel-color, 0.06);
+	background: var(--novel-glass);
+	backdrop-filter: blur(12px);
+	box-shadow: 0 4px 24px var(--novel-shadow), 0 0 0 1px var(--novel-glass-border);
 	border: none;
 	cursor: pointer;
-	color: rgba($novel-color, 0.5);
+	color: var(--novel-muted);
 	transition: color 0.15s, background 0.15s;
 	padding: 0;
 	margin: 0;
-
-	&:hover {
-		color: $novel-color;
-		background: rgba(255, 255, 255, 0.95);
-	}
-
-	&--open {
-		color: $novel-color;
-		background: rgba(255, 255, 255, 0.95);
-	}
+	&:hover, &--open { color: var(--novel-text); }
 }
 
-/* ── TOC panel ── */
 .novel-toc {
-	background: rgba(255, 255, 255, 0.92);
+	background: var(--novel-glass);
 	backdrop-filter: blur(12px);
 	border-radius: 10px;
-	box-shadow: 0 4px 24px rgba($novel-color, 0.1), 0 0 0 1px rgba($novel-color, 0.06);
+	box-shadow: 0 4px 24px var(--novel-shadow), 0 0 0 1px var(--novel-glass-border);
 	padding: 10px 0;
-	max-height: calc(100vh - 140px);
+	max-height: calc(100vh - 180px);
 	overflow-y: auto;
 	animation: tocSlideIn 0.15s ease-out;
 }
 
-.novel-toc__list {
-	list-style: none;
-	margin: 0;
-	padding: 0;
-}
+.novel-toc__list { list-style: none; margin: 0; padding: 0; }
 
 .novel-toc__item {
 	a {
@@ -117,48 +198,118 @@ $novel-accent: rgba(99, 85, 255, 0.45);
 		font-family: $novel-body;
 		font-size: 0.72rem;
 		line-height: 1.4;
-		color: rgba($novel-color, 0.5);
+		color: var(--novel-muted);
 		text-decoration: none;
-		transition: color 0.12s, background 0.12s;
+		transition: color 0.12s;
 		white-space: nowrap;
 		overflow: hidden;
 		text-overflow: ellipsis;
 		max-width: 220px;
-
-		&:hover {
-			color: $novel-color;
-			background: rgba($novel-color, 0.04);
-		}
+		&:hover { color: var(--novel-text); }
 	}
-
 	&--h1 a {
 		font-family: $novel-heading;
 		font-size: 0.78rem;
 		font-weight: 400;
-		color: rgba($novel-color, 0.7);
+		color: var(--novel-text);
+		opacity: 0.65;
 		padding-top: 6px;
 		padding-bottom: 6px;
 	}
-
-	&--h2 a {
-		padding-left: 22px;
-	}
-
-	&--active a {
-		color: $novel-color;
-		font-weight: 700;
-	}
+	&--h2 a { padding-left: 22px; }
+	&--active a { color: var(--novel-text); font-weight: 700; opacity: 1; }
 }
 
 @keyframes tocSlideIn {
-	from {
-		opacity: 0;
-		transform: translateY(-4px);
-	}
-	to {
-		opacity: 1;
-		transform: translateY(0);
-	}
+	from { opacity: 0; transform: translateY(-4px); }
+	to { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Theme toggle ── */
+.novel-theme-toggle {
+	position: fixed;
+	bottom: max(16px, env(safe-area-inset-bottom, 0px));
+	left: max(16px, env(safe-area-inset-left, 0px));
+	z-index: 50;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 36px;
+	height: 36px;
+	border-radius: 10px;
+	background: var(--novel-glass);
+	backdrop-filter: blur(12px);
+	box-shadow: 0 4px 24px var(--novel-shadow), 0 0 0 1px var(--novel-glass-border);
+	border: none;
+	cursor: pointer;
+	color: var(--novel-muted);
+	font-size: 1rem;
+	transition: color 0.15s;
+	padding: 0;
+	&:hover { color: var(--novel-text); }
+}
+
+/* ── Floating music player ── */
+.novel-player {
+	position: fixed;
+	bottom: max(16px, env(safe-area-inset-bottom, 0px));
+	left: 50%;
+	transform: translateX(-50%);
+	z-index: 50;
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	padding: 8px 16px;
+	border-radius: 999px;
+	background: var(--novel-glass);
+	backdrop-filter: blur(14px);
+	box-shadow: 0 4px 24px var(--novel-shadow), 0 0 0 1px var(--novel-glass-border);
+	user-select: none;
+}
+
+.novel-player__play {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 32px;
+	height: 32px;
+	border-radius: 50%;
+	border: none;
+	background: rgba(120, 105, 255, 0.2);
+	color: var(--novel-text);
+	cursor: pointer;
+	font-size: 0.85rem;
+	transition: background 0.15s;
+	flex-shrink: 0;
+	&:hover { background: rgba(120, 105, 255, 0.35); }
+}
+
+.novel-player__track {
+	font-family: 'DM Sans', 'Inter', sans-serif;
+	font-size: 0.68rem;
+	font-weight: 600;
+	color: var(--novel-muted);
+	letter-spacing: 0.02em;
+	white-space: nowrap;
+}
+
+.novel-player__bar {
+	width: 80px;
+	height: 3px;
+	border-radius: 2px;
+	background: var(--novel-border);
+	position: relative;
+	overflow: hidden;
+}
+
+.novel-player__progress {
+	position: absolute;
+	left: 0;
+	top: 0;
+	height: 100%;
+	width: 35%;
+	background: rgba(120, 105, 255, 0.6);
+	border-radius: 2px;
 }
 
 /* ── Tooltip ── */
@@ -170,23 +321,17 @@ $novel-accent: rgba(99, 85, 255, 0.45);
 	max-width: 320px;
 	width: max-content;
 	animation: tipFadeIn 0.15s ease-out;
-
-	&--above {
-		transform: translate(-50%, -100%);
-	}
-
-	&--below {
-		transform: translateX(-50%);
-	}
+	&--above { transform: translate(-50%, -100%); }
+	&--below { transform: translateX(-50%); }
 }
 
 .novel-tip__inner {
-	background: rgba($novel-color, 0.96);
+	background: rgba(20, 18, 40, 0.97);
 	backdrop-filter: blur(12px);
-	color: #f0eef7;
+	color: #e2dff0;
 	padding: 12px 14px;
 	border-radius: 10px;
-	box-shadow: 0 8px 32px rgba(0, 0, 0, 0.28);
+	box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.08);
 	font-family: $novel-body;
 	line-height: 1.45;
 }
@@ -203,38 +348,13 @@ $novel-accent: rgba(99, 85, 255, 0.45);
 	margin-bottom: 6px;
 }
 
-.novel-tip__title {
-	font-family: $novel-heading;
-	font-size: 0.82rem;
-	font-weight: 700;
-	margin: 0 0 2px;
-	color: #fff;
-}
-
-.novel-tip__era {
-	font-size: 0.68rem;
-	font-weight: 500;
-	color: rgba(#f0eef7, 0.55);
-	margin: 0 0 6px;
-}
-
-.novel-tip__body {
-	font-size: 0.72rem;
-	font-weight: 400;
-	line-height: 1.55;
-	color: rgba(#f0eef7, 0.82);
-	margin: 0;
-}
+.novel-tip__title { font-family: $novel-heading; font-size: 0.82rem; font-weight: 700; margin: 0 0 2px; color: #fff; }
+.novel-tip__era { font-size: 0.68rem; font-weight: 500; color: rgba(#e2dff0, 0.5); margin: 0 0 6px; }
+.novel-tip__body { font-size: 0.72rem; font-weight: 400; line-height: 1.55; color: rgba(#e2dff0, 0.75); margin: 0; }
 
 @keyframes tipFadeIn {
-	from {
-		opacity: 0;
-		transform: translateX(-50%) translateY(4px);
-	}
-	to {
-		opacity: 1;
-		transform: translateX(-50%) translateY(0);
-	}
+	from { opacity: 0; transform: translateX(-50%) translateY(4px); }
+	to { opacity: 1; transform: translateX(-50%) translateY(0); }
 }
 
 /* ── Novel layout ── */
@@ -243,23 +363,11 @@ $novel-accent: rgba(99, 85, 255, 0.45);
 	max-width: 44rem;
 	margin: 0 auto;
 	padding: 4.5rem 1.25rem 5rem;
-	color: $novel-color;
+	color: var(--novel-text);
 	font-family: $novel-body;
 }
 
-.novel__header {
-	padding-bottom: 2rem;
-}
-
-.novel__eyebrow {
-	font-family: $novel-body;
-	font-size: 0.75rem;
-	font-weight: 600;
-	letter-spacing: 0.08em;
-	text-transform: uppercase;
-	color: $novel-muted;
-	margin: 0 0 0.75rem;
-}
+.novel__header { padding-bottom: 2rem; }
 
 .novel h1 {
 	font-family: $novel-heading;
@@ -268,120 +376,62 @@ $novel-accent: rgba(99, 85, 255, 0.45);
 	letter-spacing: -0.02em;
 	line-height: 1.1;
 	margin: 0 0 1rem;
-
 }
 
-.novel__lede {
-	font-family: $novel-body;
-	font-size: 1.05rem;
-	font-weight: 400;
-	line-height: 1.65;
-	color: rgba($novel-color, 0.72);
-	margin: 0;
-
-	a {
-		color: #4075a6;
-		font-weight: 600;
-		text-decoration: underline;
-		text-underline-offset: 3px;
-
-		&:hover {
-			color: $novel-color;
-		}
-	}
-}
-
-/* ── Prose styles ── */
+/* ── Prose ── */
 .novel__body {
 	font-family: $novel-body;
 	font-size: 1.05rem;
 	line-height: 1.75;
-	color: $novel-body-color;
+	color: var(--novel-body);
 
-	// Override global app.css element selectors that set DM Sans on bare elements.
-	:global(p),
-	:global(span),
-	:global(li),
-	:global(label),
-	:global(blockquote),
-	:global(td),
-	:global(th),
-	:global(a) {
+	:global(p), :global(span), :global(li), :global(label),
+	:global(blockquote), :global(td), :global(th), :global(a) {
 		font-family: $novel-body;
+		color: var(--novel-body);
 	}
 
-	:global(h1),
-	:global(h2),
-	:global(h3),
-	:global(h4),
-	:global(h5),
-	:global(h6) {
+	:global(h1), :global(h2), :global(h3), :global(h4), :global(h5), :global(h6) {
 		font-family: $novel-heading;
+		color: var(--novel-text);
 	}
 
-	:global(h1) {
-		font-size: 40px;
-		font-weight: 700;
-		margin: 160px 0;
-		line-height: 1.2;
-		letter-spacing: -0.02em;
-		border-bottom: none;
+	:global(h1) { font-size: 40px; font-weight: 700; margin: 160px 0; line-height: 1.2; letter-spacing: -0.02em; border-bottom: none; }
+	:global(h2) { font-size: 32px; font-weight: 700; letter-spacing: -0.01em; }
+	:global(h3) { font-size: 28px; font-weight: 700; margin: 60px 0 32px 0; }
+	:global(h4) { font-size: 0.95rem; font-weight: 700; margin: 1.25rem 0 0.4rem; }
 
-	
-	}
-
-	:global(h2) {
-		font-size: 32px;
-		font-weight: 700;
-		letter-spacing: -0.01em;
-	}
-
-	:global(h3) {
-		font-size: 28px;
-		font-weight: 700;
-		margin: 60px 0 32px 0;
-	}
-
-	:global(h4) {
-		font-size: 0.95rem;
-		font-weight: 700;
-		margin: 1.25rem 0 0.4rem;
-	}
-
-	:global(p) {
-		font-size: 17px;
-		font-weight: 300;
-		margin: 0 0 32px;
-	}
-
-	:global(ul),
-	:global(ol) {
-		margin: 0 0 1rem;
-		padding-left: 1.35rem;
-	}
-
-	:global(li) {
-		margin-bottom: 0.35rem;
-	}
+	:global(p) { font-size: 17px; font-weight: 300; margin: 0 0 32px; }
+	:global(ul), :global(ol) { margin: 0 0 1rem; padding-left: 1.35rem; }
+	:global(li) { margin-bottom: 0.35rem; }
 
 	:global(blockquote) {
 		margin: 1.25rem 0;
 		padding: 0.85rem 1.15rem;
-		border-left: 3px solid rgba($novel-color, 0.15);
-		background: rgba($novel-color, 0.025);
+		border-left: 3px solid var(--novel-accent);
+		background: var(--novel-blockquote-bg);
 		font-style: italic;
 		border-radius: 0 6px 6px 0;
 	}
+	:global(blockquote p) { margin: 0 0 0.5rem; }
 
-	:global(blockquote p) {
-		margin: 0 0 0.5rem;
+	:global(.novel-dialogue-avatar) {
+		position: absolute;
+		right: -52px;
+		top: 8px;
+		width: 36px;
+		height: 36px;
+		border-radius: 50%;
+		object-fit: cover;
+		opacity: 0.5;
+		border: 2px solid var(--novel-border);
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+		transition: opacity 0.2s;
+		@media (max-width: 900px) { display: none; }
 	}
+	:global(blockquote:hover .novel-dialogue-avatar) { opacity: 0.85; }
 
-	:global(hr) {
-		border: none;
-		border-top: 1px solid rgba($novel-color, 0.1);
-		margin: 2.5rem 0;
-	}
+	:global(hr) { border: none; border-top: 1px solid var(--novel-border); margin: 2.5rem 0; }
 
 	:global(table) {
 		width: 100%;
@@ -389,97 +439,91 @@ $novel-accent: rgba(99, 85, 255, 0.45);
 		font-family: $novel-body;
 		font-size: 0.82rem;
 		margin: 1.25rem 0 1.75rem;
-		background: rgba($novel-color, 0.02);
+		background: var(--novel-table-bg);
 		border-radius: 8px;
 		overflow: hidden;
 	}
+	:global(th), :global(td) { border: 1px solid var(--novel-border); padding: 0.5rem 0.65rem; text-align: left; vertical-align: top; }
+	:global(th) { background: var(--novel-table-th-bg); font-weight: 600; color: var(--novel-text); }
 
-	:global(th),
-	:global(td) {
-		border: 1px solid $novel-border;
-		padding: 0.5rem 0.65rem;
-		text-align: left;
-		vertical-align: top;
-	}
-
-	:global(th) {
-		background: rgba($novel-color, 0.05);
-		font-weight: 600;
-	}
-
-	// ── Section hero (character image + heading) ──
 	:global(.novel-section-hero) {
 		display: flex;
+		flex-direction: column;
 		align-items: center;
 		justify-content: center;
-		background: rgba($novel-color, 0.05);
-		border: 1px solid rgba($novel-color, 0.1);
+		background: var(--novel-hero-bg);
+		border: 1px solid var(--novel-border);
 		border-radius: 12px;
 		padding: 24px;
-		gap: 1.25rem;
+		gap: 12px;
 		margin: 2.5rem 0 0.75rem;
 	}
-
-	:global(.novel-section-hero__img) {
-		width: 180px;
-		min-width: 80px;
-		height: auto;
-		object-fit: cover;
-		box-shadow: -8px 24px 36px rgba($novel-color, 0.2);
-		margin: 0;
-	}
-
-	:global(.novel-section-hero h2) {
-		margin: 0;
-	}
-
+	:global(.novel-section-hero__img) { width: 180px; min-width: 80px; height: auto; object-fit: cover; box-shadow: -8px 24px 36px rgba(0, 0, 0, 0.35); margin: 0; }
+	:global(.novel-section-hero h2) { font-size: 24px; font-weight: 600; letter-spacing: -0.01em; margin: 0; }
 	@media (max-width: 600px) {
-		:global(.novel-section-hero__img) {
-			width: 60px;
-			min-width: 60px;
-			height: 60px;
-		}
+		:global(.novel-section-hero__img) { width: 60px; min-width: 60px; height: 60px; }
 	}
 
+	// ── Flashback asides: invert theme ──
 	:global(aside) {
 		margin: 1.5rem 0;
 		padding: 1.15rem 1.25rem;
 		border-radius: 8px;
-		background: rgba(99, 85, 255, 0.05);
-		border: 1px solid rgba(99, 85, 255, 0.12);
 		font-size: 0.95rem;
+		background: #{$lt-bg};
+		border: 1px solid rgba(0, 0, 0, 0.08);
+		color: #{$lt-body};
+		transition: background 0.4s, color 0.4s;
+	}
+	:global(aside h3) { margin-top: 0; font-size: 0.92rem; color: #{$lt-text}; }
+	:global(aside p) { color: #{$lt-body}; }
+	:global(aside strong) { color: #{$lt-text}; }
+
+	.novel-page--light & {
+		:global(aside) {
+			background: #{$dk-bg};
+			border-color: rgba(255, 255, 255, 0.08);
+			color: #{$dk-body};
+		}
+		:global(aside h3) { color: #{$dk-text}; }
+		:global(aside p) { color: #{$dk-body}; }
+		:global(aside strong) { color: #{$dk-text}; }
 	}
 
-	:global(aside h3) {
-		margin-top: 0;
-		font-size: 0.92rem;
-	}
-
-	:global(img) {
-		display: block;
-		max-width: 100%;
-		height: auto;
-		margin: 1.25rem auto;
-		border-radius: 4px;
-	}
-
-	:global(strong) {
-		font-weight: 700;
-		color: rgba($novel-color, 1);
-	}
-
+	:global(img) { display: block; max-width: 100%; height: auto; margin: 1.25rem auto; border-radius: 4px; }
+	:global(strong) { font-weight: 700; color: var(--novel-text); }
 	:global(.has-info) {
-		border-bottom: 1.5px dotted $novel-accent;
-		cursor: help;
-		transition: border-color 0.15s;
-
+		border-bottom: 1.5px dotted var(--novel-accent);
+		cursor: pointer;
+		transition: border-color 0.15s, color 0.15s;
 		&:hover {
-			border-bottom-color: rgba(99, 85, 255, 0.85);
+			border-bottom-color: rgba(120, 105, 255, 0.85);
+			color: rgba(120, 105, 255, 1);
 		}
 	}
+	:global(a) { color: var(--novel-link); font-weight: 600; }
+}
 
-	:global(a) {
-		color: #4075a6;
-		font-weight: 600;
+/* ── Script mode ── */
+.novel--script .novel__body {
+	:global(h1) { text-align: center; text-transform: uppercase; font-size: 1.5rem; letter-spacing: 0.1em; margin: 80px 0 40px; }
+	:global(h2) { text-align: center; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 0.08em; margin: 60px 0 20px; }
+	:global(h3) { text-align: center; font-size: 0.9rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; margin: 40px 0 16px; color: var(--novel-muted); }
+	:global(p) { font-family: 'Courier New', 'Courier', monospace; font-size: 14px; font-weight: 400; line-height: 1.6; max-width: 520px; margin: 0 auto 16px; }
+	:global(blockquote) { max-width: 400px; margin: 12px auto; padding: 0; border-left: none; background: none; text-align: center; font-family: 'Courier New', 'Courier', monospace; font-size: 14px; }
+	:global(blockquote p) { font-family: 'Courier New', 'Courier', monospace; }
+	:global(table), :global(.novel-section-hero), :global(.novel-graphic), :global(aside) { display: none; }
+	:global(strong) { text-transform: uppercase; }
+}
+
+/* ── Movie mode: scroll layout + highlight ── */
+.novel--movie .novel__body {
+	:global(p), :global(blockquote) {
+		opacity: 0.3;
+		transition: opacity 0.5s ease, transform 0.5s ease;
+	}
+	:global(p.novel-highlight), :global(blockquote.novel-highlight) {
+		opacity: 1;
+		transform: scale(1.02);
 	}
 }

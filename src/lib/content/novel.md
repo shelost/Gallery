@@ -4,6 +4,25 @@
 	import FiveCommanderiesDiagram from '$lib/components/novel/FiveCommanderiesDiagram.svelte';
 </script>
 
+<img src = '/samhan/samhan-title.png' class = 'title_img'>
+
+# The King of Samhan <br> 삼한왕검 <br> 三韓王儉
+
+***The King of Samhan*** is a story set in 7th-century East Asia, at the end of the Three Kingdoms Period.
+
+Inspired by the 2009 K-Drama series ***The Great Queen Seondeok***, it was supposed to be a webcomic series originally, but I'm putting the text version on here first for now.
+
+One major theme of this story is **political satire** — highlighting the absurdities of the social systems of each of the Three Kingdoms, and how they ultimately led to tragic and avoidable events.
+
+When I was a child, I used to watch dramas and movies about this period, which naturally tend to romanticize the heroes and stories. 
+However, as I grew older and did more research, it became increasingly clear how absurd many of the situations the people of the era found themselves in, actually were.
+
+It also speaks to many human flaws — every character is a unique product of their environment, and the course of the story makes it abundantly clear how each person's life has shaped who they are.
+
+I hope you enjoy it!
+
+
+
 # Part I: The Three Kingdoms <br> 삼국시대
 
 <aside>
@@ -127,15 +146,15 @@ It must be a new trend.*
 
 **Baekje, 632 AD.**
 
-**Gyebek (12)** is a young boy training in the palace yards -- quick with a spear, slow to name a patron clan. In Baekje, a man without a clan is a man without a floor to stand on: the **8 Great Clans** own the court, the army, the trade routes, and -- most usefully -- each other's secrets.
+**Gyebek (12)** is a young boy training in the palace yards. He's fast with a spear, but when the older boys ask which clan he belongs to, he just shrugs. In Baekje, that's a problem. The **8 Great Clans** run everything -- the court, the army, the trade routes. If you don't have a clan, you don't have a future.
 
 **Prince Euija (32)** is the crown prince, and already has over 15 sons.
 
-The young princes, including **Yung (17)**, **Tae (16), Hyo (15), Yun (12),** and **Pung (9)** -- each tied to a different great house, each spoken of as a future king before his father is even cold in the tomb. In Baekje, royal sons are not heirs; they are investments, and the clans expect returns.
+The young princes -- **Yung (17)**, **Tae (16), Hyo (15), Yun (12),** and **Pung (9)** -- are each tied to a different clan. Each one is already being talked about as a future king, even though their father isn't dead yet. In Baekje, princes aren't really heirs. They're bargaining chips.
 
 Baekje is dominated by the **8 Great Clans**, who compete for influence over the king. 
 
-They fight for power in the **Ministers' Assembly**, who each control some of the king's 50+ sons in order to gain more power for their families. The result is a court where the king proposes and eight families dispose -- where every policy is a negotiation, every war is a vote, and every prince is a hostage to a balance of power that benefits no one except the families old enough to have written the rules.
+They fight for power in the **Ministers' Assembly**, where each clan controls a handful of the king's 50+ sons. The king can suggest things, sure. But the clans decide what actually happens. Every policy is a negotiation. Every war requires a vote. And every prince is a hostage.
 
 <EightClansDiagram />
 
@@ -154,7 +173,7 @@ They fight for power in the **Ministers' Assembly**, who each control some of th
 
 In the high mountains of Manchuria, a young man is caught in the snow by a Goguryeo soldier.
 
-He is taken to the outpost of **Commander Yeon (29)**, a ruthless military general. Where Silla has committees and Baekje has clans, Goguryeo has the **Five Commanderies** -- five military districts that are also five little kingdoms, each commanded by a man who answers to the throne only when the throne is worth answering to. **Yeon** commands the Eastern Commandery the way other men command breathing: without asking permission.
+He is taken to the outpost of **Commander Yeon (29)**, a ruthless military general. Goguryeo doesn't have councils or clans like the southern kingdoms. It has the **Five Commanderies** -- five military districts, each basically its own little kingdom. The commanders are supposed to answer to the king. **Yeon** doesn't bother.
 
 > *Do you know what happens to **traitors**, young man...?*
 **- Commander Yeon**
@@ -228,11 +247,11 @@ After the meeting, Yeon laments the state of the government.
 
 **King Mu (60)** is dead, after years of fighting against Silla. He leaves behind the largest Buddhist temple in East Asia, a legendary love story with a Silla princess, and a court so tangled in clan politics that the funeral itself becomes a negotiation.
 
-**King Euija (41)** takes the throne and aims to finish his father's mission. He is, in his first years, everything a king should be: generous, decisive, filial -- the court calls him the "Paragon of the East Sea." What the court does not say, because courts never say such things out loud, is that generosity in a king is a luxury funded by the clans' patience, and patience is the one resource the **8 Great Clans** ration most carefully.
+**King Euija (41)** takes the throne. In his first years, he's everything a king should be -- generous, decisive, the kind of ruler people actually like. The court calls him the "Paragon of the East Sea." But the **8 Great Clans** are watching. They're always watching. A king who's generous is only generous because the clans let him be.
 
-Three of the princes -- **Prince Yung (26)**, **Prince Hyo (24)**, and **Prince Pung (18)** -- are controlled by different clans respectively. Each prince is a coin, and the clan that holds him holds a claim on the future.
+Three of the princes -- **Prince Yung (26)**, **Prince Hyo (24)**, and **Prince Pung (18)** -- are each under the thumb of a different clan. Whoever controls the next king, controls the kingdom.
 
-**Gyebek (21)** is a young general in the Baekje army, who is routinely passed up because of his unknown clan origins. In a kingdom where promotion follows patronage, **Gyebek** has talent, loyalty, and absolutely no one willing to spend political capital on a man whose family tree begins with a question mark.
+**Gyebek (21)** is a young general in the Baekje army. He's good -- everyone knows he's good. But he keeps getting passed over for promotions, because he doesn't belong to any clan. In Baekje, it doesn't matter how talented you are. What matters is who your family knows.
 
 > *Your swordsmanship is extraordinary, General Gyebek. Truly extraordinary. 
 But surely you understand... command positions require... connections.*
@@ -331,7 +350,7 @@ High and lofty... **Goguryeo**.*
 
 The **Hwarang**, or Flower Knights, are an elite group of young Noble men who are trained by the Marshal.
 
-**Gotaso (14)** has fallen in love with the Hwarang **Pumsuk (23)** and they plan to get married. He is young, handsome, noble-born, and brave in exactly the way that looks wonderful on a horse and terrible in a siege -- the **Bone Rank System** has made him a fortress commander because his blood says he should be, not because anyone has checked whether he can.
+**Gotaso (14)** has fallen in love with the Hwarang **Pumsuk (23)** and they plan to get married. He's young, handsome, and from a good family -- everything you'd want on paper. He's also just been named commander of a fortress, because the **Bone Rank System** says his blood is noble enough for the job. Nobody asked whether he's actually any good at it.
 
 Her parents **Chunchu (38)** and **Munhee (31)** bless the marriage, making Pumsuk swear to protect her with his life.
 
@@ -374,7 +393,7 @@ We will divide the common people into 6 ranks, according to their virtues.
 
 At a banquet meant to seal the kingdom's "unity," **Yeon Gaesomun**'s men bolt the doors. Blades answer where speeches failed; over 180 officials die that night. By morning the capital speaks with one voice -- the Eastern Commander's. He installs **Bojang**, a pliable nephew of the dead king, as his puppet sovereign.
 
-This is not a coup in the name of reform. This is a dictatorship built on the conviction that Goguryeo's system of five competing commanderies is too weak for what is coming -- and that the only fix is one man who answers to no one. The disease is real. The cure may be worse.
+This isn't a revolution. It's a takeover. Yeon believes Goguryeo's system is too weak for what's coming, and the only solution is one man in charge. He might be right about the problem. But the solution is going to cause problems of its own.
 
 | 王 King | **Bojang** (39) | **보장왕 (고장)** |
 | --- | --- | --- |
@@ -403,7 +422,7 @@ A messenger brings the news to Surabol, where **Queen Sunduk, Seungman, Chunmyun
 **- Chunchu**
 > 
 
-**Prince Chunchu (39)** does not weep. He does not rage. He goes very quiet for a very long time, and when he speaks again, every word he says for the rest of his life has the same destination: the gates of Baekje's capital.
+**Prince Chunchu (39)** doesn't cry. He doesn't scream. He just goes quiet. And from this day forward, everything he does -- every alliance, every letter, every smile at a foreign court -- is aimed at one thing: the gates of Baekje's capital.
 
 ### (九) Tale of Onjo
 
@@ -429,9 +448,6 @@ The land of a HUNDRED tribes... **Baekje**!
 
 </aside>
 
-## Epilogue
-
----
 
 ### (〸) Taizong
 
@@ -686,9 +702,6 @@ Baekje-Wa relations continue to flourish and **Wang In** spreads Chinese literat
 
 </aside>
 
-## Epilogue
-
----
 
 ### (〸) Gaozong
 
@@ -737,7 +750,7 @@ That is the war. Everything else is decoration.*
 
 The clans have failed **Euija** at last -- or he has failed them, depending on which minister you ask in the chaos of a kingdom that has just learned that 130,000 Tang soldiers are crossing the Yellow Sea. The mobilization is late, fractured, and exactly as disorganized as a system run by eight competing families can make it.
 
-**Gyebek (40)** is given command of the last real army Baekje can field: 5,000 men against **Kim Yushin**'s 50,000. Before marching, he does the thing that even his enemies will remember him for: he kills his own wife and children. Not because he is cruel -- but because he knows the clans will use them as leverage, and he will not give Baekje's disease one more hostage.
+**Gyebek (40)** is given command of the last real army Baekje can put together: 5,000 men against **Kim Yushin**'s 50,000. Before he marches, he does something terrible. He kills his own wife and children. Not because he wants to. But because he knows the clans will use them against him if he doesn't. He's watched them do it to everyone else.
 
 > *My love... you understand, don't you?
 If I leave you alive, they will use you against me. 
@@ -858,9 +871,9 @@ When the smoke clears, **Kim Yushin**'s alliance holds the water; the **Baekje**
 
 **Yeon Gaesomun** is dead. The man who held Goguryeo together by the force of his grip has let go -- and the kingdom immediately begins to discover what it looks like without him. The answer: exactly like what his critics always feared, and exactly like what his defenders always denied was possible.
 
-He leaves behind three sons and one lesson: that a system built around a single indispensable man produces, upon that man's death, not a successor but a civil war.
+He leaves behind three sons. And a problem: when a country runs on one man's willpower, what happens when that man dies?
 
-**Yeon Namseng (32)**, the eldest, takes on the title of Supreme Commander. He has his father's name, his father's office, and none of his father's talent for making everyone else afraid enough to cooperate. He is loud where his father was quiet, boastful where his father was menacing, and insecure in exactly the way that makes men dangerous to their own side.
+**Yeon Namseng (32)**, the eldest, takes the title of Supreme Commander. He has his father's name and his father's office. But not his father's talent. Where his father was cold and quiet, Namseng is loud. Where his father scared people into obeying, Namseng just scares people.
 
 All of a sudden, a messenger comes with an urgent message. Yeon meets him in his quarters.
 
@@ -940,11 +953,9 @@ What dies is not the river-name **Goguryeo** in memory -- it is the kingdom as a
 
 The three brothers end the kingdom their father spent his life defending -- because their father never built a system that could outlast their father, and the disease of Goguryeo was always the same disease as Baekje and Silla, just wearing a different uniform: a government that works only when held together by one extraordinary person is a government waiting to fail.
 
-## Epilogue
+# Epilogue
 
----
-
-### (〸) Unified Silla
+## The King of Samhan
 
 **669 onward.** The map has a new center of gravity: **Unified Silla**. Buddhist temples paid for by war silver. Bone ranks still arguing in silk halls while farmers keep the same fields under a different flag. **Tang** soldiers winter in Korean cities they cannot hold forever -- because **King Munmu** understands what his father understood: an alliance with China is a lease, not a gift, and the rent comes due the moment the common enemy disappears.
 

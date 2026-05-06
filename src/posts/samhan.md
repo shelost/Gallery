@@ -26,7 +26,6 @@ published: false
     ]
 </script>
 
-
 # Part I: The Three Kingdoms (632-642) 삼국시대
 
 <aside>

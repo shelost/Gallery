@@ -20,6 +20,7 @@
 		gap: 1px;
 		width: 24px;
 		height: 10px;
+		display: none;
 	}
 	
 	.battery-body {

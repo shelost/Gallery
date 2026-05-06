@@ -139,15 +139,7 @@
 		max-width: 600px;
 		margin: auto;
 	}
-
-	a{
-		color: #6355FF;
-		font-weight: 600;
-		&:hover{
-			color: #5200FF;
-		}
-	}
-
+	
 	.header{
 		margin: 40px 0 16px 0;
 	}
