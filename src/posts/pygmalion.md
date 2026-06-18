@@ -22,7 +22,7 @@ published: true
 >
 > — *David Canfield Smith, Pygmalion: A Creative Programming Environment, 1975*
 
-In 1975, David Canfield Smith published his PhD thesis at Stanford, titled "Pygmalion: A Creative Programming Environment." The 198-page paper, which went mostly unnoticed at the time, was a thorough analysis.
+In 1975, David Canfield Smith published his PhD thesis at Stanford, titled "Pygmalion: A Creative Programming Environment." The 198-page paper, which went mostly unnoticed at the time, was a thorough analysis of the the state of the industry at the time.
 
 Among other things, Smith first redefined the word "icon" — which up to that point had only meant religious imagery.
 
