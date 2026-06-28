@@ -222,17 +222,13 @@
     </div>
 
     <ul>
-      <li>
+      <li class = 'hidden'>
         <a href="/movies">Favorite Movies<span class="date">2026</span></a>
         <Battery percentage={routeCompletion["/movies"]} />
       </li>
       <li>
         <a href="/gapyear">My Gap Year<span class="date">2025</span></a>
         <Battery percentage={routeCompletion["/gapyear"]} />
-      </li>
-      <li>
-        <a href="/anorexia">Anorexia<span class="date">2025</span></a>
-        <Battery percentage={routeCompletion["/anorexia"]} />
       </li>
       <li>
         <a href="/palace">The AI Palace Economy<span class="date">2025</span></a
