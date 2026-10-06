@@ -2,6 +2,7 @@
 series: History
 type: heewon
 title: My Gap Year
+subtitle: And Why Employment is a Psyop
 description: Article
 blurb: "My reflections with an eating disorder"
 card: null

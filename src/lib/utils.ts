@@ -4,8 +4,10 @@ import { get } from 'svelte/store';
 type DateStyle = Intl.DateTimeFormatOptions['dateStyle']
 
 export function formatDate(date: string, dateStyle: DateStyle = 'medium', locales = 'en') {
-	const formatter = new Intl.DateTimeFormat(locales, { dateStyle })
-	return formatter.format(new Date(date))
+	const formatter = new Intl.DateTimeFormat(locales, { dateStyle, timeZone: 'UTC' })
+	const [year, month = 1, day = 1] = String(date).split(/[-/T]/).map(Number)
+	const calendar = Number.isFinite(year) && year > 0 && Number.isFinite(month) && Number.isFinite(day)
+	return formatter.format(calendar ? new Date(Date.UTC(year, month - 1, day)) : new Date(date))
 }
 
 export function formatYear(date) {

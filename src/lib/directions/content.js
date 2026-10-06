@@ -1,0 +1,998 @@
+/**
+ * Shared content for the /directions prototypes. Mirrors the arrays and copy in
+ * src/routes/+page.svelte so every direction shows the same real work.
+ */
+
+/**
+ * @typedef {{ kind: 'image' | 'video' | 'graph', src?: string, poster?: string, alt?: string, fit?: 'cover' | 'contain' }} Media
+ * @typedef {{
+ *   id: string,
+ *   section: string,
+ *   kind: string,
+ *   title: string,
+ *   year: string,
+ *   kicker: string,
+ *   blurb: string,
+ *   href: string,
+ *   media: Media | null,
+ *   medium: string,
+ *   credit: string,
+ *   icon?: string,
+ *   featured?: boolean,
+ *   pages?: string[],
+ *   art?: string,
+ *   tag?: string
+ * }} Work
+ * A stretch of life on the timeline, shaped like a work so the index lists it like any other group.
+ * `until` is null while it's ongoing.
+ * @typedef {Work & { from: number, until: number | null }} Job
+ */
+
+export const PROFILE = {
+	name: 'Heewon Ahn',
+	email: 'ahnheewon823@gmail.com',
+	avatar: '/smiley.png',
+	bust: '/statue.png',
+	roles: ['designer', 'engineer', 'occasional artist'],
+	bio: 'Founding designer at Stan, where we grew from $0 to $30M ARR in three years. Now building a new UX paradigm for generative AI.',
+	links: [
+		{ label: 'Email', href: 'mailto:ahnheewon823@gmail.com' },
+		{ label: 'X', handle: '@ahnheewoni', href: 'https://x.com/ahnheewoni' },
+		{ label: 'Instagram', handle: '_heewonahn', href: 'https://instagram.com/_heewonahn' },
+		{ label: 'LinkedIn', handle: 'in/ahnheewon', href: 'https://linkedin.com/in/ahnheewon' },
+		{ label: 'GitHub', handle: 'shelost', href: 'https://github.com/shelost' }
+	]
+};
+
+export const SECTIONS = [
+	{ id: 'products', label: 'Products', numeral: 'I', verb: 'make' },
+	{ id: 'writing', label: 'Writing', numeral: 'II', verb: 'write' },
+	{ id: 'design', label: 'Design', numeral: 'III', verb: 'design' },
+	{ id: 'games', label: 'Games', numeral: 'IV', verb: 'play' },
+	{ id: 'webdev', label: 'Web apps', numeral: 'V', verb: 'build' },
+	{ id: 'comics', label: 'Comics', numeral: 'VI', verb: 'draw' },
+	{ id: 'research', label: 'Research', numeral: 'VII', verb: 'study' },
+	{ id: 'videos', label: 'Videos', numeral: 'VIII', verb: 'watch' }
+];
+
+/** Salon rooms, in walking order. */
+export const ROOMS = [
+	{
+		id: 'lobby',
+		numeral: '',
+		name: 'Lobby',
+		note: 'The two products in progress hang by the door.',
+		sections: ['products']
+	},
+	{
+		id: 'paper',
+		numeral: 'I',
+		name: 'Works on paper',
+		note: 'Comics and concept art. A childhood dream, one page at a time.',
+		sections: ['comics']
+	},
+	{
+		id: 'installations',
+		numeral: 'II',
+		name: 'Interactive installations',
+		note: 'Web games from the pre-AI era. Graphics and code made by hand.',
+		sections: ['games']
+	},
+	{
+		id: 'commissions',
+		numeral: 'III',
+		name: 'Commissions',
+		note: 'Work for Stan, as founding designer.',
+		sections: ['design']
+	},
+	{
+		id: 'manuscripts',
+		numeral: 'IV',
+		name: 'Manuscripts',
+		note: 'Essays. Each one opens in the reading drawer.',
+		sections: ['writing']
+	},
+	{
+		id: 'time',
+		numeral: 'V',
+		name: 'Time-based media',
+		note: 'Apps and tools built more recently, and two videos.',
+		sections: ['webdev', 'videos']
+	},
+	{
+		id: 'archive',
+		numeral: 'VI',
+		name: 'Archive',
+		note: 'Research on the ARC challenge with Prof. Kevin Ellis.',
+		sections: ['research']
+	}
+];
+
+/** @type {Work[]} */
+export const WORKS = [
+	{
+		id: 'ovid',
+		section: 'products',
+		kind: 'App',
+		title: 'Ovid',
+		year: '',
+		kicker: 'App',
+		blurb: 'Visual UX for AI',
+		href: 'https://ovid.computer',
+		media: { kind: 'video', src: '/video/ovid-x.mp4', poster: '/video/ovid-x.jpg', alt: 'Ovid in use' },
+		medium: 'Software. A canvas for arranging models, images, and the work they make.',
+		credit: 'Collection of the artist.',
+		featured: true
+	},
+	{
+		id: 'king',
+		section: 'products',
+		kind: 'Novel',
+		title: 'Kingforall',
+		year: '',
+		kicker: 'Novel',
+		blurb: 'Historical Fiction',
+		href: 'https://kingforall.com',
+		media: {
+			kind: 'video',
+			src: '/video/kingforall-title.mp4',
+			poster: '/video/kingforall-title.jpg',
+			alt: 'The King for All title sequence'
+		},
+		medium: 'Software and history. A chronicle of 7th-century Samhan.',
+		credit: 'Collection of the artist.',
+		featured: true
+	},
+	{
+		id: 'chancellor',
+		section: 'products',
+		kind: 'Blog',
+		title: 'Chancellor',
+		year: '',
+		kicker: 'Blog',
+		blurb: 'Tech, History, Current Events',
+		href: '/blog',
+		media: null,
+		medium: 'Blog. Tech, history, and current events.',
+		credit: 'Collection of the artist.',
+		featured: true
+	},
+	{
+		id: 'school',
+		section: 'education',
+		kind: 'School',
+		title: 'Cornell',
+		year: '2021–22',
+		kicker: 'Dropped out',
+		blurb: 'Dropped out',
+		href: 'https://www.cornell.edu',
+		media: null,
+		medium: 'University.',
+		credit: 'Cornell University.'
+	},
+	{
+		id: 'gapyear',
+		section: 'writing',
+		kind: 'Essay',
+		title: 'My Gap Year',
+		year: '2025',
+		kicker: 'Essay',
+		blurb: 'My reflections with an eating disorder.',
+		href: '/gapyear',
+		media: null,
+		medium: 'Essay.',
+		credit: 'Read in the drawer.'
+	},
+	{
+		id: 'pygmalion',
+		section: 'writing',
+		kind: 'Essay',
+		title: 'A Visual Interface for Thought',
+		year: '2025',
+		kicker: 'Essay',
+		blurb: "Revisiting David Canfield Smith's 1975 Pygmalion thesis to imagine what comes after chat.",
+		href: '/pygmalion',
+		media: {
+			kind: 'image',
+			src: '/pygmalion/galatea-15.png',
+			alt: "Smith's Pygmalion programming environment",
+			fit: 'contain'
+		},
+		medium: 'Essay.',
+		credit: 'Read in the drawer.'
+	},
+	{
+		id: 'palace',
+		section: 'writing',
+		kind: 'Essay',
+		title: 'The AI Palace Economy',
+		year: '2025',
+		kicker: 'Essay',
+		blurb: 'The intelligence revolution as a universal liquidity provider for the digital economy.',
+		href: '/palace',
+		media: { kind: 'image', src: '/blog/faces.png', alt: 'Illustration for The AI Palace Economy' },
+		medium: 'Essay.',
+		credit: 'Read in the drawer.'
+	},
+	{
+		id: 'persia',
+		section: 'writing',
+		kind: 'Essay',
+		title: 'The Roman-Persian Wars',
+		year: '2025',
+		kicker: 'Essay',
+		blurb: 'Predictions on the US-China conflict, from the greatest rivalry of classical antiquity.',
+		href: '/persia',
+		media: null,
+		medium: 'Essay.',
+		credit: 'Read in the drawer.'
+	},
+	{
+		id: 'timeline',
+		section: 'writing',
+		kind: 'Research',
+		title: 'The Civilization Timeline',
+		year: '2024',
+		kicker: 'Chart',
+		blurb: 'Three weeks charting the history of human civilization, by region and country.',
+		href: '/timeline',
+		media: { kind: 'image', src: '/civilization2.png', alt: 'Epochs and Civilizations chart' },
+		medium: 'Research chart. Civilizations by region, from antiquity to now.',
+		credit: 'Read in the drawer.'
+	},
+	{
+		id: 'mario',
+		section: 'writing',
+		kind: 'Essay',
+		title: 'The Super Mario Bros. Movie Review',
+		year: '2023',
+		kicker: 'Essay',
+		blurb: "Nintendo's brand play, and what it means for the movie industry.",
+		href: '/mario',
+		media: null,
+		medium: 'Essay.',
+		credit: 'Read in the drawer.'
+	},
+	{
+		id: 'stan',
+		section: 'design',
+		kind: 'Company',
+		title: 'Stan',
+		year: '2022–25',
+		kicker: 'Founding designer',
+		blurb: 'I dropped out of college at 19 to help build the future of work. We scaled from $0 to $30M ARR in three years, led by John and Vitalii.',
+		href: 'https://stan.store',
+		media: { kind: 'image', src: '/stan/stan-hero-1.png', alt: 'A Stan storefront', fit: 'contain' },
+		medium: 'Commission. Founding product designer, from $0 to $30M ARR in three years.',
+		credit: 'Commissioned by John & Vitalii.'
+	},
+	{
+		id: 'brainteam',
+		section: 'design',
+		kind: 'Brand',
+		title: 'Team Ithaca',
+		year: '2021',
+		kicker: 'School teams',
+		blurb: 'Logos and banners for the Ithaca Brain Team and Science Olympiad.',
+		href: '/ithaca',
+		media: { kind: 'image', src: '/img/brainteam-banner.png', alt: 'The Ithaca Brain Team wordmark' },
+		medium: 'School team designs.',
+		credit: 'Commissioned by Team Ithaca.'
+	},
+	{
+		id: 'paintball',
+		section: 'design',
+		kind: 'Brand',
+		title: 'Ithaca Paintball',
+		year: '2019',
+		kicker: 'Local business',
+		blurb: 'Branding and signage for a local paintball field.',
+		href: '/paintball',
+		media: { kind: 'image', src: '/img/paintball-01.png', alt: 'The Ithaca Paintball logo' },
+		medium: 'Brand identity for a local business.',
+		credit: 'Commissioned by Ithaca Paintball.'
+	},
+	{
+		id: 'nybc',
+		section: 'design',
+		kind: 'Poster',
+		title: 'NYBC',
+		year: '2025',
+		kicker: 'Posters',
+		blurb: 'Posters and marketing for the New York Bible Conference.',
+		href: '/nybc',
+		media: { kind: 'image', src: '/img/nybc-2025.png', alt: 'The 2025 New York Bible Conference poster' },
+		medium: 'Posters and marketing.',
+		credit: 'Commissioned by the New York Bible Conference.'
+	},
+	{
+		id: 'lab',
+		section: 'design',
+		kind: 'Brand',
+		title: 'Cornell L+R Lab',
+		year: '2024',
+		kicker: 'Lab identity',
+		blurb: 'Logos for the Learning & Recursion Lab, led by Prof. Kevin Ellis at Cornell.',
+		href: '/lab',
+		media: { kind: 'image', src: '/card/card-lab.png', alt: 'Cornell L+R Lab logos' },
+		medium: 'Brand identity for an AI research lab.',
+		credit: 'Commissioned by Prof. Kevin Ellis.'
+	},
+	{
+		id: 'redesign',
+		section: 'design',
+		kind: 'Study',
+		title: 'Logo Redesigns',
+		year: '2022',
+		kicker: 'Study',
+		blurb: 'A personal exercise in giving famous brands a more modern feel.',
+		href: '/redesign',
+		media: { kind: 'image', src: '/card/card-redesign.png', alt: 'Redesigned brand logos' },
+		medium: 'Graphic design study.',
+		credit: 'Collection of the artist.'
+	},
+	{
+		id: 'stan-gmv',
+		section: 'webdev',
+		kind: 'Dashboard',
+		title: 'Stan GMV Tracker',
+		year: '2024',
+		kicker: 'Live dashboard',
+		blurb: "A live, public dashboard tracking Stan's gross merchandise value in real time.",
+		href: 'https://gmv.stan.store',
+		media: { kind: 'video', src: '/video/stan_gmv.mov', alt: 'Stan GMV Tracker' },
+		medium: "Live data visualization. Stan's gross merchandise value in real time.",
+		credit: 'Commissioned by Stan.'
+	},
+	{
+		id: 'stan-remix',
+		section: 'webdev',
+		kind: 'Web app',
+		title: 'Stan Remix',
+		year: '2024',
+		kicker: 'Web app',
+		blurb: 'An interactive remix of the Stan creator experience.',
+		href: 'https://stan-remix.vercel.app/',
+		media: {
+			kind: 'video',
+			src: '/video/stan_remix.mov',
+			poster: '/card/card-stan.png',
+			alt: 'Stan Remix'
+		},
+		medium: 'Video. The Stan creator experience.',
+		credit: 'Commissioned by Stan.'
+	},
+	{
+		id: 'platformr',
+		section: 'games',
+		kind: 'Game',
+		title: 'Platformr',
+		year: '',
+		kicker: 'Platformer',
+		blurb: 'My personal favorite game, where you create your own platforms. 18 handcrafted levels.',
+		href: 'https://shelost.github.io/platformr',
+		icon: '/icon-platformr.png',
+		media: {
+			kind: 'video',
+			src: '/video/platformr.mp4',
+			poster: '/card/card-platformr.png',
+			alt: 'Platformr gameplay'
+		},
+		medium: 'Interactive installation. JavaScript and canvas, hand-drawn graphics, 18 levels.',
+		credit: 'Playable in the gallery.'
+	},
+	{
+		id: 'rooms',
+		section: 'games',
+		kind: 'Game',
+		title: '11 Rooms',
+		year: '',
+		kicker: 'Puzzle',
+		blurb: 'An atmospheric puzzle game set across 11 mysterious rooms.',
+		href: 'https://shelost.github.io/11rooms',
+		icon: '/icon-rooms.png',
+		media: {
+			kind: 'video',
+			src: '/video/rooms.mp4',
+			poster: '/card/card-rooms.png',
+			alt: '11 Rooms gameplay'
+		},
+		medium: 'Interactive installation. An atmospheric puzzle across eleven rooms.',
+		credit: 'Playable in the gallery.'
+	},
+	{
+		id: 'orbiting',
+		section: 'games',
+		kind: 'Game',
+		title: 'Just Orbiting By',
+		year: '',
+		kicker: 'Physics',
+		blurb: 'A physics-based space game about orbital gravity and planetary motion.',
+		href: 'https://shelost.github.io/orbiting',
+		icon: '/icon-orbiting.png',
+		media: {
+			kind: 'video',
+			src: '/video/orbiting.mp4',
+			poster: '/card/card-orbiting.png',
+			alt: 'Just Orbiting By gameplay'
+		},
+		medium: 'Interactive installation. Orbital gravity and planetary motion.',
+		credit: 'Playable in the gallery.'
+	},
+	{
+		id: 'wordchain',
+		section: 'games',
+		kind: 'Game',
+		title: 'Wordchain',
+		year: '',
+		kicker: 'Word puzzle',
+		blurb: 'A word puzzle where every answer begins with the last letter of the previous one.',
+		href: 'https://shelost.github.io/wordchain',
+		icon: '/icon-wordchain.png',
+		media: {
+			kind: 'video',
+			src: '/video/wordchain.mp4',
+			poster: '/card/card-wordchain.png',
+			alt: 'Wordchain gameplay'
+		},
+		medium: 'Interactive installation. Each answer begins with the last letter of the one before.',
+		credit: 'Playable in the gallery.'
+	},
+	{
+		id: 'trails',
+		section: 'games',
+		kind: 'Game',
+		title: 'Trails',
+		year: '',
+		kicker: 'Particle art',
+		blurb: 'A particle art game where gravity and motion create colorful trails.',
+		href: 'https://shelost.github.io/trails',
+		icon: '/icon-trails.png',
+		media: {
+			kind: 'video',
+			src: '/video/trails.mp4',
+			poster: '/card/card-trails.png',
+			alt: 'Trails gameplay'
+		},
+		medium: 'Interactive installation. Particles, gravity, and color.',
+		credit: 'Playable in the gallery.'
+	},
+	{
+		id: 'pong',
+		section: 'games',
+		kind: 'Game',
+		title: 'Super Pong',
+		year: '',
+		kicker: 'Arcade',
+		blurb: 'A high-speed, particle-charged remake of the classic Pong arcade game.',
+		href: 'https://shelost.github.io/superpong',
+		icon: '/icon-pong.png',
+		media: {
+			kind: 'video',
+			src: '/video/pong.mp4',
+			poster: '/card/card-pong.png',
+			alt: 'Super Pong gameplay'
+		},
+		medium: 'Interactive installation. Pong, at high speed and particle-charged.',
+		credit: 'Playable in the gallery.'
+	},
+	{
+		id: 'canvas',
+		section: 'webdev',
+		kind: 'Web app',
+		title: 'AI Canvas',
+		year: '2025',
+		kicker: 'Realtime AI drawing',
+		blurb: "Realtime AI image generation, based on tldraw's Drawfast.",
+		href: 'https://www.sketchdreamer.com/canvas',
+		media: { kind: 'video', src: '/realtime%203.mov', alt: 'AI Canvas demo' },
+		medium: "Software. Realtime image generation, after tldraw's Drawfast.",
+		credit: 'Collection of the artist.'
+	},
+	{
+		id: 'iphone',
+		section: 'webdev',
+		kind: 'Web app',
+		title: 'iPhone 3D Creator',
+		year: '2025',
+		kicker: 'Design tool',
+		blurb: 'A helper tool for UX designers.',
+		href: 'https://www.sketchdreamer.com/phone',
+		media: { kind: 'video', src: '/iphone3d.mov', alt: 'iPhone 3D Creator demo' },
+		medium: 'Software. A helper tool for UX designers.',
+		credit: 'Collection of the artist.'
+	},
+	{
+		id: 'dido',
+		section: 'webdev',
+		kind: 'Web app',
+		title: 'Dido UI',
+		year: '2025',
+		kicker: 'UI library',
+		blurb: 'A minimalistic UI library.',
+		href: 'https://dido-ui.vercel.app/',
+		media: { kind: 'video', src: '/dido.mov', alt: 'Dido UI demo' },
+		medium: 'Software. A minimalistic UI library.',
+		credit: 'Collection of the artist.'
+	},
+	{
+		id: 'scioly',
+		section: 'webdev',
+		kind: 'Website',
+		title: 'Science Olympiad',
+		year: '2020',
+		kicker: 'Website',
+		blurb: "Website for Ithaca's Science Olympiad team.",
+		href: 'https://shelost.github.io/scioly',
+		media: { kind: 'video', src: '/scioly.mov', alt: 'Science Olympiad website' },
+		medium: "Website for Ithaca's Science Olympiad team.",
+		credit: 'Gift of the artist.'
+	},
+	{
+		id: 'pandemonium',
+		section: 'comics',
+		kind: 'Comic',
+		title: 'Pandemonium',
+		year: '2024',
+		kicker: '천하만국',
+		blurb: 'My first real comics chapter, built from classic Eastern novels such as Three Kingdoms and Journey to the West.',
+		href: '/pandemonium',
+		media: { kind: 'image', src: '/img/p1.png', alt: 'Pandemonium, page one' },
+		pages: [
+			'/img/p1.png',
+			'/img/p20.png',
+			'/img/p28.png',
+			'/img/px-1.png',
+			'/img/px-5.png',
+			'/img/p8.png',
+			'/img/p14.png',
+			'/img/px-12.png',
+			'/img/px-20.png'
+		],
+		art: '/title-cheonha.png',
+		medium: 'Digital ink and color, after Three Kingdoms, the Odyssey, and Journey to the West.',
+		credit: 'Gift of the artist.'
+	},
+	{
+		id: 'samhan',
+		section: 'comics',
+		kind: 'Comic',
+		title: 'The King of Samhan',
+		year: '2025',
+		kicker: 'Concept art',
+		blurb: 'A historical adventure set in 7th-century Korea, loosely based on the K-drama Queen Seondeok.',
+		href: '/kingdom',
+		media: { kind: 'image', src: '/img/img-253.png', alt: 'The King of Samhan concept art' },
+		pages: [
+			'/img/img-253.png',
+			'/img/img-240.png',
+			'/img/img-234.png',
+			'/img/samhan.png',
+			'/img/img-245.png',
+			'/img/img-249.png',
+			'/img/img-237.png'
+		],
+		art: '/title-samhan.png',
+		medium: 'Concept art for a webtoon about the 7th-century Unification Wars.',
+		credit: 'Gift of the artist.'
+	},
+	{
+		id: 'arcaide',
+		section: 'research',
+		kind: 'Research',
+		title: 'Arcaide',
+		year: '',
+		kicker: 'ARC annotation',
+		blurb: 'An extremely cleverly named ARC annotation tool that turns raw ARC data into JSON files of annotated objects.',
+		href: 'https://shelost.github.io/arcaide2/',
+		icon: '/logo-arcaide.png',
+		media: { kind: 'image', src: '/arcaide.png', alt: 'Arcaide interface' },
+		medium: 'Research software. Annotates raw ARC data as JSON objects.',
+		credit: 'With Prof. Kevin Ellis, Cornell.'
+	},
+	{
+		id: 'marc',
+		section: 'research',
+		kind: 'Dataset',
+		title: 'MARC',
+		year: '2022',
+		kicker: 'Reasoning dataset',
+		blurb: "The Markings Analysis & Reasoning Corpus: a visual reasoning dataset inspired by Chollet's ARC, made of strokes and drawings instead of grids.",
+		href: '/marc',
+		media: { kind: 'image', src: '/img/MARC-1.png', alt: 'MARC dataset sample' },
+		medium: 'Dataset. Visual reasoning from strokes and drawings, after ARC.',
+		credit: 'Collection of the artist.'
+	},
+	{
+		id: 'cameo',
+		section: 'videos',
+		kind: 'Video',
+		title: "John's video",
+		year: '',
+		kicker: 'From 7:32',
+		blurb: "This is John's video, but I appear at around the 7:32 mark.",
+		href: 'https://www.youtube.com/watch?v=stjPRf0Iogg&t=452s',
+		media: {
+			kind: 'image',
+			src: 'https://i.ytimg.com/vi/stjPRf0Iogg/hqdefault.jpg',
+			alt: "Thumbnail of John's video"
+		},
+		medium: 'Time-based media. Appearing from 7:32.',
+		credit: 'Courtesy of John.'
+	},
+	{
+		id: 'reel',
+		section: 'videos',
+		kind: 'Video',
+		title: 'Game portfolio',
+		year: '',
+		kicker: 'Reel',
+		blurb: 'My personal game portfolio video.',
+		href: 'https://www.youtube.com/watch?v=yHSWJty8QgI',
+		media: {
+			kind: 'image',
+			src: 'https://i.ytimg.com/vi/yHSWJty8QgI/hqdefault.jpg',
+			alt: 'Thumbnail of the game portfolio video'
+		},
+		medium: 'Time-based media.',
+		credit: 'Gift of the artist.'
+	},
+	{
+		id: 'future-ui',
+		section: 'videos',
+		kind: 'Video',
+		title: 'The Future of UI in the AI Era',
+		year: '2026',
+		kicker: 'Inflection Fellowship',
+		blurb: 'The Future of UI in the AI Era (Inflection Fellowship 2026).',
+		href: 'https://www.youtube.com/watch?v=0kI-Q1683nI',
+		media: {
+			kind: 'image',
+			src: 'https://i.ytimg.com/vi/0kI-Q1683nI/hqdefault.jpg',
+			alt: 'Thumbnail for The Future of UI in the AI Era'
+		},
+		medium: 'Time-based media.',
+		credit: 'Gift of the artist.'
+	},
+	{
+		id: 'king-trailer',
+		section: 'videos',
+		kind: 'Video',
+		title: 'King for All',
+		year: '',
+		kicker: 'AI teaser trailer',
+		blurb: 'King for All (AI Teaser Trailer).',
+		href: 'https://www.youtube.com/watch?v=u4ABhgrZAq4',
+		media: {
+			kind: 'image',
+			src: 'https://i.ytimg.com/vi/u4ABhgrZAq4/hqdefault.jpg',
+			alt: 'Thumbnail for the King for All teaser trailer'
+		},
+		medium: 'Time-based media.',
+		credit: 'Gift of the artist.'
+	}
+];
+
+export const DIRECTIONS = [
+	{
+		slug: 'index',
+		href: '/directions/index',
+		numeral: 'I',
+		name: 'Index',
+		tagline: "Emil's restraint. Everything is a line of text until you ask for more.",
+		hint: 'Hover the rows, then click one'
+	},
+	{
+		slug: 'panels',
+		href: '/directions/panels',
+		numeral: 'II',
+		name: 'Panels',
+		tagline: 'The homepage is a manga page. Panel size sets importance, gutters set the rhythm.',
+		hint: 'Hover a panel, click to zoom'
+	},
+	{
+		slug: 'instrument',
+		href: '/directions/instrument',
+		numeral: 'III',
+		name: 'Instrument',
+		tagline: 'Navigation as a Teenage Engineering object, with plain reading text underneath.',
+		hint: 'Keys 1 to 8, arrow keys, or turn the knob'
+	},
+	{
+		slug: 'salon',
+		href: '/directions/salon',
+		numeral: 'IV',
+		name: 'Salon',
+		tagline: 'The work hung like a museum. One label format makes very different pieces read as one collection.',
+		hint: 'Hover a work, or a room on the plan'
+	},
+	{
+		slug: 'pond',
+		href: '/directions/pond',
+		numeral: 'V',
+		name: 'Pond',
+		tagline: 'The hero is a living <canvas>. Each koi carries a project.',
+		hint: 'Hover a koi, click the water'
+	},
+	{
+		slug: 'frames',
+		href: '/',
+		numeral: 'VI',
+		name: 'Frames',
+		tagline: 'Index and Panels on one page. Every row has its panel, and a few of the panels are alive.',
+		hint: 'Hover a row or a panel'
+	}
+];
+
+/** Whether a path is the hub or one of the directions. @param {string | undefined} path */
+export function isDirection(path) {
+	return path === '/directions' || DIRECTIONS.some((direction) => direction.href === path);
+}
+
+/**
+ * The latest year a work touches; an open range ('2026–') is ongoing and an empty year sinks.
+ * @param {string} year
+ */
+function recency(year) {
+	if (/[–-]\s*$/.test(year)) return Infinity;
+	const years = year.match(/\d{2,4}/g);
+	if (!years) return -Infinity;
+	const last = years[years.length - 1];
+	return last.length === 2 ? Number(years[0].slice(0, 2) + last) : Number(last);
+}
+
+/**
+ * Most recent first, keeping the authored order among equals.
+ * @template {{ year: string }} T
+ * @param {T[]} works
+ */
+export function newestFirst(works) {
+	return works.toSorted((a, b) => recency(b.year) - recency(a.year));
+}
+
+/** @param {string} section */
+export function worksIn(section) {
+	return newestFirst(WORKS.filter((work) => work.section === section));
+}
+
+/** @param {string} id */
+export function findWork(id) {
+	return WORKS.find((work) => work.id === id);
+}
+
+/** Sections paired with their works, skipping empty ones. */
+export const GROUPS = SECTIONS.map((section) => ({ ...section, works: worksIn(section.id) })).filter(
+	(group) => group.works.length > 0
+);
+
+/** Where I've been, oldest first. @type {Job[]} */
+export const LIFE = [
+	{
+		id: 'wolf',
+		section: 'life',
+		kind: 'Brand',
+		title: 'Wolf Financial',
+		year: '2020–21',
+		kicker: 'Branding',
+		blurb: 'Branding for a finance newsletter.',
+		href: 'https://wolf.financial',
+		media: { kind: 'image', src: '/card/card-wolf.png', alt: 'Wolf Financial branding' },
+		medium: 'Brand identity for a finance newsletter and podcast.',
+		credit: 'Commissioned by Wolf Financial.',
+		from: 2020,
+		until: 2021
+	},
+	{
+		id: 'cornell',
+		section: 'life',
+		kind: 'School',
+		title: 'Cornell',
+		year: '2021–22',
+		kicker: 'Dropped out',
+		blurb: 'Studied, and worked on ARC with Prof. Kevin Ellis.',
+		href: 'https://www.cornell.edu',
+		media: null,
+		medium: 'University.',
+		credit: 'Cornell University.',
+		from: 2021,
+		until: 2022
+	},
+	{
+		id: 'stan',
+		section: 'life',
+		kind: 'Company',
+		title: 'Stan',
+		year: '2022–25',
+		kicker: 'Founding designer',
+		blurb: 'Founding designer, $0 to $30M ARR.',
+		href: 'https://stan.store',
+		media: { kind: 'image', src: '/stan/stan-hero-1.png', alt: 'A Stan storefront', fit: 'contain' },
+		medium: 'Founding product designer.',
+		credit: 'With John & Vitalii.',
+		from: 2022,
+		until: 2025
+	},
+	{
+		id: 'gapyear',
+		section: 'life',
+		kind: 'Break',
+		title: 'Gap year',
+		year: '2025–26',
+		kicker: 'Time off',
+		blurb: 'A year away, written up in My Gap Year.',
+		href: '/gapyear',
+		media: null,
+		medium: 'Essay.',
+		credit: 'Read in the drawer.',
+		from: 2025,
+		until: 2026
+	},
+	{
+		id: 'ovid',
+		section: 'life',
+		kind: 'Product',
+		title: 'Ovid',
+		year: '2026–',
+		kicker: 'Visual LLM workflows',
+		blurb: 'Building visual LLM workflows.',
+		href: 'https://ovid.computer',
+		media: { kind: 'graph', alt: 'A node graph of models and images' },
+		medium: 'Software.',
+		credit: 'Collection of the artist.',
+		from: 2026,
+		until: null
+	}
+];
+
+/**
+ * A recommendation, printed onto whatever object its shelf holds.
+ * `note` is the explainer shown when the object is taken off the shelf.
+ * @typedef {{ title: string, by?: string, year?: string, tone: string, ink: string, lang?: string, depth?: string, youtube?: string, wiki?: string, href?: string, query?: string, note?: string }} ShelfItem
+ * @typedef {'book' | 'dvd' | 'cd' | 'vinyl' | 'vhs' | 'cassette' | 'magazine'} ShelfFormat
+ * @typedef {{ id: string, label: string, format: ShelfFormat, items: ShelfItem[] }} Shelf
+ */
+
+/** Things I keep coming back to, each shelf holding the object its medium came on. @type {Shelf[]} */
+export const SHELVES = [
+	{
+		id: 'movies',
+		label: 'Movies',
+		format: 'dvd',
+		items: [
+			{ title: 'The Count of Monte Cristo', year: '2024', tone: '#1f2a44', ink: '#e8d5a3', wiki: 'The_Count_of_Monte_Cristo_(2024_film)' },
+			{ title: 'Vice', by: 'Adam McKay', year: '2018', tone: '#f1eee6', ink: '#b3121d', wiki: 'Vice_(2018_film)' }
+		]
+	},
+	{
+		id: 'nonfiction',
+		label: 'Nonfiction',
+		format: 'book',
+		items: [
+			{
+				title: 'Design Is Where the Action Is',
+				by: 'Allen Newell & Stuart Card',
+				year: '1985',
+				tone: '#ece6d8',
+				ink: '#c8321f',
+				depth: '1.4rem',
+				href: 'https://doi.org/10.1207/s15327051hci0103_1',
+				note: 'From “The Prospects for Psychological Science in Human-Computer Interaction.” Usability analysis arrives too late to matter; a science of interfaces earns its place only when it shapes the design itself.'
+			},
+			{
+				title: 'Pygmalion: A Creative Programming Environment',
+				by: 'David Canfield Smith',
+				year: '1975',
+				tone: '#1f3a5f',
+				ink: '#f1e4c4',
+				depth: '2.2rem',
+				wiki: 'David_Canfield_Smith',
+				note: 'A Stanford thesis about programming by moving pictures around instead of typing text, and the place the word “icon” entered computing. It’s the starting point of my essay A Visual Interface for Thought.'
+			},
+			{
+				title: 'Je pense trop',
+				by: 'Christel Petitcollin',
+				tone: '#f2c230',
+				ink: '#1c1b18',
+				lang: 'fr',
+				wiki: 'Je_pense_trop',
+				note: 'Christel Petitcollin on people whose minds won’t stop branching: the sensitivity, the tangents, and how to live with a head that is always on.'
+			},
+			{
+				title: 'The Power of Now',
+				by: 'Eckhart Tolle',
+				tone: '#2e5b4f',
+				ink: '#f3ead3',
+				wiki: 'The_Power_of_Now',
+				note: 'Eckhart Tolle’s case for living in the present instead of in the running commentary about the past and the future.'
+			}
+		]
+	},
+	{
+		id: 'fiction',
+		label: 'Fiction',
+		format: 'book',
+		items: [
+			{
+				title: 'The Count of Monte Cristo',
+				by: 'Alexandre Dumas',
+				tone: '#7a1f2b',
+				ink: '#f1e3c6',
+				depth: '2.9rem',
+				wiki: 'The_Count_of_Monte_Cristo',
+				note: 'Dumas’s great revenge story: a sailor framed on his wedding day, fourteen years in the Château d’If, and a fortune spent settling every account.'
+			}
+		]
+	},
+	{
+		id: 'blogs',
+		label: 'Blogs',
+		format: 'magazine',
+		items: [{ title: 'Amelia Wattenberger', tone: '#e6e0ff', ink: '#4527c9', href: 'https://wattenberger.com' }]
+	},
+	{
+		id: 'youtube',
+		label: 'YouTube',
+		format: 'vhs',
+		items: [{ title: 'Kraut', tone: '#161513', ink: '#efe5cf', query: 'Kraut history', href: 'https://www.youtube.com/@Kraut' }]
+	},
+	{
+		id: 'podcasts',
+		label: 'Podcasts',
+		format: 'cassette',
+		items: [
+			{ title: 'The Rest Is History', by: 'Tom Holland & Dominic Sandbrook', tone: '#c4122f', ink: '#fff6ea', wiki: 'The_Rest_Is_History_(podcast)' },
+			{ title: 'Founders', by: 'David Senra', tone: '#141414', ink: '#f2f2f2', wiki: 'Founders_(podcast)' },
+			{ title: 'Making Sense', by: 'Sam Harris', tone: '#dbe5ea', ink: '#1a2a35', wiki: 'Making_Sense_with_Sam_Harris' }
+		]
+	},
+	{
+		id: 'songs-christian',
+		label: 'Songs · Christian',
+		format: 'cd',
+		items: [
+			{ title: 'Is That You', by: 'Ary Shu', tone: '#f4e3c9', ink: '#a2461f', query: 'Is That You Ary Shu' },
+			{ title: 'Better Than I', by: 'Joseph: King of Dreams', tone: '#25324d', ink: '#f2c96b', query: 'Better Than I Joseph King of Dreams' },
+			{ title: 'All in All', tone: '#e9eef0', ink: '#3a5a6a', query: 'All in All worship song' }
+		]
+	},
+	{
+		id: 'songs-en',
+		label: 'Songs · English',
+		format: 'cd',
+		items: [
+			{ title: 'Yellow Brick Road', by: 'Elton John', tone: '#f3c623', ink: '#3b2a12', youtube: 'wy709iNG6i8' },
+			{ title: 'Never See Me Again', tone: '#101010', ink: '#e8e2d4', query: 'Never See Me Again' },
+			{ title: 'All Caps', by: 'MF DOOM', tone: '#b8261d', ink: '#f6e7c8', youtube: 'gSJeHDlhYls' },
+			{ title: 'Feel It Still', by: 'Portugal. The Man', tone: '#ff8fa3', ink: '#1d1b3a', youtube: 'pBkHHoOIIn8' }
+		]
+	},
+	{
+		id: 'songs-international',
+		label: 'Songs · International',
+		format: 'cd',
+		items: [
+			{ title: '꽃이 피고 지듯이', by: 'Lee Yoon Jung', tone: '#f6d6dc', ink: '#8c2f4a', lang: 'ko', youtube: '-1JCohwW0EA' },
+			{ title: '월량대표아적심', by: 'Teresa Teng', tone: '#1c2541', ink: '#f5e6a8', lang: 'ko', query: '月亮代表我的心 鄧麗君' },
+			{ title: '비상', tone: '#6fa3c7', ink: '#0f2236', lang: 'ko', query: '비상 임재범' },
+			{ title: '잔소리', by: 'IU', tone: '#fbe9a6', ink: '#3d5a2a', lang: 'ko', query: '잔소리 IU' },
+			{ title: '고백', by: '멜로망스', tone: '#2f2a4a', ink: '#f3d5c0', lang: 'ko', query: '고백 멜로망스' }
+		]
+	},
+	{
+		id: 'music',
+		label: 'Music',
+		format: 'vinyl',
+		items: [
+			{ title: 'Into the New World', by: 'Dvořák', tone: '#0f3b57', ink: '#f1d9a0', wiki: 'Symphony_No._9_(Dvořák)' },
+			{ title: 'In the Hall of the Mountain King', by: 'Grieg', tone: '#3c2a1e', ink: '#e7c27a', youtube: 'pPLXNmKvLBQ' },
+			{ title: 'Going the Distance', by: 'Bill Conti', tone: '#d8392b', ink: '#fbf1dc', query: 'Bill Conti Going the Distance' }
+		]
+	}
+];
+
+/** The works that swim in the koi ponds. Featured ones are vermilion. */
+export const KOI = /** @type {Work[]} */ (
+	['ovid', 'king', 'stan', 'platformr', 'pandemonium', 'arcaide', 'palace', 'rooms', 'timeline', 'marc']
+		.map((id) => findWork(id))
+		.filter(Boolean)
+);

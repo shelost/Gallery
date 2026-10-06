@@ -1,0 +1,11 @@
+---
+description: Gallery is SvelteKit with Svelte 5. Use the Svelte MCP for docs instead of stuffing the full llms.txt into context.
+alwaysApply: true
+---
+
+This repo is SvelteKit with Svelte 5 in runes mode.
+
+- Use `$state`, `$derived`, `$props`, `onclick={...}` — not `$:` / `export let` / `on:click`.
+- Do **not** paste or attach the full Svelte documentation into prompts.
+- For Svelte/SvelteKit questions, look up sections through the Svelte MCP (`list-sections`, then `get-documentation`).
+- Run `svelte-autofixer` on any `.svelte` / `.svelte.ts` you write or edit.

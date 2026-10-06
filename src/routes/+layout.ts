@@ -18,7 +18,7 @@ export async function load({ url, fetch }) {
 
 	// Otherwise, fetch and populate the Posts store
 	try {
-		const response = await fetch('api/posts')
+		const response = await fetch('/api/posts')
 		const posts: Post[] = await response.json()
 		let p = []
 

@@ -27,6 +27,8 @@ existence of both the Roman and Persian Empires respectively.
 
 Let's dive in.
 
+![Triumph of Shapur I over Valerian](/blog/persia/shapur-valerian.jpg "Shapur I of Persia on horseback, with two Roman emperors at his feet: one on his knees, one held by the wrist. Not a great century for Rome")
+
 ## Rome
 
 Rome needs no introduction, particularly to Western audiences.
@@ -38,9 +40,13 @@ For our purposes, I would like to highlight **3 key moments** in Roman history t
 - **27 BC:**  Augustus becomes the first emperor, marking the creation of the  **Roman Empire**.
 - **184 AD:**  Diocletian reunites the empire after the Crisis of the Third Century, adopting a more absolute form of rule known as the **Dominate**.
 
+![Augustus of Prima Porta](/blog/americana/augustus-of-prima-porta.jpg "Augustus, the first emperor. He kept the Senate around, mostly for decoration")
+
 What we can see in Roman history, is the story of an idealistic nation that was constantly struggling with its own political identity. The conflict between liberty and autocracy, between chaos and stability, proved to be a constant point of tension as the empire grew and extended itself to cover the entire Mediterranean basin.
 
 Ultimately, Roman liberty collapsed and gave way to absolute imperial rule. 
+
+![Bust of Diocletian](/blog/persia/diocletian.jpg "Diocletian, who dropped the pretense entirely and had his subjects kneel before him. Persian-style, as it happens")
 
 However, this did not mean the end of Rome — in fact, most of what we know as "Roman history" actually takes place after Augustus abolishes the city's original republican values, giving way to absolute emperors such as **Nero** and **Caligula** who are much more well-known to modern audiences.
 
@@ -52,9 +58,15 @@ Iran, historically known as *Persia* to Western audiences, had long been one of 
 - **247 BC:** Arsaces I rebels against Greek rule and establishes the **Parthian Empire**.
 - **224 AD:** Ardashir I rebels against the Parthians and establishes the **Sassanian Empire**.
 
+![Gate of All Nations at Persepolis](/blog/persia/persepolis.jpg "The Gate of All Nations at Persepolis, the Achaemenid ceremonial capital. Alexander burned the place down in 330 BC, which was rude")
+
 Persian history is a model of cultural continuity and resilience. Every time it is beset by foreign invasions
 
 It is also the story of Persian chauvinism — the belief that its divinely ordained ruler, the *Shahanshah*, is the supreme ruler of the known world and the other nations are nothing more than tributaries or vassals.
+
+![Gold coin of Ardashir I](/blog/persia/ardashir-i.jpg "Ardashir I, founder of the Sassanian Empire, in solid gold. Look at that hat")
+
+![Naqsh-e Rostam](/blog/persia/naqsh-e-rostam.jpg "Naqsh-e Rostam, where the Achaemenid kings are buried. The Sassanians carved their own victories into the same cliff, just to make the point")
 
 
 ## Conflict
@@ -78,8 +90,16 @@ As the two most powerful empires in Western Eurasia at the time, Rome and Persia
 - [Byzantine–Sasanian War of 572–591](https://en.wikipedia.org/wiki/Byzantine%E2%80%93Sasanian_War_of_572%E2%80%93591)
 - [Byzantine–Sasanian War of 602–628](https://en.wikipedia.org/wiki/Byzantine%E2%80%93Sasanian_War_of_602%E2%80%93628)
 
+![Diagram of the Battle of Carrhae](/blog/persia/battle-of-carrhae.jpg "The Battle of Carrhae (53 BC). Spoiler: the box in the middle does not make it home")
+
+![Bust of Trajan](/blog/persia/trajan.jpg "Trajan, who marched all the way to the Persian Gulf in 116 AD. Then he died, and his successor gave it all back")
+
+![Arch of Septimius Severus](/blog/persia/arch-of-septimius-severus.jpg "The Arch of Septimius Severus in the Roman Forum, built to celebrate beating the Parthians. Rome loved a triumphal arch")
+
 
 Needless to say, Rome and Persia came to see each other as their most formidable rival over centuries of conflict, with one Persian Shah referring to the two nations as the "Two Eyes of the World." This geopolitical conflict was exacerbated by intense **cultural conflict** as well, with each empire viewing itself as the superior model for a nation to govern itself.
+
+![Taq Kasra at Ctesiphon, 1934](/blog/persia/taq-kasra.jpg "The Taq Kasra at Ctesiphon, the Sassanian capital, photographed in 1934. Still the largest single-span brick vault ever built")
 
 Rome was proud of what it saw as its superior moral values, such as liberty, law, and virtue.  
 Persia was proud of its ancient culture and history, centered on its native religion of Zoroastrianism.
@@ -111,12 +131,18 @@ The answer is... neither.
 
 The final of these fated wars, the [Byzantine-Sasanian War of 602-628](https://en.wikipedia.org/wiki/Byzantine%E2%80%93Sasanian_War_of_602%E2%80%93628), ended with both empires depleted and exhausted — at the worst possible time.
 
+![Gold coin of Khosrow II](/blog/persia/khosrow-ii.jpg "Khosrow II, whose armies made it all the way to the shores across from Constantinople")
+
+![Gold coin of Heraclius](/blog/persia/heraclius.jpg "Heraclius, who then marched into the heart of Persia and won the whole thing anyway. Classic Roman comeback")
+
 In the 7th century AD, an Arab prophet named Muhammad began preaching a new religion known today as Islam—and the newly
 unified Arab tribes launched a massive invasion against both empires. The Romans and Persians, both exhausted from years of warfare,
 could only mount a faint resistance as the newly established Islamic caliphate conquered most of their most valuable lands.
 
 The Sassanian Empire was completely destroyed by the invading Muslim armies of that time, while the Romans managed to survive for a few
 more centuries as a crippled shell of its former self, eventually shrinking to the point of only controlling its capital city of Constantinople.
+
+![Map of the Muslim conquest of Persia](/blog/persia/muslim-conquest-of-persia.png "The Rashidun conquest of Persia. Neither of the Two Eyes of the World saw this one coming")
 
 So what does this mean for the US and China?
 
@@ -125,3 +151,7 @@ My prediction is that the US-China conflict — which will undoubtedly dominate 
 The hard truth is: they simply cannot defeat each other.
 
 But again: this is all just the rambling of a random guy on the internet. Take it with a grain of salt.
+
+---
+
+*Image credits: Shapur relief by Diego Delso (CC BY-SA 4.0); Persepolis by Ggia (CC BY-SA 3.0); Naqsh-e Rostam by Maasaak (CC BY-SA 4.0); Arch of Septimius Severus by A. Hunter Wright (CC BY-SA 3.0); Khosrow II (CC BY-SA 3.0) and Heraclius (CC BY-SA 2.5) coins by Classical Numismatic Group; Diocletian by Dosseman (CC BY-SA 4.0). All others are in the public domain. Via Wikimedia Commons.*

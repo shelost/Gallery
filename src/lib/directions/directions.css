@@ -1,0 +1,243 @@
+/* Shared tokens and resets for /directions. Everything is scoped under .dir so
+   the global element styles in app.scss keep working on the rest of the site. */
+
+.dir {
+	--paper: #f6f4ef;
+	--paper-2: #ece9e1;
+	--ink: #1c1b18;
+	--ink-2: #5d5950;
+	--ink-3: #9a958a;
+	--rule: rgba(28, 27, 24, 0.12);
+	--accent: #ff004c;
+	--accent-soft: rgba(255, 0, 76, 0.12);
+	--sanguine: var(--accent);
+
+	/* One measure for every full-width band on a page. */
+	--page-max: 80rem;
+	--page-pad: clamp(1.5rem, 10vw, 11rem);
+
+	--ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+	--ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+	--ease-detent: cubic-bezier(0.34, 1.4, 0.64, 1);
+
+	--sans: 'Akt', 'Google Sans Flex', system-ui, sans-serif;
+	--serif: 'Instrument Serif', 'Newsreader', Georgia, serif;
+	--mono: 'Geist Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+	--korean: 'Gowun Batang', 'Instrument Serif', serif;
+
+	/* Hardware in the Braun manner: a white molded body, quiet grey print, and a recessed
+	   pale screen. Lit ink is the page's ink; the only colour is the accent. */
+	--te-body: #fbfaf8;
+	--te-body-2: #eceae5;
+	--te-key: #ffffff;
+	--te-key-ink: var(--ink);
+	--te-orange: var(--accent);
+	--te-silk: #9a958a;
+	--te-screen: #f0eee9;
+	--te-lit: var(--ink);
+	--te-dim: #a7a297;
+	--te-well: inset 0 1px 2px rgba(28, 27, 24, 0.1), inset 0 0 0 1px rgba(28, 27, 24, 0.04);
+
+	position: relative;
+	min-height: 100vh;
+	background: var(--paper);
+	color: var(--ink);
+	font-family: var(--sans);
+	font-size: 15px;
+	font-weight: 300;
+	line-height: 1.5;
+	letter-spacing: -0.015em;
+	-webkit-font-smoothing: antialiased;
+	text-rendering: optimizeLegibility;
+}
+
+.dir :where(h1, h2, h3, h4, h5, h6, p, span, li, label, figure, figcaption, blockquote, dl, dd, ul, ol) {
+	margin: 0;
+	padding: 0;
+	font: inherit;
+	color: inherit;
+	letter-spacing: inherit;
+	line-height: inherit;
+	text-align: inherit;
+	width: auto;
+}
+
+.dir :where(ul, ol) {
+	list-style: none;
+}
+
+.dir :where(a) {
+	color: inherit;
+	text-decoration: none;
+	padding: 0;
+	border: 0;
+	border-radius: 0;
+	background: none;
+	transition: none;
+}
+
+.dir :where(a):hover {
+	color: inherit;
+	text-decoration: none;
+	border: 0;
+	background: none;
+}
+
+.dir :where(button) {
+	all: unset;
+	box-sizing: border-box;
+	cursor: pointer;
+}
+
+.dir :where(a, button, [tabindex]):focus-visible {
+	outline: 2px solid var(--accent);
+	outline-offset: 2px;
+}
+
+.dir :where(img, video, canvas, svg) {
+	display: block;
+	max-width: 100%;
+}
+
+.dir ::selection {
+	background: var(--accent);
+	color: #fff;
+}
+
+/* Sfumato: text resolves out of a soft blur on load. Set --i on each element to stagger. */
+@keyframes dir-sfumato {
+	from {
+		opacity: 0;
+		filter: blur(4px);
+		transform: translateY(4px);
+	}
+}
+
+.dir .sfumato {
+	animation: dir-sfumato 500ms var(--ease-out) both;
+	animation-delay: calc(var(--i, 0) * 45ms);
+}
+
+/* Scroll-linked rise for content below the fold, where supported. */
+@keyframes dir-rise {
+	from {
+		opacity: 0;
+		transform: translateY(14px);
+	}
+}
+
+@supports (animation-timeline: view()) {
+	.dir .rise {
+		animation: dir-rise linear both;
+		animation-timeline: view();
+		animation-range: entry 0% entry 40%;
+	}
+}
+
+/* Hardware parts, shared by Instrument and the Frames modules. */
+.dir .silk {
+	font-family: var(--sans);
+	font-size: 11px;
+	font-weight: 400;
+	line-height: 1;
+	letter-spacing: 0.01em;
+	color: var(--te-silk);
+	user-select: none;
+}
+
+/* Re-key an LED to blink it once. */
+@keyframes dir-blink {
+	from {
+		opacity: 1;
+	}
+	to {
+		opacity: 0.3;
+	}
+}
+
+.dir .led {
+	width: 6px;
+	height: 6px;
+	border-radius: 50%;
+	background: var(--accent);
+	box-shadow: 0 0 0 2px var(--accent-soft);
+	animation: dir-blink 480ms var(--ease-out) both;
+}
+
+/* Keys sink and shrink while held. No color fade: they get pressed constantly. */
+.dir .key {
+	display: grid;
+	place-items: center;
+	width: 100%;
+	height: 2.6rem;
+	border-radius: 999px;
+	background: linear-gradient(180deg, #ffffff, #f1efea);
+	color: var(--te-key-ink);
+	font-family: var(--sans);
+	font-size: 12px;
+	font-weight: 400;
+	box-shadow:
+		inset 0 1px 0 #fff,
+		0 0 0 1px rgba(28, 27, 24, 0.07),
+		0 1px 1px rgba(28, 27, 24, 0.08),
+		0 4px 10px -4px rgba(28, 27, 24, 0.22);
+	transition:
+		transform 80ms var(--ease-out),
+		box-shadow 80ms var(--ease-out);
+	user-select: none;
+	touch-action: manipulation;
+	-webkit-tap-highlight-color: transparent;
+}
+
+.dir .key:active {
+	transform: translateY(1px) scale(0.96);
+	box-shadow:
+		inset 0 1px 2px rgba(28, 27, 24, 0.12),
+		0 0 0 1px rgba(28, 27, 24, 0.08);
+}
+
+.dir .key.active,
+.dir .key.lit {
+	background: var(--accent);
+	color: #fff;
+}
+
+.dir .key.small {
+	width: 2.6rem;
+	height: 2.1rem;
+	font-size: 15px;
+}
+
+.dir .key svg {
+	width: 16px;
+	height: 16px;
+	fill: currentColor;
+}
+
+/* Shared-element zoom used by Panels and Salon. */
+::view-transition-group(zoom) {
+	animation-duration: 340ms;
+	animation-timing-function: cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+::view-transition-old(zoom),
+::view-transition-new(zoom) {
+	height: 100%;
+	object-fit: cover;
+}
+
+::view-transition-group(root) {
+	animation-duration: 220ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.dir .sfumato,
+	.dir .rise,
+	.dir .led {
+		animation: none;
+	}
+
+	.dir .led {
+		opacity: 0.3;
+	}
+}
