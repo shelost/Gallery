@@ -2,125 +2,128 @@
 	import { onMount, untrack } from 'svelte';
 	import { MediaQuery } from 'svelte/reactivity';
 	import { Clicks } from './clicks.svelte.js';
+	import { Dial } from './dial.svelte.js';
 	import { buzz, tappable } from './haptics.js';
+	import { clamp } from './motion.js';
 
 	/**
-	 * The section bar as an iPod's click wheel, for phones. Running a thumb around the ring steps
-	 * through the sections a click at a time, and the page flies to keep up. MENU goes back to the
-	 * top; ⏮ and ⏭ step once, or scrub through the page while they're held; ⏯ sets the page
-	 * scrolling by itself, and turning the wheel while it plays sets how fast, the way an iPod sets
-	 * its volume. The middle names the section you're in and takes you back to its start.
+	 * The section bar as a big wheel for phones, dressed like an iPod's click wheel, with only its
+	 * top showing above the bottom of the screen. Its wedges ring a plain hub, each named along the
+	 * rim: the top of the page and then each section, and the one under the pointer is where the
+	 * page is. Turning it with a finger flies the page to each section as it comes under the
+	 * pointer; flicking it sets it spinning, ticking past each peg, and the page flies to the
+	 * section it will land on. Tapping a section turns the wheel to it, and scrolling the page turns
+	 * the wheel to match.
 	 * @type {{ sections: import('./sections.svelte.js').Sections }}
 	 */
 	let { sections } = $props();
+	const uid = $props.id();
 
-	/** A click of the wheel is a twelfth of a turn. */
-	const DETENT = Math.PI / 6;
-	/** How far a press can wander, in pixels, before it's a turn. */
+	/** How far a press can wander, in pixels, before it turns the wheel. */
 	const SLOP = 8;
-	/** Closer to the middle than this, in pixels, the angle is too jumpy to read. */
-	const HUB = 14;
-	/** How long ⏮ or ⏭ is held, in milliseconds, before it scrubs. */
-	const HOLD = 380;
-	/** The page scrolling by itself, in pixels a second: where it starts, a click's change, its limits. */
-	const CRUISE = { start: 280, step: 70, min: 70, max: 2100 };
-	/** Scrubbing starts at `from` pixels a second and gains `gain` a second, up to `to`. */
-	const SCRUB = { from: 900, gain: 2600, to: 4800 };
-	/**
-	 * Each kind of click: how it sounds, and how many milliseconds it buzzes on phones that can.
-	 * @type {Record<'step' | 'press' | 'end' | 'play', { voice: import('./clicks.svelte.js').Voice, buzz: number }>}
-	 */
-	const FEEL = {
-		step: { voice: 'detent', buzz: 8 },
-		press: { voice: 'key', buzz: 12 },
-		end: { voice: 'thunk', buzz: 26 },
-		play: { voice: 'latch', buzz: 16 }
-	};
+	/** How far, in degrees, a peg pushes the pointer aside before it slips past. */
+	const TILT = 26;
+	/** How near a peg comes, as a share of a wedge, before it meets the pointer. */
+	const CONTACT = 0.3;
+	/** How many milliseconds each peg buzzes, on phones that can. */
+	const BUZZ = 6;
+	/** The wedge for the top of the page, above the first section. */
+	const TOP = { id: 'top', label: 'About', numeral: '' };
+	/** How far out the plain hub reaches, with the rim at 100. The wedges, spokes and names ring it. */
+	const HUB = 64;
+	/** How far out the names sit, and outside them their numerals. */
+	const NAME = 74;
+	const NUMERAL = 81;
+	/** How far out the pegs between wedges sit. */
+	const PEG = 94;
+	/** How far round from the top, each way, the arcs the names follow reach, in radians. */
+	const SWEEP = 0.45 * Math.PI;
 
+	const wedges = $derived([TOP, ...sections.items]);
 	const clicks = new Clicks({ muted: false });
 	const phone = new MediaQuery('max-width: 768px');
+	const dial = new Dial(() => wedges.length, cross);
 
-	/** The key under a press, lit while it's held. */
-	let pressing = $state('');
-	let turning = $state(false);
-	/** Where the finger is on the ring while it turns, in radians clockwise from three o'clock. */
-	let angle = $state(0);
-	/** -1 or 1 while ⏮ or ⏭ is held down and scrubbing, else 0. */
-	let scrubbing = $state(0);
-	let cruise = $state(CRUISE.start);
-	/** What the readout in the middle of the screen says. @type {'section' | 'speed' | 'play' | 'pause' | 'scrub'} */
-	let readout = $state('section');
-	let shown = $state(false);
-
-	const playing = $derived(sections.running && scrubbing === 0);
-	const here = $derived(sections.items[sections.active] ?? { label: 'About', numeral: '' });
+	const selected = $derived(dial.selected);
+	/** The pointer's lean as a peg pushes past it, in degrees clockwise. */
+	const flap = $derived.by(() => {
+		const ahead = dial.way > 0 ? 0.5 - dial.phase : 0.5 + dial.phase;
+		return dial.way * TILT * clamp(1 - ahead / CONTACT, 0, 1);
+	});
+	/**
+	 * Each wedge's face, in a box 200 across with the middle of the wheel at 0, 0: its stretch of
+	 * the ring, the spoke and peg at its end, and how far round it is, in degrees, for its name.
+	 */
+	const shapes = $derived(
+		wedges.map((wedge, i) => {
+			const start = (i - 0.5) * dial.step;
+			const end = start + dial.step;
+			return {
+				...wedge,
+				sector: `M${point(start, HUB)}L${point(start, 100)}A100 100 0 0 1 ${point(end, 100)}L${point(end, HUB)}A${HUB} ${HUB} 0 0 0 ${point(start, HUB)}Z`,
+				spoke: `M${point(end, HUB)}L${point(end, 100)}`,
+				peg: at(end, PEG),
+				turn: (i * dial.step * 180) / Math.PI
+			};
+		})
+	);
+	/**
+	 * Each section's tap target, in the same units: centred across the ring, all but touching the
+	 * hub and the rim, and as wide as its wedge where that's narrowest, by the hub.
+	 */
+	const target = $derived({
+		reach: (HUB + 100) / 2,
+		depth: 100 - HUB - 2,
+		span: 2 * (HUB + 1) * Math.tan(dial.step / 2) - 1
+	});
 
 	/**
 	 * The press under way: its pointer, where it began, the middle of the wheel, the angle it was
-	 * last read at, how far it has turned since the last click, and whether it began on the hub.
-	 * @type {{ id: number, x: number, y: number, cx: number, cy: number, last: number, turned: number, hub: boolean } | null}
+	 * last at, and whether it has started turning the wheel.
+	 * @type {{ id: number, x: number, y: number, cx: number, cy: number, last: number, turning: boolean } | null}
 	 */
 	let grip = null;
-	/** Set once a press turns or scrubs, so the click the browser sends after it is let go. */
+	/** Set once a press turns the wheel, so the click the browser sends after it is let go. */
 	let spent = false;
-	/** Which end was last bumped, so pushing on against it doesn't keep bumping. */
-	let bumped = 0;
-	/** The speed to go back to when a scrub ends, or 0 to stop. */
-	let resume = 0;
-	/** @type {ReturnType<typeof setTimeout> | undefined} */
-	let hold;
-	/** @type {ReturnType<typeof setTimeout> | undefined} */
-	let fade;
+	/** Set a frame after mounting; until then the wheel is put where the page is, not turned there. */
+	let placed = false;
 
-	/** @param {keyof typeof FEEL} kind */
-	function feel(kind) {
-		clicks.tick(FEEL[kind].voice);
-		buzz(FEEL[kind].buzz);
+	/**
+	 * A point `r` out from the middle, `turn` radians clockwise from the top.
+	 * @param {number} turn
+	 * @param {number} r
+	 * @returns {[number, number]}
+	 */
+	function at(turn, r) {
+		return [+(r * Math.sin(turn)).toFixed(2), +(-r * Math.cos(turn)).toFixed(2)];
+	}
+
+	/** @param {number} turn @param {number} r */
+	function point(turn, r) {
+		return at(turn, r).join(' ');
 	}
 
 	/**
-	 * Puts the readout up, and takes it down a moment after the last change.
-	 * @param {typeof readout} what
+	 * An arc `r` out from the middle, over the top from `SWEEP` anticlockwise of it to `SWEEP`
+	 * clockwise, for a name to follow.
+	 * @param {number} r
 	 */
-	function show(what) {
-		readout = what;
-		shown = true;
-		clearTimeout(fade);
-		fade = setTimeout(() => (shown = false), what === 'section' ? 900 : 1100);
+	function arc(r) {
+		return `M${point(-SWEEP, r)}A${r} ${r} 0 0 1 ${point(SWEEP, r)}`;
 	}
 
 	/**
-	 * A click of the wheel, `way` 1 clockwise: the next section, or a notch faster while playing.
-	 * @param {number} way
+	 * A new wedge under the pointer: a peg's click and buzz, unless the wheel is only following the
+	 * page, and while a finger turns it, the page flies to that section.
+	 * @param {boolean} held
+	 * @param {boolean} quiet
 	 */
-	function detent(way) {
-		if (playing) {
-			const next = Math.max(CRUISE.min, Math.min(CRUISE.max, cruise + way * CRUISE.step));
-			if (next === cruise) return bump(way);
-			cruise = next;
-			sections.run(cruise);
-			feel('step');
-			return show('speed');
+	function cross(held, quiet) {
+		if (!quiet) {
+			clicks.tick('detent');
+			buzz(BUZZ);
 		}
-		if (!sections.step(way)) return bump(way);
-		bumped = 0;
-		feel('step');
-		show('section');
-	}
-
-	/** A thunk at the end of the line, once each time it's reached. @param {number} way */
-	function bump(way) {
-		if (bumped === way) return;
-		bumped = way;
-		feel('end');
-	}
-
-	/** The angle of a point around the middle of the wheel, and how far out it is. @param {PointerEvent} event */
-	function locate(event) {
-		if (!grip) return { theta: 0, reach: 0 };
-		const dx = event.clientX - grip.cx;
-		const dy = event.clientY - grip.cy;
-		return { theta: Math.atan2(dy, dx), reach: Math.hypot(dx, dy) };
+		if (held) sections.go(dial.selected - 1);
 	}
 
 	/** @param {PointerEvent & { currentTarget: HTMLElement }} event */
@@ -130,138 +133,90 @@
 		const box = event.currentTarget.getBoundingClientRect();
 		const cx = box.left + box.width / 2;
 		const cy = box.top + box.height / 2;
-		const dx = event.clientX - cx;
-		const dy = event.clientY - cy;
-		grip = { id: event.pointerId, x: event.clientX, y: event.clientY, cx, cy, last: Math.atan2(dy, dx), turned: 0, hub: Math.hypot(dx, dy) < HUB };
+		const last = Math.atan2(event.clientY - cy, event.clientX - cx);
+		grip = { id: event.pointerId, x: event.clientX, y: event.clientY, cx, cy, last, turning: false };
 		spent = false;
-		bumped = 0;
-		const key = event.target instanceof Element ? event.target.closest('[data-key]') : null;
-		pressing = key instanceof HTMLElement ? (key.dataset.key ?? '') : '';
-		if (pressing === 'prev' || pressing === 'next') {
-			const way = pressing === 'next' ? 1 : -1;
-			hold = setTimeout(() => scrub(way), HOLD);
-		}
 	}
 
 	/** @param {PointerEvent & { currentTarget: HTMLElement }} event */
 	function move(event) {
-		if (!grip || event.pointerId !== grip.id || scrubbing) return;
-		const { theta, reach } = locate(event);
-		if (!turning) {
-			if (Math.hypot(event.clientX - grip.x, event.clientY - grip.y) < SLOP) return;
-			clearTimeout(hold);
-			turning = true;
-			spent = true;
-			pressing = '';
+		if (!grip || event.pointerId !== grip.id) return;
+		if (!grip.turning) {
+			const dx = event.clientX - grip.x;
+			const dy = event.clientY - grip.y;
+			if (Math.hypot(dx, dy) < SLOP) return;
+			if (Math.abs(dy) > Math.abs(dx)) return void (grip = null);
+			grip.turning = spent = true;
 			event.currentTarget.setPointerCapture(event.pointerId);
+			dial.grab();
 		}
-		angle = theta;
-		if (reach < HUB) return void (grip.last = theta);
+		const theta = Math.atan2(event.clientY - grip.cy, event.clientX - grip.cx);
 		let delta = theta - grip.last;
 		if (delta > Math.PI) delta -= 2 * Math.PI;
 		if (delta < -Math.PI) delta += 2 * Math.PI;
 		grip.last = theta;
-		grip.turned += delta;
-		while (Math.abs(grip.turned) >= DETENT) {
-			const way = Math.sign(grip.turned);
-			grip.turned -= way * DETENT;
-			detent(way);
-		}
+		dial.turn(delta);
 	}
 
 	/** @param {PointerEvent} event */
 	function up(event) {
 		if (!grip || event.pointerId !== grip.id) return;
-		clicks.wake();
-		clearTimeout(hold);
-		if (scrubbing) unscrub();
+		const turned = grip.turning;
 		grip = null;
-		turning = false;
-		pressing = '';
-	}
-
-	/** Holding ⏮ or ⏭ flies through the page, faster the longer it's held. @param {number} way */
-	function scrub(way) {
-		spent = true;
-		resume = playing ? cruise : 0;
-		scrubbing = way;
-		sections.run(way * SCRUB.from, { gain: SCRUB.gain, limit: SCRUB.to });
-		feel('press');
-		show('scrub');
-	}
-
-	function unscrub() {
-		scrubbing = 0;
-		if (resume) sections.run(resume);
-		else sections.stop();
-		resume = 0;
+		clicks.wake();
+		if (!turned) return;
+		const landing = dial.release();
+		if (landing !== sections.active + 1) sections.go(landing - 1);
 	}
 
 	/**
-	 * A key's action, unless the press was a turn or a scrub. Keyboard clicks, which come with no
-	 * press, always count.
+	 * A tap on a section turns the wheel to it and flies the page there, unless the press turned
+	 * the wheel. Keyboard clicks, which come with no press, always count.
 	 * @param {MouseEvent} event
-	 * @param {() => void} action
+	 * @param {number} i
 	 */
-	function push(event, action) {
+	function choose(event, i) {
 		if (event.detail > 0 && spent) return;
-		action();
+		dial.aim(i);
+		sections.go(i - 1);
 	}
 
-	function top() {
-		if (sections.active < 0 && !sections.running) return bump(-1);
-		bumped = 0;
-		sections.go(-1);
-		feel('press');
-		show('section');
+	/**
+	 * Tabbing onto a section turns the wheel to show it.
+	 * @param {FocusEvent & { currentTarget: HTMLElement }} event
+	 * @param {number} i
+	 */
+	function peek(event, i) {
+		if (event.currentTarget.matches(':focus-visible')) dial.aim(i, { quiet: true });
 	}
 
-	/** @param {number} way */
-	function skip(way) {
-		if (!sections.step(way, { resume: true })) return bump(way);
-		bumped = 0;
-		feel('press');
-		show('section');
+	/** Tabbing away turns it back to where the page is. @param {FocusEvent & { currentTarget: HTMLElement }} event */
+	function leave(event) {
+		if (event.relatedTarget instanceof Node && event.currentTarget.contains(event.relatedTarget)) return;
+		dial.aim(sections.active + 1, { quiet: true });
 	}
 
-	function toggle() {
-		bumped = 0;
-		if (playing) {
-			sections.stop();
-			show('pause');
-		} else {
-			sections.run(cruise);
-			show('play');
-		}
-		feel('play');
-	}
-
-	/** Back to the start of the section you're in. */
-	function settle() {
-		sections.go(sections.active);
-		feel('press');
-		show('section');
-	}
-
-	/** Browsers only let sound start inside a tap, so any tap on a phone gets the wheel ready. */
+	/** Browsers only let sound start inside a tap, so any tap on a phone gets the wheel's clicks ready. */
 	function ready() {
 		if (phone.current) clicks.wake();
 	}
 
-	// Passing a section while the page runs by itself clicks, and says which.
+	// Scrolling the page turns the wheel to match, without a sound.
 	$effect(() => {
-		sections.active;
+		const i = sections.active + 1;
 		untrack(() => {
-			if (!sections.running) return;
-			feel('step');
-			show(scrubbing ? 'scrub' : 'section');
+			if (placed && phone.current) dial.aim(i, { quiet: true });
+			else dial.place(i);
 		});
 	});
 
-	onMount(() => () => {
-		clearTimeout(hold);
-		clearTimeout(fade);
-		clicks.dispose();
+	onMount(() => {
+		const frame = requestAnimationFrame(() => (placed = true));
+		return () => {
+			cancelAnimationFrame(frame);
+			dial.dispose();
+			clicks.dispose();
+		};
 	});
 </script>
 
@@ -270,334 +225,220 @@
 <nav
 	class="wheel"
 	aria-label="Sections"
-	data-steer
 	onpointerdown={down}
 	onpointermove={move}
 	onpointerup={up}
 	onpointercancel={up}
+	onfocusout={leave}
 >
-	<svg class="progress" viewBox="0 0 100 100" aria-hidden="true">
-		<circle class="track" cx="50" cy="50" r="48.6" />
-		<circle class="done" cx="50" cy="50" r="48.6" pathLength="1" stroke-dasharray="{sections.progress} 1" />
-	</svg>
-	<span class={['finger', turning && 'shown']} style:rotate="{angle}rad" aria-hidden="true"></span>
-
-	<button
-		type="button"
-		class={['key', 'menu', pressing === 'menu' && 'down']}
-		data-key="menu"
-		aria-label="Back to the top"
-		onclick={(event) => push(event, top)}
-		{@attach tappable}
+	<div
+		class="disc"
+		style:rotate="{dial.angle}rad"
+		style:--reach={target.reach}
+		style:--depth={target.depth}
+		style:--span={target.span}
 	>
-		MENU
-	</button>
-	<button
-		type="button"
-		class={['key', 'next', pressing === 'next' && 'down']}
-		data-key="next"
-		aria-label="Next section; hold to fast-forward"
-		onclick={(event) => push(event, () => skip(1))}
-		{@attach tappable}
-	>
-		<svg viewBox="0 0 20 12" aria-hidden="true"><path d="M1 1l7 5-7 5zM8.5 1l7 5-7 5zM16.5 1h2.5v10h-2.5z" /></svg>
-	</button>
-	<button
-		type="button"
-		class={['key', 'play', pressing === 'play' && 'down', playing && 'on']}
-		data-key="play"
-		aria-label="Scroll by itself"
-		aria-pressed={playing}
-		onclick={(event) => push(event, toggle)}
-		{@attach tappable}
-	>
-		<svg viewBox="0 0 20 12" aria-hidden="true"><path d="M1 1l7.5 5L1 11zM11.5 1H14v10h-2.5zM16.5 1H19v10h-2.5z" /></svg>
-	</button>
-	<button
-		type="button"
-		class={['key', 'prev', pressing === 'prev' && 'down']}
-		data-key="prev"
-		aria-label="Previous section; hold to rewind"
-		onclick={(event) => push(event, () => skip(-1))}
-		{@attach tappable}
-	>
-		<svg viewBox="0 0 20 12" aria-hidden="true"><path d="M19 1l-7 5 7 5zM11.5 1l-7 5 7 5zM3.5 1H1v10h2.5z" /></svg>
-	</button>
-	<button
-		type="button"
-		class={['center', pressing === 'center' && 'down']}
-		data-key="center"
-		aria-label="Back to the start of {here.label}"
-		onclick={(event) => push(event, settle)}
-		{@attach tappable}
-	>
-		{here.label}
-	</button>
-</nav>
-
-<div class={['readout', shown && 'shown']} aria-hidden="true">
-	{#if readout === 'speed'}
-		<span class="kicker">Speed</span>
-		<span class="meter"><span style:width="{((cruise - CRUISE.min) / (CRUISE.max - CRUISE.min)) * 100}%"></span></span>
-	{:else if readout === 'play' || readout === 'pause'}
-		<svg class="glyph" viewBox="0 0 14 16">
-			<path d={readout === 'play' ? 'M2 1l10 7-10 7z' : 'M2 1h3.5v14H2zM8.5 1H12v14H8.5z'} />
+		<svg class="face" viewBox="-100 -100 200 200" aria-hidden="true">
+			<defs>
+				<path id="{uid}-name" d={arc(NAME)} />
+				<path id="{uid}-numeral" d={arc(NUMERAL)} />
+			</defs>
+			{#each shapes as shape, i (shape.id)}
+				<path class={['wedge', i % 2 === 1 && 'odd', i === selected && 'lit']} d={shape.sector} />
+			{/each}
+			<circle class="hub" r={HUB} />
+			{#each shapes as shape, i (shape.id)}
+				<path class="spoke" d={shape.spoke} />
+				<circle class="peg" cx={shape.peg[0]} cy={shape.peg[1]} r="1.4" />
+				<g class={['label', i === selected && 'on']} transform="rotate({shape.turn})">
+					<text class="name"><textPath href="#{uid}-name" startOffset="50%">{shape.label}</textPath></text>
+					{#if shape.numeral}
+						<text class="numeral"><textPath href="#{uid}-numeral" startOffset="50%">{shape.numeral}</textPath></text>
+					{/if}
+				</g>
+			{/each}
 		</svg>
-		<span class="kicker">{readout === 'play' ? 'Scrolling' : 'Paused'}</span>
-	{:else}
-		{#if readout === 'scrub'}
-			<span class="kicker">{scrubbing < 0 ? 'Rewind' : 'Fast-forward'}</span>
-		{:else if here.numeral}
-			<span class="kicker">{here.numeral}</span>
-		{/if}
-		<span class="name">{here.label}</span>
-	{/if}
-</div>
+		{#each wedges as wedge, i (wedge.id)}
+			<button
+				type="button"
+				class="slot"
+				style:--turn="{i * dial.step}rad"
+				aria-current={i === sections.active + 1 ? 'true' : undefined}
+				onclick={(event) => choose(event, i)}
+				onfocus={(event) => peek(event, i)}
+				{@attach tappable}
+			>
+				<span class="visually-hidden">{wedge.numeral} {wedge.label}</span>
+			</button>
+		{/each}
+	</div>
+	<svg class="pointer" style:rotate="{flap}deg" viewBox="0 0 16 26" aria-hidden="true">
+		<path d="M8 0a8 8 0 0 1 8 8c0 5-4.4 10.6-8 18C4.4 18.6 0 13 0 8a8 8 0 0 1 8-8z" />
+		<circle cx="8" cy="8" r="2.4" />
+	</svg>
+</nav>
 
 <style>
 	.wheel {
+		--size: min(calc(100vw - 1.25rem), 27rem);
+		--peek: calc(var(--size) * 0.34);
+		/* One unit of the face's viewBox, which is 200 across. */
+		--unit: calc(var(--size) / 200);
 		position: fixed;
 		left: 50%;
-		bottom: max(12px, env(safe-area-inset-bottom));
+		bottom: calc(var(--peek) + env(safe-area-inset-bottom) - var(--size));
 		z-index: 90;
 		display: none;
 		box-sizing: border-box;
-		width: 8rem;
+		width: var(--size);
 		aspect-ratio: 1;
 		border: 1px solid rgba(255, 255, 255, 0.1);
 		border-radius: 50%;
 		translate: -50% 0;
-		background: radial-gradient(circle at 50% 30%, rgba(46, 46, 48, 0.94), rgba(8, 8, 9, 0.94) 72%);
+		background: radial-gradient(circle at 50% 20%, rgba(50, 50, 53, 0.96), rgba(12, 12, 13, 0.96) 56%);
 		box-shadow:
-			-12px 32px 48px rgba(0, 0, 0, 0.45),
-			inset 0 1px 0 rgba(255, 255, 255, 0.1);
+			0 -14px 44px rgba(0, 0, 0, 0.3),
+			inset 0 1px 0 rgba(255, 255, 255, 0.14);
 		backdrop-filter: blur(16px);
 		-webkit-backdrop-filter: blur(16px);
-		touch-action: none;
+		touch-action: pan-y;
 		user-select: none;
 		-webkit-user-select: none;
 		-webkit-touch-callout: none;
 		-webkit-tap-highlight-color: transparent;
 	}
 
-	.progress {
-		position: absolute;
-		inset: 0;
-		rotate: -90deg;
-		overflow: visible;
-		pointer-events: none;
-	}
-
-	.progress circle {
-		fill: none;
-		stroke-width: 1.3;
-	}
-
-	.track {
-		stroke: rgba(255, 255, 255, 0.07);
-	}
-
-	.done {
-		stroke: var(--accent);
-	}
-
-	.finger {
-		position: absolute;
-		inset: 0;
-		opacity: 0;
-		pointer-events: none;
-		transition: opacity 160ms ease;
-	}
-
-	.finger.shown {
-		opacity: 1;
-	}
-
-	.finger::after {
+	.wheel::after {
 		content: '';
 		position: absolute;
-		top: calc(50% - 0.22rem);
-		left: calc(50% - 0.22rem);
-		width: 0.44rem;
-		height: 0.44rem;
+		inset: 0;
 		border-radius: 50%;
-		translate: 2.85rem 0;
-		background: var(--accent);
-		box-shadow: 0 0 10px 2px rgba(255, 0, 76, 0.55);
-	}
-
-	.key,
-	.center {
-		position: absolute;
-		display: grid;
-		place-items: center;
-		margin: 0;
-		padding: 0;
-		border: 0;
-		border-radius: 50%;
-		background: none;
-		box-shadow: none;
-		opacity: 1;
-		color: rgba(255, 255, 255, 0.62);
-		font-family: var(--sans);
-		cursor: pointer;
-		-webkit-tap-highlight-color: transparent;
-		transition:
-			color 120ms ease,
-			scale 120ms ease;
-	}
-
-	.key {
-		width: 2.5rem;
-		height: 2.5rem;
-	}
-
-	.key svg {
-		width: 0.95rem;
-		fill: currentColor;
-	}
-
-	.menu {
-		top: 0.15rem;
-		left: calc(50% - 1.25rem);
-		font-size: 0.56rem;
-		font-weight: 600;
-		letter-spacing: 0.1em;
-	}
-
-	.next {
-		top: calc(50% - 1.25rem);
-		right: 0.15rem;
-	}
-
-	.play {
-		bottom: 0.15rem;
-		left: calc(50% - 1.25rem);
-	}
-
-	.prev {
-		top: calc(50% - 1.25rem);
-		left: 0.15rem;
-	}
-
-	.key.down,
-	.play.on {
-		color: var(--accent);
-	}
-
-	.center {
-		top: calc(50% - 1.7rem);
-		left: calc(50% - 1.7rem);
-		width: 3.4rem;
-		height: 3.4rem;
-		padding: 0.3rem;
-		overflow: hidden;
-		background: linear-gradient(180deg, #232325, #0e0e0f);
-		box-shadow:
-			0 0 0 1px rgba(255, 255, 255, 0.08),
-			0 3px 8px rgba(0, 0, 0, 0.55),
-			inset 0 1px 0 rgba(255, 255, 255, 0.07);
-		color: #fff;
-		font-size: 0.58rem;
-		line-height: 1.15;
-		letter-spacing: -0.01em;
-		text-align: center;
-	}
-
-	.center.down {
-		scale: 0.95;
-	}
-
-	.key:focus-visible,
-	.center:focus-visible {
-		outline: 2px solid var(--accent);
-		outline-offset: -2px;
-	}
-
-	.readout {
-		position: fixed;
-		top: 44%;
-		left: 50%;
-		z-index: 95;
-		display: none;
-		justify-items: center;
-		gap: 0.45rem;
-		min-width: 9rem;
-		max-width: calc(100vw - 4rem);
-		box-sizing: border-box;
-		padding: 0.95rem 1.4rem 1.05rem;
-		border-radius: 1.1rem;
-		translate: -50% -50%;
-		background: rgba(0, 0, 0, 0.8);
-		box-shadow: 0 18px 40px rgba(0, 0, 0, 0.3);
-		backdrop-filter: blur(14px);
-		-webkit-backdrop-filter: blur(14px);
-		color: #fff;
-		text-align: center;
-		opacity: 0;
-		scale: 0.94;
+		background: radial-gradient(70% 30% at 50% 0%, rgba(255, 255, 255, 0.09), transparent);
 		pointer-events: none;
-		transition:
-			opacity 160ms ease,
-			scale 160ms ease;
 	}
 
-	.readout.shown {
-		opacity: 1;
-		scale: 1;
+	.disc {
+		position: absolute;
+		inset: 0;
+		border-radius: 50%;
+		will-change: rotate;
 	}
 
-	.kicker {
-		color: rgba(255, 255, 255, 0.55);
-		font-family: var(--mono);
-		font-size: 0.62rem;
-		letter-spacing: 0.14em;
-		text-transform: uppercase;
+	.face {
+		position: absolute;
+		inset: 0;
+		width: 100%;
+		height: 100%;
+		overflow: visible;
+	}
+
+	.wedge {
+		fill: transparent;
+		transition: fill 160ms ease;
+	}
+
+	.wedge.odd {
+		fill: rgba(255, 255, 255, 0.028);
+	}
+
+	.wedge.lit {
+		fill: color-mix(in srgb, var(--accent) 16%, transparent);
+	}
+
+	.hub,
+	.spoke {
+		fill: none;
+		stroke: rgba(255, 255, 255, 0.08);
+		stroke-width: 1;
+		vector-effect: non-scaling-stroke;
+	}
+
+	.hub {
+		fill: rgba(0, 0, 0, 0.22);
+	}
+
+	.peg {
+		fill: rgba(255, 255, 255, 0.4);
+	}
+
+	.label {
+		fill: rgba(255, 255, 255, 0.5);
+		text-anchor: middle;
+		transition: fill 160ms ease;
+	}
+
+	.label.on {
+		fill: #fff;
 	}
 
 	.name {
 		font-family: var(--sans);
-		font-size: 1.55rem;
-		line-height: 1.1;
-		letter-spacing: -0.03em;
+		font-size: 5.6px;
+		font-weight: 600;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
 	}
 
-	.glyph {
-		width: 1.5rem;
-		fill: #fff;
+	.numeral {
+		fill: rgba(255, 255, 255, 0.32);
+		font-family: var(--mono);
+		font-size: 4.3px;
+		letter-spacing: 0.08em;
 	}
 
-	.meter {
-		width: 7.5rem;
-		height: 0.32rem;
-		overflow: hidden;
-		border-radius: 1rem;
-		background: rgba(255, 255, 255, 0.18);
+	.label.on .numeral {
+		fill: var(--accent);
 	}
 
-	.meter span {
-		display: block;
-		height: 100%;
-		background: var(--accent);
-		transition: width 120ms ease;
+	.slot {
+		position: absolute;
+		top: calc(50% - var(--depth) * var(--unit) / 2);
+		left: calc(50% - var(--span) * var(--unit) / 2);
+		width: calc(var(--span) * var(--unit));
+		height: calc(var(--depth) * var(--unit));
+		margin: 0;
+		padding: 0;
+		border: 0;
+		border-radius: 0.7rem;
+		transform: rotate(var(--turn)) translateY(calc(var(--reach) * var(--unit) * -1));
+		background: none;
+		box-shadow: none;
+		transition: none;
+		-webkit-tap-highlight-color: transparent;
+	}
+
+	.slot:focus-visible {
+		outline: 2px solid var(--accent);
+		outline-offset: -2px;
+	}
+
+	.pointer {
+		position: absolute;
+		top: -12px;
+		left: calc(50% - 8px);
+		z-index: 1;
+		width: 16px;
+		height: 26px;
+		overflow: visible;
+		transform-origin: 8px 8px;
+		fill: var(--accent);
+		filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.45));
+		pointer-events: none;
+	}
+
+	.pointer circle {
+		fill: rgba(0, 0, 0, 0.35);
 	}
 
 	@media (max-width: 768px) {
 		.wheel {
 			display: block;
 		}
-
-		.readout {
-			display: grid;
-		}
 	}
 
 	@media (prefers-reduced-motion: reduce) {
-		.key,
-		.center,
-		.finger,
-		.readout,
-		.meter span {
+		.wedge,
+		.label {
 			transition: none;
 		}
 	}

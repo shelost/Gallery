@@ -4,10 +4,10 @@
 	import { Sections } from './sections.svelte.js';
 
 	/**
-	 * The page's sections to steer by: a floating bar on wider screens, and on phones an iPod's
-	 * click wheel in its place. On the bar, the highlight slides to whichever section the reader
-	 * has reached, and stays hidden above the first; a fainter marker follows the label under the
-	 * pointer, and clicking a label glides there.
+	 * The page's sections to steer by: a floating bar on wider screens, and on phones a big wheel
+	 * in its place. On the bar, the highlight slides to whichever section the reader has reached,
+	 * and stays hidden above the first; a fainter marker follows the label under the pointer, and
+	 * clicking a label glides there.
 	 * @type {{ items: import('./sections.svelte.js').Item[] }}
 	 */
 	let { items } = $props();

@@ -76,6 +76,23 @@ export function spring(t) {
 }
 
 /**
+ * One step of a critically damped spring, exact for a step of any length: it closes on `target`
+ * without bouncing, carrying whatever speed it already had. `rate` is how quickly, per second.
+ * @param {number} x
+ * @param {number} velocity
+ * @param {number} target
+ * @param {number} rate
+ * @param {number} dt seconds
+ * @returns {[number, number]} the new position and velocity
+ */
+export function springTo(x, velocity, target, rate, dt) {
+	const offset = x - target;
+	const decay = Math.exp(-rate * dt);
+	const pull = velocity + rate * offset;
+	return [target + (offset + pull * dt) * decay, (velocity - rate * pull * dt) * decay];
+}
+
+/**
  * Runs a state update inside a View Transition when the browser supports it
  * and the visitor has not asked for reduced motion.
  * @param {() => void} update

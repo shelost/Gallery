@@ -1,9 +1,10 @@
 import { prefersReducedMotion } from 'svelte/motion';
+import { clamp, springTo } from './motion.js';
 
 /** @typedef {{ id: string, label: string, numeral?: string }} Item */
 
-/** How far below the top of the viewport a section counts as reached. */
-const REACH = 200;
+/** How far below where a glide parks it a section's top can be and still count as reached. */
+const REACH = 80;
 /** How fast a glide closes in, per second: it lands in about half a second, however far. */
 const STIFFNESS = 13;
 /** Events that mean the reader is taking the page back. */
@@ -13,31 +14,27 @@ const TAKEOVERS = ['wheel', 'touchstart', 'pointerdown', 'keydown'];
 const bottom = () => document.documentElement.scrollHeight - window.innerHeight;
 
 /**
- * The page's sections as something to steer by, shared by the section bar and the click wheel:
- * which one the reader has reached, a glide that flies the page to any of them and changes course
- * mid-flight without a jolt, and a run that keeps the page scrolling by itself. Either lets go the
- * moment the reader scrolls, taps or types anywhere outside the controls marked `data-steer`.
+ * The page's sections as something to steer by, shared by the section bar and the wheel: which
+ * one the reader has reached, and a glide that flies the page to any of them and changes course
+ * mid-flight without a jolt. A glide lets go the moment the reader scrolls, taps or types
+ * anywhere outside the controls marked `data-steer`.
  */
 export class Sections {
 	/** The section reached, or -1 above the first. A glide holds its destination until it lands. */
 	active = $state(-1);
-	/** How far down the page the reader is, from 0 to 1. */
-	progress = $state(0);
-	/** Pixels a second the page is running at by itself, down for positive, or 0. */
-	speed = $state(0);
 
 	/** @type {() => Item[]} */
 	#items;
-	/** @type {'still' | 'glide' | 'run'} */
-	#mode = 'still';
+	/**
+	 * Where the last glide parked the page, and for which section. Until the page moves, that
+	 * section stands, even where a short one leaves the next one's top in reach too.
+	 * @type {{ y: number, i: number } | null}
+	 */
+	#parked = null;
+	#gliding = false;
 	#y = 0;
 	#velocity = 0;
 	#target = 0;
-	/** How much faster a run gets each second, up to `#limit`. */
-	#gain = 0;
-	#limit = Infinity;
-	/** The speed to run on at once a glide lands, or 0. */
-	#resume = 0;
 	#frame = 0;
 	#then = 0;
 
@@ -50,83 +47,56 @@ export class Sections {
 		return this.#items();
 	}
 
-	get running() {
-		return this.speed !== 0;
-	}
-
-	/** The last section whose top has passed `REACH`, or -1; at the very bottom, the last one. */
+	/** The last section whose top is within `REACH` of where it parks, or -1; at the very bottom, the last one. */
 	reached() {
 		const items = this.items;
 		if (window.scrollY > 0 && window.scrollY >= bottom() - 2) return items.length - 1;
 		for (let i = items.length - 1; i >= 0; i--) {
 			const section = document.getElementById(items[i].id);
-			if (section && section.getBoundingClientRect().top <= REACH) return i;
+			if (!section) continue;
+			const margin = parseFloat(getComputedStyle(section).scrollMarginTop) || 0;
+			if (section.getBoundingClientRect().top - margin <= REACH) return i;
 		}
 		return -1;
 	}
 
 	track = () => {
-		const end = bottom();
-		this.progress = end > 0 ? Math.min(1, Math.max(0, window.scrollY / end)) : 0;
-		if (this.#mode !== 'glide') this.active = this.reached();
+		if (this.#gliding) return;
+		if (this.#parked && Math.abs(window.scrollY - this.#parked.y) < 2) {
+			this.active = this.#parked.i;
+			return;
+		}
+		this.#parked = null;
+		this.active = this.reached();
 	};
 
 	/**
 	 * Flies the page to a section, or to the top for -1. Asked again mid-flight, it changes course
-	 * without losing speed; with `resume`, a run under way picks back up once it lands.
+	 * without losing speed.
 	 * @param {number} i
-	 * @param {{ resume?: boolean }} [options]
 	 */
-	go(i, { resume = false } = {}) {
-		const speed = this.speed;
+	go(i) {
 		this.active = i;
-		this.speed = 0;
-		this.#resume = resume ? speed : 0;
 		const target = this.#top(i);
 		if (prefersReducedMotion.current) {
 			this.#halt();
+			this.#parked = { y: target, i };
 			window.scrollTo({ top: target, behavior: 'instant' });
-			if (this.#resume) this.run(this.#resume);
 			return;
 		}
-		if (this.#mode !== 'glide') this.#velocity = speed;
+		this.#parked = null;
 		this.#target = target;
-		this.#mode = 'glide';
-		this.#start();
-	}
-
-	/**
-	 * A section on or back; false at either end.
-	 * @param {number} way
-	 * @param {{ resume?: boolean }} [options]
-	 */
-	step(way, options) {
-		const next = Math.max(-1, Math.min(this.items.length - 1, this.active + way));
-		if (next === this.active) return false;
-		this.go(next, options);
-		return true;
-	}
-
-	/**
-	 * Keeps the page scrolling by itself at `speed` pixels a second, gaining `gain` a second up
-	 * to `limit`, until it reaches the end it's heading for.
-	 * @param {number} speed
-	 * @param {{ gain?: number, limit?: number }} [options]
-	 */
-	run(speed, { gain = 0, limit = Infinity } = {}) {
-		this.speed = speed;
-		this.#gain = gain;
-		this.#limit = limit;
-		this.#resume = 0;
-		this.#mode = 'run';
-		this.#start();
+		if (this.#gliding) return;
+		this.#gliding = true;
+		this.#y = window.scrollY;
+		this.#velocity = 0;
+		this.#then = performance.now();
+		this.#frame = requestAnimationFrame(this.#tick);
 	}
 
 	/** Lets go of the page wherever it is. */
 	stop() {
 		this.#halt();
-		this.speed = 0;
-		this.#resume = 0;
 		this.track();
 	}
 
@@ -134,7 +104,7 @@ export class Sections {
 	listen() {
 		/** @param {Event} event */
 		const takeover = (event) => {
-			if (this.#mode === 'still') return;
+			if (!this.#gliding) return;
 			if (event.target instanceof Element && event.target.closest('[data-steer]')) return;
 			this.stop();
 		};
@@ -153,54 +123,28 @@ export class Sections {
 		const section = i < 0 ? null : document.getElementById(this.items[i]?.id ?? '');
 		if (!section) return 0;
 		const margin = parseFloat(getComputedStyle(section).scrollMarginTop) || 0;
-		return Math.max(0, Math.min(bottom(), section.getBoundingClientRect().top + window.scrollY - margin));
-	}
-
-	#start() {
-		if (this.#frame) return;
-		this.#y = window.scrollY;
-		this.#then = performance.now();
-		this.#frame = requestAnimationFrame(this.#tick);
+		return clamp(section.getBoundingClientRect().top + window.scrollY - margin, 0, bottom());
 	}
 
 	#halt() {
 		cancelAnimationFrame(this.#frame);
 		this.#frame = 0;
-		this.#mode = 'still';
+		this.#gliding = false;
 	}
 
-	/**
-	 * A frame of motion. A glide is a critically damped spring, stepped exactly, so it neither
-	 * overshoots nor jolts when its target moves; a run moves at its speed.
-	 * @param {number} now
-	 */
+	/** @param {number} now */
 	#tick = (now) => {
-		const dt = Math.max(0, Math.min(0.05, (now - this.#then) / 1000));
+		const dt = clamp((now - this.#then) / 1000, 0, 0.05);
 		this.#then = now;
-		const end = bottom();
-		let y = this.#y;
-		if (this.#mode === 'glide') {
-			const target = Math.min(this.#target, end);
-			const offset = y - target;
-			const decay = Math.exp(-STIFFNESS * dt);
-			const pull = this.#velocity + STIFFNESS * offset;
-			y = target + (offset + pull * dt) * decay;
-			this.#velocity = (this.#velocity - STIFFNESS * pull * dt) * decay;
-			if (Math.abs(y - target) < 0.5 && Math.abs(this.#velocity) < 20) {
-				y = target;
-				this.#mode = 'still';
-				if (this.#resume) this.run(this.#resume);
-			}
-		} else if (this.#mode === 'run') {
-			this.speed = Math.sign(this.speed) * Math.min(this.#limit, Math.abs(this.speed) + this.#gain * dt);
-			y = Math.min(end, Math.max(0, y + this.speed * dt));
-			if ((this.speed < 0 && y <= 0) || (this.speed > 0 && y >= end)) {
-				this.#mode = 'still';
-				this.speed = 0;
-			}
+		const target = Math.min(this.#target, bottom());
+		[this.#y, this.#velocity] = springTo(this.#y, this.#velocity, target, STIFFNESS, dt);
+		const landed = Math.abs(this.#y - target) < 0.5 && Math.abs(this.#velocity) < 20;
+		if (landed) {
+			this.#y = target;
+			this.#parked = { y: target, i: this.active };
 		}
-		this.#y = y;
-		window.scrollTo({ top: y, behavior: 'instant' });
-		this.#frame = this.#mode === 'still' ? 0 : requestAnimationFrame(this.#tick);
+		window.scrollTo({ top: this.#y, behavior: 'instant' });
+		if (landed) this.#halt();
+		else this.#frame = requestAnimationFrame(this.#tick);
 	};
 }
