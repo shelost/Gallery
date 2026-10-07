@@ -1,7 +1,7 @@
 <script>
 	import { onMount } from 'svelte';
 	import { prefersReducedMotion } from 'svelte/motion';
-	import { HOME, Now, dayOfYear, loadWeather, moon, pad, relativeTo, wallClock } from '$lib/directions/today.js';
+	import { HOME, MONTHS, Now, dayOfYear, loadWeather, moon, pad, relativeTo, wallClock } from '$lib/directions/today.js';
 	import Heading from './Heading.svelte';
 
 	/** @typedef {import('$lib/directions/today.js').Weather} Weather */
@@ -14,7 +14,6 @@
 	let { hour12 = $bindable(true) } = $props();
 
 	const DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-	const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 	const ELSEWHERE = [
 		{ place: 'Daejeon', zone: 'Asia/Seoul' },
 		{ place: 'London', zone: 'Europe/London' },

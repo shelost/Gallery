@@ -3,12 +3,15 @@ import { createSubscriber } from 'svelte/reactivity';
 /** Where I live, for the clock and the weather. */
 export const HOME = { place: 'Ithaca, NY', zone: 'America/New_York', latitude: 42.444, longitude: -76.5019 };
 
+/** Month names, January first; the first three letters make the short ones. */
+export const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
 /** I was born on 23 August 2003 in Daejeon. */
-export const BIRTHDAY = { label: '23 Aug 2003', year: 2003 };
+export const BIRTHDAY = { label: '23 Aug 2003', year: 2003, month: 8, day: 23 };
 
 /** Midnight on my birthday in Daejeon (UTC+9), in a given year. @param {number} year */
 function birthday(year) {
-	return Date.UTC(year, 7, 22, 15);
+	return Date.UTC(year, BIRTHDAY.month - 1, BIRTHDAY.day, -9);
 }
 
 /** Two digits, the way clocks and dates show them. @param {number} value */

@@ -6,6 +6,7 @@
 	import {
 		BIRTHDAY,
 		HOME,
+		MONTHS,
 		Now,
 		age,
 		dayOfYear,
@@ -17,8 +18,6 @@
 	} from './today.js';
 
 	/** @typedef {import('./today.js').Fact} Fact */
-
-	const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
 	/** Tenths of a second keep the age's last digits moving; the clock only needs its seconds. */
 	const fine = new Now(100);
@@ -36,7 +35,7 @@
 	const decimals = $derived(prefersReducedMotion.current ? 2 : 9);
 	const years = $derived(life ? life.years.toFixed(decimals).split('.') : ['--', '-'.repeat(decimals)]);
 	const lunar = $derived(time === null ? null : moon(time));
-	const date = $derived(clock ? `${MONTHS[clock.month - 1]} ${clock.day}` : '');
+	const date = $derived(clock ? `${MONTHS[clock.month - 1].slice(0, 3)} ${clock.day}` : '');
 	/** Wikipedia's anniversaries, then how far through the year we are. */
 	const reel = $derived.by(() => {
 		if (!clock) return facts;

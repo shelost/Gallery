@@ -3,6 +3,8 @@
  * src/routes/+page.svelte so every direction shows the same real work.
  */
 
+import { MONTHS } from './today.js';
+
 /**
  * @typedef {{ kind: 'image' | 'video' | 'graph', src?: string, poster?: string, alt?: string, fit?: 'cover' | 'contain' }} Media
  * @typedef {{
@@ -729,8 +731,6 @@ export function isDirection(path) {
 	return path === '/directions' || DIRECTIONS.some((direction) => direction.href === path);
 }
 
-const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-
 /**
  * The latest year a work touches; an open range ('2026–') is ongoing and an empty year sinks.
  * A full date ('Jul 9, 2026') counts its month too, so works from the same year still sort.
@@ -741,7 +741,7 @@ function recency(year) {
 	const years = year.match(/\d{2,4}/g);
 	if (!years) return -Infinity;
 	const last = years[years.length - 1];
-	const month = Math.max(0, MONTHS.indexOf(year.slice(0, 3)));
+	const month = Math.max(0, MONTHS.findIndex((name) => name.startsWith(year.slice(0, 3))));
 	return (last.length === 2 ? Number(years[0].slice(0, 2) + last) : Number(last)) + month / 12;
 }
 
@@ -768,6 +768,19 @@ export function findWork(id) {
 export const GROUPS = SECTIONS.map((section) => ({ ...section, works: worksIn(section.id) })).filter(
 	(group) => group.works.length > 0
 );
+
+/**
+ * School before Cornell, oldest first: the grade I started each one in, and my first and last
+ * months there as [year, month]. Grades go up a year after each start, so Korea, on the Korean
+ * school year, moves up in March.
+ * @type {{ id: string, title: string, grade: number, from: [number, number], until: [number, number] }[]}
+ */
+export const SCHOOLS = [
+	{ id: 'belle-sherman', title: 'Belle Sherman', grade: 1, from: [2009, 9], until: [2011, 6] },
+	{ id: 'horseheads', title: 'Horseheads', grade: 3, from: [2011, 9], until: [2016, 6] },
+	{ id: 'korea', title: 'Korea', grade: 8, from: [2017, 3], until: [2018, 7] },
+	{ id: 'ithaca-high', title: 'Ithaca High School', grade: 10, from: [2018, 9], until: [2021, 6] }
+];
 
 /** Where I've been, oldest first. @type {Job[]} */
 export const LIFE = [

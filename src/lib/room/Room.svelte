@@ -7,7 +7,7 @@
 	import Artifact from '$lib/directions/Artifact.svelte';
 	import { SHELVES } from '$lib/directions/content.js';
 	import { embed } from '$lib/directions/music.js';
-	import { BIRTHDAY, HOME, Now, age, loadFacts, pad, wallClock } from '$lib/directions/today.js';
+	import { BIRTHDAY, HOME, MONTHS, Now, age, loadFacts, pad, wallClock } from '$lib/directions/today.js';
 	import { MONO, SANS, block, loadCoverFonts, loadCovers } from '$lib/shelf/covers.js';
 	import BrushBoard from './BrushBoard.svelte';
 	import ClockSheet from './ClockSheet.svelte';
@@ -39,7 +39,6 @@
 	 */
 	let { area } = $props();
 
-	const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 	const INK = '#1c1b18';
 	const ACCENT = '#ff004c';
 
@@ -226,7 +225,7 @@
 		ctx.textAlign = 'left';
 		ctx.font = `500 ${h * 0.065}px ${SANS}`;
 		ctx.fillStyle = 'rgba(28, 27, 24, 0.5)';
-		ctx.fillText(`ON THIS DAY${clock ? ` · ${MONTHS[clock.month - 1].toUpperCase()} ${clock.day}` : ''}`, pad, pad + h * 0.05);
+		ctx.fillText(`ON THIS DAY${clock ? ` · ${MONTHS[clock.month - 1].slice(0, 3).toUpperCase()} ${clock.day}` : ''}`, pad, pad + h * 0.05);
 		if (!shown) {
 			ctx.fillStyle = INK;
 			ctx.font = `400 ${h * 0.09}px ${SANS}`;
@@ -375,7 +374,7 @@
 		{:else if opened === 'tapes'}
 			<Showcase pieces={TAPES} bind:selected kicker="Listen" title="Podcasts" hint="The ones I keep on in the background." action="Listen" object={artifact} />
 		{:else if opened === 'tv'}
-			<FactsSheet {facts} bind:fact date="{MONTHS[today.month - 1]} {today.day}" />
+			<FactsSheet {facts} bind:fact date="{MONTHS[today.month - 1].slice(0, 3)} {today.day}" />
 		{:else if opened === 'clock'}
 			<ClockSheet bind:hour12 />
 		{:else if opened === 'age'}
