@@ -1,161 +1,88 @@
 <script>
-	import { prefersReducedMotion } from 'svelte/motion';
-	import { fly } from 'svelte/transition';
-	import { cubicOut } from 'svelte/easing';
-	import Explainer from './Explainer.svelte';
+	import Showcase from './Showcase.svelte';
 
 	/**
-	 * The books spine-out on a shelf, the way Stripe Press shelves its catalog. Pulling one out
-	 * turns it to its cover and opens room for it in the row; the explainer comes up beneath.
-	 * @type {{ books: import('$lib/directions/content.js').ShelfItem[], selected?: number | null }}
+	 * The books, spine out and at their real sizes, the way Stripe Press shows its catalog: the
+	 * thick ones are thick because they're long. Choosing one turns it to its cover.
+	 * @type {{ books: import('$lib/shelf/layout.js').ItemPiece[], selected?: number | null }}
 	 */
 	let { books, selected = $bindable(null) } = $props();
 
-	const book = $derived(selected === null ? null : books[selected]);
+	/** A length in meters, at the shelf's scale (`--per-meter`). @param {number} meters */
+	const real = (meters) => `calc(${meters.toFixed(4)} * var(--per-meter))`;
 
-	/** @param {number} i */
-	function choose(i) {
-		selected = selected === i ? null : i;
-	}
+	/** The author's surname, for the foot of the spine. @param {string} by */
+	const surname = (by) => by.split(/\s*&\s*|\s+and\s+/)[0].split(' ').at(-1);
 </script>
 
-<div class="library">
-	<header>
-		<p class="kicker">Library</p>
-		<h2>On the shelf</h2>
-		<p class="hint">{book ? 'Pick another, or the same one to put it back.' : 'Pull a book off the shelf.'}</p>
-	</header>
+{#snippet book(/** @type {import('$lib/shelf/layout.js').ItemPiece} */ piece, /** @type {boolean} */ open)}
+	{@const item = piece.item}
+	<span
+		class={['book', open && 'open']}
+		style:--tone={item.tone}
+		style:--ink={item.ink}
+		style:--w={real(piece.w)}
+		style:--h={real(piece.h)}
+		style:--d={real(piece.d)}
+		style:--cover={item.cover ? `url("${item.cover}")` : undefined}
+	>
+		<span class="box">
+			<span class={['face', 'cover', item.cover && 'art']}>
+				{#if !item.cover}
+					<span class="title" lang={item.lang}>{item.title}</span>
+					{#if item.by}
+						<span class="by" lang={item.lang}>{item.by}</span>
+					{/if}
+					{#if item.year}
+						<span class="year">{item.year}</span>
+					{/if}
+				{/if}
+			</span>
+			<span class="face spine">
+				<span class="spine-title" lang={item.lang}>{item.title}</span>
+				{#if item.by}
+					<span class="spine-by" lang={item.lang}>{surname(item.by)}</span>
+				{/if}
+			</span>
+			<span class="face pages"></span>
+			<span class="face back"></span>
+		</span>
+	</span>
+{/snippet}
 
-	<div class="shelf">
-		<div class="row">
-			{#each books as item, i (item.title)}
-				<button
-					type="button"
-					class={['book', selected === i && 'open']}
-					style:--tone={item.tone}
-					style:--ink={item.ink}
-					style:--d={item.depth ?? '1.7rem'}
-					aria-pressed={selected === i}
-					aria-label={item.title}
-					onclick={() => choose(i)}
-				>
-					<span class="box">
-						<span class="face cover">
-							<span class="title" lang={item.lang}>{item.title}</span>
-							{#if item.by}
-								<span class="by" lang={item.lang}>{item.by}</span>
-							{/if}
-							{#if item.year}
-								<span class="year">{item.year}</span>
-							{/if}
-						</span>
-						<span class="face spine">
-							<span class="spine-title" lang={item.lang}>{item.title}</span>
-							{#if item.by}
-								<span class="spine-by" lang={item.lang}>{item.by.split(/\s*&\s*|\s+and\s+/)[0].split(' ').at(-1)}</span>
-							{/if}
-						</span>
-						<span class="face pages"></span>
-						<span class="face back"></span>
-					</span>
-				</button>
-			{/each}
-		</div>
-		<div class="plank" aria-hidden="true"></div>
-	</div>
-
-	<div class="detail" aria-live="polite">
-		{#if book}
-			{#key book}
-				<div in:fly={{ y: 14, duration: prefersReducedMotion.current ? 0 : 420, delay: 160, easing: cubicOut }}>
-					<Explainer item={book} kicker="Book" />
-				</div>
-			{/key}
-		{/if}
-	</div>
-</div>
+<Showcase
+	pieces={books}
+	bind:selected
+	kicker="Library"
+	title="On the shelf"
+	hint="Every book at its real size. Pick one up."
+	action="Read more"
+	object={book}
+/>
 
 <style>
-	.library {
-		display: grid;
-		gap: 1.6rem;
-		padding: clamp(1.4rem, 3vw, 2.4rem);
-	}
-
-	header {
-		display: grid;
-		gap: 0.2rem;
-	}
-
-	.kicker {
-		margin: 0;
-		color: var(--ink-3);
-		font-family: var(--mono);
-		font-size: 0.68rem;
-		letter-spacing: 0.12em;
-		text-transform: uppercase;
-	}
-
-	h2 {
-		margin: 0;
-		font-family: var(--serif);
-		font-size: 1.6rem;
-		font-weight: 400;
-	}
-
-	.hint {
-		margin: 0;
-		color: var(--ink-3);
-		font-size: 0.85rem;
-	}
-
-	.shelf {
-		overflow-x: auto;
-		overflow-y: hidden;
-		padding: 1.4rem 0.4rem 0;
-		scrollbar-width: none;
-	}
-
-	.row {
-		display: flex;
-		align-items: flex-end;
-		justify-content: center;
-		gap: 0.2rem;
-		width: max-content;
-		min-width: 100%;
-		padding: 0 1rem;
-	}
-
-	/* A shelf board: a lit front edge over a soft shadow on the wall behind. */
-	.plank {
-		height: 0.8rem;
-		margin-top: -1px;
-		border-radius: 2px;
-		background: linear-gradient(to bottom, #e9dcc6 0 30%, #d8c6a6 30% 100%);
-		box-shadow:
-			0 1px 0 rgba(255, 255, 255, 0.5) inset,
-			0 14px 22px -10px rgba(40, 28, 10, 0.4);
-	}
-
+	/*
+	 * A 23 cm book stands a little over 18rem tall, or 13rem on a phone. It's drawn without
+	 * perspective, and every face's padding is inside its size, so a turned book's spine and
+	 * cover stay exactly the same height.
+	 */
 	.book {
-		--w: 9.2rem;
-		--h: 13.6rem;
+		--per-meter: 80rem;
+		--open: 1.12;
 		--spine: color-mix(in oklab, var(--tone) 86%, black);
 		position: relative;
-		flex: none;
+		display: block;
 		width: var(--d);
 		height: var(--h);
-		padding: 0;
-		border: 0;
-		background: none;
-		cursor: pointer;
-		perspective: 1800px;
-		transition: width 720ms var(--ease-out);
+		transition:
+			width 720ms var(--ease-out),
+			height 720ms var(--ease-out);
 	}
 
 	/* Turned toward you, a book takes up its cover's width less what the angle hides. */
 	.book.open {
-		width: calc(var(--w) * 0.906 + var(--d) * 0.423 + 0.6rem);
+		width: calc((var(--w) * 0.906 + var(--d) * 0.423) * var(--open) + 1rem);
+		height: calc(var(--h) * var(--open));
 	}
 
 	.box {
@@ -164,30 +91,28 @@
 		bottom: 0;
 		width: var(--w);
 		height: var(--h);
+		transform-origin: 50% 100%;
 		transform-style: preserve-3d;
-		transform: rotateY(90deg);
+		transform: translateZ(calc(var(--w) / -2)) rotateY(90deg);
 		transition: transform 720ms var(--ease-out);
 	}
 
-	.book:hover:not(.open) .box {
-		transform: translateY(-0.6rem) rotateY(90deg);
+	:global(.slot:hover) .book:not(.open) .box {
+		transform: translateY(-0.7rem) translateZ(calc(var(--w) / -2)) rotateY(90deg);
 	}
 
 	.book.open .box {
-		transform: translateY(-0.4rem) rotateY(25deg);
+		transform: rotateY(25deg) scale(var(--open));
 	}
 
-	.book:focus-visible {
-		outline: none;
-	}
-
-	.book:focus-visible .spine {
+	:global(.slot:focus-visible) .spine {
 		outline: 2px solid var(--accent);
 		outline-offset: 2px;
 	}
 
 	.face {
 		position: absolute;
+		box-sizing: border-box;
 		backface-visibility: hidden;
 		overflow: hidden;
 	}
@@ -197,7 +122,7 @@
 		display: flex;
 		flex-direction: column;
 		gap: 0.35rem;
-		padding: 1.1rem 0.95rem 0.95rem;
+		padding: 1.2rem 1rem 1rem;
 		background: var(--tone);
 		color: var(--ink);
 		text-align: left;
@@ -205,18 +130,22 @@
 		box-shadow: inset 5px 0 0 rgba(0, 0, 0, 0.13);
 	}
 
+	.cover.art {
+		background: var(--cover) center / cover no-repeat, var(--tone);
+	}
+
 	.cover::after,
 	.spine::after {
 		content: '';
 		position: absolute;
 		inset: 0;
-		background: linear-gradient(105deg, rgba(255, 255, 255, 0.18), transparent 45%, rgba(0, 0, 0, 0.12));
+		background: linear-gradient(105deg, rgba(255, 255, 255, 0.2), transparent 45%, rgba(0, 0, 0, 0.14));
 		pointer-events: none;
 	}
 
 	.title {
 		font-family: var(--serif);
-		font-size: 1.15rem;
+		font-size: 1.35rem;
 		line-height: 1.02;
 		letter-spacing: -0.01em;
 		text-wrap: balance;
@@ -224,7 +153,7 @@
 
 	.by {
 		margin-top: auto;
-		font-size: 0.56rem;
+		font-size: 0.6rem;
 		letter-spacing: 0.12em;
 		text-transform: uppercase;
 		opacity: 0.85;
@@ -232,7 +161,7 @@
 
 	.year {
 		font-family: var(--mono);
-		font-size: 0.56rem;
+		font-size: 0.6rem;
 		opacity: 0.7;
 	}
 
@@ -245,18 +174,18 @@
 		flex-direction: column;
 		align-items: center;
 		justify-content: space-between;
-		padding: 0.8rem 0 0.7rem;
+		padding: 0.9rem 0 0.8rem;
 		background: var(--spine);
 		color: var(--ink);
 		transform: rotateY(-90deg) translateZ(calc(var(--w) / 2));
 	}
 
 	.spine-title {
-		max-height: 78%;
+		max-height: 76%;
 		overflow: hidden;
 		writing-mode: vertical-rl;
 		font-family: var(--serif);
-		font-size: clamp(0.62rem, calc(var(--d) * 0.4), 0.9rem);
+		font-size: clamp(0.5rem, calc(var(--d) * 0.42), 1.05rem);
 		line-height: 1;
 		white-space: nowrap;
 		text-overflow: ellipsis;
@@ -264,7 +193,7 @@
 
 	.spine-by {
 		writing-mode: vertical-rl;
-		font-size: 0.5rem;
+		font-size: clamp(0.4rem, calc(var(--d) * 0.24), 0.56rem);
 		letter-spacing: 0.12em;
 		text-transform: uppercase;
 		opacity: 0.8;
@@ -285,13 +214,14 @@
 		transform: rotateY(180deg) translateZ(calc(var(--d) / 2));
 	}
 
-	.detail {
-		min-height: 13rem;
-		padding: 0 0.4rem;
-	}
-
 	[lang='ko'] {
 		font-family: var(--korean);
+	}
+
+	@media (max-width: 640px) {
+		.book {
+			--per-meter: 58rem;
+		}
 	}
 
 	@media (prefers-reduced-motion: reduce) {

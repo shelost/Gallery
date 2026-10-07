@@ -1,7 +1,5 @@
 <script>
   import { onMount } from "svelte";
-  import { get } from "svelte/store";
-  import { page } from "$app/stores";
   import { pushState } from "$app/navigation";
   import Gallery from "$lib/components/Gallery.svelte";
   import Battery from "$lib/components/Battery.svelte";
@@ -149,18 +147,6 @@
   let scrollTimeout;
   let selectedSlug = null;
 
-  function currentPostParam() {
-    if (typeof location !== "undefined") {
-      return new URL(location.href).searchParams.get("post");
-    }
-    return get(page).url.searchParams.get("post");
-  }
-
-  const initialPost = currentPostParam();
-  selectedSlug = isPeekableSlug(initialPost, data.posts ?? [])
-    ? initialPost
-    : null;
-
   function openPeek(slug) {
     if (!isPeekableSlug(slug, data.posts ?? [])) return;
     selectedSlug = slug;
@@ -180,7 +166,8 @@
     }
   }
 
-  function onPopState() {
+  /** The page is prerendered, so `?post=` only exists in the browser, after mount. */
+  function syncPeek() {
     const next = new URL(location.href).searchParams.get("post");
     selectedSlug = isPeekableSlug(next, data.posts ?? []) ? next : null;
   }
@@ -252,6 +239,8 @@
   }
 
   onMount(() => {
+    syncPeek();
+
     // Small delay to ensure DOM is ready
     setTimeout(() => {
       updateIndicator();
@@ -269,7 +258,7 @@
   });
 </script>
 
-<svelte:window on:popstate={onPopState} />
+<svelte:window on:popstate={syncPeek} />
 
 <link
   rel="stylesheet"

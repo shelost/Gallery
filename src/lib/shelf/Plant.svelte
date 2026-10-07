@@ -3,11 +3,12 @@
 	import { MeshStandardMaterial, SphereGeometry } from 'three';
 
 	/**
-	 * A potted plant: a snake plant's blades, a round bush, or a fern's arching fronds.
+	 * A plant: a snake plant's blades, a round bush, or a fern's arching fronds, in a pot or, when
+	 * it isn't `potted`, growing straight out of the ground.
 	 * The randomness is seeded so the plant looks the same on every visit.
-	 * @type {{ piece: import('./layout.js').PlantPiece }}
+	 * @type {{ piece: import('./layout.js').PlantPiece, potted?: boolean }}
 	 */
-	let { piece } = $props();
+	let { piece, potted = true } = $props();
 
 	const GREENS = ['#2f4a36', '#3e5c44', '#56725a', '#2c4032', '#6d8a62'];
 
@@ -20,9 +21,10 @@
 		};
 	}
 
+	/** The pot, or without one the patch of ground the plant comes up from. */
 	const pot = $derived({
 		r: piece.w * 0.36,
-		h: piece.variant === 'snake' ? 0.11 : 0.085,
+		h: potted ? (piece.variant === 'snake' ? 0.11 : 0.085) : 0,
 		color: piece.variant === 'bush' ? '#b5653f' : '#ece6da'
 	});
 
@@ -90,12 +92,14 @@
 </script>
 
 <T.Group position.z={piece.d / 2 + 0.03}>
-	<T.Mesh material={ceramic} position.y={pot.h / 2} castShadow receiveShadow>
-		<T.CylinderGeometry args={[pot.r, pot.r * 0.78, pot.h, 32]} />
-	</T.Mesh>
-	<T.Mesh material={soil} position.y={pot.h - 0.006}>
-		<T.CylinderGeometry args={[pot.r * 0.92, pot.r * 0.92, 0.004, 32]} />
-	</T.Mesh>
+	{#if potted}
+		<T.Mesh material={ceramic} position.y={pot.h / 2} castShadow receiveShadow>
+			<T.CylinderGeometry args={[pot.r, pot.r * 0.78, pot.h, 32]} />
+		</T.Mesh>
+		<T.Mesh material={soil} position.y={pot.h - 0.006}>
+			<T.CylinderGeometry args={[pot.r * 0.92, pot.r * 0.92, 0.004, 32]} />
+		</T.Mesh>
+	{/if}
 	{#each leaves as blade, n (n)}
 		<T.Group position={blade.position} rotation={blade.rotation}>
 			<T.Mesh geometry={leaf} material={greens[blade.tone]} position.y={blade.shift} scale={blade.scale} castShadow />

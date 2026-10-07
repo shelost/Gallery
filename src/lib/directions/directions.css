@@ -14,7 +14,7 @@
 
 	/* One measure for every full-width band on a page. */
 	--page-max: 80rem;
-	--page-pad: clamp(1.5rem, 10vw, 11rem);
+	--page-pad: clamp(1.15rem, 12vw - 1.75rem, 11rem);
 
 	--ease-out: cubic-bezier(0.23, 1, 0.32, 1);
 	--ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);

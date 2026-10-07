@@ -3,10 +3,11 @@
 	 * A recommendation as a physical object: a CSS box with a printed front, a spine, and a top,
 	 * standing at an angle the way Stripe Press shelves its books. It turns to face you on hover,
 	 * and records and CDs slide their disc out.
-	 * `scene` stands the object in a shared cabinet instead of on its own horizon.
-	 * @type {{ item: import('./content.js').ShelfItem, format: import('./content.js').ShelfFormat, i?: number, scene?: boolean, lit?: boolean }}
+	 * `scene` stands the object in a shared cabinet instead of on its own horizon, and `open` turns
+	 * it to face you as if it were hovered. Real cover art, when there is some, replaces the print.
+	 * @type {{ item: import('./content.js').ShelfItem, format: import('./content.js').ShelfFormat, i?: number, scene?: boolean, lit?: boolean, open?: boolean }}
 	 */
-	let { item, format, i = 0, scene = false, lit = false } = $props();
+	let { item, format, i = 0, scene = false, lit = false, open = false } = $props();
 
 	/** Covers on one shelf of music take turns between these. */
 	const MOTIFS = ['sun', 'bands', 'type'];
@@ -16,29 +17,32 @@
 </script>
 
 <div
-	class={['artifact', format, scene && 'scene', lit && 'lit']}
+	class={['artifact', format, scene && 'scene', lit && 'lit', open && 'open']}
 	style:--tone={item.tone}
 	style:--ink={item.ink}
 	style:--d={item.depth}
+	style:--cover={item.cover ? `url("${item.cover}")` : undefined}
 	aria-hidden="true"
 >
 	<div class="box">
 		{#if disc}
 			<span class="disc"></span>
 		{/if}
-		<div class={['face', 'front', disc && motif]}>
-			{#if format === 'dvd' || format === 'vhs'}
-				<span class="badge">{format}</span>
-			{/if}
-			<span class="title" lang={item.lang}>{item.title}</span>
-			{#if item.by}
-				<span class="by" lang={item.lang}>{item.by}</span>
-			{/if}
-			{#if item.year}
-				<span class="year">{item.year}</span>
-			{/if}
-			{#if format === 'cassette'}
-				<span class="reels"><i></i><i></i></span>
+		<div class={['face', 'front', disc && motif, item.cover && 'art']}>
+			{#if !item.cover}
+				{#if format === 'dvd' || format === 'vhs'}
+					<span class="badge">{format}</span>
+				{/if}
+				<span class="title" lang={item.lang}>{item.title}</span>
+				{#if item.by}
+					<span class="by" lang={item.lang}>{item.by}</span>
+				{/if}
+				{#if item.year}
+					<span class="year">{item.year}</span>
+				{/if}
+				{#if format === 'cassette'}
+					<span class="reels"><i></i><i></i></span>
+				{/if}
 			{/if}
 		</div>
 		<div class="face spine"><span lang={item.lang}>{item.title}</span></div>
@@ -82,7 +86,8 @@
 		transition: transform 600ms var(--ease-out);
 	}
 
-	.artifact:hover .box {
+	.artifact:hover .box,
+	.artifact.open .box {
 		transform: translateY(-0.6rem) rotateX(-3deg) rotateY(6deg);
 	}
 
@@ -336,7 +341,8 @@
 		transition: transform 700ms var(--ease-out);
 	}
 
-	.artifact:hover .disc {
+	.artifact:hover .disc,
+	.artifact.open .disc {
 		transform: translateX(46%) rotate(70deg);
 	}
 
@@ -455,6 +461,15 @@
 
 	.magazine .spine span {
 		display: none;
+	}
+
+	/* The real cover, printed edge to edge over whatever design the format would have drawn. */
+	.front.art {
+		background: var(--cover) center / cover no-repeat, var(--tone);
+	}
+
+	.dvd .front.art {
+		box-shadow: inset 0 0 0 3px #15171d;
 	}
 
 	[lang='ko'] {

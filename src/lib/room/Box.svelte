@@ -5,11 +5,12 @@
 
 	/**
 	 * A soft-cornered block in a satin finish, the room's one building material.
-	 * `position` is the block's center.
+	 * `position` is the block's center; `map` prints a texture such as wood grain over `color`.
 	 * @type {{
 	 *   size: [number, number, number],
 	 *   radius?: number,
 	 *   color?: string,
+	 *   map?: import('three').Texture,
 	 *   roughness?: number,
 	 *   sheen?: number,
 	 *   opacity?: number,
@@ -22,6 +23,7 @@
 		size,
 		radius = 0.012,
 		color = '#ffffff',
+		map,
 		roughness = 0.55,
 		sheen = 0.25,
 		opacity = 1,
@@ -36,6 +38,7 @@
 	const material = $derived(
 		new MeshPhysicalMaterial({
 			color,
+			map,
 			roughness,
 			clearcoat: sheen,
 			clearcoatRoughness: 0.6,

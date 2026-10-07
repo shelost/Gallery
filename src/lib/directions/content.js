@@ -607,15 +607,15 @@ export const WORKS = [
 		id: 'cameo',
 		section: 'videos',
 		kind: 'Video',
-		title: "John's video",
-		year: '',
+		title: "4 Design Principles I'm Using to Build a $BN Company",
+		year: 'May 23, 2024',
 		kicker: 'From 7:32',
-		blurb: "This is John's video, but I appear at around the 7:32 mark.",
+		blurb: "John's video. I appear at around the 7:32 mark.",
 		href: 'https://www.youtube.com/watch?v=stjPRf0Iogg&t=452s',
 		media: {
 			kind: 'image',
 			src: 'https://i.ytimg.com/vi/stjPRf0Iogg/hqdefault.jpg',
-			alt: "Thumbnail of John's video"
+			alt: "Thumbnail of 4 Design Principles I'm Using to Build a $BN Company"
 		},
 		medium: 'Time-based media. Appearing from 7:32.',
 		credit: 'Courtesy of John.'
@@ -624,15 +624,15 @@ export const WORKS = [
 		id: 'reel',
 		section: 'videos',
 		kind: 'Video',
-		title: 'Game portfolio',
-		year: '',
+		title: '3 Fun Mini Games, by Heewon Ahn',
+		year: 'Jan 5, 2026',
 		kicker: 'Reel',
 		blurb: 'My personal game portfolio video.',
 		href: 'https://www.youtube.com/watch?v=yHSWJty8QgI',
 		media: {
 			kind: 'image',
 			src: 'https://i.ytimg.com/vi/yHSWJty8QgI/hqdefault.jpg',
-			alt: 'Thumbnail of the game portfolio video'
+			alt: 'Thumbnail of 3 Fun Mini Games, by Heewon Ahn'
 		},
 		medium: 'Time-based media.',
 		credit: 'Gift of the artist.'
@@ -641,10 +641,10 @@ export const WORKS = [
 		id: 'future-ui',
 		section: 'videos',
 		kind: 'Video',
-		title: 'The Future of UI in the AI Era',
-		year: '2026',
+		title: 'The Future of UI in the AI Era (Inflection Fellowship 2026)',
+		year: 'Jul 9, 2026',
 		kicker: 'Inflection Fellowship',
-		blurb: 'The Future of UI in the AI Era (Inflection Fellowship 2026).',
+		blurb: 'My video for the 2026 Inflection Fellowship.',
 		href: 'https://www.youtube.com/watch?v=0kI-Q1683nI',
 		media: {
 			kind: 'image',
@@ -658,10 +658,10 @@ export const WORKS = [
 		id: 'king-trailer',
 		section: 'videos',
 		kind: 'Video',
-		title: 'King for All',
-		year: '',
+		title: 'King for All (AI Teaser Trailer)',
+		year: 'Sep 2, 2026',
 		kicker: 'AI teaser trailer',
-		blurb: 'King for All (AI Teaser Trailer).',
+		blurb: 'A teaser for King for All, my historical novel, made with AI.',
 		href: 'https://www.youtube.com/watch?v=u4ABhgrZAq4',
 		media: {
 			kind: 'image',
@@ -729,8 +729,11 @@ export function isDirection(path) {
 	return path === '/directions' || DIRECTIONS.some((direction) => direction.href === path);
 }
 
+const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
 /**
  * The latest year a work touches; an open range ('2026–') is ongoing and an empty year sinks.
+ * A full date ('Jul 9, 2026') counts its month too, so works from the same year still sort.
  * @param {string} year
  */
 function recency(year) {
@@ -738,7 +741,8 @@ function recency(year) {
 	const years = year.match(/\d{2,4}/g);
 	if (!years) return -Infinity;
 	const last = years[years.length - 1];
-	return last.length === 2 ? Number(years[0].slice(0, 2) + last) : Number(last);
+	const month = Math.max(0, MONTHS.indexOf(year.slice(0, 3)));
+	return (last.length === 2 ? Number(years[0].slice(0, 2) + last) : Number(last)) + month / 12;
 }
 
 /**
@@ -846,8 +850,10 @@ export const LIFE = [
 
 /**
  * A recommendation, printed onto whatever object its shelf holds.
- * `note` is the explainer shown when the object is taken off the shelf.
- * @typedef {{ title: string, by?: string, year?: string, tone: string, ink: string, lang?: string, depth?: string, youtube?: string, wiki?: string, href?: string, query?: string, note?: string }} ShelfItem
+ * `note` is the explainer shown when the object is taken off the shelf. `cover` is the real art,
+ * printed over the drawn design. A book's `size` is its trim in centimeters, width by height,
+ * and `pages` sets how thick it is.
+ * @typedef {{ title: string, by?: string, year?: string, tone: string, ink: string, lang?: string, depth?: string, youtube?: string, wiki?: string, href?: string, query?: string, note?: string, cover?: string, pages?: number, size?: [number, number] }} ShelfItem
  * @typedef {'book' | 'dvd' | 'cd' | 'vinyl' | 'vhs' | 'cassette' | 'magazine'} ShelfFormat
  * @typedef {{ id: string, label: string, format: ShelfFormat, items: ShelfItem[] }} Shelf
  */
@@ -859,8 +865,26 @@ export const SHELVES = [
 		label: 'Movies',
 		format: 'dvd',
 		items: [
-			{ title: 'The Count of Monte Cristo', year: '2024', tone: '#1f2a44', ink: '#e8d5a3', wiki: 'The_Count_of_Monte_Cristo_(2024_film)' },
-			{ title: 'Vice', by: 'Adam McKay', year: '2018', tone: '#f1eee6', ink: '#b3121d', wiki: 'Vice_(2018_film)' }
+			{
+				title: 'The Count of Monte Cristo',
+				by: 'Matthieu Delaporte & Alexandre de La Patellière',
+				year: '2024',
+				tone: '#1f2a44',
+				ink: '#e8d5a3',
+				cover: '/covers/monte-cristo-2024.jpg',
+				wiki: 'The_Count_of_Monte_Cristo_(2024_film)',
+				note: 'Pierre Niney as Edmond Dantès in the most handsome adaptation in decades: three hours that feel like one, and every revenge served cold.'
+			},
+			{
+				title: 'Vice',
+				by: 'Adam McKay',
+				year: '2018',
+				tone: '#f1eee6',
+				ink: '#b3121d',
+				cover: '/covers/vice.jpg',
+				wiki: 'Vice_(2018_film)',
+				note: 'Christian Bale as Dick Cheney, and Adam McKay’s furious, funny account of how a quiet bureaucrat became the most powerful vice president in American history.'
+			}
 		]
 	},
 	{
@@ -874,7 +898,8 @@ export const SHELVES = [
 				year: '1985',
 				tone: '#ece6d8',
 				ink: '#c8321f',
-				depth: '1.4rem',
+				pages: 34,
+				size: [15.2, 22.9],
 				href: 'https://doi.org/10.1207/s15327051hci0103_1',
 				note: 'From “The Prospects for Psychological Science in Human-Computer Interaction.” Usability analysis arrives too late to matter; a science of interfaces earns its place only when it shapes the design itself.'
 			},
@@ -884,24 +909,45 @@ export const SHELVES = [
 				year: '1975',
 				tone: '#1f3a5f',
 				ink: '#f1e4c4',
-				depth: '2.2rem',
+				pages: 211,
+				size: [21.6, 27.9],
 				wiki: 'David_Canfield_Smith',
 				note: 'A Stanford thesis about programming by moving pictures around instead of typing text, and the place the word “icon” entered computing. It’s the starting point of my essay A Visual Interface for Thought.'
 			},
 			{
+				title: 'The Dream Machine',
+				by: 'M. Mitchell Waldrop',
+				year: '2001',
+				tone: '#4a4a55',
+				ink: '#8de3d4',
+				pages: 528,
+				size: [15.2, 22.9],
+				cover: '/covers/dream-machine.jpg',
+				href: 'https://press.stripe.com/the-dream-machine',
+				note: 'The story of J. C. R. Licklider, who imagined personal, networked computing decades early and then funded the people who built it. Stripe Press’s reissue is the edition to own.'
+			},
+			{
 				title: 'Je pense trop',
 				by: 'Christel Petitcollin',
-				tone: '#f2c230',
-				ink: '#1c1b18',
+				year: '2010',
+				tone: '#f7f4ef',
+				ink: '#e0197d',
 				lang: 'fr',
+				pages: 264,
+				size: [15.2, 22.8],
+				cover: '/covers/je-pense-trop.jpg',
 				wiki: 'Je_pense_trop',
 				note: 'Christel Petitcollin on people whose minds won’t stop branching: the sensitivity, the tangents, and how to live with a head that is always on.'
 			},
 			{
 				title: 'The Power of Now',
 				by: 'Eckhart Tolle',
-				tone: '#2e5b4f',
-				ink: '#f3ead3',
+				year: '1997',
+				tone: '#8cc49a',
+				ink: '#1e3b2c',
+				pages: 236,
+				size: [13.3, 20.3],
+				cover: '/covers/power-of-now.jpg',
 				wiki: 'The_Power_of_Now',
 				note: 'Eckhart Tolle’s case for living in the present instead of in the running commentary about the past and the future.'
 			}
@@ -915,11 +961,69 @@ export const SHELVES = [
 			{
 				title: 'The Count of Monte Cristo',
 				by: 'Alexandre Dumas',
-				tone: '#7a1f2b',
-				ink: '#f1e3c6',
-				depth: '2.9rem',
+				year: '1844',
+				tone: '#141414',
+				ink: '#e8673a',
+				pages: 1276,
+				size: [12.9, 19.8],
+				cover: '/covers/monte-cristo-book.jpg',
 				wiki: 'The_Count_of_Monte_Cristo',
 				note: 'Dumas’s great revenge story: a sailor framed on his wedding day, fourteen years in the Château d’If, and a fortune spent settling every account.'
+			}
+		]
+	},
+	{
+		id: 'manga',
+		label: 'Manga',
+		format: 'book',
+		items: [
+			{
+				title: 'One Piece',
+				by: 'Eiichiro Oda',
+				year: '1997',
+				tone: '#f4f1e8',
+				ink: '#d0202a',
+				pages: 216,
+				size: [11.4, 17.5],
+				cover: '/covers/one-piece.jpg',
+				wiki: 'One_Piece',
+				note: 'Luffy and the Straw Hats, a thousand chapters and counting: the longest adventure in manga, and somehow still the most sincere.'
+			},
+			{
+				title: 'Dragon Ball',
+				by: 'Akira Toriyama',
+				year: '1984',
+				tone: '#f5a623',
+				ink: '#1a3f8f',
+				pages: 192,
+				size: [11.4, 17.5],
+				cover: '/covers/dragon-ball.jpg',
+				wiki: 'Dragon_Ball_(manga)',
+				note: 'Toriyama’s Journey to the West turned martial-arts epic. Every action manga since has borrowed its clarity of line and motion.'
+			},
+			{
+				title: 'Naruto',
+				by: 'Masashi Kishimoto',
+				year: '1999',
+				tone: '#f08a24',
+				ink: '#1c1b18',
+				pages: 192,
+				size: [11.4, 17.5],
+				cover: '/covers/naruto.jpg',
+				wiki: 'Naruto',
+				note: 'An outcast ninja who wants to be acknowledged, and the story of rivalry and loneliness that grew out of it.'
+			},
+			{
+				title: 'Pretty Face',
+				by: 'Yasuhiro Kanō',
+				year: '2002',
+				tone: '#f5d7e3',
+				ink: '#c2185b',
+				pages: 200,
+				size: [11.4, 17.5],
+				cover: '/covers/pretty-face.jpg',
+				wiki: 'Pretty_Face',
+				note: 'A delinquent wakes from a car crash with his face rebuilt as the girl he has a crush on. Six volumes of the best kind of ridiculous.'
 			}
 		]
 	},
@@ -940,9 +1044,33 @@ export const SHELVES = [
 		label: 'Podcasts',
 		format: 'cassette',
 		items: [
-			{ title: 'The Rest Is History', by: 'Tom Holland & Dominic Sandbrook', tone: '#c4122f', ink: '#fff6ea', wiki: 'The_Rest_Is_History_(podcast)' },
-			{ title: 'Founders', by: 'David Senra', tone: '#141414', ink: '#f2f2f2', wiki: 'Founders_(podcast)' },
-			{ title: 'Making Sense', by: 'Sam Harris', tone: '#dbe5ea', ink: '#1a2a35', wiki: 'Making_Sense_with_Sam_Harris' }
+			{
+				title: 'The Rest Is History',
+				by: 'Tom Holland & Dominic Sandbrook',
+				tone: '#c4122f',
+				ink: '#fff6ea',
+				cover: '/covers/rest-is-history.jpg',
+				wiki: 'The_Rest_Is_History_(podcast)',
+				note: 'Two historians who clearly love each other’s company, wandering from the Romans to the Beatles and back.'
+			},
+			{
+				title: 'Founders',
+				by: 'David Senra',
+				tone: '#141414',
+				ink: '#f2f2f2',
+				cover: '/covers/founders.jpg',
+				wiki: 'Founders_(podcast)',
+				note: 'One biography of an entrepreneur per episode, read closely and argued with, from Rockefeller to Jobs.'
+			},
+			{
+				title: 'Making Sense',
+				by: 'Sam Harris',
+				tone: '#dbe5ea',
+				ink: '#1a2a35',
+				cover: '/covers/making-sense.jpg',
+				wiki: 'Making_Sense_with_Sam_Harris',
+				note: 'Long conversations about the mind, ethics, and the news, slower and more careful than almost anything else on the air.'
+			}
 		]
 	},
 	{
@@ -951,7 +1079,7 @@ export const SHELVES = [
 		format: 'cd',
 		items: [
 			{ title: 'Is That You', by: 'Ary Shu', tone: '#f4e3c9', ink: '#a2461f', query: 'Is That You Ary Shu' },
-			{ title: 'Better Than I', by: 'Joseph: King of Dreams', tone: '#25324d', ink: '#f2c96b', query: 'Better Than I Joseph King of Dreams' },
+			{ title: 'Better Than I', by: 'Joseph: King of Dreams', tone: '#25324d', ink: '#f2c96b', cover: '/covers/better-than-i.jpg', query: 'Better Than I Joseph King of Dreams' },
 			{ title: 'All in All', tone: '#e9eef0', ink: '#3a5a6a', query: 'All in All worship song' }
 		]
 	},
@@ -960,10 +1088,10 @@ export const SHELVES = [
 		label: 'Songs · English',
 		format: 'cd',
 		items: [
-			{ title: 'Yellow Brick Road', by: 'Elton John', tone: '#f3c623', ink: '#3b2a12', youtube: 'wy709iNG6i8' },
+			{ title: 'Yellow Brick Road', by: 'Elton John', tone: '#f3c623', ink: '#3b2a12', cover: '/covers/yellow-brick-road.jpg', youtube: 'wy709iNG6i8' },
 			{ title: 'Never See Me Again', tone: '#101010', ink: '#e8e2d4', query: 'Never See Me Again' },
-			{ title: 'All Caps', by: 'MF DOOM', tone: '#b8261d', ink: '#f6e7c8', youtube: 'gSJeHDlhYls' },
-			{ title: 'Feel It Still', by: 'Portugal. The Man', tone: '#ff8fa3', ink: '#1d1b3a', youtube: 'pBkHHoOIIn8' }
+			{ title: 'All Caps', by: 'MF DOOM', tone: '#b8261d', ink: '#f6e7c8', cover: '/covers/all-caps.jpg', youtube: 'gSJeHDlhYls' },
+			{ title: 'Feel It Still', by: 'Portugal. The Man', tone: '#ff8fa3', ink: '#1d1b3a', cover: '/covers/feel-it-still.jpg', youtube: 'pBkHHoOIIn8' }
 		]
 	},
 	{
@@ -972,10 +1100,10 @@ export const SHELVES = [
 		format: 'cd',
 		items: [
 			{ title: '꽃이 피고 지듯이', by: 'Lee Yoon Jung', tone: '#f6d6dc', ink: '#8c2f4a', lang: 'ko', youtube: '-1JCohwW0EA' },
-			{ title: '월량대표아적심', by: 'Teresa Teng', tone: '#1c2541', ink: '#f5e6a8', lang: 'ko', query: '月亮代表我的心 鄧麗君' },
-			{ title: '비상', tone: '#6fa3c7', ink: '#0f2236', lang: 'ko', query: '비상 임재범' },
-			{ title: '잔소리', by: 'IU', tone: '#fbe9a6', ink: '#3d5a2a', lang: 'ko', query: '잔소리 IU' },
-			{ title: '고백', by: '멜로망스', tone: '#2f2a4a', ink: '#f3d5c0', lang: 'ko', query: '고백 멜로망스' }
+			{ title: '월량대표아적심', by: 'Teresa Teng', tone: '#1c2541', ink: '#f5e6a8', lang: 'ko', cover: '/covers/moon.jpg', query: '月亮代表我的心 鄧麗君' },
+			{ title: '비상', by: '임재범', tone: '#6fa3c7', ink: '#0f2236', lang: 'ko', cover: '/covers/bisang.jpg', query: '비상 임재범' },
+			{ title: '잔소리', by: 'IU', tone: '#fbe9a6', ink: '#3d5a2a', lang: 'ko', cover: '/covers/jansori.jpg', query: '잔소리 IU' },
+			{ title: '고백', by: '멜로망스', tone: '#2f2a4a', ink: '#f3d5c0', lang: 'ko', cover: '/covers/gobaek.jpg', query: '고백 멜로망스' }
 		]
 	},
 	{
@@ -983,9 +1111,9 @@ export const SHELVES = [
 		label: 'Music',
 		format: 'vinyl',
 		items: [
-			{ title: 'Into the New World', by: 'Dvořák', tone: '#0f3b57', ink: '#f1d9a0', wiki: 'Symphony_No._9_(Dvořák)' },
-			{ title: 'In the Hall of the Mountain King', by: 'Grieg', tone: '#3c2a1e', ink: '#e7c27a', youtube: 'pPLXNmKvLBQ' },
-			{ title: 'Going the Distance', by: 'Bill Conti', tone: '#d8392b', ink: '#fbf1dc', query: 'Bill Conti Going the Distance' }
+			{ title: 'Into the New World', by: 'Dvořák', tone: '#0f3b57', ink: '#f1d9a0', cover: '/covers/new-world.jpg', wiki: 'Symphony_No._9_(Dvořák)' },
+			{ title: 'In the Hall of the Mountain King', by: 'Grieg', tone: '#3c2a1e', ink: '#e7c27a', cover: '/covers/mountain-king.jpg', youtube: 'pPLXNmKvLBQ' },
+			{ title: 'Going the Distance', by: 'Bill Conti', tone: '#d8392b', ink: '#fbf1dc', cover: '/covers/going-the-distance.jpg', query: 'Bill Conti Going the Distance' }
 		]
 	}
 ];

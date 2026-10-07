@@ -1,19 +1,22 @@
 import { SHELVES } from '$lib/directions/content.js';
-import { SIZES } from '$lib/shelf/layout.js';
+import { SIZES, dimensions } from '$lib/shelf/layout.js';
 
 /**
  * What comes up from the shelf into the room: the books on one floating shelf, films, a tape
- * and a magazine on another, the records leaning on the cabinet, the podcasts as cassettes,
- * and every song in the CD rack. In meters, from the same sizes the shelf uses.
+ * and a magazine on another, the records leaning on the cabinet, and the podcasts as cassettes.
+ * Every song is a record, since the turntable is the only player. In meters, at real size.
  */
 
 /** @typedef {import('$lib/directions/content.js').ShelfItem} ShelfItem */
 /** @typedef {import('$lib/directions/content.js').ShelfFormat} ShelfFormat */
 /** @typedef {import('$lib/shelf/layout.js').ItemPiece} ItemPiece */
-/** @typedef {{ item: ShelfItem, format: 'cd' | 'vinyl', i: number }} Track */
+/** @typedef {{ item: ShelfItem, shelf: string, i: number }} Track */
 
 /** @param {string} id */
 const shelf = (id) => SHELVES.find((entry) => entry.id === id);
+
+/** @param {string} id */
+export const shelfLabel = (id) => shelf(id)?.label ?? '';
 
 /**
  * Face-out pieces in a row, centered on x = 0.
@@ -29,7 +32,7 @@ function row(picks, gap) {
 		const source = shelf(id);
 		const item = source?.items[i];
 		if (!source || !item) continue;
-		const [w, h, d] = SIZES[source.format];
+		const [w, h, d] = dimensions(item, source.format);
 		pieces.push({ key: `${id}:${i}`, type: 'item', item, format: source.format, shelf: id, i, w, h, d, x: x + w / 2 });
 		x += w + gap;
 	}
@@ -37,12 +40,14 @@ function row(picks, gap) {
 	return pieces.map((piece) => ({ ...piece, x: piece.x - width / 2 }));
 }
 
-/** Every book on every shelf, as [shelf id, index]. @type {[string, number][]} */
-const BOOK_PICKS = SHELVES.filter((entry) => entry.format === 'book').flatMap((entry) =>
-	entry.items.map((_, i) => /** @type {[string, number]} */ ([entry.id, i]))
-);
+/** @param {(entry: import('$lib/directions/content.js').Shelf) => boolean} test */
+const picks = (test) =>
+	SHELVES.filter(test).flatMap((entry) => entry.items.map((_, i) => /** @type {[string, number]} */ ([entry.id, i])));
 
-export const BOOK_SHELF = row(BOOK_PICKS, 0.016);
+export const BOOK_SHELF = row(
+	picks((entry) => entry.format === 'book'),
+	0.012
+);
 
 export const MEDIA_SHELF = row(
 	[
@@ -54,8 +59,10 @@ export const MEDIA_SHELF = row(
 	0.02
 );
 
-/** The books as the Stripe Press shelf shows them, in the same order. */
-export const BOOKS = BOOK_SHELF.map((piece) => piece.item);
+export const TAPES = row(
+	picks((entry) => entry.id === 'podcasts'),
+	0
+);
 
 /** The records lean one in front of the other, each a little further out. */
 export const SLEEVES = (shelf('music')?.items ?? []).map((item, i) => {
@@ -63,22 +70,45 @@ export const SLEEVES = (shelf('music')?.items ?? []).map((item, i) => {
 	return /** @type {ItemPiece} */ ({ key: `music:${i}`, type: 'item', item, format: 'vinyl', shelf: 'music', i, w, h, d, x: i * 0.07 });
 });
 
-export const CASSETTES = shelf('podcasts')?.items ?? [];
+/** Every song and record, grouped the way the shelf groups them. */
+export const CRATES = SHELVES.filter((entry) => entry.format === 'cd' || entry.format === 'vinyl').map((entry) => ({
+	id: entry.id,
+	label: entry.label,
+	tracks: entry.items.map((item, i) => /** @type {Track} */ ({ item, shelf: entry.id, i }))
+}));
 
-/** Everything that plays, in shelf order. @type {Track[]} */
-export const TRACKS = SHELVES.filter((entry) => entry.format === 'cd' || entry.format === 'vinyl').flatMap((entry) =>
-	entry.items.map((item, i) => ({ item, format: /** @type {'cd' | 'vinyl'} */ (entry.format), i }))
-);
-
-export const CDS = TRACKS.filter((track) => track.format === 'cd');
-export const RECORDS = TRACKS.filter((track) => track.format === 'vinyl');
+/** Everything that plays, in shelf order. */
+export const TRACKS = CRATES.flatMap((crate) => crate.tracks);
 
 /** A stable key for a track, for keyed lists and shared transitions. @param {Track} track */
-export const trackKey = (track) => `${track.format}:${track.item.title}`;
+export const trackKey = (track) => `${track.shelf}:${track.i}`;
+
+/** The things in the room that aren't off a shelf, described the way shelf items are. */
+export const KEEPSAKES = /** @satisfies {Record<string, ShelfItem>} */ ({
+	nike: {
+		title: 'Winged Victory of Samothrace',
+		by: 'Hellenistic, now in the Louvre',
+		year: 'c. 190 BC',
+		tone: '#f2efe9',
+		ink: '#3a3833',
+		cover: '/covers/nike.jpg',
+		wiki: 'Winged_Victory_of_Samothrace',
+		note: 'Nike, the goddess of victory, landing on the prow of a warship with the wind still in her robes. She lost her head and arms somewhere along the way and is more alive for it: the whole statue is motion.'
+	},
+	arc: {
+		title: 'ARC-AGI',
+		by: 'François Chollet',
+		year: '2019',
+		tone: '#f6f4ff',
+		ink: '#1c1b18',
+		href: 'https://arcprize.org',
+		note: 'Small grid puzzles that are easy for people and hard for machines: work out the rule from a few examples, then apply it. I worked on them at Cornell with Prof. Kevin Ellis. This one is drawn fresh each time, mirrored like the sprites in the set.'
+	}
+});
 
 /** @param {string} key */
 export function findPiece(key) {
-	return [...BOOK_SHELF, ...MEDIA_SHELF, ...SLEEVES].find((piece) => piece.key === key);
+	return [...BOOK_SHELF, ...MEDIA_SHELF, ...TAPES, ...SLEEVES].find((piece) => piece.key === key);
 }
 
 /** @param {ShelfItem} item */

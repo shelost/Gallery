@@ -3,8 +3,8 @@
 
 	/**
 	 * A floating bar of the page's sections. The highlight slides to whichever section the reader
-	 * has scrolled to, a fainter marker follows the label under the pointer, and clicking a label
-	 * scrolls there.
+	 * has scrolled to, and stays hidden above the first; a fainter marker follows the label under
+	 * the pointer, and clicking a label scrolls there.
 	 * @type {{ items: { id: string, label: string }[] }}
 	 */
 	let { items } = $props();
@@ -12,7 +12,8 @@
 	/** How far below the top of the viewport a section counts as reached. */
 	const REACH = 200;
 
-	let active = $state(0);
+	/** The section reached, or -1 before the first. */
+	let active = $state(-1);
 	let left = $state(0);
 	let width = $state(0);
 
@@ -59,7 +60,7 @@
 				return;
 			}
 		}
-		active = 0;
+		active = -1;
 	}
 
 	/** @param {number} i */
@@ -88,7 +89,7 @@
 		style:width="{hoverWidth}px"
 		aria-hidden="true"
 	></span>
-	<span class="highlight" style:left="{left}px" style:width="{width}px" aria-hidden="true"></span>
+	<span class={['highlight', active !== -1 && 'shown']} style:left="{left}px" style:width="{width}px" aria-hidden="true"></span>
 	{#each items as item, i (item.id)}
 		<button
 			type="button"
@@ -145,6 +146,11 @@
 	.highlight {
 		background: var(--accent);
 		box-shadow: 0 2px 10px rgba(255, 0, 76, 0.4);
+		opacity: 0;
+	}
+
+	.highlight.shown {
+		opacity: 1;
 	}
 
 	.hover {
@@ -191,7 +197,7 @@
 
 	@media (max-width: 768px) {
 		.sections {
-			bottom: 8px;
+			bottom: max(8px, env(safe-area-inset-bottom));
 		}
 
 		button {

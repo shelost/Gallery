@@ -1,14 +1,14 @@
 <script module>
-	import { GROUPS, LIFE, SHELVES, findWork, newestFirst } from '$lib/directions/content.js';
+	import { GROUPS, LIFE, findWork, newestFirst } from '$lib/directions/content.js';
 
 	/** Works left off this page. */
 	const HIDDEN = new Set(['gapyear']);
 
 	/**
-	 * The life timeline opens the page beside the live modules; every section follows with its panels.
-	 * Lists and panels both run newest first.
+	 * The room opens the page beside the intro; every section follows with its panels, Life and
+	 * Education right after Building. Lists and panels both run newest first.
 	 */
-	const groups = GROUPS.map((group) => ({
+	const ROWS = GROUPS.map((group) => ({
 		...group,
 		label: group.id === 'products' ? 'Building' : group.label,
 		ellipsis: group.id === 'products',
@@ -17,20 +17,12 @@
 
 	const school = findWork('school');
 
-	const educationRow = {
-		id: 'education',
-		numeral: '',
-		label: 'Education',
-		works: school ? [school] : []
-	};
-
-	const productAt = groups.findIndex((group) => group.id === 'products');
-	groups.splice(productAt + 1, 0, educationRow);
-
-	const ROWS = [{ id: 'life', numeral: '', label: 'Life', works: newestFirst(LIFE) }, ...groups];
-
-	/** Recommendations close the page, standing on shelves instead of hanging in panels. */
-	const SHELF = { id: 'shelf', numeral: 'IX', label: 'Shelf', works: [] };
+	ROWS.splice(
+		ROWS.findIndex((row) => row.id === 'products') + 1,
+		0,
+		{ id: 'life', numeral: '', label: 'Life', works: newestFirst(LIFE) },
+		{ id: 'education', numeral: '', label: 'Education', works: school ? [school] : [] }
+	);
 
 	/** Narration boxes, the way a comic sets a scene. @type {Record<string, string>} */
 	const NARRATION = {
@@ -53,7 +45,6 @@
 	import Intro from '$lib/directions/Intro.svelte';
 	import Panel from '$lib/directions/Panel.svelte';
 	import SectionNav from '$lib/directions/SectionNav.svelte';
-	import Shelves from '$lib/directions/Shelves.svelte';
 	import Stage from '$lib/directions/Stage.svelte';
 	import Stat from '$lib/directions/Stat.svelte';
 	import WorkGroup from '$lib/directions/WorkGroup.svelte';
@@ -105,7 +96,6 @@
 {/snippet}
 
 {#snippet life()}
-	<Room area="room" />
 	<Career
 		jobs={LIFE}
 		area="career"
@@ -179,43 +169,45 @@
 	{@render frame('arcaide', { caption: 'Arcaide · ARC annotation tool' })}
 {/snippet}
 
+<!-- Videos go by their titles on YouTube. -->
 {#snippet videos()}
-	{@render frame('future-ui', { caption: 'The Future of UI in the AI Era · Inflection Fellowship 2026' })}
-	{@render frame('king-trailer', { caption: 'King for All · AI teaser trailer' })}
-	{@render frame('cameo', { caption: "Cameo in John's video, from 7:32" })}
-	{@render frame('reel', { caption: 'Game portfolio reel' })}
+	{@render frame('future-ui')}
+	{@render frame('king-trailer')}
+	{@render frame('cameo')}
+	{@render frame('reel')}
 	<Coda />
 {/snippet}
 
 <main class="frames">
+	<div class="row" id="about">
+		<div class="index">
+			<Intro avatar links>
+				I really like the <code>&lt;canvas&gt;</code> element, so a few of these frames are alive.
+			</Intro>
+		</div>
+		<section class="tier hero" aria-label="About">
+			<Room area="room" />
+		</section>
+	</div>
+
 	{#each ROWS as row, i (row.id)}
 		{@const tier = { life, products, education, writing, design, games, webdev, comics, research, videos }[row.id]}
 		<div class="row" id={row.id}>
 			<div class="index">
-				{#if i === 0}
-					<div class="intro">
-						<Intro avatar links>
-							I really like the <code>&lt;canvas&gt;</code> element, so a few of these frames are alive.
-						</Intro>
-					</div>
-				{/if}
 				<WorkGroup group={row} i={i + 2} preview={false} bind:active={spotlight.current} />
 			</div>
-			<section class={['tier', row.id]} aria-label={i === 0 ? 'About' : row.label}>
+			<section class={['tier', row.id]} aria-label={row.label}>
 				{@render tier?.(row)}
 			</section>
 		</div>
 	{/each}
 </main>
 
-<div class="shelf-foot" id={SHELF.id}>
-	<Shelves shelves={SHELVES} />
-	<div class="shelf-links">
-		<Footer i={ROWS.length + 3} />
-	</div>
+<div class="foot">
+	<Footer i={ROWS.length + 3} />
 </div>
 
-<SectionNav items={[...ROWS, SHELF]} />
+<SectionNav items={ROWS} />
 
 {#if zoomed}
 	<ZoomView work={zoomed} variant="panels" onclose={() => zoom.hide()} />
@@ -228,14 +220,14 @@
 		--inset: 12px;
 		max-width: var(--page-max);
 		margin: 0 auto;
-		padding: clamp(4.5rem, 12vh, 8rem) var(--page-pad) 10rem;
+		padding: clamp(4.5rem, 12vh, 8rem) var(--page-pad) 4rem;
 	}
 
 	.row {
 		display: grid;
 		grid-template-columns: minmax(16rem, 22rem) minmax(0, 1fr);
-		column-gap: clamp(2.5rem, 5vw, 5.5rem);
-		margin-bottom: clamp(3rem, 6vw, 5rem);
+		column-gap: clamp(3rem, 6vw, 7rem);
+		margin-bottom: clamp(4.5rem, 9vw, 8rem);
 		scroll-margin-top: 2.5rem;
 	}
 
@@ -261,21 +253,10 @@
 		grid-column: 1 / -1;
 	}
 
-	.intro {
-		margin-bottom: 3rem;
-	}
-
-	.shelf-foot {
-		scroll-margin-top: 1rem;
-	}
-
-	.shelf-links {
-		padding: 0.25rem max(var(--page-pad), calc((100% - var(--page-max)) / 2 + var(--page-pad))) 6.5rem;
-		background: #cfc6b6;
-	}
-
-	.shelf-links :global(.links) {
-		border-top-color: rgba(28, 27, 24, 0.16);
+	.foot {
+		max-width: var(--page-max);
+		margin: 0 auto;
+		padding: 0 var(--page-pad) 6.5rem;
 	}
 
 	.tier {
@@ -284,27 +265,39 @@
 		min-width: 0;
 	}
 
+	/* Panels stop short of their column, so every grid keeps a margin around it. */
+	.tier:not(.hero) {
+		width: 100%;
+		max-width: 40rem;
+	}
+
+	.hero {
+		grid-template-columns: minmax(0, 1fr);
+		grid-template-rows: clamp(26rem, 44vw, 38rem);
+		grid-template-areas: 'room';
+	}
+
 	.life {
 		grid-template-columns: minmax(0, 1fr);
-		grid-template-rows: clamp(26rem, 44vw, 38rem) 9rem;
-		grid-template-areas: 'room' 'career';
+		grid-template-rows: 9rem;
+		grid-template-areas: 'career';
 	}
 
 	.products {
 		grid-template-columns: repeat(3, minmax(0, 1fr));
-		grid-template-rows: 18rem;
+		grid-template-rows: 15rem;
 		grid-template-areas: 'ovid king chancellor';
 	}
 
 	.education {
 		grid-template-columns: minmax(0, 1fr);
-		grid-template-rows: 14rem;
+		grid-template-rows: 12rem;
 		grid-template-areas: 'school';
 	}
 
 	.writing {
 		grid-template-columns: 1.35fr 1fr;
-		grid-template-rows: 16rem 12rem 14rem;
+		grid-template-rows: 13.5rem 10rem 12rem;
 		grid-template-areas:
 			'pygmalion pygmalion'
 			'palace persia'
@@ -313,7 +306,7 @@
 
 	.design {
 		grid-template-columns: 1.2fr 1fr 0.8fr;
-		grid-template-rows: repeat(3, 12rem);
+		grid-template-rows: repeat(3, 10rem);
 		grid-template-areas:
 			'stan nybc arr'
 			'stan nybc lab'
@@ -328,7 +321,7 @@
 
 	.webdev {
 		grid-template-columns: repeat(2, minmax(0, 1fr));
-		grid-template-rows: 26rem 13rem;
+		grid-template-rows: 22rem 11rem;
 		grid-template-areas:
 			'stage stage'
 			'stan-gmv stan-remix';
@@ -337,20 +330,20 @@
 
 	.comics {
 		grid-template-columns: repeat(2, minmax(0, 1fr));
-		grid-template-rows: 23rem;
+		grid-template-rows: 19.5rem;
 		grid-template-areas: 'samhan pandemonium';
 		column-gap: clamp(1.75rem, 3.5vw, 3rem);
 	}
 
 	.research {
 		grid-template-columns: 1fr 1.3fr;
-		grid-template-rows: 15rem;
+		grid-template-rows: 12.5rem;
 		grid-template-areas: 'marc arcaide';
 	}
 
 	.videos {
 		grid-template-columns: repeat(3, minmax(0, 1fr));
-		grid-template-rows: 13rem 13rem;
+		grid-template-rows: 11rem 11rem;
 		grid-template-areas:
 			'future-ui king-trailer cameo'
 			'reel end end';
@@ -367,13 +360,13 @@
 			position: static;
 		}
 
-		.frames .tier:not(.life) {
+		.frames .tier:not(.hero):not(.life) {
 			grid-template-columns: minmax(0, 1fr);
 			grid-template-rows: none;
 			grid-template-areas: none;
 		}
 
-		.frames .tier:not(.life) > :global(*) {
+		.frames .tier:not(.hero):not(.life) > :global(*) {
 			grid-area: auto;
 		}
 
@@ -398,8 +391,9 @@
 	}
 
 	@media (max-width: 560px) {
+		.frames .hero,
 		.frames .life {
-			grid-template-rows: 24rem auto;
+			grid-template-rows: auto;
 		}
 
 		.frames .life > :global(.module) {

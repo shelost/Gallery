@@ -4,7 +4,8 @@
 
 	/**
 	 * Something in the room you can point at: an invisible box catches the pointer, and the
-	 * object rises a little while it's hovered. Clicking it calls `onpick`.
+	 * object rises a little while it's hovered. Clicking it calls `onpick`. While `away` names it,
+	 * it's gone from the room, up in its sheet.
 	 * @type {{
 	 *   id: string,
 	 *   size: [number, number, number],
@@ -15,11 +16,23 @@
 	 *   rotation?: [number, number, number],
 	 *   lift?: number,
 	 *   still?: boolean,
+	 *   away?: string | null,
 	 *   children: import('svelte').Snippet
 	 * }}
 	 */
-	let { id, size, hovered, onhover, onpick, position = [0, 0, 0], rotation = [0, 0, 0], lift = 0.014, still = false, children } =
-		$props();
+	let {
+		id,
+		size,
+		hovered,
+		onhover,
+		onpick,
+		position = [0, 0, 0],
+		rotation = [0, 0, 0],
+		lift = 0.014,
+		still = false,
+		away = null,
+		children
+	} = $props();
 
 	const { invalidate } = useThrelte();
 
@@ -50,7 +63,7 @@
 </script>
 
 <T.Group {position} {rotation}>
-	<T.Group bind:ref={raised}>
+	<T.Group bind:ref={raised} visible={away !== id}>
 		{@render children()}
 	</T.Group>
 	<T.Mesh

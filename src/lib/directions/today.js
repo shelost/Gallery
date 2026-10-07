@@ -1,7 +1,7 @@
 import { createSubscriber } from 'svelte/reactivity';
 
-/** Where I live, for the clock. */
-export const HOME = { place: 'Ithaca, NY', zone: 'America/New_York' };
+/** Where I live, for the clock and the weather. */
+export const HOME = { place: 'Ithaca, NY', zone: 'America/New_York', latitude: 42.444, longitude: -76.5019 };
 
 /** I was born on 23 August 2003 in Daejeon. */
 export const BIRTHDAY = { label: '23 Aug 2003', year: 2003 };
@@ -217,7 +217,7 @@ export function pleasant(events) {
 
 const FEED = 'https://api.wikimedia.org/feed/v1/wikipedia/en/onthisday/selected';
 
-/** @param {string} key @returns {Fact[] | null} */
+/** @template T @param {string} key @returns {T | null} */
 function readCache(key) {
 	try {
 		const value = sessionStorage.getItem(key);
@@ -227,12 +227,12 @@ function readCache(key) {
 	}
 }
 
-/** @param {string} key @param {Fact[]} facts */
-function writeCache(key, facts) {
+/** @param {string} key @param {unknown} value */
+function writeCache(key, value) {
 	try {
-		sessionStorage.setItem(key, JSON.stringify(facts));
+		sessionStorage.setItem(key, JSON.stringify(value));
 	} catch {
-		// Storage can be full or blocked; the facts are refetched next time.
+		// Storage can be full or blocked; the value is refetched next time.
 	}
 }
 
@@ -246,6 +246,7 @@ function writeCache(key, facts) {
 export async function loadFacts(month, day, signal) {
 	const date = `${pad(month)}/${pad(day)}`;
 	const key = `on-this-day:${date}`;
+	/** @type {Fact[] | null} */
 	const cached = readCache(key);
 	if (cached) return cached;
 	const response = await fetch(`${FEED}/${date}`, {
@@ -257,4 +258,63 @@ export async function loadFacts(month, day, signal) {
 	const facts = pleasant(selected);
 	writeCache(key, facts);
 	return facts;
+}
+
+/** WMO weather interpretation codes, grouped the way a person would say them. */
+const SKIES = /** @type {[number[], string, string][]} */ ([
+	[[0], 'Clear', '☀'],
+	[[1, 2], 'Partly cloudy', '⛅'],
+	[[3], 'Overcast', '☁'],
+	[[45, 48], 'Fog', '🌫'],
+	[[51, 53, 55, 56, 57], 'Drizzle', '🌦'],
+	[[61, 63, 65, 66, 67, 80, 81, 82], 'Rain', '🌧'],
+	[[71, 73, 75, 77, 85, 86], 'Snow', '❄'],
+	[[95, 96, 99], 'Thunderstorm', '⛈']
+]);
+
+/** @param {number} code */
+function sky(code) {
+	const match = SKIES.find(([codes]) => codes.includes(code));
+	return { label: match?.[1] ?? 'Unsettled', icon: match?.[2] ?? '☁' };
+}
+
+/**
+ * @typedef {{ temperature: number, feels: number, high: number, low: number, wind: number, label: string, icon: string, day: boolean }} Weather
+ */
+
+const FORECAST = 'https://api.open-meteo.com/v1/forecast';
+
+/**
+ * The weather at home right now, from Open-Meteo, cached for half an hour of the session.
+ * Temperatures are in Celsius and wind in km/h.
+ * @param {AbortSignal} [signal]
+ * @returns {Promise<Weather>}
+ */
+export async function loadWeather(signal) {
+	const key = `weather:${Math.floor(Date.now() / 18e5)}`;
+	/** @type {Weather | null} */
+	const cached = readCache(key);
+	if (cached) return cached;
+	const query = new URLSearchParams({
+		latitude: String(HOME.latitude),
+		longitude: String(HOME.longitude),
+		current: 'temperature_2m,apparent_temperature,weather_code,wind_speed_10m,is_day',
+		daily: 'temperature_2m_max,temperature_2m_min',
+		timezone: HOME.zone,
+		forecast_days: '1'
+	});
+	const response = await fetch(`${FORECAST}?${query}`, { signal });
+	if (!response.ok) throw new Error(`Weather: ${response.status}`);
+	const { current, daily } = await response.json();
+	const weather = {
+		temperature: current.temperature_2m,
+		feels: current.apparent_temperature,
+		high: daily.temperature_2m_max[0],
+		low: daily.temperature_2m_min[0],
+		wind: current.wind_speed_10m,
+		day: current.is_day === 1,
+		...sky(current.weather_code)
+	};
+	writeCache(key, weather);
+	return weather;
 }

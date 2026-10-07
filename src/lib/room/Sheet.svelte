@@ -6,11 +6,12 @@
 
 	/**
 	 * A modal that grows out of the thing that was clicked and shrinks back into it, so opening
-	 * an object reads as picking it up rather than as a box appearing over the page.
-	 * `origin` is the click point in viewport pixels; `surface` is the panel's material.
-	 * @type {{ origin: { x: number, y: number } | null, label: string, width?: string, surface?: string, onclose: () => void, children: import('svelte').Snippet }}
+	 * an object reads as picking it up rather than as a box appearing over the page. There's no
+	 * panel: what's inside floats over the frosted page on its own, the way the sheet of hanji
+	 * does. `origin` is the click point in viewport pixels; `onclosed` runs once it has shrunk away.
+	 * @type {{ origin: { x: number, y: number } | null, label: string, width?: string, onclose: () => void, onclosed?: () => void, children: import('svelte').Snippet }}
 	 */
-	let { origin, label, width = '60rem', surface = 'var(--paper)', onclose, children } = $props();
+	let { origin, label, width = '60rem', onclose, onclosed, children } = $props();
 
 	/**
 	 * @param {HTMLElement} node
@@ -34,6 +35,9 @@
 		node.focus({ preventScroll: true });
 	}
 
+	const fadeIn = $derived({ duration: prefersReducedMotion.current ? 0 : 280, easing: cubicOut });
+	const fadeOut = $derived({ duration: prefersReducedMotion.current ? 0 : 240, easing: cubicIn });
+
 	$effect(() => {
 		const html = document.documentElement;
 		const previous = html.style.overflow;
@@ -47,15 +51,7 @@
 <svelte:window onkeydown={(event) => event.key === 'Escape' && onclose()} />
 
 <div class="sheet">
-	<button
-		type="button"
-		class="scrim"
-		aria-label="Close"
-		tabindex="-1"
-		onclick={onclose}
-		in:fade|global={{ duration: prefersReducedMotion.current ? 0 : 280, easing: cubicOut }}
-		out:fade|global={{ duration: prefersReducedMotion.current ? 0 : 240, easing: cubicIn }}
-	></button>
+	<button type="button" class="scrim" aria-label="Close" tabindex="-1" onclick={onclose} in:fade|global={fadeIn} out:fade|global={fadeOut}></button>
 	<div
 		class="panel"
 		role="dialog"
@@ -63,16 +59,16 @@
 		aria-label={label}
 		tabindex="-1"
 		style:--width={width}
-		style:--surface={surface}
 		{@attach focus}
 		in:grow|global={{ duration: 680, easing: spring }}
 		out:grow|global={{ duration: 300, easing: cubicIn }}
+		onoutroend={onclosed}
 	>
-		<button type="button" class="close" aria-label="Close" onclick={onclose}>
-			<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8" /></svg>
-		</button>
 		{@render children()}
 	</div>
+	<button type="button" class="close" aria-label="Close" onclick={onclose} in:fade|global={fadeIn} out:fade|global={fadeOut}>
+		<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8" /></svg>
+	</button>
 </div>
 
 <style>
@@ -85,12 +81,14 @@
 		padding: 1rem;
 	}
 
+	/* The page stays in view behind, frosted over, so whatever's opened has nothing around it. */
 	.scrim {
 		position: absolute;
 		inset: 0;
 		border: 0;
-		background: color-mix(in oklab, var(--ink, #1c1b18) 22%, transparent);
-		backdrop-filter: blur(10px) saturate(1.1);
+		background: color-mix(in oklab, var(--paper, #fbfaf7) 70%, transparent);
+		-webkit-backdrop-filter: blur(16px) saturate(1.1);
+		backdrop-filter: blur(16px) saturate(1.1);
 		cursor: default;
 	}
 
@@ -100,28 +98,28 @@
 		max-height: calc(100dvh - 2rem);
 		overflow: auto;
 		overscroll-behavior: contain;
-		border-radius: 1.4rem;
-		background: var(--surface);
-		box-shadow:
-			0 1px 0 rgba(255, 255, 255, 0.6) inset,
-			0 30px 80px -20px rgba(20, 16, 8, 0.45),
-			0 8px 24px -8px rgba(20, 16, 8, 0.25);
+		scrollbar-width: thin;
 		outline: none;
 		will-change: transform;
 	}
 
 	.close {
 		position: absolute;
-		top: 0.85rem;
-		right: 0.85rem;
+		top: 1.1rem;
+		right: 1.1rem;
 		z-index: 2;
 		display: grid;
 		place-items: center;
-		width: 2rem;
-		height: 2rem;
+		width: 2.4rem;
+		height: 2.4rem;
 		border: 0;
 		border-radius: 50%;
-		background: color-mix(in oklab, var(--ink, #1c1b18) 8%, transparent);
+		background: rgba(255, 255, 255, 0.82);
+		box-shadow:
+			0 0 0 1px rgba(28, 27, 24, 0.07),
+			0 10px 22px -12px rgba(28, 27, 24, 0.45);
+		-webkit-backdrop-filter: blur(10px);
+		backdrop-filter: blur(10px);
 		color: var(--ink, #1c1b18);
 		cursor: pointer;
 		transition:
@@ -130,7 +128,7 @@
 	}
 
 	.close:hover {
-		background: color-mix(in oklab, var(--ink, #1c1b18) 14%, transparent);
+		background: #fff;
 	}
 
 	.close:active {
@@ -144,5 +142,23 @@
 		stroke: currentColor;
 		stroke-width: 1.6;
 		stroke-linecap: round;
+	}
+
+	/* On a phone it fills the width under a strip for the close button. */
+	@media (max-width: 640px) {
+		.sheet {
+			place-items: start center;
+			padding: 3.6rem 0.5rem 0.5rem;
+		}
+
+		.panel {
+			width: 100%;
+			max-height: calc(100dvh - 4.1rem);
+		}
+
+		.close {
+			top: 0.6rem;
+			right: 0.6rem;
+		}
 	}
 </style>

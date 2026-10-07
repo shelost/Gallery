@@ -11,7 +11,7 @@
 	let { shelves } = $props();
 
 	const BAYS = [
-		{ id: 'reading', label: 'Reading', ids: ['nonfiction', 'fiction', 'blogs'] },
+		{ id: 'reading', label: 'Reading', ids: ['nonfiction', 'fiction', 'manga', 'blogs'] },
 		{ id: 'picture', label: 'Picture', ids: ['movies', 'youtube', 'podcasts'] },
 		{
 			id: 'listening',
@@ -670,7 +670,14 @@
 		}
 
 		.world {
+			min-width: 60rem;
+			padding: 0 var(--page-pad);
 			transform: none;
+		}
+
+		/* The case is already wider than the screen; the plants would only push it further off. */
+		.plant {
+			display: none;
 		}
 	}
 

@@ -28,6 +28,26 @@ export const SIZES = {
 	vinyl: [0.3, 0.3, 0.005]
 };
 
+/** A leaf of book paper is about a tenth of a millimeter, so each page adds half that. */
+const CM_PER_PAGE = 0.005;
+/** Both boards of a cover together. */
+const CM_BOARDS = 0.3;
+
+/**
+ * An object's width, height and thickness in meters. Books with a trim size and a page count are
+ * as big as the real thing; everything else uses its format's standard size.
+ * @param {ShelfItem} item
+ * @param {ShelfFormat} format
+ * @returns {[number, number, number]}
+ */
+export function dimensions(item, format) {
+	const [w, h, d] = SIZES[format];
+	if (format !== 'book') return [w, h, item.depth ? d * 1.5 : d];
+	const [cw, ch] = item.size ?? [w * 100, h * 100];
+	const thick = item.pages ? CM_BOARDS + item.pages * CM_PER_PAGE : d * 100;
+	return [cw / 100, ch / 100, thick / 100];
+}
+
 export const BOARD = { thickness: 0.028, depth: 0.36 };
 
 /** The turntable lies flat, so its depth is what matters to the board. */
@@ -41,6 +61,7 @@ const SEQUENCE = [
 	'plant:snake',
 	'nonfiction',
 	'fiction',
+	'manga',
 	'blogs',
 	'movies',
 	'youtube',
@@ -74,22 +95,13 @@ function collect(shelves) {
 		}
 		const shelf = shelves.find((candidate) => candidate.id === entry);
 		if (!shelf) return [];
-		const [w, h, d] = SIZES[shelf.format];
-		return shelf.items.map((item, i) => ({
-			piece: /** @type {ItemPiece} */ ({
-				key: `${shelf.id}-${i}`,
-				type: 'item',
-				item,
-				format: shelf.format,
-				shelf: shelf.id,
-				i,
-				w,
-				h,
-				d: item.depth ? d * 1.5 : d,
-				x: 0
-			}),
-			group: entry
-		}));
+		return shelf.items.map((item, i) => {
+			const [w, h, d] = dimensions(item, shelf.format);
+			return {
+				piece: /** @type {ItemPiece} */ ({ key: `${shelf.id}-${i}`, type: 'item', item, format: shelf.format, shelf: shelf.id, i, w, h, d, x: 0 }),
+				group: entry
+			};
+		});
 	});
 }
 

@@ -22,6 +22,57 @@ export async function loadCoverFonts() {
 	await Promise.race([Promise.all(faces.map((face) => document.fonts.load(face).catch(() => []))), timeout]);
 }
 
+/** Real cover art, loaded once and shared by every texture that prints it. @type {Map<string, HTMLImageElement>} */
+const images = new Map();
+
+/** @param {string} src @returns {Promise<void>} */
+function fetchImage(src) {
+	if (images.has(src)) return Promise.resolve();
+	return new Promise((done) => {
+		const image = new Image();
+		image.decoding = 'async';
+		image.onload = () => {
+			images.set(src, image);
+			done();
+		};
+		image.onerror = () => done();
+		image.src = src;
+	});
+}
+
+/**
+ * Loads the cover art for these items so textures can print it straight away. Gives up after a
+ * few seconds; anything still missing is printed from its colors instead.
+ * @param {ShelfItem[]} items
+ */
+export async function loadCovers(items) {
+	if (typeof document === 'undefined') return;
+	const sources = [...new Set(items.map((item) => item.cover).filter((src) => src !== undefined))];
+	const timeout = new Promise((done) => setTimeout(done, 4000));
+	await Promise.race([Promise.all(sources.map(fetchImage)), timeout]);
+}
+
+/** @param {ShelfItem | undefined} item */
+function art(item) {
+	return item?.cover ? images.get(item.cover) : undefined;
+}
+
+/**
+ * Draws an image to fill a box, cropping whatever overflows, like `object-fit: cover`.
+ * @param {CanvasRenderingContext2D} ctx
+ * @param {HTMLImageElement} image
+ * @param {number} x
+ * @param {number} y
+ * @param {number} w
+ * @param {number} h
+ */
+function fill(ctx, image, x, y, w, h) {
+	const scale = Math.max(w / image.naturalWidth, h / image.naturalHeight);
+	const sw = w / scale;
+	const sh = h / scale;
+	ctx.drawImage(image, (image.naturalWidth - sw) / 2, (image.naturalHeight - sh) / 2, sw, sh, x, y, w, h);
+}
+
 /**
  * @param {number} w
  * @param {number} h
@@ -214,7 +265,9 @@ export function cover(item, format, i, w, h) {
 	return texture(w, h, (ctx, pw, ph) => {
 		ctx.fillStyle = item.tone;
 		ctx.fillRect(0, 0, pw, ph);
-		PRINTERS[format](ctx, pw, ph, item, i);
+		const image = art(item);
+		if (image) fill(ctx, image, 0, 0, pw, ph);
+		else PRINTERS[format](ctx, pw, ph, item, i);
 		const sheen = ctx.createLinearGradient(0, 0, pw, ph);
 		sheen.addColorStop(0, 'rgba(255,255,255,0.08)');
 		sheen.addColorStop(0.5, 'rgba(255,255,255,0)');
@@ -225,41 +278,8 @@ export function cover(item, format, i, w, h) {
 }
 
 /**
- * The printed face of a CD: the album art inside a silver rim, around the hub and hole.
- * Outside the disc stays transparent.
- * @param {ShelfItem | undefined} item
- * @param {number} i
- */
-export function compact(item, i) {
-	return texture(0.12, 0.12, (ctx, size) => {
-		const r = size / 2;
-		const circle = (/** @type {number} */ radius) => {
-			ctx.beginPath();
-			ctx.arc(r, r, radius, 0, Math.PI * 2);
-		};
-		const rim = ctx.createConicGradient(0, r, r);
-		['#e8ecf2', '#f6e4ee', '#dff0ea', '#ece6f8', '#e8ecf2'].forEach((color, n, all) => rim.addColorStop(n / (all.length - 1), color));
-		ctx.fillStyle = rim;
-		circle(r);
-		ctx.fill();
-		ctx.save();
-		circle(r * 0.95);
-		ctx.clip();
-		ctx.fillStyle = item?.tone ?? '#f6d6dc';
-		ctx.fillRect(0, 0, size, size);
-		if (item) disc(ctx, size, size, item, i);
-		ctx.restore();
-		ctx.fillStyle = rim;
-		circle(r * 0.22);
-		ctx.fill();
-		ctx.globalCompositeOperation = 'destination-out';
-		circle(r * 0.075);
-		ctx.fill();
-	});
-}
-
-/**
- * The top of a record: grooves, and a center label in the album's colors.
+ * The top of a record: grooves, and a center label printed with the album art, or in the
+ * album's colors when there isn't any.
  * @param {ShelfItem | undefined} item
  */
 export function record(item) {
@@ -278,8 +298,15 @@ export function record(item) {
 		ctx.beginPath();
 		ctx.arc(r, r, r * 0.34, 0, Math.PI * 2);
 		ctx.fill();
+		const image = art(item);
+		if (image) {
+			ctx.save();
+			ctx.clip();
+			fill(ctx, image, r * 0.66, r * 0.66, r * 0.68, r * 0.68);
+			ctx.restore();
+		}
 		ctx.fillStyle = item?.ink ?? '#f6d6dc';
-		if (item) {
+		if (item && !image) {
 			block(ctx, item.title, {
 				x: r,
 				y: r * 0.72,

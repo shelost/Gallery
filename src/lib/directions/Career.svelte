@@ -27,43 +27,65 @@
 	function at(year) {
 		return (year - first) / (last - first);
 	}
+
+	/** Where the tape is too narrow to read, it scrolls, and it starts at today. @param {HTMLElement} node */
+	function rewind(node) {
+		node.scrollLeft = node.scrollWidth;
+	}
 </script>
 
 <Module {area} label="Life" detail="{first} – now">
-	<div class="tape">
-		<ul class="jobs">
-			{#each jobs as job (job.id)}
-				<li style:--from={at(job.from)} style:--to={at(job.until ?? today ?? job.from)}>
-					<button
-						type="button"
-						class={['job', job.until === null && 'live', job.id === active && 'on']}
-						onclick={() => onpick?.(job)}
-						onpointerenter={() => onhover?.(job.id, true)}
-						onpointerleave={() => onhover?.(job.id, false)}
-						onfocus={() => onhover?.(job.id, true)}
-						onblur={() => onhover?.(job.id, false)}
-					>
-						<span class="name">{job.title}</span>
-						<span class="years">{job.year}</span>
-					</button>
-				</li>
-			{/each}
-		</ul>
-		<ol class="ruler" aria-hidden="true">
-			{#each years as year (year)}
-				<li style:--at={at(year)}>’{String(year).slice(2)}</li>
-			{/each}
-		</ol>
-		{#if today !== null}
-			<span class="playhead" style:--at={at(today)} aria-hidden="true"></span>
-		{/if}
+	<div class="reel" {@attach rewind}>
+		<div class="tape" style:--years={years.length}>
+			<ul class="jobs">
+				{#each jobs as job (job.id)}
+					<li style:--from={at(job.from)} style:--to={at(job.until ?? today ?? job.from)}>
+						<button
+							type="button"
+							class={['job', job.until === null && 'live', job.id === active && 'on']}
+							onclick={() => onpick?.(job)}
+							onpointerenter={() => onhover?.(job.id, true)}
+							onpointerleave={() => onhover?.(job.id, false)}
+							onfocus={() => onhover?.(job.id, true)}
+							onblur={() => onhover?.(job.id, false)}
+						>
+							<span class="name">{job.title}</span>
+							<span class="years">{job.year}</span>
+						</button>
+					</li>
+				{/each}
+			</ul>
+			<ol class="ruler" aria-hidden="true">
+				{#each years as year (year)}
+					<li style:--at={at(year)}>’{String(year).slice(2)}</li>
+				{/each}
+			</ol>
+			{#if today !== null}
+				<span class="playhead" style:--at={at(today)} aria-hidden="true"></span>
+			{/if}
+		</div>
 	</div>
 </Module>
 
 <style>
+	.reel {
+		flex: 1;
+		display: flex;
+		min-height: 0;
+		padding-top: 0.2rem;
+		overflow-x: auto;
+		overflow-y: hidden;
+		scrollbar-width: none;
+	}
+
+	.reel::-webkit-scrollbar {
+		display: none;
+	}
+
 	.tape {
 		position: relative;
 		flex: 1;
+		min-width: calc(var(--years) * 4.4rem);
 		display: grid;
 		grid-template-rows: minmax(2.4rem, 1fr) auto;
 		gap: 0.45rem;
@@ -189,6 +211,13 @@
 		left: -5.5px;
 		border: 5px solid transparent;
 		border-top: 6px solid var(--te-orange);
+	}
+
+	/* The narrow tape opens at today, so a stretch cut off on the left keeps its label at its right end. */
+	@media (max-width: 560px) {
+		.job {
+			align-items: flex-end;
+		}
 	}
 
 	@media (prefers-reduced-motion: reduce) {
