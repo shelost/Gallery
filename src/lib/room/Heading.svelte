@@ -37,8 +37,10 @@
 	h2 {
 		margin: 0;
 		font-family: var(--serif);
-		font-size: 1.6rem;
-		font-weight: 400;
+		font-size: 1.5rem;
+		font-weight: 500;
+		line-height: 1.05;
+		letter-spacing: -0.03em;
 	}
 
 	.hint {

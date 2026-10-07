@@ -1,6 +1,6 @@
 <script module>
 	/** The desk, centered on the origin, in meters; `top` is the height of its writing surface. */
-	export const DESK = { w: 1.9, d: 0.9, top: 0.74 };
+	export const DESK = { w: 2.3, d: 1, top: 0.74 };
 
 	const FOOT = 0.06;
 	const PLINTH = 0.05;

@@ -6,12 +6,16 @@
 
 	/**
 	 * A modal that grows out of the thing that was clicked and shrinks back into it, so opening
-	 * an object reads as picking it up rather than as a box appearing over the page. There's no
-	 * panel: what's inside floats over the frosted page on its own, the way the sheet of hanji
-	 * does. `origin` is the click point in viewport pixels; `onclosed` runs once it has shrunk away.
-	 * @type {{ origin: { x: number, y: number } | null, label: string, width?: string, onclose: () => void, onclosed?: () => void, children: import('svelte').Snippet }}
+	 * an object reads as picking it up rather than as a box appearing over the page. The panel is
+	 * a pane of liquid glass over the blurred page. `origin` is the click point in viewport
+	 * pixels; `onclosed` runs once it has shrunk away.
+	 * While there's a step back to take inside, `onback` is given, and clicking the page around
+	 * or pressing Escape takes it instead of closing; the close button always closes.
+	 * @type {{ origin: { x: number, y: number } | null, label: string, width?: string, onclose: () => void, onback?: () => void, onclosed?: () => void, children: import('svelte').Snippet }}
 	 */
-	let { origin, label, width = '60rem', onclose, onclosed, children } = $props();
+	let { origin, label, width = '60rem', onclose, onback, onclosed, children } = $props();
+
+	const dismiss = () => (onback ?? onclose)();
 
 	/**
 	 * @param {HTMLElement} node
@@ -48,12 +52,12 @@
 	});
 </script>
 
-<svelte:window onkeydown={(event) => event.key === 'Escape' && onclose()} />
+<svelte:window onkeydown={(event) => event.key === 'Escape' && dismiss()} />
 
 <div class="sheet">
-	<button type="button" class="scrim" aria-label="Close" tabindex="-1" onclick={onclose} in:fade|global={fadeIn} out:fade|global={fadeOut}></button>
+	<button type="button" class="scrim" aria-label="Close" tabindex="-1" onclick={dismiss} in:fade|global={fadeIn} out:fade|global={fadeOut}></button>
 	<div
-		class="panel"
+		class="pane"
 		role="dialog"
 		aria-modal="true"
 		aria-label={label}
@@ -81,24 +85,35 @@
 		padding: 1rem;
 	}
 
-	/* The page stays in view behind, frosted over, so whatever's opened has nothing around it. */
+	/* The page stays in view behind, blurred and dimmed a touch, so the glass reads against it. */
 	.scrim {
 		position: absolute;
 		inset: 0;
 		border: 0;
-		background: color-mix(in oklab, var(--paper, #fbfaf7) 70%, transparent);
-		-webkit-backdrop-filter: blur(16px) saturate(1.1);
-		backdrop-filter: blur(16px) saturate(1.1);
+		background: color-mix(in oklab, var(--paper, #fbfaf7) 28%, rgba(28, 27, 24, 0.08));
+		-webkit-backdrop-filter: blur(22px) saturate(1.2);
+		backdrop-filter: blur(22px) saturate(1.2);
 		cursor: default;
 	}
 
-	.panel {
+	.pane {
 		position: relative;
 		width: min(var(--width), 100%);
 		max-height: calc(100dvh - 2rem);
 		overflow: auto;
 		overscroll-behavior: contain;
 		scrollbar-width: thin;
+		border-radius: 28px;
+		background: linear-gradient(160deg, rgba(255, 255, 255, 0.72), rgba(255, 255, 255, 0.46) 55%, rgba(255, 255, 255, 0.58));
+		box-shadow:
+			inset 0 1px 0 rgba(255, 255, 255, 0.95),
+			inset 0 0 0 1px rgba(255, 255, 255, 0.55),
+			inset 0 -1px 0 rgba(28, 27, 24, 0.04),
+			0 0 0 1px rgba(28, 27, 24, 0.06),
+			0 40px 90px -36px rgba(28, 27, 24, 0.4),
+			0 12px 28px -18px rgba(28, 27, 24, 0.2);
+		-webkit-backdrop-filter: blur(36px) saturate(1.8);
+		backdrop-filter: blur(36px) saturate(1.8);
 		outline: none;
 		will-change: transform;
 	}
@@ -151,9 +166,10 @@
 			padding: 3.6rem 0.5rem 0.5rem;
 		}
 
-		.panel {
+		.pane {
 			width: 100%;
 			max-height: calc(100dvh - 4.1rem);
+			border-radius: 22px;
 		}
 
 		.close {

@@ -1,19 +1,19 @@
 <script>
 	import { onMount } from 'svelte';
+	import ClickWheel from './ClickWheel.svelte';
+	import { Sections } from './sections.svelte.js';
 
 	/**
-	 * A floating bar of the page's sections. The highlight slides to whichever section the reader
-	 * has scrolled to, and stays hidden above the first; a fainter marker follows the label under
-	 * the pointer, and clicking a label scrolls there.
-	 * @type {{ items: { id: string, label: string }[] }}
+	 * The page's sections to steer by: a floating bar on wider screens, and on phones an iPod's
+	 * click wheel in its place. On the bar, the highlight slides to whichever section the reader
+	 * has reached, and stays hidden above the first; a fainter marker follows the label under the
+	 * pointer, and clicking a label glides there.
+	 * @type {{ items: import('./sections.svelte.js').Item[] }}
 	 */
 	let { items } = $props();
 
-	/** How far below the top of the viewport a section counts as reached. */
-	const REACH = 200;
+	const sections = new Sections(() => items);
 
-	/** The section reached, or -1 before the first. */
-	let active = $state(-1);
 	let left = $state(0);
 	let width = $state(0);
 
@@ -22,6 +22,11 @@
 	let hoverLeft = $state(0);
 	let hoverWidth = $state(0);
 	let arriving = $state(false);
+
+	/** @type {HTMLElement | undefined} */
+	let bar = $state();
+	/** @type {HTMLButtonElement[]} */
+	const buttons = $state([]);
 
 	/** @param {number} i */
 	function hover(i) {
@@ -33,70 +38,36 @@
 		hoverWidth = button.offsetWidth;
 	}
 
-	/** @type {HTMLElement | undefined} */
-	let bar = $state();
-	/** @type {HTMLButtonElement[]} */
-	const buttons = $state([]);
-
-	/** Set while a click is scrolling the page, so the passing sections don't steal the highlight. */
-	let jumping = false;
-	/** @type {ReturnType<typeof setTimeout> | undefined} */
-	let settle;
-
 	function measure() {
-		const button = buttons[active];
+		const button = buttons[sections.active];
 		if (!button || !bar) return;
 		left = button.offsetLeft;
 		width = button.offsetWidth;
 		bar.scrollTo({ left: button.offsetLeft - (bar.clientWidth - button.offsetWidth) / 2, behavior: 'smooth' });
 	}
 
-	function track() {
-		if (jumping) return;
-		for (let i = items.length - 1; i >= 0; i--) {
-			const section = document.getElementById(items[i].id);
-			if (section && section.getBoundingClientRect().top <= REACH) {
-				active = i;
-				return;
-			}
-		}
-		active = -1;
-	}
-
-	/** @param {number} i */
-	function jump(i) {
-		active = i;
-		jumping = true;
-		document.getElementById(items[i].id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-		clearTimeout(settle);
-		settle = setTimeout(() => (jumping = false), 1000);
-	}
-
 	$effect(measure);
 
-	onMount(() => {
-		track();
-		return () => clearTimeout(settle);
-	});
+	onMount(() => sections.listen());
 </script>
 
-<svelte:window onscroll={track} onresize={measure} />
+<svelte:window onresize={measure} />
 
-<nav class="sections" aria-label="Sections" bind:this={bar} onpointerleave={() => (hovered = -1)}>
+<nav class="sections" aria-label="Sections" data-steer bind:this={bar} onpointerleave={() => (hovered = -1)}>
 	<span
 		class={['hover', hovered !== -1 && 'shown', arriving && 'arriving']}
 		style:left="{hoverLeft}px"
 		style:width="{hoverWidth}px"
 		aria-hidden="true"
 	></span>
-	<span class={['highlight', active !== -1 && 'shown']} style:left="{left}px" style:width="{width}px" aria-hidden="true"></span>
+	<span class={['highlight', sections.active !== -1 && 'shown']} style:left="{left}px" style:width="{width}px" aria-hidden="true"></span>
 	{#each items as item, i (item.id)}
 		<button
 			type="button"
-			class={[i === active && 'on']}
-			aria-current={i === active ? 'true' : undefined}
+			class={[i === sections.active && 'on']}
+			aria-current={i === sections.active ? 'true' : undefined}
 			bind:this={buttons[i]}
-			onclick={() => jump(i)}
+			onclick={() => sections.go(i)}
 			onpointerenter={() => hover(i)}
 			onfocus={() => hover(i)}
 			onblur={() => (hovered = -1)}
@@ -105,6 +76,8 @@
 		</button>
 	{/each}
 </nav>
+
+<ClickWheel {sections} />
 
 <style>
 	.sections {
@@ -197,12 +170,7 @@
 
 	@media (max-width: 768px) {
 		.sections {
-			bottom: max(8px, env(safe-area-inset-bottom));
-		}
-
-		button {
-			padding: 9px 12px;
-			font-size: 13px;
+			display: none;
 		}
 	}
 

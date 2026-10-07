@@ -278,6 +278,53 @@ export function cover(item, format, i, w, h) {
 }
 
 /**
+ * The printed spine of a book, `d` wide and `h` tall: its title running head to foot, and the
+ * author's surname turned across the foot when there's room for it.
+ * @param {ShelfItem} item
+ * @param {number} d meters
+ * @param {number} h meters
+ */
+export function spine(item, d, h) {
+	return texture(d, h, (ctx, pw, ph) => {
+		ctx.fillStyle = item.tone;
+		ctx.fillRect(0, 0, pw, ph);
+		const shade = ctx.createLinearGradient(0, 0, pw, 0);
+		shade.addColorStop(0, 'rgba(0,0,0,0.16)');
+		shade.addColorStop(0.3, 'rgba(255,255,255,0.08)');
+		shade.addColorStop(1, 'rgba(0,0,0,0.12)');
+		ctx.fillStyle = shade;
+		ctx.fillRect(0, 0, pw, ph);
+		const surname = item.by?.split(/\s*&\s*|\s+and\s+/)[0].split(' ').at(-1);
+		const foot = surname && pw > ph * 0.035 ? ph * 0.16 : 0;
+		ctx.save();
+		ctx.translate(pw / 2, ph * 0.06);
+		ctx.rotate(Math.PI / 2);
+		ctx.fillStyle = item.ink;
+		ctx.textBaseline = 'middle';
+		ctx.textAlign = 'left';
+		const length = ph * 0.88 - foot;
+		let px = Math.min(pw * 0.5, ph * 0.06);
+		ctx.font = `${px}px ${face(item)}`;
+		const wide = ctx.measureText(item.title).width;
+		if (wide > length) {
+			px *= length / wide;
+			ctx.font = `${px}px ${face(item)}`;
+		}
+		ctx.fillText(item.title, 0, 0);
+		if (foot && surname) {
+			ctx.globalAlpha = 0.8;
+			const small = Math.min(pw * 0.26, ph * 0.026);
+			ctx.font = `600 ${small}px ${SANS}`;
+			ctx.textAlign = 'right';
+			const size = ctx.measureText(surname.toUpperCase()).width;
+			if (size > foot * 0.9) ctx.font = `600 ${(small * foot * 0.9) / size}px ${SANS}`;
+			ctx.fillText(surname.toUpperCase(), ph * 0.88, 0);
+		}
+		ctx.restore();
+	});
+}
+
+/**
  * The top of a record: grooves, and a center label printed with the album art, or in the
  * album's colors when there isn't any.
  * @param {ShelfItem | undefined} item

@@ -52,10 +52,10 @@
 		margin: 0;
 		color: var(--ink);
 		font-family: var(--serif);
-		font-size: clamp(1.4rem, 2.4vw, 1.9rem);
-		font-weight: 400;
-		line-height: 1.08;
-		letter-spacing: -0.01em;
+		font-size: clamp(1.3rem, 2.2vw, 1.7rem);
+		font-weight: 500;
+		line-height: 1.05;
+		letter-spacing: -0.03em;
 		text-wrap: balance;
 	}
 
@@ -68,8 +68,8 @@
 	.note {
 		margin: 0.5rem 0 0;
 		color: var(--ink-2);
-		font-size: 0.95rem;
-		line-height: 1.55;
+		font-size: 0.92rem;
+		line-height: 1.38;
 		text-wrap: pretty;
 	}
 

@@ -1,233 +1,211 @@
 <script>
-	import Showcase from './Showcase.svelte';
+	import { prefersReducedMotion } from 'svelte/motion';
+	import { fade, fly } from 'svelte/transition';
+	import { cubicOut } from 'svelte/easing';
+	import { Canvas } from '@threlte/core';
+	import { NeutralToneMapping } from 'three';
+	import Back from './Back.svelte';
+	import BookStack from './BookStack.svelte';
+	import Explainer from './Explainer.svelte';
+	import Heading from './Heading.svelte';
+	import { shelfLabel } from './furnishing.js';
 
 	/**
-	 * The books, spine out and at their real sizes, the way Stripe Press shows its catalog: the
-	 * thick ones are thick because they're long. Choosing one turns it to its cover.
+	 * The books in a floating stack at their real sizes, with what's in it listed alongside.
+	 * Pointing at a title or a book slides that book out; choosing one stands it up beside the
+	 * stack and tells you about it where the list was. Nothing on the page moves to make room:
+	 * the books move in their own scene, and the list and the description trade places.
 	 * @type {{ books: import('$lib/shelf/layout.js').ItemPiece[], selected?: number | null }}
 	 */
 	let { books, selected = $bindable(null) } = $props();
 
-	/** A length in meters, at the shelf's scale (`--per-meter`). @param {number} meters */
-	const real = (meters) => `calc(${meters.toFixed(4)} * var(--per-meter))`;
+	/** @type {number | null} */
+	let hovered = $state(null);
 
-	/** The author's surname, for the foot of the spine. @param {string} by */
-	const surname = (by) => by.split(/\s*&\s*|\s+and\s+/)[0].split(' ').at(-1);
+	const chosen = $derived(selected === null ? null : (books[selected] ?? null));
+	const still = $derived(prefersReducedMotion.current);
+	const duration = $derived(still ? 0 : 1);
+	const groups = $derived(
+		[...new Set(books.map((piece) => piece.shelf))].map((shelf) => ({
+			shelf,
+			label: shelfLabel(shelf),
+			entries: books.flatMap((piece, i) => (piece.shelf === shelf ? [{ piece, i }] : []))
+		}))
+	);
+
+	/** @param {number} i */
+	function choose(i) {
+		selected = selected === i ? null : i;
+		hovered = null;
+	}
+
+	/** @param {number} i @param {boolean} on */
+	function point(i, on) {
+		hovered = on ? i : hovered === i ? null : hovered;
+	}
 </script>
 
-{#snippet book(/** @type {import('$lib/shelf/layout.js').ItemPiece} */ piece, /** @type {boolean} */ open)}
-	{@const item = piece.item}
-	<span
-		class={['book', open && 'open']}
-		style:--tone={item.tone}
-		style:--ink={item.ink}
-		style:--w={real(piece.w)}
-		style:--h={real(piece.h)}
-		style:--d={real(piece.d)}
-		style:--cover={item.cover ? `url("${item.cover}")` : undefined}
-	>
-		<span class="box">
-			<span class={['face', 'cover', item.cover && 'art']}>
-				{#if !item.cover}
-					<span class="title" lang={item.lang}>{item.title}</span>
-					{#if item.by}
-						<span class="by" lang={item.lang}>{item.by}</span>
-					{/if}
-					{#if item.year}
-						<span class="year">{item.year}</span>
-					{/if}
-				{/if}
-			</span>
-			<span class="face spine">
-				<span class="spine-title" lang={item.lang}>{item.title}</span>
-				{#if item.by}
-					<span class="spine-by" lang={item.lang}>{surname(item.by)}</span>
-				{/if}
-			</span>
-			<span class="face pages"></span>
-			<span class="face back"></span>
-		</span>
-	</span>
-{/snippet}
+<div class="library">
+	<div class="stage" style:cursor={hovered === null ? undefined : 'pointer'}>
+		<Canvas toneMapping={NeutralToneMapping} dpr={Math.min(devicePixelRatio, 2)}>
+			<BookStack {books} {selected} {hovered} {still} onpick={choose} onhover={point} />
+		</Canvas>
+	</div>
 
-<Showcase
-	pieces={books}
-	bind:selected
-	kicker="Library"
-	title="On the shelf"
-	hint="Every book at its real size. Pick one up."
-	action="Read more"
-	object={book}
-/>
+	<div class="side">
+		{#key chosen}
+			<div
+				class="leaf"
+				in:fly={{ y: 10, duration: 460 * duration, delay: 200 * duration, easing: cubicOut }}
+				out:fade={{ duration: 180 * duration }}
+			>
+				{#if chosen}
+					<Back onclick={() => (selected = null)} />
+					<Explainer item={chosen.item} kicker={shelfLabel(chosen.shelf)} action="Read more" />
+				{:else}
+					<Heading kicker="Read" title="The bookshelf" hint="Stacked at their real sizes. Pick one up." />
+					{#each groups as group (group.shelf)}
+						<section class="group">
+							<p class="label">{group.label}</p>
+							<ul>
+								{#each group.entries as { piece, i } (piece.key)}
+									<li>
+										<button
+											type="button"
+											class={['title', hovered === i && 'on']}
+											onclick={() => choose(i)}
+											onpointerenter={() => point(i, true)}
+											onpointerleave={() => point(i, false)}
+											onfocus={() => point(i, true)}
+											onblur={() => point(i, false)}
+										>
+											<span class="name" lang={piece.item.lang}>{piece.item.title}</span>
+											{#if piece.item.by}
+												<span class="by" lang={piece.item.lang}>{piece.item.by}</span>
+											{/if}
+										</button>
+									</li>
+								{/each}
+							</ul>
+						</section>
+					{/each}
+				{/if}
+			</div>
+		{/key}
+	</div>
+</div>
 
 <style>
-	/*
-	 * A 23 cm book stands a little over 18rem tall, or 13rem on a phone. It's drawn without
-	 * perspective, and every face's padding is inside its size, so a turned book's spine and
-	 * cover stay exactly the same height.
-	 */
-	.book {
-		--per-meter: 80rem;
-		--open: 1.12;
-		--spine: color-mix(in oklab, var(--tone) 86%, black);
+	/* Both columns keep one height whatever is showing, so choosing a book never moves the page. */
+	.library {
+		--tall: clamp(28rem, 68vh, 40rem);
+		display: grid;
+		grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr);
+		gap: clamp(1rem, 3vw, 2.5rem);
+		padding: clamp(1.4rem, 3vw, 2.4rem);
+	}
+
+	.stage {
 		position: relative;
-		display: block;
-		width: var(--d);
-		height: var(--h);
-		transition:
-			width 720ms var(--ease-out),
-			height 720ms var(--ease-out);
+		height: var(--tall);
+		touch-action: pan-y;
+		user-select: none;
 	}
 
-	/* Turned toward you, a book takes up its cover's width less what the angle hides. */
-	.book.open {
-		width: calc((var(--w) * 0.906 + var(--d) * 0.423) * var(--open) + 1rem);
-		height: calc(var(--h) * var(--open));
+	.side {
+		display: grid;
+		height: var(--tall);
+		overflow-y: auto;
+		scrollbar-width: none;
 	}
 
-	.box {
-		position: absolute;
-		left: calc(50% - var(--w) / 2);
-		bottom: 0;
-		width: var(--w);
-		height: var(--h);
-		transform-origin: 50% 100%;
-		transform-style: preserve-3d;
-		transform: translateZ(calc(var(--w) / -2)) rotateY(90deg);
-		transition: transform 720ms var(--ease-out);
+	.leaf {
+		grid-area: 1 / 1;
+		display: grid;
+		align-content: center;
+		justify-items: start;
+		gap: 1.1rem;
+		min-width: 0;
 	}
 
-	:global(.slot:hover) .book:not(.open) .box {
-		transform: translateY(-0.7rem) translateZ(calc(var(--w) / -2)) rotateY(90deg);
+	.group {
+		display: grid;
+		gap: 0.3rem;
+		width: 100%;
 	}
 
-	.book.open .box {
-		transform: rotateY(25deg) scale(var(--open));
+	.label {
+		margin: 0;
+		color: var(--ink-3);
+		font-family: var(--mono);
+		font-size: 0.64rem;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
 	}
 
-	:global(.slot:focus-visible) .spine {
+	ul {
+		display: grid;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.title {
+		display: flex;
+		align-items: baseline;
+		justify-content: space-between;
+		gap: 1rem;
+		width: 100%;
+		padding: 0.32rem 0;
+		border: 0;
+		border-bottom: 1px solid rgba(28, 27, 24, 0.07);
+		background: none;
+		color: var(--ink);
+		font: inherit;
+		text-align: left;
+		cursor: pointer;
+		transition: color 200ms var(--ease-out);
+	}
+
+	.title.on {
+		color: var(--accent);
+	}
+
+	.title:focus-visible {
 		outline: 2px solid var(--accent);
 		outline-offset: 2px;
 	}
 
-	.face {
-		position: absolute;
-		box-sizing: border-box;
-		backface-visibility: hidden;
-		overflow: hidden;
-	}
-
-	.cover {
-		inset: 0;
-		display: flex;
-		flex-direction: column;
-		gap: 0.35rem;
-		padding: 1.2rem 1rem 1rem;
-		background: var(--tone);
-		color: var(--ink);
-		text-align: left;
-		transform: translateZ(calc(var(--d) / 2));
-		box-shadow: inset 5px 0 0 rgba(0, 0, 0, 0.13);
-	}
-
-	.cover.art {
-		background: var(--cover) center / cover no-repeat, var(--tone);
-	}
-
-	.cover::after,
-	.spine::after {
-		content: '';
-		position: absolute;
-		inset: 0;
-		background: linear-gradient(105deg, rgba(255, 255, 255, 0.2), transparent 45%, rgba(0, 0, 0, 0.14));
-		pointer-events: none;
-	}
-
-	.title {
+	.name {
 		font-family: var(--serif);
-		font-size: 1.35rem;
-		line-height: 1.02;
-		letter-spacing: -0.01em;
-		text-wrap: balance;
+		font-size: 1.08rem;
+		line-height: 1.2;
 	}
 
 	.by {
-		margin-top: auto;
-		font-size: 0.6rem;
-		letter-spacing: 0.12em;
-		text-transform: uppercase;
-		opacity: 0.85;
-	}
-
-	.year {
-		font-family: var(--mono);
-		font-size: 0.6rem;
-		opacity: 0.7;
-	}
-
-	.spine {
-		top: 0;
-		left: calc(50% - var(--d) / 2);
-		width: var(--d);
-		height: 100%;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		justify-content: space-between;
-		padding: 0.9rem 0 0.8rem;
-		background: var(--spine);
-		color: var(--ink);
-		transform: rotateY(-90deg) translateZ(calc(var(--w) / 2));
-	}
-
-	.spine-title {
-		max-height: 76%;
-		overflow: hidden;
-		writing-mode: vertical-rl;
-		font-family: var(--serif);
-		font-size: clamp(0.5rem, calc(var(--d) * 0.42), 1.05rem);
-		line-height: 1;
-		white-space: nowrap;
-		text-overflow: ellipsis;
-	}
-
-	.spine-by {
-		writing-mode: vertical-rl;
-		font-size: clamp(0.4rem, calc(var(--d) * 0.24), 0.56rem);
-		letter-spacing: 0.12em;
-		text-transform: uppercase;
-		opacity: 0.8;
-	}
-
-	.pages {
-		left: 0;
-		top: calc(50% - var(--d) / 2);
-		width: 100%;
-		height: var(--d);
-		background: repeating-linear-gradient(90deg, #f4efe2 0 1px, #e6dfcd 1px 2px);
-		transform: rotateX(90deg) translateZ(calc(var(--h) / 2));
-	}
-
-	.back {
-		inset: 0;
-		background: var(--spine);
-		transform: rotateY(180deg) translateZ(calc(var(--d) / 2));
+		flex: none;
+		color: var(--ink-3);
+		font-size: 0.74rem;
 	}
 
 	[lang='ko'] {
 		font-family: var(--korean);
 	}
 
-	@media (max-width: 640px) {
-		.book {
-			--per-meter: 58rem;
+	@media (max-width: 720px) {
+		.library {
+			--tall: 22rem;
+			grid-template-columns: minmax(0, 1fr);
 		}
-	}
 
-	@media (prefers-reduced-motion: reduce) {
-		.book,
-		.box {
-			transition: none;
+		.side {
+			height: auto;
+			min-height: 18rem;
+			overflow: visible;
+		}
+
+		.leaf {
+			align-content: start;
 		}
 	}
 </style>

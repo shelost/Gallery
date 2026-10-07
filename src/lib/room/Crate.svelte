@@ -7,6 +7,7 @@
 	import Box from './Box.svelte';
 	import Heading from './Heading.svelte';
 	import ModelView from './ModelView.svelte';
+	import Scrubber from './Scrubber.svelte';
 	import Soundwave from './Soundwave.svelte';
 	import { trackKey } from './furnishing.js';
 	import { mahogany, pine } from './materials.js';
@@ -16,10 +17,11 @@
 	/**
 	 * The record crate, and the turntable up close on its corner of the desk. Pulling a sleeve
 	 * slides the record out and onto the platter, and the arm swings over once it's down; the
-	 * record that was on slides back into its own sleeve. Only the crate scrolls.
-	 * @type {{ crates: { id: string, label: string, tracks: Track[] }[], current: Track, playing: boolean, onplay: (track: Track) => void, ontoggle: () => void }}
+	 * record that was on slides back into its own sleeve. Only the crate scrolls. `time` and
+	 * `duration` are how far into the record the needle is, in seconds.
+	 * @type {{ crates: { id: string, label: string, tracks: Track[] }[], current: Track, playing: boolean, time: number, duration: number, onplay: (track: Track) => void, ontoggle: () => void, onseek: (seconds: number) => void }}
 	 */
-	let { crates, current, playing, onplay, ontoggle } = $props();
+	let { crates, current, playing, time, duration, onplay, ontoggle, onseek } = $props();
 
 	const SLIDE_MS = 420;
 	/** The corner of the desk the turntable stands on: its writing slab over a moulding, in meters. */
@@ -162,6 +164,9 @@
 					<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3.5 2.2l6 3.8-6 3.8z" /></svg>
 				{/if}
 			</button>
+			<div class="scrub">
+				<Scrubber {time} {duration} {onseek} />
+			</div>
 		</div>
 	</div>
 </div>
@@ -398,6 +403,10 @@
 	.meta {
 		display: grid;
 		min-width: 0;
+	}
+
+	.scrub {
+		grid-column: 1 / -1;
 	}
 
 	.meta .title {

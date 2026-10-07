@@ -6,30 +6,32 @@
 	import { NeutralToneMapping } from 'three';
 	import Artifact from '$lib/directions/Artifact.svelte';
 	import { SHELVES } from '$lib/directions/content.js';
-	import { embed } from '$lib/directions/music.js';
-	import { BIRTHDAY, HOME, MONTHS, Now, age, loadFacts, pad, wallClock } from '$lib/directions/today.js';
-	import { MONO, SANS, block, loadCoverFonts, loadCovers } from '$lib/shelf/covers.js';
+	import { BIRTHDAY, HOME, Now, age, pad, wallClock } from '$lib/directions/today.js';
+	import { MONO, SANS, loadCoverFonts, loadCovers } from '$lib/shelf/covers.js';
 	import BrushBoard from './BrushBoard.svelte';
+	import Carousel from './Carousel.svelte';
 	import ClockSheet from './ClockSheet.svelte';
 	import Crate from './Crate.svelte';
-	import FactsSheet from './FactsSheet.svelte';
 	import Feature from './Feature.svelte';
 	import Library from './Library.svelte';
 	import LifeSheet from './LifeSheet.svelte';
-	import ModelView from './ModelView.svelte';
-	import Nike, { STATUE } from './Nike.svelte';
+	import PaintingFlow from './PaintingFlow.svelte';
 	import Sheet from './Sheet.svelte';
 	import Showcase from './Showcase.svelte';
 	import Soundwave from './Soundwave.svelte';
+	import StackSheet from './StackSheet.svelte';
+	import StatueStage from './StatueStage.svelte';
 	import VerseSheet from './VerseSheet.svelte';
+	import { Player } from './player.svelte.js';
 	import { BOOK_SHELF, CRATES, KEEPSAKES, MEDIA_SHELF, TAPES, TRACKS, findPiece } from './furnishing.js';
+	import { PAINTINGS } from './paintings.js';
+	import { STATUES } from './sculpt/statues.js';
 	import { GRID, sprite } from './sprite.js';
 	import RoomScene, { PAPER } from './RoomScene.svelte';
 
 	/** @typedef {import('./furnishing.js').Track} Track */
-	/** @typedef {import('$lib/directions/today.js').Fact} Fact */
 	/** @typedef {import('$lib/shelf/layout.js').ItemPiece} ItemPiece */
-	/** @typedef {'crate' | 'books' | 'media' | 'tapes' | 'tv' | 'clock' | 'age' | 'bible' | 'nike' | 'arc'} Opened */
+	/** @typedef {'crate' | 'books' | 'media' | 'tapes' | 'laptop' | 'clock' | 'age' | 'bible' | 'statue' | 'painting' | 'arc'} Opened */
 
 	/**
 	 * The hero: my room in 3D, without its walls. Everything on the table and the shelves floats
@@ -41,10 +43,13 @@
 
 	const INK = '#1c1b18';
 	const ACCENT = '#ff004c';
+	const COFFEE = 'https://buymeacoffee.com/sailordantes';
+	/** Where the statue and painting last chosen are kept between visits. */
+	const KEPT = { statue: 'room:statue', painting: 'room:painting' };
 
 	/** What each thing in the room does, shown while it's pointed at. @type {Record<string, string>} */
 	const HINTS = {
-		tv: 'On this day · see what happened',
+		laptop: 'Laptop · what I build with',
 		clock: `The time in ${HOME.place} · the day, the weather, the moon`,
 		age: 'My age, to the second · eighty years in dots',
 		turntable: 'Turntable · pick a record',
@@ -52,37 +57,38 @@
 		arc: 'ARC grid · a puzzle sprite',
 		brush: 'Sveltebrush · pick up the paper and write',
 		bible: 'Bible · the verse of the day',
-		nike: 'Winged Victory of Samothrace'
+		coffee: 'Buy me a coffee'
 	};
 
 	/** Sheets that open from a single thing in the room, and how wide they are. @type {Record<Opened, { label: string, width: string }>} */
 	const SHEETS = {
 		crate: { label: 'The record crate', width: '72rem' },
-		books: { label: 'The bookshelf', width: '64rem' },
+		books: { label: 'The bookshelf', width: '72rem' },
 		media: { label: 'The media shelf', width: '58rem' },
 		tapes: { label: 'Podcasts', width: '58rem' },
-		tv: { label: 'On this day', width: '44rem' },
+		laptop: { label: 'What I build with', width: '56rem' },
 		clock: { label: 'The time at home', width: '58rem' },
 		age: { label: 'Eighty years', width: '56rem' },
 		bible: { label: 'Verse of the day', width: '44rem' },
-		nike: { label: KEEPSAKES.nike.title, width: '60rem' },
+		statue: { label: 'Choose a statue', width: '66rem' },
+		painting: { label: 'Choose a painting', width: '66rem' },
 		arc: { label: KEEPSAKES.arc.title, width: '50rem' }
 	};
 
 	/** What leaves the room while its sheet is open, so it reads as having floated up into it. @type {Partial<Record<Opened, string>>} */
-	const RISES = { crate: 'turntable', tapes: 'tapes', tv: 'tv', clock: 'clock', age: 'age', bible: 'bible', nike: 'nike', arc: 'arc' };
+	const RISES = { crate: 'turntable', tapes: 'tapes', laptop: 'laptop', clock: 'clock', age: 'age', bible: 'bible', statue: 'statue', painting: 'painting', arc: 'arc' };
 
 	const FIRST = TRACKS.find((track) => track.item.youtube === '-1JCohwW0EA') ?? TRACKS[0];
 
 	/** The record on the deck, once something has been played. @type {Track | null} */
 	let loaded = $state.raw(null);
-	let playing = $state(false);
+	const player = new Player({ onended: () => play(TRACKS[(TRACKS.indexOf(current) + 1) % TRACKS.length]) });
 	let hovered = $state(/** @type {string | null} */ (null));
 	let seed = $state(1);
 	let hour12 = $state(true);
 	let ready = $state(false);
-	let facts = $state.raw(/** @type {Fact[]} */ ([]));
-	let fact = $state(0);
+	let statue = $state(STATUES[0].id);
+	let painting = $state(PAINTINGS[0].id);
 
 	/** @type {Opened | null} */
 	let opened = $state(null);
@@ -107,28 +113,40 @@
 	const touch = new MediaQuery('hover: none');
 
 	const current = $derived(loaded ?? FIRST);
+	const playing = $derived(player.playing);
 	const clock = $derived(coarse.current === null ? null : wallClock(coarse.current, HOME.zone));
 	const life = $derived.by(() => {
 		const at = prefersReducedMotion.current ? coarse.current : fine.current;
 		return at === null ? null : age(at);
 	});
-	const shown = $derived(facts.length ? facts[fact % facts.length] : null);
-	const audio = $derived(playing ? embed(current.item, { search: true }) : '');
 	const today = $derived(clock ?? wallClock(Date.now(), HOME.zone));
 	const hint = $derived.by(() => {
 		if (!hovered) return touch.current ? 'Tap things in the room' : 'Point at things in the room';
+		if (hovered === 'statue') return `${STATUES.find((entry) => entry.id === statue)?.title} · choose another statue`;
+		if (hovered === 'painting') return `${PAINTINGS.find((entry) => entry.id === painting)?.title} · choose another painting`;
 		const piece = findPiece(hovered);
 		return HINTS[hovered] ?? (piece ? [piece.item.title, piece.item.by].filter(Boolean).join(' · ') : '');
 	});
 
+	/** Puts a statue or painting up, and remembers it for next time. @param {'statue' | 'painting'} kind @param {string} id */
+	function hang(kind, id) {
+		if (kind === 'statue') statue = id;
+		else painting = id;
+		try {
+			localStorage.setItem(KEPT[kind], id);
+		} catch {
+			// Private windows can refuse storage; the choice still holds for this visit.
+		}
+	}
+
 	/** @param {Track} track */
 	function play(track) {
 		loaded = track;
-		playing = true;
+		player.play(track.item.youtube ?? '');
 	}
 
 	function toggle() {
-		if (playing) playing = false;
+		if (playing) player.pause();
 		else play(current);
 	}
 
@@ -153,6 +171,7 @@
 
 	/** @param {string} id */
 	function pick(id) {
+		if (id === 'coffee') return void window.open(COFFEE, '_blank', 'noopener');
 		if (id === 'brush') return pickUpPaper();
 		if (id === 'turntable') return open('crate');
 		if (id in SHEETS) return open(/** @type {Opened} */ (id));
@@ -211,46 +230,15 @@
 		ctx.fillText(`SINCE ${BIRTHDAY.year}`, w * 0.95, h * 0.22);
 	}
 
-	/** @param {CanvasRenderingContext2D} ctx @param {number} w @param {number} h */
-	function paintTv(ctx, w, h) {
-		const glass = ctx.createRadialGradient(w * 0.4, h * 0.35, 0, w * 0.5, h * 0.5, w * 0.75);
-		glass.addColorStop(0, '#fbfffd');
-		glass.addColorStop(1, '#dfeee8');
-		ctx.fillStyle = glass;
-		ctx.fillRect(0, 0, w, h);
-		ctx.fillStyle = 'rgba(28, 27, 24, 0.025)';
-		for (let y = 0; y < h; y += 4) ctx.fillRect(0, y, w, 1.5);
-		const pad = w * 0.07;
-		ctx.textBaseline = 'alphabetic';
-		ctx.textAlign = 'left';
-		ctx.font = `500 ${h * 0.065}px ${SANS}`;
-		ctx.fillStyle = 'rgba(28, 27, 24, 0.5)';
-		ctx.fillText(`ON THIS DAY${clock ? ` · ${MONTHS[clock.month - 1].slice(0, 3).toUpperCase()} ${clock.day}` : ''}`, pad, pad + h * 0.05);
-		if (!shown) {
-			ctx.fillStyle = INK;
-			ctx.font = `400 ${h * 0.09}px ${SANS}`;
-			ctx.fillText('Tuning in…', pad, h * 0.5);
-			return;
-		}
-		ctx.fillStyle = ACCENT;
-		ctx.font = `500 ${h * 0.2}px ${SANS}`;
-		ctx.fillText(shown.year, pad, h * 0.38);
-		ctx.fillStyle = INK;
-		block(ctx, shown.text, { x: pad, y: h * 0.43, width: w - pad * 2, size: h * 0.085, font: SANS, leading: 1.18, max: 4 });
-		ctx.font = `500 ${h * 0.055}px ${SANS}`;
-		ctx.fillStyle = 'rgba(28, 27, 24, 0.4)';
-		ctx.textAlign = 'right';
-		ctx.fillText(`${(fact % facts.length) + 1}/${facts.length}`, w - pad, h - pad * 0.7);
-	}
-
 	onMount(() => {
-		const controller = new AbortController();
-		const { month, day } = wallClock(Date.now(), HOME.zone);
-		loadFacts(month, day, controller.signal)
-			.then((result) => (facts = result))
-			.catch(() => {});
+		try {
+			const kept = { statue: localStorage.getItem(KEPT.statue), painting: localStorage.getItem(KEPT.painting) };
+			if (STATUES.some((entry) => entry.id === kept.statue)) statue = /** @type {string} */ (kept.statue);
+			if (PAINTINGS.some((entry) => entry.id === kept.painting)) painting = /** @type {string} */ (kept.painting);
+		} catch {
+			// Without storage the room starts with the defaults.
+		}
 		Promise.all([loadCoverFonts(), loadCovers(SHELVES.flatMap((entry) => entry.items))]).finally(() => (ready = true));
-		return () => controller.abort();
 	});
 </script>
 
@@ -269,12 +257,12 @@
 	<button type="button" class="again" onclick={() => (seed += 1)}>Draw another</button>
 {/snippet}
 
-{#snippet statue()}
-	<div class="statue">
-		<ModelView size={[STATUE.w, STATUE.h, STATUE.d]} yaw={0.85} pitch={0.14} label="The Winged Victory of Samothrace on her prow, in marble. Drag to turn her.">
-			<Nike />
-		</ModelView>
-	</div>
+{#snippet statues(/** @type {(i: number) => number} */ offset, /** @type {(i: number) => void} */ go)}
+	<StatueStage {offset} {go} />
+{/snippet}
+
+{#snippet paintings(/** @type {(i: number) => number} */ offset, /** @type {(i: number) => void} */ go)}
+	<PaintingFlow {offset} {go} />
 {/snippet}
 
 <section
@@ -289,6 +277,8 @@
 			<Canvas toneMapping={NeutralToneMapping} dpr={Math.min(devicePixelRatio, 2)}>
 				<RoomScene
 					bind:this={scene}
+					{statue}
+					{painting}
 					record={current.item}
 					spinning={playing}
 					{hovered}
@@ -297,7 +287,6 @@
 					{lifted}
 					{writing}
 					{away}
-					{paintTv}
 					{paintClock}
 					{paintAge}
 					onhover={(id) => (hovered = id)}
@@ -336,11 +325,7 @@
 	</div>
 
 	<!-- Only the sound comes through; the player itself stays out of sight. -->
-	{#if audio}
-		{#key audio}
-			<iframe class="audio" src={audio} title="Now playing: {current.item.title}" allow="autoplay; encrypted-media" tabindex="-1" aria-hidden="true"></iframe>
-		{/key}
-	{/if}
+	<div class="audio" aria-hidden="true" {@attach (node) => player.mount(node, FIRST.item.youtube ?? '')}></div>
 </section>
 
 {#if board}
@@ -361,28 +346,31 @@
 		label={sheet.label}
 		width={sheet.width}
 		onclose={() => (opened = null)}
+		onback={selected === null ? undefined : () => (selected = null)}
 		onclosed={() => {
 			if (!opened) away = null;
 		}}
 	>
 		{#if opened === 'crate'}
-			<Crate crates={CRATES} {current} {playing} onplay={play} ontoggle={toggle} />
+			<Crate crates={CRATES} {current} {playing} time={player.time} duration={player.duration} onplay={play} ontoggle={toggle} onseek={(seconds) => player.seek(seconds)} />
 		{:else if opened === 'books'}
 			<Library books={BOOK_SHELF} bind:selected />
 		{:else if opened === 'media'}
 			<Showcase pieces={MEDIA_SHELF} bind:selected kicker="Watch & read" title="The media shelf" hint="Films, a channel and a blog. Pick one up." object={artifact} />
 		{:else if opened === 'tapes'}
 			<Showcase pieces={TAPES} bind:selected kicker="Listen" title="Podcasts" hint="The ones I keep on in the background." action="Listen" object={artifact} />
-		{:else if opened === 'tv'}
-			<FactsSheet {facts} bind:fact date="{MONTHS[today.month - 1].slice(0, 3)} {today.day}" />
+		{:else if opened === 'laptop'}
+			<StackSheet />
 		{:else if opened === 'clock'}
 			<ClockSheet bind:hour12 />
 		{:else if opened === 'age'}
 			<LifeSheet />
 		{:else if opened === 'bible'}
 			<VerseSheet date={today} />
-		{:else if opened === 'nike'}
-			<Feature item={KEEPSAKES.nike} kicker="On her podium" action="Read about her" figure={statue} />
+		{:else if opened === 'statue'}
+			<Carousel entries={STATUES} active={statue} kicker="Statues" onpick={(id) => hang('statue', id)} stage={statues} />
+		{:else if opened === 'painting'}
+			<Carousel entries={PAINTINGS} active={painting} kicker="Paintings" onpick={(id) => hang('painting', id)} stage={paintings} />
 		{:else if opened === 'arc'}
 			<Feature item={KEEPSAKES.arc} kicker="On the wall" action="Try the puzzles" figure={pixels} />
 		{/if}
@@ -515,14 +503,15 @@
 		color: var(--accent);
 	}
 
-	/* Big enough that browsers treat it as a real player, too faint and small to see. */
+	/* Full size, so YouTube will play it, but out of sight and out of the way. */
 	.audio {
-		position: absolute;
-		right: 0;
+		position: fixed;
+		left: 0;
 		bottom: 0;
-		width: 2px;
-		height: 2px;
-		border: 0;
+		z-index: -1;
+		width: 200px;
+		height: 200px;
+		overflow: hidden;
 		opacity: 0.01;
 		pointer-events: none;
 	}
@@ -568,11 +557,6 @@
 
 	.again:hover {
 		color: var(--accent);
-	}
-
-	.statue {
-		width: min(100%, 26rem);
-		height: min(34rem, 66dvh);
 	}
 
 	@keyframes spin {

@@ -14,6 +14,8 @@ const VOICES = {
 	thunk: { rate: 0.45, frequency: 520, gain: 1 }
 };
 
+/** @typedef {keyof typeof VOICES} Voice */
+
 /**
  * Optional key and knob sounds, synthesized on demand. Muted until the visitor turns them on,
  * unless the sound is the point of the interaction.
@@ -35,11 +37,22 @@ export class Clicks {
 		this.tick('key');
 	}
 
-	/** @param {keyof typeof VOICES} kind */
-	tick(kind) {
-		if (this.muted || typeof AudioContext === 'undefined') return;
+	/**
+	 * Opens the audio. Browsers only start it inside a tap, so a control that clicks while it's
+	 * dragged wakes it on every press, and the clicks of the drag can sound.
+	 */
+	wake() {
+		if (typeof AudioContext === 'undefined') return null;
 		const context = (this.#context ??= new AudioContext());
 		if (context.state === 'suspended') context.resume();
+		return context;
+	}
+
+	/** @param {Voice} kind */
+	tick(kind) {
+		if (this.muted) return;
+		const context = this.wake();
+		if (!context) return;
 		const voice = VOICES[kind];
 		const source = context.createBufferSource();
 		source.buffer = this.#burst ??= makeBurst(context);

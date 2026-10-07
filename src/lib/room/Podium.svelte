@@ -18,29 +18,38 @@
 </script>
 
 <script>
-	import { T } from '@threlte/core';
+	import { T, useThrelte } from '@threlte/core';
 	import { MeshStandardMaterial } from 'three';
 	import Box from './Box.svelte';
 	import { BRASS, marble } from './materials.js';
 	import { surface } from './surface.js';
 
-	/** A marble podium with a sunk panel on its die and a brass plate naming who stands on it. */
+	/**
+	 * A marble podium with a sunk panel on its die and a brass plate naming who stands on it.
+	 * @type {{ name: string }}
+	 */
+	let { name } = $props();
 
+	const { invalidate } = useThrelte();
 	const stone = marble();
 	const plate = surface(0.13, 0.036);
 	const engraved = new MeshStandardMaterial({ ...BRASS, map: plate.texture });
 
-	plate.paint((ctx, w, h) => {
-		ctx.fillStyle = '#f4ecda';
-		ctx.fillRect(0, 0, w, h);
-		ctx.strokeStyle = 'rgba(60, 40, 10, 0.45)';
-		ctx.lineWidth = Math.max(1, h * 0.04);
-		ctx.strokeRect(h * 0.1, h * 0.1, w - h * 0.2, h * 0.8);
-		ctx.fillStyle = 'rgba(48, 30, 8, 0.85)';
-		ctx.textAlign = 'center';
-		ctx.textBaseline = 'middle';
-		ctx.font = `500 ${Math.round(h * 0.44)}px "Instrument Serif", Georgia, serif`;
-		ctx.fillText('ΝΙΚΗ', w / 2, h * 0.54);
+	$effect(() => {
+		const text = name;
+		plate.paint((ctx, w, h) => {
+			ctx.fillStyle = '#f4ecda';
+			ctx.fillRect(0, 0, w, h);
+			ctx.strokeStyle = 'rgba(60, 40, 10, 0.45)';
+			ctx.lineWidth = Math.max(1, h * 0.04);
+			ctx.strokeRect(h * 0.1, h * 0.1, w - h * 0.2, h * 0.8);
+			ctx.fillStyle = 'rgba(48, 30, 8, 0.85)';
+			ctx.textAlign = 'center';
+			ctx.textBaseline = 'middle';
+			ctx.font = `500 ${Math.round(h * 0.44)}px "Instrument Serif", Georgia, serif`;
+			ctx.fillText(text, w / 2, h * 0.54, w - h * 0.5);
+		});
+		invalidate();
 	});
 
 	$effect(() => () => {

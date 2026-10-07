@@ -5,8 +5,8 @@
 	const HIDDEN = new Set(['gapyear']);
 
 	/**
-	 * The room opens the page beside the intro; every section follows with its panels, Life and
-	 * Education right after Building. Lists and panels both run newest first.
+	 * The room opens the page beside the intro; every section follows with its panels, Life
+	 * right after Building. Lists and panels both run newest first.
 	 */
 	const ROWS = GROUPS.map((group) => ({
 		...group,
@@ -15,13 +15,10 @@
 		works: group.works.filter((work) => !HIDDEN.has(work.id))
 	}));
 
-	const school = findWork('school');
-
 	ROWS.splice(
 		ROWS.findIndex((row) => row.id === 'products') + 1,
 		0,
-		{ id: 'life', numeral: '', label: 'Life', works: newestFirst(LIFE) },
-		{ id: 'education', numeral: '', label: 'Education', works: school ? [school] : [] }
+		{ id: 'life', numeral: '', label: 'Life', works: newestFirst(LIFE) }
 	);
 
 	/** Narration boxes, the way a comic sets a scene. @type {Record<string, string>} */
@@ -37,11 +34,11 @@
 <script>
 	import { MediaQuery } from 'svelte/reactivity';
 	import ActionLines from '$lib/directions/ActionLines.svelte';
+	import Arcade from '$lib/directions/Arcade.svelte';
 	import Burst from '$lib/directions/Burst.svelte';
 	import Career from '$lib/directions/Career.svelte';
 	import Coda from '$lib/directions/Coda.svelte';
 	import Footer from '$lib/directions/Footer.svelte';
-	import GameBoy from '$lib/directions/GameBoy.svelte';
 	import Intro from '$lib/directions/Intro.svelte';
 	import Panel from '$lib/directions/Panel.svelte';
 	import SectionNav from '$lib/directions/SectionNav.svelte';
@@ -115,13 +112,6 @@
 	{@render frame('chancellor', { caption: 'Chancellor · Blog · Tech, History, Current Events' })}
 {/snippet}
 
-{#snippet education()}
-	{@render frame('school', {
-		caption: 'Cornell · 2021–22 · Dropped out',
-		media: null
-	})}
-{/snippet}
-
 {#snippet writing(/** @type {{ works: Work[] }} */ group)}
 	{#each group.works as essay (essay.id)}
 		{@render frame(essay.id, { caption: reading(essay) })}
@@ -143,7 +133,7 @@
 {/snippet}
 
 {#snippet games(/** @type {{ works: Work[] }} */ group)}
-	<GameBoy games={group.works} {zoom} active={spotlight.current} onhover={spotlight.set} />
+	<Arcade games={group.works} {zoom} active={spotlight.current} onhover={spotlight.set} />
 {/snippet}
 
 {#snippet webdev()}
@@ -191,7 +181,7 @@
 	</div>
 
 	{#each ROWS as row, i (row.id)}
-		{@const tier = { life, products, education, writing, design, games, webdev, comics, research, videos }[row.id]}
+		{@const tier = { life, products, writing, design, games, webdev, comics, research, videos }[row.id]}
 		<div class="row" id={row.id}>
 			<div class="index">
 				<WorkGroup group={row} i={i + 2} preview={false} bind:active={spotlight.current} />
@@ -242,10 +232,16 @@
 		margin-bottom: 0;
 	}
 
-	/* The column is narrow, so each blurb gets its own line under the title. */
+	/* The column is narrow, so long titles wrap and each blurb gets its own line under the title. */
 	.index :global(.row) {
 		grid-template-columns: minmax(0, 1fr) auto;
 		row-gap: 0.05rem;
+	}
+
+	.index :global(.title) {
+		white-space: normal;
+		text-wrap: pretty;
+		line-height: 1.35;
 	}
 
 	.index :global(.note) {
@@ -271,10 +267,12 @@
 		max-width: 40rem;
 	}
 
+	/* The room spills into the page's empty right margin, where nothing else is. */
 	.hero {
 		grid-template-columns: minmax(0, 1fr);
-		grid-template-rows: clamp(26rem, 44vw, 38rem);
+		grid-template-rows: clamp(30rem, 52vw, 46rem);
 		grid-template-areas: 'room';
+		margin-right: calc(var(--page-pad) * -0.75);
 	}
 
 	.life {
@@ -287,12 +285,6 @@
 		grid-template-columns: repeat(3, minmax(0, 1fr));
 		grid-template-rows: 15rem;
 		grid-template-areas: 'ovid king chancellor';
-	}
-
-	.education {
-		grid-template-columns: minmax(0, 1fr);
-		grid-template-rows: 12rem;
-		grid-template-areas: 'school';
 	}
 
 	.writing {
@@ -314,9 +306,24 @@
 	}
 
 	.games {
-		grid-template-columns: minmax(15rem, 17.5rem) minmax(0, 1fr);
-		column-gap: clamp(1.75rem, 3.5vw, 3rem);
-		align-items: start;
+		grid-template-columns: minmax(0, 1fr);
+	}
+
+	/* Bento tiles: soft gray cards with rounded corners. Comics keep their inked pages. */
+	.tier :global(.panel:not(.stack)),
+	.tier :global(.module) {
+		border: 0;
+		border-radius: 8px;
+		background: #f1f0ed;
+	}
+
+	.tier :global(.module) {
+		box-shadow: none;
+	}
+
+	.tier :global(.panel:not(.stack) .art) {
+		--media-bg: #f1f0ed;
+		--graph-fill: #f1f0ed;
 	}
 
 	.webdev {
@@ -360,6 +367,10 @@
 			position: static;
 		}
 
+		.hero {
+			margin-right: 0;
+		}
+
 		.frames .tier:not(.hero):not(.life) {
 			grid-template-columns: minmax(0, 1fr);
 			grid-template-rows: none;
@@ -378,15 +389,26 @@
 		.tier > :global(.stack) {
 			min-height: 24rem;
 		}
+	}
 
-		.games > :global(.console) {
-			justify-self: center;
+	@media (max-width: 768px) {
+		.foot {
+			padding-bottom: 11rem;
 		}
 	}
 
+	/* Phones get the lists alone; the panels are too small to read at this width. */
 	@media (max-width: 720px) {
 		.index {
 			padding-left: 0;
+		}
+
+		.tier:not(.hero) {
+			display: none;
+		}
+
+		.row:not(#about) {
+			margin-bottom: 2.5rem;
 		}
 	}
 
@@ -398,10 +420,6 @@
 
 		.frames .life > :global(.module) {
 			min-height: 9.5rem;
-		}
-
-		.games :global(.carts) {
-			grid-template-columns: repeat(2, minmax(0, 1fr));
 		}
 	}
 </style>

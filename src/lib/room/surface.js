@@ -5,6 +5,19 @@ const DENSITY = 4200;
 const MAX = 1024;
 
 /**
+ * Crops a texture to fill a face of the given width over height, like CSS's `object-fit: cover`.
+ * @param {import('three').Texture} texture
+ * @param {number} aspect
+ * @param {number} [own] the image's width over height, if it isn't an image element
+ */
+export function cover(texture, aspect, own = texture.image.width / texture.image.height) {
+	const [u, v] = own > aspect ? [aspect / own, 1] : [1, own / aspect];
+	texture.repeat.set(u, v);
+	texture.offset.set((1 - u) / 2, (1 - v) / 2);
+	texture.needsUpdate = true;
+}
+
+/**
  * A canvas the size of a screen in the room, as a texture that can be repainted.
  * @param {number} w meters
  * @param {number} h meters

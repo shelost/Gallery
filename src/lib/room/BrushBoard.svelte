@@ -3,9 +3,13 @@
 	import { prefersReducedMotion } from 'svelte/motion';
 	import { fade } from 'svelte/transition';
 	import { gsap } from 'gsap';
-	import { BRUSHES, INKS, InkCanvas, Inkstone } from '$lib/sveltebrush';
+	import { Canvas } from '@threlte/core';
+	import { NeutralToneMapping } from 'three';
+	import { BRUSHES, INKS, InkCanvas } from '$lib/sveltebrush';
 	import '$lib/sveltebrush/ui/paper.css';
 	import { linkProps } from '$lib/directions/links.js';
+	import BrushCursor from './BrushCursor.svelte';
+	import InkTray from './InkTray.svelte';
 	import { between, fitQuad, rectCorners } from './quad.js';
 
 	/** @typedef {import('./quad.js').Point} Point */
@@ -15,7 +19,9 @@
 	 * The sheet of hanji from the table, picked up. While `open` it rises out of the scene into
 	 * your hands, taking the paper's exact shape on screen as it leaves and turning to face you,
 	 * and becomes a live sheet to write on with the sveltebrush tools. Closing lays it back down
-	 * where it came from and hands over what was written, so the scene can print it.
+	 * where it came from and hands over what was written, so the scene can print it. In hand it
+	 * lies on a black mat, with the inkstone and brushes beside it, and the brush you hold is
+	 * the pointer while it's over them.
 	 * `corners` finds the paper in the scene; `printed` is the image on it there, to fade from.
 	 * @type {{
 	 *   open: boolean,
@@ -30,13 +36,16 @@
 
 	const PHRASES = ['원', '永', '風林火山', '바람이 분다', '사랑해'];
 	const PADDING = { top: 36, right: 36, bottom: 36, left: 36 };
-	const TOOLS = 132;
+	const TOOLS = 140;
+	/** The mat around the sheet in hand, as a share of the sheet's width. */
+	const MAT = 0.045;
 
 	let brushes = $state(structuredClone(BRUSHES));
 	let selected = $state(BRUSHES[0].id);
 	const brush = $derived(brushes.find((entry) => entry.id === selected) ?? brushes[0]);
 	let color = $state(INKS[0].color);
 	let ink = $state(1);
+	const status = $derived(ink < 0.06 ? 'Hover the brush over the ink' : ink < 0.3 ? 'Running dry' : ink > 1 ? 'Overloaded' : 'Loaded');
 	let history = $state({ undo: 0, redo: 0 });
 	let strokes = $state(0);
 	/** @type {ReturnType<typeof InkCanvas> | undefined} */
@@ -56,13 +65,19 @@
 	/** @type {gsap.core.Tween | undefined} */
 	let tween;
 
+	/** The sheet's size and place in hand, with room left around it for the mat. */
 	function place() {
 		const vw = typeof window === 'undefined' ? 1280 : window.innerWidth;
 		const vh = typeof window === 'undefined' ? 800 : window.innerHeight;
-		const w = Math.max(240, Math.min(vw - 48, (vh - TOOLS - 96) * aspect, 1080));
+		const fit = (/** @type {number} */ border) => Math.max(240, Math.min(vw - 48 - border * 2, (vh - TOOLS - 96 - border * 2) * aspect, 1080));
+		const mat = Math.round(fit(0) * MAT);
+		const w = fit(mat);
 		const h = w / aspect;
-		return { x: (vw - w) / 2, y: Math.max(28, (vh - TOOLS - h) / 2), w, h };
+		return { x: (vw - w) / 2, y: Math.max(28 + mat, (vh - TOOLS - h) / 2), w, h, mat };
 	}
+
+	/** @param {Element} node */
+	const writable = (node) => !!node.closest('.sheet, .tray');
 
 	/** @returns {Quad} */
 	const home = () => rectCorners(target.x, target.y, target.w, target.h);
@@ -191,13 +206,14 @@
 
 	<div
 		bind:this={sheet}
-		class="sheet sb-paper"
+		class={['sheet', 'sb-paper', settled && 'matted']}
 		role="dialog"
 		aria-modal="true"
 		aria-label="A sheet of hanji to write on"
 		tabindex="-1"
 		style:width="{target.w}px"
 		style:height="{target.h}px"
+		style:--mat="{target.mat}px"
 		style:transform
 	>
 		<div class="stage">
@@ -211,30 +227,37 @@
 	{#if settled}
 		<div
 			class="tools sb-ui"
-			style:top="{target.y + target.h + 16}px"
-			style:width="{Math.max(target.w, 560)}px"
+			style:top="{target.y + target.h + target.mat + 14}px"
+			style:width="{Math.max(target.w + target.mat * 2, 600)}px"
 			style:left="{target.x + target.w / 2}px"
 			transition:fade={{ duration: prefersReducedMotion.current ? 0 : 240 }}
 		>
 			<div class="well">
-				<Inkstone level={ink} {color} onload={(amount) => canvas?.load(amount)} onset={(level) => canvas?.dip(level)} />
+				<div class="tray">
+					<Canvas toneMapping={NeutralToneMapping} dpr={Math.min(devicePixelRatio, 2)}>
+						<InkTray
+							{brushes}
+							{selected}
+							{ink}
+							{color}
+							still={prefersReducedMotion.current}
+							onpick={(id) => (selected = id)}
+							onload={(amount) => canvas?.load(amount)}
+							ondip={() => canvas?.dip(1)}
+						/>
+					</Canvas>
+				</div>
+				<p class="readout" aria-live="polite"><strong>{Math.round(ink * 100)}%</strong> {brush.name} · {status}</p>
+				<div class="hidden" role="radiogroup" aria-label="Brush">
+					{#each brushes as entry (entry.id)}
+						<button type="button" role="radio" aria-checked={selected === entry.id} onclick={() => (selected = entry.id)}>{entry.name}</button>
+					{/each}
+					<button type="button" onclick={() => canvas?.dip(1)}>Load the brush with ink</button>
+				</div>
 			</div>
 
 			<div class="rows">
 				<div class="row">
-					<div class="group" role="radiogroup" aria-label="Brush">
-						{#each brushes as entry (entry.id)}
-							<button
-								type="button"
-								role="radio"
-								class={['chip', selected === entry.id && 'on']}
-								aria-checked={selected === entry.id}
-								onclick={() => (selected = entry.id)}
-							>
-								{entry.name}
-							</button>
-						{/each}
-					</div>
 					<div class="group" role="radiogroup" aria-label="Ink">
 						{#each INKS as entry (entry.color)}
 							<button
@@ -264,6 +287,12 @@
 					</div>
 				</div>
 			</div>
+		</div>
+
+		<div class="hand" aria-hidden="true">
+			<Canvas toneMapping={NeutralToneMapping} dpr={Math.min(devicePixelRatio, 2)}>
+				<BrushCursor id={selected} {ink} {color} still={prefersReducedMotion.current} over={writable} />
+			</Canvas>
 		</div>
 	{/if}
 </div>
@@ -301,10 +330,41 @@
 		border-radius: 3px;
 		box-shadow:
 			0 1px 0 rgba(255, 255, 255, 0.5) inset,
+			0 0 0 0 #121110,
 			0 40px 80px -30px rgba(30, 20, 10, 0.55),
 			0 10px 24px -10px rgba(30, 20, 10, 0.35);
 		outline: none;
 		backface-visibility: hidden;
+		transition:
+			box-shadow 420ms var(--ease-out),
+			border-radius 420ms var(--ease-out);
+	}
+
+	/* In hand the paper lies on a black mat, square cornered, the mat casting the shadow. */
+	.matted {
+		border-radius: 0;
+		box-shadow:
+			0 1px 0 rgba(255, 255, 255, 0.5) inset,
+			0 0 0 var(--mat) #121110,
+			0 40px 80px calc(var(--mat) - 30px) rgba(10, 8, 6, 0.55),
+			0 10px 24px calc(var(--mat) - 10px) rgba(10, 8, 6, 0.35);
+	}
+
+	.matted,
+	.matted :global(canvas),
+	.tray :global(canvas) {
+		cursor: none;
+	}
+
+	.hand {
+		position: fixed;
+		inset: 0;
+		z-index: 2;
+		pointer-events: none;
+	}
+
+	.hand :global(*) {
+		pointer-events: none;
 	}
 
 	.shown .sheet {
@@ -342,8 +402,36 @@
 		backdrop-filter: blur(14px);
 	}
 
-	.well :global(.inkstone) {
-		--size: 72px;
+	.well {
+		display: grid;
+		gap: 0.2rem;
+		flex: none;
+	}
+
+	.tray {
+		width: 280px;
+		height: 108px;
+	}
+
+	.readout {
+		margin: 0;
+		font-size: 0.7rem;
+		line-height: 1.2;
+		opacity: 0.7;
+	}
+
+	.readout strong {
+		font-variant-numeric: tabular-nums;
+		font-weight: 600;
+	}
+
+	.hidden {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		overflow: hidden;
+		clip-path: inset(50%);
+		white-space: nowrap;
 	}
 
 	.rows {

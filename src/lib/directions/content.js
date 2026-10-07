@@ -770,6 +770,51 @@ export const GROUPS = SECTIONS.map((section) => ({ ...section, works: worksIn(se
 );
 
 /**
+ * What I build with, favorites first. `made` names works by id, or `self` for this site.
+ * @type {{ id: string, title: string, kicker: string, favorite?: string, note: string, href: string, mark: { logo: string, tone: string, ink: string }, made: string[] }[]}
+ */
+export const STACK = [
+	{
+		id: 'svelte',
+		title: 'Svelte',
+		kicker: 'Framework',
+		favorite: 'Favorite framework',
+		note: 'Compiled, so the code I write is about the interface and not the framework. This site and Ovid are both Svelte.',
+		href: 'https://svelte.dev',
+		mark: { logo: '/logos/svelte.svg', tone: '#ff3e00', ink: '#ffffff' },
+		made: ['self', 'ovid']
+	},
+	{
+		id: 'canvas',
+		title: '<canvas>',
+		kicker: 'HTML element',
+		favorite: 'Favorite element',
+		note: 'A rectangle of pixels and a loop. Every one of my games is drawn on one, by hand.',
+		href: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Element/canvas',
+		mark: { logo: '/logos/canvas.svg', tone: '#1c1b18', ink: '#f4f1ec' },
+		made: ['platformr', 'rooms']
+	},
+	{
+		id: 'vue',
+		title: 'Vue',
+		kicker: 'Framework',
+		note: 'Single-file components, close to Svelte in spirit.',
+		href: 'https://vuejs.org',
+		mark: { logo: '/logos/vuedotjs.svg', tone: '#ffffff', ink: '#42b883' },
+		made: []
+	},
+	{
+		id: 'react',
+		title: 'React',
+		kicker: 'Library',
+		note: 'The lingua franca, and what most of the tools I build on are written in.',
+		href: 'https://react.dev',
+		mark: { logo: '/logos/react.svg', tone: '#20232a', ink: '#61dafb' },
+		made: []
+	}
+];
+
+/**
  * School before Cornell, oldest first: the grade I started each one in, and my first and last
  * months there as [year, month]. Grades go up a year after each start, so Korea, on the Korean
  * school year, moves up in March.
@@ -906,26 +951,28 @@ export const SHELVES = [
 		format: 'book',
 		items: [
 			{
-				title: 'Design Is Where the Action Is',
-				by: 'Allen Newell & Stuart Card',
-				year: '1985',
-				tone: '#ece6d8',
-				ink: '#c8321f',
-				pages: 34,
-				size: [15.2, 22.9],
-				href: 'https://doi.org/10.1207/s15327051hci0103_1',
-				note: 'From “The Prospects for Psychological Science in Human-Computer Interaction.” Usability analysis arrives too late to matter; a science of interfaces earns its place only when it shapes the design itself.'
+				title: 'Designing Interactions',
+				by: 'Bill Moggridge',
+				year: '2006',
+				tone: '#f2f1ee',
+				ink: '#1c1b18',
+				pages: 766,
+				size: [20.3, 25.4],
+				cover: '/covers/designing-interactions.jpg',
+				href: 'https://www.amazon.com/dp/0262134748',
+				note: 'Moggridge, who designed the first laptop and co-founded IDEO, interviewed the people behind the mouse, the desktop, the Palm, Google and The Sims. Seven hundred pages of how interaction design actually happened, told by the ones who did it.'
 			},
 			{
-				title: 'Pygmalion: A Creative Programming Environment',
+				title: 'Pygmalion',
 				by: 'David Canfield Smith',
-				year: '1975',
-				tone: '#1f3a5f',
-				ink: '#f1e4c4',
-				pages: 211,
-				size: [21.6, 27.9],
-				wiki: 'David_Canfield_Smith',
-				note: 'A Stanford thesis about programming by moving pictures around instead of typing text, and the place the word “icon” entered computing. It’s the starting point of my essay A Visual Interface for Thought.'
+				year: '1977',
+				tone: '#f2df4a',
+				ink: '#1c1b18',
+				pages: 190,
+				size: [15.5, 23.5],
+				cover: '/covers/pygmalion.jpg',
+				href: 'https://www.amazon.com/dp/3764309288',
+				note: 'Smith’s Stanford thesis on programming by moving pictures around instead of typing text, published by Birkhäuser as A Computer Program to Model and Stimulate Creative Thought. It’s where the word “icon” entered computing, and the starting point of my essay A Visual Interface for Thought.'
 			},
 			{
 				title: 'The Dream Machine',
@@ -987,7 +1034,7 @@ export const SHELVES = [
 	},
 	{
 		id: 'manga',
-		label: 'Manga',
+		label: 'Comics',
 		format: 'book',
 		items: [
 			{
@@ -1037,6 +1084,18 @@ export const SHELVES = [
 				cover: '/covers/pretty-face.jpg',
 				wiki: 'Pretty_Face',
 				note: 'A delinquent wakes from a car crash with his face rebuilt as the girl he has a crush on. Six volumes of the best kind of ridiculous.'
+			},
+			{
+				title: 'Asterix the Gaul',
+				by: 'René Goscinny & Albert Uderzo',
+				year: '1961',
+				tone: '#f7d23e',
+				ink: '#1f4fa3',
+				pages: 48,
+				size: [21.8, 28.7],
+				cover: '/covers/asterix.jpg',
+				wiki: 'Asterix_the_Gaul',
+				note: 'One small village of indomitable Gauls still holding out against Caesar, on a magic potion and a great deal of wild boar. The puns survive every translation.'
 			}
 		]
 	},
@@ -1091,9 +1150,9 @@ export const SHELVES = [
 		label: 'Songs · Christian',
 		format: 'cd',
 		items: [
-			{ title: 'Is That You', by: 'Ary Shu', tone: '#f4e3c9', ink: '#a2461f', query: 'Is That You Ary Shu' },
-			{ title: 'Better Than I', by: 'Joseph: King of Dreams', tone: '#25324d', ink: '#f2c96b', cover: '/covers/better-than-i.jpg', query: 'Better Than I Joseph King of Dreams' },
-			{ title: 'All in All', tone: '#e9eef0', ink: '#3a5a6a', query: 'All in All worship song' }
+			{ title: 'Is That You', by: 'Ary Shu', tone: '#f4e3c9', ink: '#a2461f', youtube: '4P06aMzPrDA' },
+			{ title: 'Better Than I', by: 'Joseph: King of Dreams', tone: '#25324d', ink: '#f2c96b', cover: '/covers/better-than-i.jpg', youtube: '3jJJcacnGVI' },
+			{ title: 'All in All', tone: '#e9eef0', ink: '#3a5a6a', youtube: 'lie1L61Qnos' }
 		]
 	},
 	{
@@ -1102,7 +1161,7 @@ export const SHELVES = [
 		format: 'cd',
 		items: [
 			{ title: 'Yellow Brick Road', by: 'Elton John', tone: '#f3c623', ink: '#3b2a12', cover: '/covers/yellow-brick-road.jpg', youtube: 'wy709iNG6i8' },
-			{ title: 'Never See Me Again', tone: '#101010', ink: '#e8e2d4', query: 'Never See Me Again' },
+			{ title: 'Never See Me Again', tone: '#101010', ink: '#e8e2d4', youtube: 'ePqZ9BPNsv8' },
 			{ title: 'All Caps', by: 'MF DOOM', tone: '#b8261d', ink: '#f6e7c8', cover: '/covers/all-caps.jpg', youtube: 'gSJeHDlhYls' },
 			{ title: 'Feel It Still', by: 'Portugal. The Man', tone: '#ff8fa3', ink: '#1d1b3a', cover: '/covers/feel-it-still.jpg', youtube: 'pBkHHoOIIn8' }
 		]
@@ -1113,10 +1172,10 @@ export const SHELVES = [
 		format: 'cd',
 		items: [
 			{ title: '꽃이 피고 지듯이', by: 'Lee Yoon Jung', tone: '#f6d6dc', ink: '#8c2f4a', lang: 'ko', youtube: '-1JCohwW0EA' },
-			{ title: '월량대표아적심', by: 'Teresa Teng', tone: '#1c2541', ink: '#f5e6a8', lang: 'ko', cover: '/covers/moon.jpg', query: '月亮代表我的心 鄧麗君' },
-			{ title: '비상', by: '임재범', tone: '#6fa3c7', ink: '#0f2236', lang: 'ko', cover: '/covers/bisang.jpg', query: '비상 임재범' },
-			{ title: '잔소리', by: 'IU', tone: '#fbe9a6', ink: '#3d5a2a', lang: 'ko', cover: '/covers/jansori.jpg', query: '잔소리 IU' },
-			{ title: '고백', by: '멜로망스', tone: '#2f2a4a', ink: '#f3d5c0', lang: 'ko', cover: '/covers/gobaek.jpg', query: '고백 멜로망스' }
+			{ title: '월량대표아적심', by: 'Teresa Teng', tone: '#1c2541', ink: '#f5e6a8', lang: 'ko', cover: '/covers/moon.jpg', youtube: 'IiFm7AWP9n4' },
+			{ title: '비상', by: '임재범', tone: '#6fa3c7', ink: '#0f2236', lang: 'ko', cover: '/covers/bisang.jpg', youtube: 'b1p0jQbpVi4' },
+			{ title: '잔소리', by: 'IU', tone: '#fbe9a6', ink: '#3d5a2a', lang: 'ko', cover: '/covers/jansori.jpg', youtube: 'yOqGYGNq9fw' },
+			{ title: '고백', by: '멜로망스', tone: '#2f2a4a', ink: '#f3d5c0', lang: 'ko', cover: '/covers/gobaek.jpg', youtube: 'UhY0x9jN_uE' }
 		]
 	},
 	{
@@ -1124,9 +1183,9 @@ export const SHELVES = [
 		label: 'Music',
 		format: 'vinyl',
 		items: [
-			{ title: 'Into the New World', by: 'Dvořák', tone: '#0f3b57', ink: '#f1d9a0', cover: '/covers/new-world.jpg', wiki: 'Symphony_No._9_(Dvořák)' },
-			{ title: 'In the Hall of the Mountain King', by: 'Grieg', tone: '#3c2a1e', ink: '#e7c27a', cover: '/covers/mountain-king.jpg', youtube: 'pPLXNmKvLBQ' },
-			{ title: 'Going the Distance', by: 'Bill Conti', tone: '#d8392b', ink: '#fbf1dc', cover: '/covers/going-the-distance.jpg', query: 'Bill Conti Going the Distance' }
+			{ title: 'Into the New World', by: 'Dvořák', tone: '#0f3b57', ink: '#f1d9a0', cover: '/covers/new-world.jpg', youtube: '89jOPAGJq-M', wiki: 'Symphony_No._9_(Dvořák)' },
+			{ title: 'In the Hall of the Mountain King', by: 'Grieg', tone: '#3c2a1e', ink: '#e7c27a', cover: '/covers/mountain-king.jpg', youtube: 'OqvHWUZZdP0' },
+			{ title: 'Going the Distance', by: 'Bill Conti', tone: '#d8392b', ink: '#fbf1dc', cover: '/covers/going-the-distance.jpg', youtube: 'GvQkl7qa6RQ' }
 		]
 	}
 ];

@@ -2,6 +2,7 @@
 	import { prefersReducedMotion } from 'svelte/motion';
 	import { fade, fly } from 'svelte/transition';
 	import { cubicOut } from 'svelte/easing';
+	import Back from './Back.svelte';
 	import Explainer from './Explainer.svelte';
 	import Heading from './Heading.svelte';
 	import { shelfLabel } from './furnishing.js';
@@ -11,19 +12,20 @@
 	/**
 	 * A row of things off one shelf, the way Stripe Press lays out its catalog. Choosing one sends
 	 * the others away; it glides over to the left and turns to show its cover, and what it is
-	 * comes up on the right. Choosing it again, or Back, puts everything back in the row.
-	 * `object` draws a piece, told whether it's the one chosen.
+	 * comes up on the right. Choosing it again, Back, or anywhere off it and its description puts
+	 * everything back in the row. Without a `title` there's no heading, only Back once one is
+	 * chosen. `object` draws a piece, told whether it's the one chosen.
 	 * @type {{
 	 *   pieces: ItemPiece[],
 	 *   selected?: number | null,
-	 *   kicker: string,
-	 *   title: string,
-	 *   hint: string,
+	 *   kicker?: string,
+	 *   title?: string,
+	 *   hint?: string,
 	 *   action?: string,
 	 *   object: import('svelte').Snippet<[ItemPiece, boolean]>
 	 * }}
 	 */
-	let { pieces, selected = $bindable(null), kicker, title, hint, action = 'Find out more', object } = $props();
+	let { pieces, selected = $bindable(null), kicker = '', title = '', hint = '', action = 'Find out more', object } = $props();
 
 	const chosen = $derived(selected === null ? null : (pieces[selected] ?? null));
 	const shown = $derived(chosen ? [chosen] : pieces);
@@ -48,18 +50,35 @@
 			css: (/** @type {number} */ _t, /** @type {number} */ u) => `transform: translate(${u * dx}px, ${u * dy}px)`
 		};
 	}
+
+	/**
+	 * With one chosen, a click anywhere that isn't on it, its description, or a button puts them
+	 * all back. Keyboard users have Back for the same thing.
+	 * @param {HTMLElement} node
+	 */
+	function dismiss(node) {
+		/** @param {MouseEvent} event */
+		const click = (event) => {
+			if (selected === null || !(event.target instanceof Element)) return;
+			if (event.target.closest('.slot, .detail, button, a')) return;
+			selected = null;
+		};
+		node.addEventListener('click', click);
+		return () => node.removeEventListener('click', click);
+	}
 </script>
 
-<div class={['showcase', chosen && 'chosen']}>
-	{#if chosen}
-		<Heading {kicker} {title}>
-			<button type="button" class="back" onclick={() => (selected = null)}>
-				<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M7.5 2.5 4 6l3.5 3.5" /></svg>
-				All of them
-			</button>
-		</Heading>
-	{:else}
-		<Heading {kicker} {title} {hint} />
+<div class={['showcase', chosen && 'chosen', !title && 'bare']} {@attach dismiss}>
+	{#if title}
+		{#if chosen}
+			<Heading {kicker} {title}>
+				<Back onclick={() => (selected = null)} />
+			</Heading>
+		{:else}
+			<Heading {kicker} {title} {hint} />
+		{/if}
+	{:else if chosen}
+		<div class="top"><Back onclick={() => (selected = null)} /></div>
 	{/if}
 
 	<div class="stage">
@@ -98,32 +117,16 @@
 		padding: clamp(1.4rem, 3vw, 2.4rem);
 	}
 
-	.back {
-		display: inline-flex;
-		align-items: center;
-		gap: 0.3rem;
-		margin: 0;
-		padding: 0;
-		border: 0;
-		background: none;
-		color: var(--ink-2);
-		font: inherit;
-		font-size: 0.85rem;
-		cursor: pointer;
+	/* Without a heading, Back sits where the heading would, and nothing moves when it appears. */
+	.top {
+		position: absolute;
+		top: clamp(1.4rem, 3vw, 2.4rem);
+		left: clamp(1.4rem, 3vw, 2.4rem);
 	}
 
-	.back:hover {
-		color: var(--accent);
-	}
-
-	.back svg {
-		width: 0.75rem;
-		height: 0.75rem;
-		fill: none;
-		stroke: currentColor;
-		stroke-width: 1.6;
-		stroke-linecap: round;
-		stroke-linejoin: round;
+	.bare {
+		position: relative;
+		padding-top: clamp(2.6rem, 5vw, 3.6rem);
 	}
 
 	.stage {
@@ -131,7 +134,16 @@
 		grid-template-columns: minmax(0, 1fr);
 		align-items: center;
 		gap: clamp(1.5rem, 4vw, 3.5rem);
-		min-height: 24rem;
+		height: 24rem;
+	}
+
+	/* The stage keeps its height whatever is chosen, so a long note is cut short rather than growing it. */
+	.detail :global(.note) {
+		display: -webkit-box;
+		overflow: hidden;
+		-webkit-box-orient: vertical;
+		-webkit-line-clamp: 7;
+		line-clamp: 7;
 	}
 
 	.chosen .stage {
@@ -186,7 +198,7 @@
 	/* A phone holds one row, swiped along edge to edge like a shelf, instead of a tall wrapped stack. */
 	@media (max-width: 640px) {
 		.stage {
-			min-height: 0;
+			height: auto;
 		}
 
 		.row {

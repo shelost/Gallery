@@ -5,7 +5,8 @@
 	/**
 	 * Something in the room you can point at: an invisible box catches the pointer, and the
 	 * object rises a little while it's hovered. Clicking it calls `onpick`. While `away` names it,
-	 * it's gone from the room, up in its sheet.
+	 * it's gone from the room, up in its sheet. `below` stretches the box down under the object,
+	 * over whatever it stands on, so that's somewhere to point too.
 	 * @type {{
 	 *   id: string,
 	 *   size: [number, number, number],
@@ -15,6 +16,7 @@
 	 *   position?: [number, number, number],
 	 *   rotation?: [number, number, number],
 	 *   lift?: number,
+	 *   below?: number,
 	 *   still?: boolean,
 	 *   away?: string | null,
 	 *   children: import('svelte').Snippet
@@ -29,6 +31,7 @@
 		position = [0, 0, 0],
 		rotation = [0, 0, 0],
 		lift = 0.014,
+		below = 0,
 		still = false,
 		away = null,
 		children
@@ -36,7 +39,7 @@
 
 	const { invalidate } = useThrelte();
 
-	const box = $derived(new BoxGeometry(...size));
+	const box = $derived(new BoxGeometry(size[0], size[1] + below, size[2]));
 	const hidden = new MeshBasicMaterial({ visible: false });
 
 	$effect(() => {
@@ -69,7 +72,7 @@
 	<T.Mesh
 		geometry={box}
 		material={hidden}
-		position.y={size[1] / 2}
+		position.y={(size[1] - below) / 2}
 		onclick={(/** @type {any} */ event) => {
 			event.stopPropagation();
 			onpick?.();

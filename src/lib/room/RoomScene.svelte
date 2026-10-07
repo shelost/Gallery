@@ -2,16 +2,27 @@
 	/** The low cabinet behind the desk's left end, long side running left to right. */
 	const CABINET = { x: -1.15, z: -0.8, w: 1.06, d: 0.42, top: 0.53 };
 	/** Where the floating shelves hang: the back edge of each board. */
-	const BOOKS_AT = { x: 0.56, y: 1.24, z: -0.66 };
+	const BOOKS_AT = { x: 0.68, y: 1.24, z: -0.66 };
 	const MEDIA_AT = { x: -1.15, y: 1.06, z: -1.0 };
-	/** The calligraphy set, front and center on the desk. */
-	const INK_AT = { x: -0.12, z: 0.13 };
+	/** The calligraphy set, front and center on the desk, and the turntable at its left end. */
+	const INK_AT = { x: 0.04, z: 0.13 };
+	const DECK_AT = { x: -0.82, z: -0.12, turn: 0.16 };
+	/** The records lean beside the books, each one a little further along and in front. */
+	const RECORD_STEP = 0.06;
 	/**
-	 * The podium past the desk's right end; which way she faces on it, toward the desk so you see
-	 * her from her left; and how much bigger than her model she stands, with her wingtips still
+	 * The podium past the desk's right end, which way it and its statue face, toward the desk, and
+	 * the box any statue is scaled to fit on it: inside the top slab, and short enough to stay
 	 * clear of the book shelf.
 	 */
-	const NIKE_AT = { x: 1.3, z: 0.16, turn: -0.35, scale: 1.2 };
+	const PODIUM_AT = { x: 1.45, z: 0.3, turn: -0.35 };
+	export const ON_PODIUM = /** @type {[number, number, number]} */ ([0.44, 0.9, 0.4]);
+	/**
+	 * The painting on the wall between the shelves, centered at `x` with its frame's foot at
+	 * `y`, and the most room its frame has; the frame takes the painting's own shape inside that.
+	 */
+	const WALL = { x: -0.27, y: 0.94, z: -0.86, w: 0.9, h: 0.7 };
+	/** The ARC grid, small now, hung over the media shelf. */
+	const ARC_AT = { x: -1.32, y: 1.3, z: -1.0, size: 0.28 };
 	/** The sheet of hanji on the felt, in meters. */
 	export const PAPER = { w: 0.42, d: 0.29 };
 
@@ -38,26 +49,33 @@
 
 	const FOV = 24;
 	/** Everything in the scene fits inside this box, so the camera can frame it. */
-	const BOUNDS = { x: [-1.72, 1.8], y: [0, 1.6] };
+	const BOUNDS = { x: [-1.72, 1.92], y: [0, 1.7] };
 </script>
 
 <script>
 	import { T, useTask, useThrelte } from '@threlte/core';
 	import { interactivity } from '@threlte/extras';
-	import { MeshStandardMaterial, Vector3 } from 'three';
+	import { MeshStandardMaterial, SRGBColorSpace, TextureLoader, Vector3 } from 'three';
+	import Book from '$lib/shelf/Book.svelte';
 	import Piece from '$lib/shelf/Piece.svelte';
 	import Plant from '$lib/shelf/Plant.svelte';
 	import Turntable from '$lib/shelf/Turntable.svelte';
 	import Box from './Box.svelte';
 	import Coffee from './Coffee.svelte';
 	import Desk, { DESK } from './Desk.svelte';
+	import Frame, { MARGIN } from './Frame.svelte';
+	import Glide from './Glide.svelte';
 	import Hotspot from './Hotspot.svelte';
+	import Laptop from './Laptop.svelte';
 	import Lights from './Lights.svelte';
-	import Nike, { STATUE } from './Nike.svelte';
 	import Podium, { PODIUM } from './Podium.svelte';
 	import Readout from './Readout.svelte';
+	import Statue from './Statue.svelte';
+	import StatueLight from './StatueLight.svelte';
 	import { BOOK_SHELF, MEDIA_SHELF, SLEEVES, TAPES } from './furnishing.js';
 	import { pine } from './materials.js';
+	import { PAINTINGS } from './paintings.js';
+	import { STATUES } from './sculpt/statues.js';
 	import { GRID, sprite } from './sprite.js';
 	import { surface } from './surface.js';
 
@@ -65,14 +83,18 @@
 	/** @typedef {{ x: number, y: number }} Point */
 
 	/**
-	 * The room without its walls: a Victorian pedestal desk with a television, a clock, an age
-	 * counter, a calligraphy set, a Bible and a coffee on its leather; the Winged Victory on her
-	 * podium with plants growing up around it; a cabinet with the turntable and the podcasts on
-	 * tape; and two shelves floating over the page. The furniture's shadows are the only floor,
-	 * and the camera holds still.
-	 * `lifted` takes the sheet of paper off the desk while it's up in your hands, `writing` is
-	 * what was last written on it, and `away` is whatever has floated up into a sheet.
+	 * The room without its walls: a Victorian pedestal desk with the turntable, a laptop, a
+	 * clock, an age counter, a calligraphy set, a Bible and a coffee on its leather; a statue on
+	 * a podium with plants growing up around it, lit like a gallery's; a painting and the ARC grid
+	 * hung in the air; a cabinet with the podcasts on tape; and two shelves floating over the
+	 * page, one with the books spine out and the records beside them. The furniture's shadows are
+	 * the only floor, and the camera holds still.
+	 * `statue` and `painting` are which of each is up, `lifted` takes the sheet of paper off the
+	 * desk while it's up in your hands, `writing` is what was last written on it, and `away` is
+	 * whatever has floated up into a sheet.
 	 * @type {{
+	 *   statue: string,
+	 *   painting: string,
 	 *   record: import('$lib/directions/content.js').ShelfItem | undefined,
 	 *   spinning: boolean,
 	 *   hovered: string | null,
@@ -81,14 +103,40 @@
 	 *   lifted: boolean,
 	 *   writing: HTMLCanvasElement | null,
 	 *   away: string | null,
-	 *   paintTv: Paint,
 	 *   paintClock: Paint,
 	 *   paintAge: Paint,
 	 *   onhover: (id: string | null) => void,
 	 *   onpick: (id: string) => void
 	 * }}
 	 */
-	let { record, spinning, hovered, seed, still, lifted, writing, away, paintTv, paintClock, paintAge, onhover, onpick } = $props();
+	let { statue, painting, record, spinning, hovered, seed, still, lifted, writing, away, paintClock, paintAge, onhover, onpick } = $props();
+
+	const standing = $derived(STATUES.find((entry) => entry.id === statue) ?? STATUES[0]);
+	const hanging = $derived(PAINTINGS.find((entry) => entry.id === painting) ?? PAINTINGS[0]);
+	/** The painting, as big as fits on the wall in its frame at its own proportions. */
+	const frame = $derived.by(() => {
+		const [w, h] = hanging.size;
+		const fit = Math.min((WALL.w - MARGIN * 2) / w, (WALL.h - MARGIN * 2) / h);
+		return { w: w * fit + MARGIN * 2, h: h * fit + MARGIN * 2, canvas: [w * fit, h * fit] };
+	});
+
+	const loader = new TextureLoader();
+	const canvasFace = new MeshStandardMaterial({ roughness: 0.62, color: '#ffffff' });
+	$effect(() => {
+		let live = true;
+		loader.load(hanging.image, (texture) => {
+			if (!live) return texture.dispose();
+			texture.colorSpace = SRGBColorSpace;
+			texture.anisotropy = 8;
+			canvasFace.map?.dispose();
+			canvasFace.map = texture;
+			canvasFace.needsUpdate = true;
+			invalidate();
+		});
+		return () => {
+			live = false;
+		};
+	});
 
 	const { renderer, size, invalidate } = useThrelte();
 
@@ -187,6 +235,8 @@
 		canvasArt.dispose();
 		sheet.texture.dispose();
 		paperFace.dispose();
+		canvasFace.map?.dispose();
+		canvasFace.dispose();
 	});
 
 	/** @type {import('three').PerspectiveCamera | undefined} */
@@ -209,7 +259,7 @@
 			const half = Math.tan(((FOV / 2) * Math.PI) / 180);
 			const across = (BOUNDS.x[1] - BOUNDS.x[0]) / 2;
 			const tall = (BOUNDS.y[1] - BOUNDS.y[0]) / 2;
-			const distance = Math.max((tall * 1.18) / half, (across * 1.04) / (half * aspect));
+			const distance = Math.max((tall * 1.08) / half, (across * 0.98) / (half * aspect));
 			lens.position.copy(TARGET).addScaledVector(DIRECTION, distance);
 			lens.lookAt(TARGET);
 			invalidate();
@@ -247,15 +297,18 @@
 		return /** @type {HTMLCanvasElement} */ (sheet.texture.image).toDataURL('image/png');
 	}
 
+	/** How much of the book shelf the books take, spine out, and the records beside them. */
+	const bookSpan = BOOK_SHELF.reduce((sum, piece) => sum + piece.d, 0) + (BOOK_SHELF.length - 1) * 0.003;
+	const recordSpan = (SLEEVES[0]?.w ?? 0) + (SLEEVES.length - 1) * RECORD_STEP;
+	const shelfSpan = bookSpan + 0.05 + recordSpan;
+	const records = SLEEVES.map((piece, n) => ({ piece, x: -shelfSpan / 2 + bookSpan + 0.05 + piece.w / 2 + n * RECORD_STEP, z: n * 0.012 }));
+	const mediaSpan = Math.max(...MEDIA_SHELF.map((piece) => piece.x + piece.w / 2)) - Math.min(...MEDIA_SHELF.map((piece) => piece.x - piece.w / 2));
+
 	/** The floating shelves, each a board with a low rail at the back for things to lean on. */
 	const shelves = [
-		{ id: 'books', at: BOOKS_AT, pieces: BOOK_SHELF },
-		{ id: 'media', at: MEDIA_AT, pieces: MEDIA_SHELF }
-	].map((entry) => {
-		const left = Math.min(...entry.pieces.map((piece) => piece.x - piece.w / 2));
-		const right = Math.max(...entry.pieces.map((piece) => piece.x + piece.w / 2));
-		return { ...entry, width: right - left + 0.14 };
-	});
+		{ id: 'books', at: BOOKS_AT, width: shelfSpan + 0.14 },
+		{ id: 'media', at: MEDIA_AT, width: mediaSpan + 0.14 }
+	];
 
 	const tapeStack = TAPES.length * 0.0172 + 0.004;
 
@@ -276,31 +329,15 @@
 <Desk />
 
 <T.Group position.y={DESK.top}>
-	<!-- A little television tuned to "On this day". -->
-	<Hotspot id="tv" size={[0.36, 0.34, 0.28]} position={[-0.66, 0, -0.2]} rotation={[0, 0.28, 0]} {hovered} {onhover} onpick={() => onpick('tv')} {still} {away}>
-		<T.Group position.y={0.02}>
-			<Readout size={[0.34, 0.25, 0.26]} color={PALETTE.mint} radius={0.045} screen={{ w: 0.235, h: 0.172, at: [-0.035, 0.008] }} paint={paintTv}>
-				{#each [0.07, 0.02] as y (y)}
-					<T.Mesh position={[0.13, 0.125 + y - 0.04, 0.131]} rotation.x={Math.PI / 2} castShadow>
-						<T.CylinderGeometry args={[0.016, 0.016, 0.012, 32]} />
-						<T.MeshStandardMaterial color={PALETTE.white} roughness={0.4} />
-					</T.Mesh>
-				{/each}
-				{#each [-0.42, 0.36] as tilt (tilt)}
-					<T.Mesh position={[0.03 + tilt * 0.12, 0.25 + 0.075, -0.02]} rotation.z={tilt} castShadow>
-						<T.CylinderGeometry args={[0.003, 0.003, 0.17, 8]} />
-						<T.MeshStandardMaterial color="#d8d4cc" roughness={0.3} metalness={0.6} />
-					</T.Mesh>
-				{/each}
-			</Readout>
+	<!-- The laptop, open on the stack. -->
+	<Hotspot id="laptop" size={[0.36, 0.24, 0.31]} position={[-0.38, 0, -0.2]} rotation={[0, 0.28, 0]} {hovered} {onhover} onpick={() => onpick('laptop')} {still} {away}>
+		<T.Group position.z={0.035}>
+			<Laptop />
 		</T.Group>
-		{#each [-0.12, 0.12] as x (x)}
-			<Box size={[0.05, 0.02, 0.18]} radius={0.008} color={PALETTE.white} position={[x, 0.01, 0]} />
-		{/each}
 	</Hotspot>
 
 	<!-- The clock at home, in Ithaca, standing on its feet. -->
-	<Hotspot id="clock" size={[0.42, 0.17, 0.08]} position={[-0.18, 0, -0.3]} rotation={[0, 0.08, 0]} {hovered} {onhover} onpick={() => onpick('clock')} {still} {away}>
+	<Hotspot id="clock" size={[0.42, 0.17, 0.08]} position={[0.06, 0, -0.3]} rotation={[0, 0.08, 0]} {hovered} {onhover} onpick={() => onpick('clock')} {still} {away}>
 		<T.Group position.y={0.018} rotation.x={-0.12}>
 			<Readout size={[0.4, 0.14, 0.04]} color={PALETTE.white} radius={0.02} screen={{ w: 0.362, h: 0.104 }} paint={paintClock} />
 		</T.Group>
@@ -310,7 +347,7 @@
 	</Hotspot>
 
 	<!-- My age, counting. -->
-	<Hotspot id="age" size={[0.28, 0.1, 0.08]} position={[0.26, 0, -0.27]} rotation={[0, -0.14, 0]} {hovered} {onhover} onpick={() => onpick('age')} {still} {away}>
+	<Hotspot id="age" size={[0.28, 0.1, 0.08]} position={[0.48, 0, -0.27]} rotation={[0, -0.14, 0]} {hovered} {onhover} onpick={() => onpick('age')} {still} {away}>
 		<Readout size={[0.27, 0.088, 0.066]} color={PALETTE.peach} radius={0.022} screen={{ w: 0.24, h: 0.062 }} paint={paintAge} />
 	</Hotspot>
 
@@ -346,13 +383,13 @@
 		</T.Group>
 	</Hotspot>
 
-	<!-- A coffee, black, within reach of the brush. -->
-	<T.Group position={[0.38, 0, 0.27]}>
+	<!-- A coffee, black, within reach of the brush; it's the way to buy me one. -->
+	<Hotspot id="coffee" size={[0.15, 0.09, 0.15]} position={[0.54, 0, 0.28]} {hovered} {onhover} onpick={() => onpick('coffee')} {still}>
 		<Coffee />
-	</T.Group>
+	</Hotspot>
 
 	<!-- A leather Bible with gilt edges and a ribbon. -->
-	<Hotspot id="bible" size={[0.15, 0.045, 0.21]} position={[0.62, 0, 0.12]} rotation={[0, -0.38, 0]} {hovered} {onhover} onpick={() => onpick('bible')} {still} {away}>
+	<Hotspot id="bible" size={[0.15, 0.045, 0.21]} position={[0.8, 0, 0.12]} rotation={[0, -0.38, 0]} {hovered} {onhover} onpick={() => onpick('bible')} {still} {away}>
 		<Box size={[0.14, 0.006, 0.2]} radius={0.003} color="#2b1b14" roughness={0.75} sheen={0.15} position={[0, 0.003, 0]} />
 		<Box size={[0.132, 0.026, 0.19]} radius={0.002} color="#d8b25c" roughness={0.3} sheen={0.6} position={[0.003, 0.019, 0]} />
 		<Box size={[0.14, 0.006, 0.2]} radius={0.003} color="#2b1b14" roughness={0.75} sheen={0.15} position={[0, 0.035, 0]} />
@@ -362,8 +399,21 @@
 		<Box size={[0.008, 0.002, 0.05]} radius={0.0008} color="#9c1b1f" position={[0.03, 0.003, 0.11]} rotation={[0.3, 0, 0]} />
 	</Hotspot>
 
+	<!-- The turntable, at the desk's left end. -->
+	<T.Group position={[DECK_AT.x, 0, DECK_AT.z]} rotation.y={DECK_AT.turn} visible={away !== 'turntable'}>
+		<Turntable
+			item={record}
+			{still}
+			{spinning}
+			finish="#ffffff"
+			{grain}
+			onpick={() => onpick('turntable')}
+			onhover={(on) => hoverPiece('turntable', on)}
+		/>
+	</T.Group>
+
 	<!-- A lamp. -->
-	<T.Group position={[0.86, 0, -0.34]}>
+	<T.Group position={[1, 0, -0.34]}>
 		<T.Mesh position.y={0.008} castShadow receiveShadow>
 			<T.CylinderGeometry args={[0.06, 0.065, 0.016, 48]} />
 			<T.MeshStandardMaterial color={PALETTE.white} roughness={0.4} />
@@ -380,60 +430,83 @@
 	</T.Group>
 </T.Group>
 
-<!-- The Winged Victory of Samothrace on her podium, with plants growing up around its foot. -->
-<T.Group position={[NIKE_AT.x, 0, NIKE_AT.z]}>
-	<Podium />
+<!-- The statue on its podium, with plants growing up around the podium's foot. -->
+<T.Group position={[PODIUM_AT.x, 0, PODIUM_AT.z]}>
+	<T.Group rotation.y={PODIUM_AT.turn}>
+		<Podium name={standing.plate} />
+	</T.Group>
 	{#each GARDEN as plant, n (n)}
 		<T.Group position={[plant.at[0], 0, plant.at[1]]} rotation.y={plant.turn}>
 			<Plant piece={{ key: `garden-${n}`, type: 'plant', variant: plant.variant, w: plant.w, h: plant.h, d: 0, x: 0 }} potted={false} />
 		</T.Group>
 	{/each}
 	<Hotspot
-		id="nike"
-		size={[STATUE.w * NIKE_AT.scale, STATUE.h * NIKE_AT.scale, STATUE.d * NIKE_AT.scale]}
+		id="statue"
+		size={[PODIUM.w, ON_PODIUM[1], PODIUM.d]}
+		below={PODIUM.top}
 		position={[0, PODIUM.top, 0]}
-		rotation={[0, NIKE_AT.turn, 0]}
+		rotation={[0, PODIUM_AT.turn, 0]}
 		lift={0.012}
 		{hovered}
 		{onhover}
-		onpick={() => onpick('nike')}
+		onpick={() => onpick('statue')}
 		{still}
 		{away}
 	>
-		<T.Group scale={NIKE_AT.scale}>
-			<Nike />
-		</T.Group>
+		<Statue id={standing.id} fit={ON_PODIUM} />
 	</Hotspot>
+	<StatueLight target={[0, PODIUM.top + ON_PODIUM[1] * 0.5, 0]} />
 </T.Group>
 
-<!-- The floating shelves: books over the desk, films, a tape and a magazine over the cabinet. -->
+<!-- The floating shelves: books and records over the desk, films, a tape and a magazine over the cabinet. -->
 {#each shelves as entry (entry.id)}
 	<T.Group position={[entry.at.x, entry.at.y, entry.at.z]}>
 		<Box size={[entry.width, 0.028, 0.21]} radius={0.008} color={PALETTE.white} position={[0, -0.014, 0.105]} />
 		<Box size={[entry.width, 0.05, 0.012]} radius={0.004} color={PALETTE.white} position={[0, 0.025, 0.006]} />
-		{#each entry.pieces as piece (piece.key)}
-			<T.Group position.x={piece.x}>
-				<Piece
-					{piece}
-					{still}
-					lifted={hovered === piece.key}
-					onpick={() => onpick(piece.key)}
-					onhover={(on) => hoverPiece(piece.key, on)}
-				/>
-			</T.Group>
-		{/each}
 	</T.Group>
 {/each}
 
-<!-- Pixel art in a frame, hanging in the air between the shelves. -->
-<Hotspot id="arc" size={[0.46, 0.46, 0.06]} position={[-0.6, 1.08, -0.72]} lift={0.01} {hovered} {onhover} onpick={() => onpick('arc')} {still} {away}>
-	<Box size={[0.46, 0.46, 0.03]} radius={0.012} color={PALETTE.white} position={[0, 0.23, 0.015]} />
-	<T.Mesh material={canvasArt} position={[0, 0.23, 0.0315]} receiveShadow>
-		<T.PlaneGeometry args={[0.38, 0.38]} />
+<!-- The books stand spine out, and slide forward off the shelf while they're pointed at. -->
+<T.Group position={[BOOKS_AT.x - shelfSpan / 2 + bookSpan / 2, BOOKS_AT.y, BOOKS_AT.z]}>
+	{#each BOOK_SHELF as piece (piece.key)}
+		<Glide position={[piece.x, piece.h / 2, piece.w / 2 + 0.014 + (hovered === piece.key ? 0.06 : 0)]} rotation={[0, Math.PI / 2, 0]} stiffness={160} {still}>
+			<Book {piece} onpick={() => onpick(piece.key)} onhover={(on) => hoverPiece(piece.key, on)} />
+		</Glide>
+	{/each}
+</T.Group>
+
+{#snippet leaning(/** @type {import('$lib/shelf/layout.js').ItemPiece} */ piece, /** @type {[number, number, number]} */ at)}
+	<T.Group position={at}>
+		<Piece {piece} {still} lifted={hovered === piece.key} onpick={() => onpick(piece.key)} onhover={(on) => hoverPiece(piece.key, on)} />
+	</T.Group>
+{/snippet}
+
+<T.Group position={[BOOKS_AT.x, BOOKS_AT.y, BOOKS_AT.z]}>
+	{#each records as { piece, x, z } (piece.key)}
+		{@render leaning(piece, [x, 0, z])}
+	{/each}
+</T.Group>
+
+<T.Group position={[MEDIA_AT.x, MEDIA_AT.y, MEDIA_AT.z]}>
+	{#each MEDIA_SHELF as piece (piece.key)}
+		{@render leaning(piece, [piece.x, 0, 0])}
+	{/each}
+</T.Group>
+
+<!-- A painting in a mahogany and gilt frame, hanging in the air between the shelves. -->
+<Hotspot id="painting" size={[frame.w, frame.h, 0.06]} position={[WALL.x, WALL.y, WALL.z]} lift={0.01} {hovered} {onhover} onpick={() => onpick('painting')} {still} {away}>
+	<Frame w={frame.canvas[0]} h={frame.canvas[1]} material={canvasFace} />
+</Hotspot>
+
+<!-- Pixel art in a small frame, hung over the media shelf. -->
+<Hotspot id="arc" size={[ARC_AT.size, ARC_AT.size, 0.05]} position={[ARC_AT.x, ARC_AT.y, ARC_AT.z]} lift={0.01} {hovered} {onhover} onpick={() => onpick('arc')} {still} {away}>
+	<Box size={[ARC_AT.size, ARC_AT.size, 0.026]} radius={0.01} color={PALETTE.white} position={[0, ARC_AT.size / 2, 0.013]} />
+	<T.Mesh material={canvasArt} position={[0, ARC_AT.size / 2, 0.0275]} receiveShadow>
+		<T.PlaneGeometry args={[ARC_AT.size * 0.82, ARC_AT.size * 0.82]} />
 	</T.Mesh>
 </Hotspot>
 
-<!-- The cabinet, with the turntable and the podcasts on tape. -->
+<!-- The cabinet, with the podcasts on tape. -->
 <Box size={[CABINET.w, CABINET.top - 0.06, CABINET.d]} radius={0.018} color={PALETTE.white} position={[CABINET.x, 0.06 + (CABINET.top - 0.06) / 2, CABINET.z]} />
 {#each [-0.25, 0.25] as x (x)}
 	<Box size={[CABINET.w / 2 - 0.03, CABINET.top - 0.12, 0.012]} radius={0.004} color="#f4f1ec" position={[CABINET.x + x, 0.06 + (CABINET.top - 0.06) / 2, CABINET.z + CABINET.d / 2 + 0.002]} />
@@ -445,35 +518,8 @@
 	{/each}
 {/each}
 
-<T.Group position={[CABINET.x - 0.14, CABINET.top, CABINET.z]} visible={away !== 'turntable'}>
-	<Turntable
-		item={record}
-		{still}
-		{spinning}
-		finish="#ffffff"
-		{grain}
-		onpick={() => onpick('turntable')}
-		onhover={(on) => hoverPiece('turntable', on)}
-	/>
-</T.Group>
-
-<Hotspot id="tapes" size={[0.13, tapeStack, 0.09]} position={[CABINET.x + 0.3, CABINET.top, CABINET.z + 0.04]} rotation={[0, 0.3, 0]} {hovered} {onhover} onpick={() => onpick('tapes')} {still} {away}>
+<Hotspot id="tapes" size={[0.13, tapeStack, 0.09]} position={[CABINET.x + 0.1, CABINET.top, CABINET.z + 0.04]} rotation={[0, 0.3, 0]} {hovered} {onhover} onpick={() => onpick('tapes')} {still} {away}>
 	{#each TAPES as tape, n (tape.key)}
 		<Box size={[0.11, 0.017, 0.07]} radius={0.004} color={tape.item.tone} rotation={[0, n * 0.18, 0]} position={[0, 0.0085 + n * 0.0172, 0]} />
 	{/each}
 </Hotspot>
-
-<!-- The records, leaning on the front of the cabinet. -->
-<T.Group position={[CABINET.x - 0.3, 0, CABINET.z + CABINET.d / 2]}>
-	{#each SLEEVES as piece (piece.key)}
-		<T.Group position={[-piece.x, 0, piece.x * 0.5]}>
-			<Piece
-				{piece}
-				{still}
-				lifted={hovered === piece.key}
-				onpick={() => onpick(piece.key)}
-				onhover={(on) => hoverPiece(piece.key, on)}
-			/>
-		</T.Group>
-	{/each}
-</T.Group>
