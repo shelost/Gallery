@@ -12,7 +12,8 @@ export function load() {
 	for (const work of worksIn('writing')) {
 		const text = sources[`/src/posts${work.href}.md`];
 		if (typeof text !== 'string') continue;
-		const words = text.replace(/^---[\s\S]*?---/, '').split(/\s+/).filter(Boolean).length;
+		const prose = text.replace(/^---[\s\S]*?---/, '').replace(/<script[\s\S]*?<\/script>/g, '');
+		const words = prose.split(/\s+/).filter(Boolean).length;
 		essays[work.id] = { words, minutes: words >= 200 ? Math.max(1, Math.round(words / 230)) : null };
 	}
 	return { essays };

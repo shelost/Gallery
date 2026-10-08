@@ -173,6 +173,19 @@ export const WORKS = [
 		credit: 'Cornell University.'
 	},
 	{
+		id: 'americana',
+		section: 'writing',
+		kind: 'Essay',
+		title: 'The Aesthetics Age',
+		year: '2026',
+		kicker: 'Essay',
+		blurb: 'Or, how vibes are everything now.',
+		href: '/americana',
+		media: { kind: 'image', src: '/blog/americana/pacu-jalur.jpg', alt: 'A boy dancing at the prow of a Pacu Jalur racing canoe' },
+		medium: 'Essay.',
+		credit: 'Read in the drawer.'
+	},
+	{
 		id: 'gapyear',
 		section: 'writing',
 		kind: 'Essay',

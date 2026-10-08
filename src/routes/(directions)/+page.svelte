@@ -291,7 +291,7 @@
 		grid-template-columns: 1.35fr 1fr;
 		grid-template-rows: 13.5rem 10rem 12rem;
 		grid-template-areas:
-			'pygmalion pygmalion'
+			'americana pygmalion'
 			'palace persia'
 			'timeline mario';
 	}

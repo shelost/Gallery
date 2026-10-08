@@ -15,6 +15,11 @@ categories:
 published: true
 ---
 
+<script>
+  import Timeline from '$lib/atlas/Timeline.svelte'
+  import Excerpt from '$lib/atlas/Excerpt.svelte'
+  import { persia } from '$lib/atlas/persia/index.js'
+</script>
 
 Today is May 2025, in the midst of Trump's new trade war against the People's Republic of China.
 
@@ -90,9 +95,15 @@ As the two most powerful empires in Western Eurasia at the time, Rome and Persia
 - [Byzantine–Sasanian War of 572–591](https://en.wikipedia.org/wiki/Byzantine%E2%80%93Sasanian_War_of_572%E2%80%93591)
 - [Byzantine–Sasanian War of 602–628](https://en.wikipedia.org/wiki/Byzantine%E2%80%93Sasanian_War_of_602%E2%80%93628)
 
+<Timeline atlas={persia} title="Seven centuries of the frontier" caption="Drag the slider or press play. Paler colour is a client kingdom, or ground that never stayed taken." />
+
 ![Diagram of the Battle of Carrhae](/blog/persia/battle-of-carrhae.jpg "The Battle of Carrhae (53 BC). Spoiler: the box in the middle does not make it home")
 
+<Excerpt atlas={persia} year={-53} places={['zeugma', 'carrhae', 'edessa', 'antioch', 'nisibis']} routes={['crassus', 'surena', 'cassius']} title="Carrhae, 53 BC" caption="Crassus crossed the Euphrates at Zeugma looking for an easy war. About a quarter of his army made it home." />
+
 ![Bust of Trajan](/blog/persia/trajan.jpg "Trajan, who marched all the way to the Persian Gulf in 116 AD. Then he died, and his successor gave it all back")
+
+<Excerpt atlas={persia} year={116} from={113} places={['antioch', 'ctesiphon', 'charax']} routes={['trajan']} title="Trajan’s march, 115–116 AD" caption="Armenia in 114, Mesopotamia in 116. For one year, Rome stood on the Persian Gulf." />
 
 ![Arch of Septimius Severus](/blog/persia/arch-of-septimius-severus.jpg "The Arch of Septimius Severus in the Roman Forum, built to celebrate beating the Parthians. Rome loved a triumphal arch")
 
@@ -133,11 +144,17 @@ The final of these fated wars, the [Byzantine-Sasanian War of 602-628](https://e
 
 ![Gold coin of Khosrow II](/blog/persia/khosrow-ii.jpg "Khosrow II, whose armies made it all the way to the shores across from Constantinople")
 
+<Excerpt atlas={persia} year={620} from={602} places={['ctesiphon', 'byzantium', 'antioch', 'jerusalem', 'alexandria']} routes={['shahrbaraz', 'shahin']} title="Khosrow II’s war, 602–620" caption="Syria, Palestine, Egypt, and an army camped in sight of Constantinople. The Achaemenid map, nearly redrawn." />
+
 ![Gold coin of Heraclius](/blog/persia/heraclius.jpg "Heraclius, who then marched into the heart of Persia and won the whole thing anyway. Classic Roman comeback")
+
+<Excerpt atlas={persia} year={629} from={626} places={['ctesiphon', 'caesarea']} routes={['heraclius-624', 'heraclius-627', 'dastagerd']} title="Heraclius strikes back, 624–628" caption="He left the Persian armies sitting in his empire and went straight for theirs. A year later Khosrow was dead, and the borders were back where they started." />
 
 In the 7th century AD, an Arab prophet named Muhammad began preaching a new religion known today as Islam—and the newly
 unified Arab tribes launched a massive invasion against both empires. The Romans and Persians, both exhausted from years of warfare,
 could only mount a faint resistance as the newly established Islamic caliphate conquered most of their most valuable lands.
+
+<Excerpt atlas={persia} year={651} from={632} places={['medina', 'damascus', 'alexandria', 'ctesiphon', 'merv']} routes={['khalid', 'yarmouk', 'qadisiyyah', 'nahavand', 'amr', 'yazdegerd', 'khorasan']} title="The Arab conquests, 632–651" caption="Nineteen years from Muhammad’s death to the murder of the last Sassanian king at Merv." />
 
 The Sassanian Empire was completely destroyed by the invading Muslim armies of that time, while the Romans managed to survive for a few
 more centuries as a crippled shell of its former self, eventually shrinking to the point of only controlling its capital city of Constantinople.
