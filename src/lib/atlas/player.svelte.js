@@ -64,9 +64,10 @@ export class YearPlayer {
 		this.#start();
 	}
 
+	/** Safe to call during server rendering, where nothing has started and there is no rAF. */
 	stop() {
 		this.playing = false;
-		cancelAnimationFrame(this.#frame);
+		if (this.#frame) cancelAnimationFrame(this.#frame);
 		clearTimeout(this.#hold);
 		this.#frame = 0;
 		this.#hold = undefined;

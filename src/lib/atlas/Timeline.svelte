@@ -1,5 +1,5 @@
 <script>
-	import { onDestroy, untrack } from 'svelte';
+	import { untrack } from 'svelte';
 	import Atlas from './Atlas.svelte';
 	import { formatYear } from './atlas.js';
 	import { YearPlayer } from './player.svelte.js';
@@ -31,7 +31,7 @@
 		year = y;
 	}
 
-	onDestroy(() => player.stop());
+	$effect(() => () => player.stop());
 </script>
 
 <figure class="timeline">
