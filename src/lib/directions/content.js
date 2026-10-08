@@ -23,7 +23,8 @@ import { MONTHS } from './today.js';
  *   featured?: boolean,
  *   pages?: string[],
  *   art?: string,
- *   tag?: string
+ *   tag?: string,
+ *   demo?: string
  * }} Work
  * A stretch of life on the timeline, shaped like a work so the index lists it like any other group.
  * `until` is null while it's ongoing.
@@ -50,11 +51,12 @@ export const SECTIONS = [
 	{ id: 'products', label: 'Products', numeral: 'I', verb: 'make' },
 	{ id: 'writing', label: 'Writing', numeral: 'II', verb: 'write' },
 	{ id: 'design', label: 'Design', numeral: 'III', verb: 'design' },
-	{ id: 'games', label: 'Games', numeral: 'IV', verb: 'play' },
-	{ id: 'webdev', label: 'Web apps', numeral: 'V', verb: 'build' },
-	{ id: 'comics', label: 'Comics', numeral: 'VI', verb: 'draw' },
-	{ id: 'research', label: 'Research', numeral: 'VII', verb: 'study' },
-	{ id: 'videos', label: 'Videos', numeral: 'VIII', verb: 'watch' }
+	{ id: 'libraries', label: 'Libraries', numeral: 'IV', verb: 'import' },
+	{ id: 'games', label: 'Games', numeral: 'V', verb: 'play' },
+	{ id: 'webdev', label: 'Web apps', numeral: 'VI', verb: 'build' },
+	{ id: 'comics', label: 'Comics', numeral: 'VII', verb: 'draw' },
+	{ id: 'research', label: 'Research', numeral: 'VIII', verb: 'study' },
+	{ id: 'videos', label: 'Videos', numeral: 'IX', verb: 'watch' }
 ];
 
 /** Salon rooms, in walking order. */
@@ -181,7 +183,7 @@ export const WORKS = [
 		kicker: 'Essay',
 		blurb: 'Or, how vibes are everything now.',
 		href: '/americana',
-		media: { kind: 'image', src: '/blog/americana/pacu-jalur.jpg', alt: 'A boy dancing at the prow of a Pacu Jalur racing canoe' },
+		media: { kind: 'image', src: '/blog/americana/statue-prom.jpg', alt: "Atelier Missor's bronze Prometheus in the Texas desert" },
 		medium: 'Essay.',
 		credit: 'Read in the drawer.'
 	},
@@ -238,7 +240,7 @@ export const WORKS = [
 		kicker: 'Essay',
 		blurb: 'Predictions on the US-China conflict, from the greatest rivalry of classical antiquity.',
 		href: '/persia',
-		media: null,
+		media: { kind: 'image', src: '/blog/persia/iran-statue.jpg', alt: 'Statue of Shapur I on horseback with the kneeling Roman emperor Valerian' },
 		medium: 'Essay.',
 		credit: 'Read in the drawer.'
 	},
@@ -264,7 +266,7 @@ export const WORKS = [
 		kicker: 'Essay',
 		blurb: "Nintendo's brand play, and what it means for the movie industry.",
 		href: '/mario',
-		media: null,
+		media: { kind: 'image', src: '/blog/mario-thumb.jpg', alt: 'Mario and Luigi in The Super Mario Bros. Movie' },
 		medium: 'Essay.',
 		credit: 'Read in the drawer.'
 	},
@@ -376,6 +378,20 @@ export const WORKS = [
 		},
 		medium: 'Video. The Stan creator experience.',
 		credit: 'Commissioned by Stan.'
+	},
+	{
+		id: 'sveltebrush',
+		section: 'libraries',
+		kind: 'Library',
+		title: 'Sveltebrush',
+		year: '2026',
+		kicker: 'Svelte library',
+		blurb: 'Ink brushes and animated East Asian calligraphy on the canvas, for Svelte, tldraw and plain JS.',
+		href: 'https://github.com/shelost/sveltebrush',
+		demo: 'https://shelost.github.io/sveltebrush/',
+		media: null,
+		medium: 'Software. Bristle brushes with ink load and flying white, and Hangul and Hanzi written stroke by stroke. MIT licensed.',
+		credit: 'Open source.'
 	},
 	{
 		id: 'platformr',

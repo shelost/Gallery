@@ -7,9 +7,10 @@
 	import { NeutralToneMapping } from 'three';
 	import { BRUSHES, INKS, InkCanvas } from '$lib/sveltebrush';
 	import '$lib/sveltebrush/ui/paper.css';
+	import { InkTray } from 'sveltebrush/3d';
+	import { findWork } from '$lib/directions/content.js';
 	import { linkProps } from '$lib/directions/links.js';
 	import BrushCursor from './BrushCursor.svelte';
-	import InkTray from './InkTray.svelte';
 	import { between, fitQuad, rectCorners } from './quad.js';
 
 	/** @typedef {import('./quad.js').Point} Point */
@@ -35,6 +36,7 @@
 	let { open, aspect, corners, printed, onclose, onlanded } = $props();
 
 	const PHRASES = ['원', '永', '風林火山', '바람이 분다', '사랑해'];
+	const REPO = findWork('sveltebrush')?.href;
 	const PADDING = { top: 36, right: 36, bottom: 36, left: 36 };
 	const TOOLS = 140;
 	/** The mat around the sheet in hand, as a share of the sheet's width. */
@@ -77,7 +79,7 @@
 	}
 
 	/** @param {Element} node */
-	const writable = (node) => !!node.closest('.sheet, .tray');
+	const writable = (node) => !!node.closest('.sheet, .tray') && !node.closest('a, button');
 
 	/** @returns {Quad} */
 	const home = () => rectCorners(target.x, target.y, target.w, target.h);
@@ -234,26 +236,22 @@
 		>
 			<div class="well">
 				<div class="tray">
-					<Canvas toneMapping={NeutralToneMapping} dpr={Math.min(devicePixelRatio, 2)}>
-						<InkTray
-							{brushes}
-							{selected}
-							{ink}
-							{color}
-							still={prefersReducedMotion.current}
-							onpick={(id) => (selected = id)}
-							onload={(amount) => canvas?.load(amount)}
-							ondip={() => canvas?.dip(1)}
-						/>
-					</Canvas>
+					<InkTray
+						{brushes}
+						bind:selected
+						bind:color
+						{ink}
+						still={prefersReducedMotion.current}
+						onload={(amount) => canvas?.load(amount)}
+						ondip={() => canvas?.dip(1)}
+					/>
+					{#if REPO}
+						<a class="repo" {...linkProps(REPO)} aria-label="Sveltebrush on GitHub" title="Sveltebrush on GitHub">
+							<img src="/icon/logo-github.svg" alt="" />
+						</a>
+					{/if}
 				</div>
 				<p class="readout" aria-live="polite"><strong>{Math.round(ink * 100)}%</strong> {brush.name} · {status}</p>
-				<div class="hidden" role="radiogroup" aria-label="Brush">
-					{#each brushes as entry (entry.id)}
-						<button type="button" role="radio" aria-checked={selected === entry.id} onclick={() => (selected = entry.id)}>{entry.name}</button>
-					{/each}
-					<button type="button" onclick={() => canvas?.dip(1)}>Load the brush with ink</button>
-				</div>
 			</div>
 
 			<div class="rows">
@@ -409,8 +407,34 @@
 	}
 
 	.tray {
+		position: relative;
 		width: 280px;
-		height: 108px;
+		height: 128px;
+	}
+
+	.repo {
+		position: absolute;
+		top: 0.15rem;
+		right: 0.15rem;
+		display: grid;
+		place-items: center;
+		width: 1.5rem;
+		height: 1.5rem;
+		border-radius: 50%;
+		background: rgb(255 255 255 / 0.7);
+		box-shadow: 0 0 0 1px rgb(30 24 19 / 0.12);
+		opacity: 0.6;
+		transition: opacity 160ms var(--ease-out);
+	}
+
+	.repo:hover,
+	.repo:focus-visible {
+		opacity: 1;
+	}
+
+	.repo img {
+		width: 0.9rem;
+		height: 0.9rem;
 	}
 
 	.readout {
@@ -423,15 +447,6 @@
 	.readout strong {
 		font-variant-numeric: tabular-nums;
 		font-weight: 600;
-	}
-
-	.hidden {
-		position: absolute;
-		width: 1px;
-		height: 1px;
-		overflow: hidden;
-		clip-path: inset(50%);
-		white-space: nowrap;
 	}
 
 	.rows {

@@ -33,7 +33,7 @@
 	const REST = { from: -0.02, to: 0.42, h: 0.022, z: [-0.09, 0, 0.09] };
 	const LAID = 0.42;
 	const HIDDEN = new MeshBasicMaterial({ visible: false });
-	const TARGET = /** @type {[number, number, number]} */ ([0.07, 0.02, 0.02]);
+	const TARGET = /** @type {[number, number, number]} */ ([0.035, 0.02, 0.02]);
 
 	const slab = (() => {
 		const { w, d } = STONE;
@@ -86,7 +86,7 @@
 		{ autoInvalidate: false }
 	);
 
-	const zoom = $derived(Math.min(size.current.width / 0.8, size.current.height / 0.3));
+	const zoom = $derived(Math.min(size.current.width / 0.86, size.current.height / 0.32));
 
 	/** @param {import('three').OrthographicCamera} camera */
 	function aim(camera) {
@@ -97,10 +97,10 @@
 	/** @param {string} id @param {number} n */
 	function pose(id, n) {
 		const z = REST.z[n] ?? 0;
-		const lift = selected === id ? 0.07 : pointed === id ? 0.018 : 0;
+		const lift = selected === id ? 0.05 : pointed === id ? 0.018 : 0;
 		return {
-			position: /** @type {[number, number, number]} */ ([REST.from + 0.01, REST.h + 0.025 + lift, z + (selected === id ? 0.025 : 0)]),
-			rotation: /** @type {[number, number, number]} */ ([0, 0, -Math.PI / 2 + (selected === id ? 0.14 : 0)])
+			position: /** @type {[number, number, number]} */ ([REST.from + 0.01, REST.h + 0.025 + lift, z + (selected === id ? 0.02 : 0)]),
+			rotation: /** @type {[number, number, number]} */ ([0, 0, -Math.PI / 2 + (selected === id ? 0.05 : 0)])
 		};
 	}
 </script>

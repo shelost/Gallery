@@ -40,6 +40,7 @@
 	import Coda from '$lib/directions/Coda.svelte';
 	import Footer from '$lib/directions/Footer.svelte';
 	import Intro from '$lib/directions/Intro.svelte';
+	import LiveInk from '$lib/directions/LiveInk.svelte';
 	import Panel from '$lib/directions/Panel.svelte';
 	import SectionNav from '$lib/directions/SectionNav.svelte';
 	import Stage from '$lib/directions/Stage.svelte';
@@ -132,6 +133,16 @@
 	{@render frame('paintball', { caption: 'Ithaca Paintball · branding' })}
 {/snippet}
 
+<!-- Libraries are tried, not watched: the panel is the library itself. -->
+{#snippet libraries()}
+	{@const brush = findWork('sveltebrush')}
+	{#if brush}
+		<Panel area="sveltebrush" caption="{brush.title} · {brush.kind} · Draw on it">
+			<LiveInk href={brush.href} demo={brush.demo} />
+		</Panel>
+	{/if}
+{/snippet}
+
 {#snippet games(/** @type {{ works: Work[] }} */ group)}
 	<Arcade games={group.works} {zoom} active={spotlight.current} onhover={spotlight.set} />
 {/snippet}
@@ -181,7 +192,7 @@
 	</div>
 
 	{#each ROWS as row, i (row.id)}
-		{@const tier = { life, products, writing, design, games, webdev, comics, research, videos }[row.id]}
+		{@const tier = { life, products, writing, design, libraries, games, webdev, comics, research, videos }[row.id]}
 		<div class="row" id={row.id}>
 			<div class="index">
 				<WorkGroup group={row} i={i + 2} preview={false} bind:active={spotlight.current} />
@@ -303,6 +314,12 @@
 			'stan nybc arr'
 			'stan nybc lab'
 			'redesign brainteam paintball';
+	}
+
+	.libraries {
+		grid-template-columns: minmax(0, 1fr);
+		grid-template-rows: 15rem;
+		grid-template-areas: 'sveltebrush';
 	}
 
 	.games {
