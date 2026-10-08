@@ -279,7 +279,7 @@ export const WORKS = [
 		kicker: 'Founding designer',
 		blurb: 'I dropped out of college at 19 to help build the future of work. We scaled from $0 to $30M ARR in three years, led by John and Vitalii.',
 		href: 'https://stan.store',
-		media: { kind: 'image', src: '/stan/stan-hero-1.png', alt: 'A Stan storefront', fit: 'contain' },
+		media: { kind: 'image', src: '/stan_landing.png', alt: 'The Stan landing page' },
 		medium: 'Commission. Founding product designer, from $0 to $30M ARR in three years.',
 		credit: 'Commissioned by John & Vitalii.'
 	},

@@ -1,7 +1,6 @@
 <script>
 	import { onMount } from 'svelte';
 	import { prefersReducedMotion } from 'svelte/motion';
-	import { MediaQuery } from 'svelte/reactivity';
 	import { Canvas } from '@threlte/core';
 	import { NeutralToneMapping } from 'three';
 	import Artifact from '$lib/directions/Artifact.svelte';
@@ -47,19 +46,6 @@
 	/** Where the statue and painting last chosen are kept between visits. */
 	const KEPT = { statue: 'room:statue', painting: 'room:painting' };
 
-	/** What each thing in the room does, shown while it's pointed at. @type {Record<string, string>} */
-	const HINTS = {
-		laptop: 'Laptop · what I build with',
-		clock: `The time in ${HOME.place} · the day, the weather, the moon`,
-		age: 'My age, to the second · eighty years in dots',
-		turntable: 'Turntable · pick a record',
-		tapes: 'Podcasts, on tape',
-		arc: 'ARC grid · a puzzle sprite',
-		brush: 'Sveltebrush · pick up the paper and write',
-		bible: 'Bible · the verse of the day',
-		coffee: 'Buy me a coffee'
-	};
-
 	/** Sheets that open from a single thing in the room, and how wide they are. @type {Record<Opened, { label: string, width: string }>} */
 	const SHEETS = {
 		crate: { label: 'The record crate', width: '72rem' },
@@ -78,7 +64,7 @@
 	/** What leaves the room while its sheet is open, so it reads as having floated up into it. @type {Partial<Record<Opened, string>>} */
 	const RISES = { crate: 'turntable', tapes: 'tapes', laptop: 'laptop', clock: 'clock', age: 'age', bible: 'bible', statue: 'statue', painting: 'painting', arc: 'arc' };
 
-	const FIRST = TRACKS.find((track) => track.item.youtube === '-1JCohwW0EA') ?? TRACKS[0];
+	const FIRST = TRACKS.find((track) => track.item.title === 'Feel It Still') ?? TRACKS[0];
 
 	/** The record on the deck, once something has been played. @type {Track | null} */
 	let loaded = $state.raw(null);
@@ -110,7 +96,6 @@
 
 	const fine = new Now(100);
 	const coarse = new Now(1000);
-	const touch = new MediaQuery('hover: none');
 
 	const current = $derived(loaded ?? FIRST);
 	const playing = $derived(player.playing);
@@ -120,13 +105,6 @@
 		return at === null ? null : age(at);
 	});
 	const today = $derived(clock ?? wallClock(Date.now(), HOME.zone));
-	const hint = $derived.by(() => {
-		if (!hovered) return touch.current ? 'Tap things in the room' : 'Point at things in the room';
-		if (hovered === 'statue') return `${STATUES.find((entry) => entry.id === statue)?.title} · choose another statue`;
-		if (hovered === 'painting') return `${PAINTINGS.find((entry) => entry.id === painting)?.title} · choose another painting`;
-		const piece = findPiece(hovered);
-		return HINTS[hovered] ?? (piece ? [piece.item.title, piece.item.by].filter(Boolean).join(' · ') : '');
-	});
 
 	/** Puts a statue or painting up, and remembers it for next time. @param {'statue' | 'painting'} kind @param {string} id */
 	function hang(kind, id) {
@@ -296,9 +274,14 @@
 		{/if}
 	</div>
 
-	<p class="hint" aria-live="polite">{hint}</p>
-
-	<div class={['deck', playing && 'on']}>
+	<!-- The record on the turntable, as a glass pill at the top of the page: the whole pill opens the crate. -->
+	<button
+		type="button"
+		class={['deck', playing && 'on']}
+		aria-haspopup="dialog"
+		aria-label="{current.item.title}{current.item.by ? `, ${current.item.by}` : ''}{playing ? ', playing' : ''}. Choose a record"
+		onclick={() => open('crate')}
+	>
 		<span
 			class={['disc', current.item.cover && 'printed']}
 			style:--tone={current.item.tone}
@@ -306,23 +289,13 @@
 			style:--cover={current.item.cover ? `url("${current.item.cover}")` : undefined}
 			aria-hidden="true"
 		></span>
-		<div class="track">
-			<span class="label">{playing ? 'Now playing' : loaded ? 'Paused' : 'On the turntable'}</span>
+		<span class="track">
 			<span class="title" lang={current.item.lang}>{current.item.title}</span>
 			{#if current.item.by}<span class="by" lang={current.item.lang}>{current.item.by}</span>{/if}
-		</div>
+		</span>
 		<Soundwave active={playing} class="wave" />
-		<button type="button" class="key" aria-label={playing ? 'Pause' : 'Play'} onclick={toggle}>
-			<svg viewBox="0 0 16 16" aria-hidden="true">
-				{#if playing}
-					<path d="M5 3.5h2v9H5zM9 3.5h2v9H9z" />
-				{:else}
-					<path d="M5.5 3.5 12 8l-6.5 4.5z" />
-				{/if}
-			</svg>
-		</button>
-		<button type="button" class="change" onclick={() => open('crate')}>Change</button>
-	</div>
+		<svg class="chev" viewBox="0 0 16 16" aria-hidden="true"><path d="m4.5 6.5 3.5 3.5 3.5-3.5" /></svg>
+	</button>
 
 	<!-- Only the sound comes through; the player itself stays out of sight. -->
 	<div class="audio" aria-hidden="true" {@attach (node) => player.mount(node, FIRST.item.youtube ?? '')}></div>
@@ -394,44 +367,76 @@
 		animation: dir-sfumato 900ms var(--ease-out) both;
 	}
 
-	.hint {
-		position: absolute;
-		top: 0.4rem;
-		left: 0;
-		padding: 0.35rem 0.7rem;
+	/*
+	 * Liquid glass, as the kingdom site's pills: a sheen over a pale tint, a blurred and
+	 * saturated backdrop, a bright top edge. Pinned to the top centre of the page, under any
+	 * sheet that opens.
+	 */
+	.deck {
+		--glass-tint: 42%;
+		--glass-sheen: 14%;
+		position: fixed;
+		top: max(1rem, env(safe-area-inset-top));
+		left: 50%;
+		z-index: 80;
+		display: flex;
+		align-items: center;
+		gap: 0.55rem;
+		max-width: min(24rem, calc(100vw - 2rem));
+		height: 2.6rem;
+		padding: 0 0.75rem 0 0.3rem;
+		border: 1px solid color-mix(in srgb, white 45%, transparent);
 		border-radius: 999px;
-		background: rgba(255, 255, 255, 0.75);
-		box-shadow: 0 0 0 1px rgba(28, 27, 24, 0.05);
-		backdrop-filter: blur(10px);
-		color: var(--ink-2);
-		font-size: 12px;
-		pointer-events: none;
+		background:
+			linear-gradient(
+				180deg,
+				color-mix(in srgb, white var(--glass-sheen), transparent),
+				color-mix(in srgb, white calc(var(--glass-sheen) / 6), transparent) 60%
+			),
+			color-mix(in srgb, #fffefb var(--glass-tint), transparent);
+		backdrop-filter: blur(32px) saturate(180%);
+		-webkit-backdrop-filter: blur(32px) saturate(180%);
+		box-shadow:
+			inset 0 1px 0 color-mix(in srgb, white 70%, transparent),
+			inset 0 -1px 0 color-mix(in srgb, white 14%, transparent),
+			0 0 0 0.5px rgba(28, 27, 24, 0.08),
+			0 10px 28px rgba(40, 30, 12, 0.09),
+			0 2px 6px rgba(40, 30, 12, 0.06);
+		color: var(--ink);
+		font: inherit;
+		text-align: left;
+		cursor: pointer;
+		translate: -50% 0;
+		transition:
+			--glass-tint 250ms var(--ease-out),
+			scale 200ms var(--ease-out);
 	}
 
-	/* Up in the corner opposite the hint, clear of the statue standing at the front right. */
-	.deck {
-		position: absolute;
-		top: 0;
-		right: 0;
-		display: grid;
-		grid-template-columns: auto minmax(0, 1fr) auto auto auto;
-		align-items: center;
-		gap: 0.7rem;
-		width: min(24rem, 100%);
-		padding: 0.55rem 0.6rem 0.55rem 0.55rem;
-		border-radius: 20px;
-		background: rgba(255, 255, 255, 0.82);
-		box-shadow:
-			inset 0 1px 0 #fff,
-			0 0 0 1px rgba(28, 27, 24, 0.06),
-			0 18px 30px -18px rgba(28, 27, 24, 0.35);
-		backdrop-filter: blur(14px);
+	.deck:hover,
+	.deck:focus-visible {
+		--glass-tint: 64%;
+	}
+
+	.deck:active {
+		scale: 0.98;
+	}
+
+	.chev {
+		flex: none;
+		width: 0.85rem;
+		height: 0.85rem;
+		fill: none;
+		stroke: var(--ink-3);
+		stroke-width: 1.6;
+		stroke-linecap: round;
+		stroke-linejoin: round;
 	}
 
 	/* A record seen from above, with its label printed from the cover when there is one. */
 	.disc {
-		width: 2.4rem;
-		height: 2.4rem;
+		flex: none;
+		width: 1.95rem;
+		height: 1.95rem;
 		border-radius: 50%;
 		background:
 			radial-gradient(circle, #fff 0 5%, var(--tone) 5.5% 34%, #0b0b0b 34.5% 37%, transparent 37.5%),
@@ -457,14 +462,10 @@
 
 	.track {
 		display: flex;
-		flex-direction: column;
+		align-items: baseline;
+		gap: 0.45rem;
 		min-width: 0;
 		line-height: 1.2;
-	}
-
-	.label {
-		color: var(--accent);
-		font-size: 10.5px;
 	}
 
 	.title,
@@ -475,32 +476,17 @@
 	}
 
 	.title {
+		flex: none;
+		max-width: 12rem;
 		color: var(--ink);
 		font-size: 13px;
 		font-weight: 500;
 	}
 
 	.by {
+		min-width: 0;
 		color: var(--ink-3);
-		font-size: 11.5px;
-	}
-
-	.deck .key {
-		width: 2.1rem;
-		height: 2.1rem;
-	}
-
-	.change {
-		padding: 0.45rem 0.7rem;
-		border-radius: 999px;
-		color: var(--ink-2);
 		font-size: 12px;
-		box-shadow: 0 0 0 1px rgba(28, 27, 24, 0.1);
-		transition: color 160ms var(--ease-out);
-	}
-
-	.change:hover {
-		color: var(--accent);
 	}
 
 	/* Full size, so YouTube will play it, but out of sight and out of the way. */
@@ -572,8 +558,8 @@
 		}
 	}
 
-	/* On a phone the scene is as wide as the screen and no taller than it draws, with the hint
-	   above it and the deck below rather than over it. 1.8 is the scene's own aspect. */
+	/* On a phone the scene is as wide as the screen and no taller than it draws. 1.8 is the
+	   scene's own aspect. */
 	@media (max-width: 560px) {
 		.room {
 			display: flex;
@@ -588,18 +574,8 @@
 			margin-inline: calc(-1 * var(--page-pad));
 		}
 
-		.hint,
-		.deck {
-			position: static;
-		}
-
-		.hint {
-			order: -1;
-			align-self: flex-start;
-		}
-
-		.deck {
-			width: auto;
+		.title {
+			max-width: 9rem;
 		}
 	}
 

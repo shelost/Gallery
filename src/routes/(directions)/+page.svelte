@@ -120,7 +120,7 @@
 {/snippet}
 
 {#snippet design()}
-	{@render frame('stan', { fit: 'contain', caption: 'Stan · founding designer' })}
+	{@render frame('stan', { caption: 'Stan · founding designer' })}
 	{@render frame('nybc', { caption: 'NYBC · posters' })}
 	<Panel area="arr" class="text">
 		<ActionLines seed={30} count={56} inner={120} />
@@ -298,21 +298,23 @@
 		grid-template-areas: 'ovid king chancellor';
 	}
 
+	/* The newest essay across the top, then two halves, then three thirds. */
 	.writing {
-		grid-template-columns: 1.35fr 1fr;
-		grid-template-rows: 13.5rem 10rem 12rem;
+		grid-template-columns: repeat(6, minmax(0, 1fr));
+		grid-template-rows: 15rem 11rem 10rem;
 		grid-template-areas:
-			'americana pygmalion'
-			'palace persia'
-			'timeline mario';
+			'americana americana americana americana americana americana'
+			'pygmalion pygmalion pygmalion palace palace palace'
+			'persia persia timeline timeline mario mario';
 	}
 
+	/* Stan first and largest, its landing page across the whole row. */
 	.design {
 		grid-template-columns: 1.2fr 1fr 0.8fr;
-		grid-template-rows: repeat(3, 10rem);
+		grid-template-rows: 20rem 10rem 10rem;
 		grid-template-areas:
-			'stan nybc arr'
-			'stan nybc lab'
+			'stan stan stan'
+			'nybc arr lab'
 			'redesign brainteam paintball';
 	}
 
