@@ -176,4 +176,4 @@ Of course, history isn't something you can just solve with a formula.
 
 
 Nothing is pre-determined — and over the coming years, I expect to make a lot of updates / corrections to my original thesis.
-This article itself is actually an updated version to my original tract on Xi Jinping, [which compared him to Otto von Bismarck](https://heewon.io/blog/xi/) rather than Leonid Brezhnev.
+This article itself is actually an updated version to my original tract on Xi Jinping, [which compared him to Otto von Bismarck](/xi) rather than Leonid Brezhnev.

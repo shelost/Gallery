@@ -1,0 +1,27 @@
+#top #banner {
+  background: #d63030;
+  background: linear-gradient(110deg, #d63030, #100000 60%);
+}
+#top #left {
+  height: 35vw;
+}
+#top #right {
+  height: 33vw;
+}
+
+@media screen and (max-width: 800px) {
+  #top #left {
+    width: 80vw;
+    height: auto;
+    position: fixed;
+    bottom: -40px;
+    left: -40vw;
+  }
+  #top #right {
+    width: 70vw;
+    height: auto;
+    position: fixed;
+    bottom: -40px;
+    right: -40vw;
+  }
+}/*# sourceMappingURL=xi.css.map */
