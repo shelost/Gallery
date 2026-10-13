@@ -1,6 +1,7 @@
 <script>
 	import { resolve } from '$app/paths';
 	import WorkGroup from '$lib/directions/WorkGroup.svelte';
+	import { worksIn } from '$lib/directions/content.js';
 
 	/** @typedef {import('$lib/directions/content.js').Work} Work */
 
@@ -16,31 +17,48 @@
 		return Number.isFinite(year) && year > 0 ? new Date(Date.UTC(year, month - 1, day)) : null;
 	}
 
-	/** Blog posts as index rows, newest first and grouped by year. */
+	/** Essays kept as their original HTML pages rather than as posts. */
+	const ORIGINALS = worksIn('writing').filter((work) => work.date);
+
+	/** Blog posts and the original pages as index rows, newest first and grouped by year. */
 	const years = $derived.by(() => {
-		const posts = (data.posts ?? [])
-			.filter((/** @type {any} */ post) => post.meta?.type === 'blog')
-			.map((/** @type {any} */ post) => ({ post, date: parse(post.meta?.date) }))
-			.sort((a, b) => (b.date?.getTime() ?? 0) - (a.date?.getTime() ?? 0));
+		const entries = [
+			...(data.posts ?? [])
+				.filter((/** @type {any} */ post) => post.meta?.type === 'blog')
+				.map((/** @type {any} */ post) => ({
+					id: post.slug,
+					title: post.meta?.title ?? post.slug,
+					blurb: post.meta?.blurb ?? '',
+					date: parse(post.meta?.date),
+					tag: post.meta?.ai ? 'AI Assisted' : undefined
+				})),
+			...ORIGINALS.map((work) => ({
+				id: work.id,
+				title: work.title,
+				blurb: work.blurb,
+				date: parse(work.date),
+				tag: undefined
+			}))
+		].sort((a, b) => (b.date?.getTime() ?? 0) - (a.date?.getTime() ?? 0));
 
 		/** @type {{ id: string, numeral: string, label: string, works: Work[] }[]} */
 		const groups = [];
-		for (const { post, date } of posts) {
+		for (const { id, title, blurb, date, tag } of entries) {
 			const year = date ? String(date.getUTCFullYear()) : 'Undated';
 			/** @type {Work} */
 			const work = {
-				id: post.slug,
+				id,
 				section: 'blog',
 				kind: 'Essay',
-				title: post.meta?.title ?? post.slug,
+				title,
 				year: date ? DAY.format(date) : '',
 				kicker: '',
-				blurb: post.meta?.blurb ?? '',
-				href: `/${post.slug}`,
+				blurb,
+				href: `/${id}`,
 				media: null,
 				medium: '',
 				credit: '',
-				tag: post.meta?.ai ? 'AI Assisted' : undefined
+				tag
 			};
 			let group = groups.find((entry) => entry.id === year);
 			if (!group) groups.push((group = { id: year, numeral: '', label: year, works: [] }));

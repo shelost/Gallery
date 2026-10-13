@@ -301,11 +301,12 @@
 	/* The newest essay across the top, then two halves, then three thirds. */
 	.writing {
 		grid-template-columns: repeat(6, minmax(0, 1fr));
-		grid-template-rows: 15rem 11rem 10rem;
+		grid-template-rows: 15rem 11rem 10rem 11rem;
 		grid-template-areas:
 			'americana americana americana americana americana americana'
 			'pygmalion pygmalion pygmalion palace palace palace'
-			'persia persia timeline timeline mario mario';
+			'persia persia timeline timeline mario mario'
+			'xi xi xi europe europe europe';
 	}
 
 	/* Stan first and largest, its landing page across the whole row. */

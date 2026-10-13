@@ -24,8 +24,10 @@ import { MONTHS } from './today.js';
  *   pages?: string[],
  *   art?: string,
  *   tag?: string,
- *   demo?: string
+ *   demo?: string,
+ *   date?: string
  * }} Work
+ * `date` is set on essays that live outside src/posts (the original HTML pages), so the blog can list them.
  * A stretch of life on the timeline, shaped like a work so the index lists it like any other group.
  * `until` is null while it's ongoing.
  * @typedef {Work & { from: number, until: number | null }} Job
@@ -243,6 +245,34 @@ export const WORKS = [
 		media: { kind: 'image', src: '/blog/persia/iran-statue.jpg', alt: 'Statue of Shapur I on horseback with the kneeling Roman emperor Valerian' },
 		medium: 'Essay.',
 		credit: 'Read in the drawer.'
+	},
+	{
+		id: 'xi',
+		section: 'writing',
+		kind: 'Essay',
+		title: 'Xi Jinping, the Chinese Bismarck',
+		year: '2024',
+		date: '2024-10-03',
+		kicker: 'Essay',
+		blurb: 'Iron, blood, and nationalism: what Bismarck can tell us about the Xi era.',
+		href: '/xi',
+		media: { kind: 'image', src: '/blog/xi-thumb.jpg', alt: 'Xi Jinping and Otto von Bismarck' },
+		medium: 'Essay.',
+		credit: 'The original page.'
+	},
+	{
+		id: 'europe',
+		section: 'writing',
+		kind: 'Essay',
+		title: 'Is Europe Falling Like the Qing Dynasty?',
+		year: '2024',
+		date: '2024-08-24',
+		kicker: 'Essay',
+		blurb: 'As always, history offers us a few lessons.',
+		href: '/europe',
+		media: { kind: 'image', src: '/blog/europe-thumb.jpg', alt: 'A terracotta warrior and a bust of Voltaire' },
+		medium: 'Essay.',
+		credit: 'The original page.'
 	},
 	{
 		id: 'timeline',
