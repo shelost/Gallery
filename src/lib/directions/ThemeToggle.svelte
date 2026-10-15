@@ -1,5 +1,6 @@
 <script>
 	import { onMount } from 'svelte';
+	import { withViewTransition } from './motion.js';
 
 	/** Mirrors `data-theme` on <html>, which the inline script in app.html sets before paint. */
 	let dark = $state(false);
@@ -8,7 +9,7 @@
 		dark = document.documentElement.dataset.theme === 'dark';
 	});
 
-	function toggle() {
+	function apply() {
 		dark = !dark;
 		const theme = dark ? 'dark' : 'light';
 		document.documentElement.dataset.theme = theme;
@@ -17,6 +18,12 @@
 		} catch {
 			// Private mode: the choice just lasts for this page.
 		}
+	}
+
+	function toggle() {
+		const root = document.documentElement;
+		root.classList.add('theme-shift');
+		withViewTransition(apply).then(() => root.classList.remove('theme-shift'));
 	}
 </script>
 
@@ -65,6 +72,12 @@
 
 	.theme:active {
 		transform: scale(0.94);
+	}
+
+	:global(.theme-shift::view-transition-old(root)),
+	:global(.theme-shift::view-transition-new(root)) {
+		animation-duration: 480ms;
+		animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
 	}
 
 	svg {
