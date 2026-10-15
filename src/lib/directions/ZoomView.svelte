@@ -74,7 +74,7 @@
 	.scrim {
 		position: absolute;
 		inset: 0;
-		background: rgba(246, 244, 239, 0.82);
+		background: color-mix(in srgb, var(--paper) 82%, transparent);
 		backdrop-filter: blur(6px);
 		-webkit-backdrop-filter: blur(6px);
 		cursor: zoom-out;
@@ -204,7 +204,7 @@
 
 	/* Salon: a matted frame with a museum label. */
 	.salon .sheet {
-		background: #fbfaf7;
+		background: var(--card-soft);
 		box-shadow: 0 30px 80px rgba(40, 30, 18, 0.18);
 	}
 
@@ -212,7 +212,7 @@
 		margin: 1.25rem 0 1.25rem 1.25rem;
 		box-shadow:
 			0 0 0 1px rgba(120, 92, 56, 0.55),
-			0 0 0 6px #fbfaf7,
+			0 0 0 6px var(--card-soft),
 			0 0 0 7px rgba(120, 92, 56, 0.25);
 	}
 

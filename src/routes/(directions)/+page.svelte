@@ -334,7 +334,7 @@
 	.tier :global(.module) {
 		border: 0;
 		border-radius: 8px;
-		background: #f1f0ed;
+		background: var(--tile);
 	}
 
 	.tier :global(.module) {
@@ -342,8 +342,8 @@
 	}
 
 	.tier :global(.panel:not(.stack) .art) {
-		--media-bg: #f1f0ed;
-		--graph-fill: #f1f0ed;
+		--media-bg: var(--tile);
+		--graph-fill: var(--tile);
 	}
 
 	.webdev {

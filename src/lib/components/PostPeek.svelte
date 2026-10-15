@@ -139,7 +139,7 @@
 		place-items: center;
 		height: 2.1rem;
 		border-radius: 999px;
-		background: linear-gradient(180deg, #fff, #f4f2ee);
+		background: linear-gradient(180deg, var(--card), var(--card-2));
 		color: var(--ink);
 		font-size: 13px;
 		box-shadow:

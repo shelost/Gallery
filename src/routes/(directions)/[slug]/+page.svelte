@@ -253,7 +253,7 @@
 		width: 3.25rem;
 		height: 3.25rem;
 		border-radius: 50%;
-		background: linear-gradient(180deg, #fff, #f1efea);
+		background: linear-gradient(180deg, var(--card), var(--card-2));
 		color: var(--ink);
 		box-shadow:
 			inset 0 1px 0 #fff,

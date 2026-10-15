@@ -12,6 +12,7 @@
 	import Fonts from '$lib/directions/Fonts.svelte';
 	import { isExternal } from '$lib/directions/links.js';
 	import Switcher from '$lib/directions/Switcher.svelte';
+	import ThemeToggle from '$lib/directions/ThemeToggle.svelte';
 	import '$lib/directions/directions.css';
 
 	let { data, children } = $props();
@@ -87,6 +88,7 @@
 
 <div class="dir" onclickcapture={interceptPeekLinks}>
 	{@render children()}
+	<ThemeToggle />
 	{#if prototype}
 		<Switcher />
 	{/if}

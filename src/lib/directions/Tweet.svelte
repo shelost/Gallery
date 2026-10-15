@@ -73,7 +73,7 @@
 		padding: 1rem 1.15rem;
 		border: 0 !important;
 		border-radius: 14px;
-		background: #fff;
+		background: var(--card);
 		box-shadow:
 			0 0 0 1px var(--rule),
 			0 18px 32px -24px rgba(28, 27, 24, 0.4);

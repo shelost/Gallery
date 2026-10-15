@@ -115,7 +115,7 @@
 		min-width: 3.4rem;
 		padding: 0 0.55rem;
 		border-radius: 10px;
-		background: linear-gradient(180deg, #fff, #f6f5f2);
+		background: linear-gradient(180deg, var(--card), var(--card-2));
 		box-shadow:
 			0 0 0 1px rgba(28, 27, 24, 0.07),
 			0 1px 2px rgba(28, 27, 24, 0.08),
