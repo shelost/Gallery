@@ -177,6 +177,19 @@ export const WORKS = [
 		credit: 'Cornell University.'
 	},
 	{
+		id: 'tribalism',
+		section: 'writing',
+		kind: 'Essay',
+		title: '(Mostly) Everything is Tribalism',
+		year: '2026',
+		kicker: 'Essay',
+		blurb: 'All ideology devolves into religion. All religion devolves into nationalism.',
+		href: '/tribalism',
+		media: { kind: 'image', src: '/blog/tribalism/tower-of-babel.jpg', alt: "Pieter Bruegel the Elder's painting of the Tower of Babel" },
+		medium: 'Essay.',
+		credit: 'Read in the drawer.'
+	},
+	{
 		id: 'americana',
 		section: 'writing',
 		kind: 'Essay',
