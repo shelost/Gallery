@@ -64,7 +64,8 @@ export function glide(t) {
  * @typedef {MapSpec & {
  *   seed?: HTMLCanvasElement,
  *   autoplay?: boolean,
- *   controls?: { replay: () => void }
+ *   controls?: { replay: () => void },
+ *   flat?: boolean
  * }} WindowOpts
  */
 
@@ -212,7 +213,7 @@ export function mountWindow(canvas, raw) {
 	const near = new IntersectionObserver(
 		(entries) => {
 			const visible = entries.some((entry) => entry.isIntersecting);
-			if (visible && !relief) relief = openWindow(canvas, opts, progress);
+			if (visible && !relief && !opts.flat) relief = openWindow(canvas, opts, progress);
 			else if (!visible && relief) {
 				relief.stop();
 				relief = null;

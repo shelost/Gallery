@@ -1,27 +1,39 @@
 <script>
 	import {
 		ACHAEMENID_MARKS,
+		ALEXANDER_MARKS,
 		ARAB_WORLD_MARKS,
 		ARABIA_632_MARKS,
 		ARABIA_ALONE_MARKS,
 		ARABIA_BEFORE_MARKS,
+		BERBER_TRIBE_MARKS,
 		CHINA_PROPER_MARKS,
 		CLIENTS,
 		COLONIES_MARKS,
-		ETRURIA_MARKS,
+		EGYPT_MARKS,
 		EUROPE_MARKS,
-		JAPAN_1930_MARKS,
-		JAPAN_1942_MARKS,
+		ACHAEAN_WAR_MARKS,
+		GREECE_FREE_MARKS,
+		JAPAN_EMPIRE_MARKS,
+		JAPAN_HOME_MARKS,
+		PACIFIC_WAR_MARKS,
 		KOREA_ALONE_MARKS,
 		KOREA_BEFORE_MARKS,
 		KOREA_UNITED_MARKS,
 		KOREANIC_WORLD_MARKS,
 		LATIUM_MARKS,
+		MACEDON_MARKS,
 		NONE,
 		PLATEAU_MARKS,
+		PRC_MARKS,
+		ROC_MARKS,
 		QING_MARKS,
-		ROMAN_SEA_MARKS
+		PARTHIAN_MARKS,
+		ROMAN_SEA_MARKS,
+		SASANIAN_MARKS,
+		SIBERIA_TRIBE_MARKS
 	} from './empire.js';
+	import Flag from './Flag.svelte';
 	import { antique, modern } from './sheets.js';
 	import { lower48 } from './coasts.js';
 	import FitImages from './FitImages.svelte';
@@ -65,6 +77,7 @@
 					left: {
 						title: 'Rome and Persia',
 						when: 'c. 600',
+						flags: ['ir'],
 						quote: 'God effected that the whole world should be illumined from the very beginning by two eyes.',
 						by: 'Khosrow II, in Theophylact Simocatta 4.11',
 						body: 'A sea empire and a land empire. They fought over the same borderlands for seven centuries. Neither could finish the other.',
@@ -73,22 +86,23 @@
 					right: {
 						title: 'America and China',
 						when: 'today',
+						flags: ['us', 'cn'],
 						quote: 'The Pacific Ocean… will become the chief theatre of events in the world’s great hereafter.',
 						by: 'William H. Seward, 1852',
-						body: 'A sea empire and a land empire again. The Pacific is squeezed here so both fit.',
-						map: { world: modern, period: 0, focus: EYES }
+						body: 'A sea empire and a land empire again. Both sit on the real coast, with the Pacific narrowed so North America is in the picture.',
+						map: { world: modern, period: 2, focus: EYES, star: false }
 					}
 				}
 			]
 		},
 		{
 			id: 'seed',
-			kicker: 'The seed',
-			line: 'Both started as a strip of coast.',
+			kicker: 'Seven hills',
+			line: 'A village on seven hills, and thirteen colonies on one coast.',
 			pairs: [
 				{
 					left: {
-						title: 'Early Rome',
+						title: 'The seven hills',
 						when: 'c. 500 BC',
 						quote: 'From slender beginnings it has so grown that it is now overburdened by its own greatness.',
 						by: 'Livy, preface',
@@ -106,6 +120,7 @@
 					right: {
 						title: 'The thirteen colonies',
 						when: '1607–1776',
+						flag: 'thirteen',
 						quote: 'Thirteen clocks were made to strike together.',
 						by: 'John Adams, 1818',
 						body: 'A string of colonies on the Atlantic, squabbling with each other and with London.',
@@ -125,13 +140,14 @@
 		},
 		{
 			id: 'reach',
-			kicker: 'The reach',
-			line: 'Then they grew. Rome by sea, America by land.',
+			kicker: 'The republic',
+			line: 'Then the republics grew. Rome by sea, America by land.',
 			pairs: [
 				{
 					left: {
-						title: 'Rome takes the sea',
+						title: 'The Roman Republic',
 						when: '264–30 BC',
+						flag: 'vexillum',
 						quote: 'They took in hand for the first time to build ships.',
 						by: 'Polybius 1.20',
 						body: 'Sicily, Africa, Greece, then Egypt. The Mediterranean becomes a Roman lake.',
@@ -142,12 +158,13 @@
 							fromMarks: LATIUM_MARKS,
 							spread: AT.rome,
 							focus: ['romeEast', 'romeWest'],
-							frame: { lon0: 5, lon1: 42, lat0: 18, lat1: 47 }
+							frame: { lon0: -11, lon1: 42, lat0: 22, lat1: 52 }
 						}
 					},
 					right: {
 						title: 'America takes the continent',
 						when: '1783–1898',
+						flag: 'us',
 						quote: 'Our manifest destiny to overspread the continent allotted by Providence.',
 						by: 'John L. O’Sullivan, 1845',
 						body: 'America walks west until it hits the Pacific. Only then does it turn to the sea.',
@@ -167,13 +184,14 @@
 		},
 		{
 			id: 'claim',
-			kicker: 'The claim',
-			line: 'Both call themselves a republic of many peoples.',
+			kicker: 'The peace',
+			line: 'A settled order, with one people running it.',
 			pairs: [
 				{
 					left: {
-						title: 'The Roman Republic',
-						when: '509 BC – AD 212',
+						title: 'The Pax Romana',
+						when: '27 BC – AD 180',
+						flag: 'vexillum',
 						quote: 'I transferred the republic from my power to the dominion of the senate and people of Rome.',
 						by: 'Augustus, Res Gestae 34',
 						body: 'Augustus said he restored the republic while ruling it alone. In 212, every free man in the empire became a citizen.',
@@ -182,7 +200,7 @@
 							star: false,
 							marks: ROMAN_SEA_MARKS,
 							focus: ['romeEast', 'romeWest'],
-							frame: { lon0: 5, lon1: 38, lat0: 22, lat1: 47 }
+							frame: { lon0: -11, lon1: 40, lat0: 24, lat1: 51 }
 						},
 						ratio: '3 / 4',
 						images: [
@@ -194,18 +212,24 @@
 						]
 					},
 					right: {
-						title: 'The American republic',
-						when: '1776 –',
+						title: 'The Pax Americana',
+						when: '1945 –',
+						flag: 'us',
 						quote: 'Government of the people, by the people, for the people.',
 						by: 'Abraham Lincoln, 1863',
 						body: 'Citizenship by oath, not by blood, as in Rome. Washington is painted rising into the sky like an emperor.',
-						map: { world: modern, period: 0, focus: ['romeEast'] },
+						map: {
+							world: modern,
+							period: 2,
+							focus: ['romeEast'],
+							frame: { lon0: -140, lon1: -52, lat0: 14, lat1: 62 }
+						},
 						ratio: '3 / 4',
 						images: [
 							{
-								src: '/blog/caliphate/apotheosis.jpg',
-								alt: 'The Apotheosis of Washington in the Capitol rotunda',
-								title: 'The Apotheosis of Washington, Capitol dome, 1865.'
+								src: '/blog/caliphate/washington-zeus.jpg',
+								alt: 'Horatio Greenough’s marble George Washington seated like Olympian Zeus, one hand raised, the other on a sword',
+								title: 'Horatio Greenough, George Washington, 1841. Made for the Capitol rotunda, on the pose of Phidias’s Zeus.'
 							}
 						]
 					}
@@ -231,6 +255,7 @@
 					right: {
 						title: 'The Capitol',
 						when: 'Washington, 1800',
+						flag: 'us',
 						quote: '…presenting to them models for their study and imitation.',
 						by: 'Thomas Jefferson, 1785',
 						body: 'Columns, a pediment, a dome. A Roman temple for a new senate.',
@@ -248,24 +273,24 @@
 		},
 		{
 			id: 'parent',
-			kicker: 'The parent',
-			line: 'The older neighbors each one learned from.',
+			kicker: 'The source',
+			line: 'Egypt is the old country Greece and Rome learned from. Europe is that country for America.',
 			pairs: [
 				{
 					left: {
-						title: 'The Etruscans',
-						when: 'before Rome',
-						quote: 'The Etruscan name filled the whole length of Italy, from the Alps to the Strait of Sicily.',
-						by: 'Livy 5.33',
-						body: 'A league of rival city-states north of Rome. They gave Rome its alphabet, many of its gods, and its symbols of office.',
+						title: 'Egypt',
+						when: 'the original',
+						quote: 'The names of nearly all the gods came to Greece from Egypt.',
+						by: 'Herodotus 2.50',
+						body: 'An old river civilization, already ancient when Greece and Rome were learning their gods, their measures, and their stone.',
 						map: {
 							world: antique,
 							star: false,
-							marks: ETRURIA_MARKS,
+							marks: EGYPT_MARKS,
 							fromMarks: NONE,
-							spread: AT.etruria,
-							focus: ['romeWest'],
-							frame: ITALY
+							spread: [31.2, 30.0],
+							focus: ['people'],
+							frame: { lon0: 24, lon1: 36, lat0: 21, lat1: 33 }
 						}
 					},
 					right: {
@@ -277,7 +302,6 @@
 						map: {
 							world: antique,
 							star: false,
-							borders: true,
 							marks: EUROPE_MARKS,
 							fromMarks: NONE,
 							spread: AT.rome,
@@ -295,8 +319,9 @@
 			pairs: [
 				{
 					left: {
-						title: 'The Persian Empire',
+						title: 'The Achaemenids',
 						when: '550–330 BC',
+						flag: 'falcon',
 						quote: 'This is the kingdom which I hold, from the Sacae who are beyond Sogdiana, thence unto Ethiopia; from Sind, thence unto Sardis.',
 						by: 'Darius I, Persepolis',
 						body: 'Persia’s first empire, from Egypt to India. Alexander ends it.',
@@ -320,6 +345,7 @@
 					right: {
 						title: 'The Qing',
 						when: '1644–1912',
+						flag: 'qing',
 						quote: 'Our Celestial Empire possesses all things in prolific abundance.',
 						by: 'The Qianlong Emperor to George III, 1793',
 						body: 'China’s last dynasty, at its widest: Tibet, Mongolia, Xinjiang, Taiwan. It breaks under foreign pressure.',
@@ -340,40 +366,6 @@
 							}
 						]
 					}
-				},
-				{
-					sub: 'The core',
-					line: 'Strip the empire away and the country is still there.',
-					left: {
-						title: 'Iran proper',
-						when: 'the plateau',
-						quote: 'I am a Persian, son of a Persian, an Aryan of Aryan stock.',
-						by: 'Darius I, Naqsh-e Rostam',
-						body: 'The plateau. Every Persian empire grew out of it and shrank back to it.',
-						map: {
-							world: antique,
-							star: false,
-							marks: PLATEAU_MARKS,
-							fromMarks: ACHAEMENID_MARKS,
-							focus: ['persia'],
-							frame: IRAN
-						}
-					},
-					right: {
-						title: 'China proper',
-						when: 'the old provinces',
-						quote: 'He built the Long Wall… from Lintao to Liaodong, more than ten thousand li.',
-						by: 'Sima Qian, Records of the Grand Historian',
-						body: 'The old provinces inside the Great Wall. Manchuria, Mongolia, and Tibet are the rim.',
-						map: {
-							world: modern,
-							star: false,
-							marks: CHINA_PROPER_MARKS,
-							fromMarks: QING_MARKS,
-							focus: ['persia'],
-							frame: CHINA
-						}
-					}
 				}
 			]
 		},
@@ -386,17 +378,24 @@
 					left: {
 						title: 'The Sasanians',
 						when: '224–651',
+						flag: 'kaviani',
 						quote: 'I, the Mazda-worshipping lord Shapur, king of kings of Iran and non-Iran.',
 						by: 'Shapur I, Naqsh-e Rostam',
-						body: 'Five centuries after Alexander, a Persian dynasty rebuilds the empire and fights Rome as an equal.',
+						more: [
+							{
+								quote: 'He declared that he would recover for the Persians the kingdom which they had formerly possessed as far as the Grecian Sea, claiming that all this was his rightful inheritance from his forefathers.',
+								by: 'Herodian 6.2.2, on Ardashir I'
+							}
+						],
+						body: 'Five centuries after Alexander, a Persian dynasty takes Iran and Mesopotamia back. This is that realm, not the Egyptian occupation of 620.',
 						map: {
 							world: antique,
 							star: false,
-							period: 2,
-							from: 0,
+							marks: SASANIAN_MARKS,
+							fromMarks: PLATEAU_MARKS,
 							spread: AT.istakhr,
 							focus: ['persia'],
-							frame: { lon0: 20, lon1: 64, lat0: 16, lat1: 46 }
+							frame: { lon0: 28, lon1: 68, lat0: 14, lat1: 44 }
 						},
 						images: [
 							{
@@ -409,17 +408,28 @@
 					right: {
 						title: 'The People’s Republic',
 						when: '1949 –',
+						flag: 'cn',
 						quote: 'Ours will no longer be a nation subject to insult and humiliation. We have stood up.',
 						by: 'Mao Zedong, 1949',
-						body: 'After Japan’s invasion, China rebuilds as one state and faces America as an equal.',
+						more: [
+							{
+								quote: 'Realizing the great rejuvenation of the Chinese nation is the greatest dream of the Chinese nation since modern times.',
+								by: 'Xi Jinping, 2012'
+							},
+							{
+								quote: 'We will never allow anyone, any organization, or any political party, at any time or in any form, to separate any part of Chinese territory from China.',
+								by: 'Xi Jinping, 19th Party Congress, 2017'
+							}
+						],
+						body: 'After a century of loss, China puts the country back together and calls the old lands its own again.',
 						map: {
 							world: modern,
 							star: false,
-							period: 0,
-							fromMarks: JAPAN_1942_MARKS,
+							marks: PRC_MARKS,
+							fromMarks: CHINA_PROPER_MARKS,
 							spread: AT.beijing,
 							focus: ['persia'],
-							frame: { lon0: 73, lon1: 145, lat0: 10, lat1: 54 }
+							frame: { lon0: 73, lon1: 135, lat0: 18, lat1: 50 }
 						},
 						images: [
 							{
@@ -441,14 +451,15 @@
 					left: {
 						title: 'Macedon',
 						when: '334–323 BC',
+						flag: 'sun',
 						quote: 'Is it not worthy of tears that, when the number of worlds is infinite, I have not yet become lord of one?',
 						by: 'Alexander, in Plutarch',
 						body: 'Macedon, on Greece’s northern edge, conquers all of Persia in ten years. The empire splits when Alexander dies.',
 						map: {
 							world: antique,
 							star: false,
-							period: 0,
-							fromMarks: ACHAEMENID_MARKS,
+							marks: ALEXANDER_MARKS,
+							fromMarks: MACEDON_MARKS,
 							spread: AT.pella,
 							focus: ['greece'],
 							frame: { lon0: 12, lon1: 66, lat0: 14, lat1: 46 }
@@ -457,14 +468,15 @@
 					right: {
 						title: 'Imperial Japan',
 						when: '1931–1945',
+						flag: 'rising',
 						quote: 'The eight corners of the world under one roof.',
 						by: 'Hakkō ichiu, the empire’s slogan',
 						body: 'Japan, off China’s coast, takes Manchuria, the coast, and Southeast Asia. It collapses in 1945.',
 						map: {
 							world: modern,
 							star: false,
-							marks: JAPAN_1942_MARKS,
-							fromMarks: JAPAN_1930_MARKS,
+							marks: JAPAN_EMPIRE_MARKS,
+							fromMarks: JAPAN_HOME_MARKS,
 							spread: AT.tokyo,
 							focus: ['greece'],
 							frame: EAST_ASIA
@@ -479,20 +491,57 @@
 			line: 'The loser’s art conquers the winner.',
 			pairs: [
 				{
+					sub: 'The original',
+					line: 'The look itself, before the empires that carried it.',
+					left: {
+						title: 'The Greek gods',
+						when: 'the original',
+						flag: 'gr',
+						quote: 'Captive Greece took her savage conqueror captive.',
+						by: 'Horace, Epistles 2.1',
+						body: 'This is the Greek look: Zeus, Athena, Apollo, the gods in a row. Rome copied it for centuries.',
+						ratio: '16 / 9',
+						images: [
+							{
+								src: '/image_greek.jpg',
+								alt: 'Zeus seated between Athena and Apollo on a Greek pediment',
+								title: 'The Olympians, as Greece handed them on.'
+							}
+						]
+					},
+					right: {
+						title: 'The anime heroes',
+						when: 'the original',
+						flag: 'jp',
+						quote: 'Japan has been reinventing its influence as a cultural power.',
+						by: 'Douglas McGray, 2002',
+						body: 'Japan lost the war, and this is the look that won: the heroes it sent out afterward.',
+						ratio: '16 / 9',
+						images: [
+							{
+								src: '/image_anime.jpeg',
+								alt: 'A lineup of famous anime heroes standing together',
+								title: 'The anime pantheon.'
+							}
+						]
+					}
+				},
+				{
 					sub: 'The early form',
 					line: 'Before the classic style: gold masks, and borrowed oil paint.',
 					left: {
-						title: 'Mycenaean Greece',
+						title: 'Greece',
 						when: 'c. 1550 BC',
+						flag: 'gr',
 						quote: 'I have found the tombs which the tradition of the whole civilized world has attributed to Agamemnon, Cassandra, and their companions.',
 						by: 'Heinrich Schliemann, 1876',
 						body: 'The Greek look had a childhood. This gold mask is it.',
 						map: {
 							world: antique,
 							star: false,
-							period: 0,
+							marks: GREECE_FREE_MARKS,
 							focus: ['greece'],
-							frame: { lon0: 19, lon1: 29, lat0: 34.5, lat1: 42 }
+							frame: { lon0: 19, lon1: 26.5, lat0: 35.2, lat1: 42 }
 						},
 						ratio: '1 / 1',
 						images: [
@@ -504,15 +553,16 @@
 						]
 					},
 					right: {
-						title: 'Meiji Japan',
+						title: 'Japan',
 						when: '1868–1912',
+						flag: 'jp',
 						quote: 'We should leave the ranks of Asian nations and cast our lot with the civilized nations of the West.',
 						by: 'Fukuzawa Yukichi, 1885',
 						body: 'Japanese painters learned Western oil paint, then made it their own. The training before anime.',
 						map: {
 							world: modern,
 							star: false,
-							period: 0,
+							marks: JAPAN_HOME_MARKS,
 							focus: ['greece'],
 							frame: { lon0: 128, lon1: 147, lat0: 30, lat1: 46 }
 						},
@@ -522,50 +572,6 @@
 								src: '/blog/caliphate/lakeside.jpg',
 								alt: 'Lakeside by Kuroda Seiki',
 								title: 'Kuroda Seiki, Lakeside, 1897.'
-							}
-						]
-					}
-				},
-				{
-					sub: 'The classic style',
-					line: 'The look the winners copied for centuries.',
-					left: {
-						title: 'Greek gods in Roman villas',
-						when: 'after 146 BC',
-						quote: 'Captive Greece took her savage conqueror captive.',
-						by: 'Horace, Epistles 2.1',
-						body: 'Rich Romans filled their villas with Greek gods. Greek style became how a hero looked.',
-						ratio: '3 / 2',
-						images: [
-							{
-								src: '/blog/caliphate/olympians.jpg',
-								alt: 'Eight statues of the Olympian gods, shown together',
-								title: 'Eight Olympians in bronze and marble. Photographs by sailko (CC BY 2.5), Nikos Kitsakis (CC BY 4.0), Commonists (CC BY-SA 4.0), Marie-Lan Nguyen (CC BY 2.5), and Roccuz (CC BY-SA 2.5); three are public domain.'
-							}
-						]
-					},
-					right: {
-						title: 'Anime in the White House',
-						when: 'after 1945',
-						quote: 'Japan has been reinventing its influence as a cultural power.',
-						by: 'Douglas McGray, 2002',
-						body: 'Japan lost the war, but its style won. Even the White House posts in it.',
-						ratio: '3 / 2',
-						images: [
-							{
-								src: '/blog/caliphate/anime-ensemble.jpg',
-								alt: 'An original lineup of anime-style characters standing together',
-								title: 'Original characters in the anime manner.'
-							}
-						],
-						links: [
-							{
-								href: 'https://x.com/elonmusk/status/1054520588734058496',
-								label: 'The drawing, 2018'
-							},
-							{
-								href: 'https://www.theverge.com/tech/638603/studio-ghibli-chatgpt-ai-filter-white-house-meme',
-								label: 'The White House post'
 							}
 						]
 					}
@@ -581,6 +587,7 @@
 					left: {
 						title: 'Ghassanids and Lakhmids',
 						when: '500s',
+						flag: 'sa',
 						quote: '…and bestowed upon him the dignity of king, a thing which among the Romans had never before been done.',
 						by: 'Procopius 1.17',
 						body: 'Arab kingdoms paid by Rome and by Persia to guard the desert. Both patrons later scrapped them.',
@@ -594,12 +601,13 @@
 					right: {
 						title: 'South and North Korea',
 						when: '1953 –',
+						flags: ['kr', 'kp'],
 						quote: 'When whales fight, the shrimp’s back is broken.',
 						by: 'Korean proverb',
 						body: 'One people, two client states. The patrons resent them and cannot drop them.',
 						map: {
 							world: modern,
-							period: 0,
+							period: 2,
 							focus: CLIENTS.modern,
 							frame: { lon0: 124, lon1: 131, lat0: 33, lat1: 43.5 }
 						}
@@ -634,9 +642,50 @@
 						body: 'Sacred to Koreans and to the Manchus. The border still splits its crater lake.',
 						map: {
 							world: modern,
-							period: 7,
+							period: 6,
 							focus: ['caliphate'],
 							frame: { lon0: 126.2, lon1: 131, lat0: 40.2, lat1: 43.6 }
+						}
+					}
+				}
+			]
+		},
+		{
+			id: 'prophet',
+			kicker: 'The prophet',
+			line: 'One person, before the armies.',
+			pairs: [
+				{
+					left: {
+						title: 'Muhammad',
+						when: '610–632',
+						flag: 'umayyad',
+						quote: 'O people, lend me an attentive ear, for I do not know whether, after this year, I shall ever be amongst you again.',
+						by: 'The Farewell Sermon, as transmitted by Ibn Ishaq',
+						body: 'One man, from the Hejaz, makes a new community. The armies come after he is gone.',
+						map: {
+							world: antique,
+							star: false,
+							marks: ARABIA_632_MARKS,
+							fromMarks: ARABIA_BEFORE_MARKS,
+							spread: AT.medina,
+							focus: ['caliphate'],
+							frame: { lon0: 34, lon1: 60, lat0: 12, lat1: 32 }
+						}
+					},
+					right: {
+						title: 'The Prophet',
+						when: 'the prediction',
+						flag: 'unity',
+						body: 'The story’s guess of the same kind of person, out of Korea: one voice, then a people, then the march. This essay calls that person The Prophet, and names no one living.',
+						map: {
+							world: modern,
+							star: false,
+							marks: KOREA_UNITED_MARKS,
+							fromMarks: KOREA_BEFORE_MARKS,
+							spread: AT.pyongyang,
+							focus: ['caliphate'],
+							frame: { lon0: 124, lon1: 132, lat0: 33.5, lat1: 43.5 }
 						}
 					}
 				}
@@ -650,6 +699,7 @@
 				{
 					left: {
 						title: 'Arabia united',
+						flag: 'umayyad',
 						when: '632',
 						quote: 'The Arabs will recognize authority only in this clan of Quraysh.',
 						by: 'Abu Bakr, in al-Tabari',
@@ -666,6 +716,7 @@
 					},
 					right: {
 						title: 'Korea united',
+						flag: 'unity',
 						when: 'the fiction',
 						quote: 'I want our nation to be the most beautiful nation in the world.',
 						by: 'Kim Gu, 1947',
@@ -691,6 +742,7 @@
 				{
 					left: {
 						title: 'The Caliphate',
+						flag: 'umayyad',
 						when: '632–750',
 						quote: 'Peace be upon you, O Syria, a farewell that will know no return.',
 						by: 'Heraclius, as reported by al-Tabari',
@@ -699,11 +751,12 @@
 					},
 					right: {
 						title: 'The Kaliphate',
+						flag: 'unity',
 						when: 'the fiction',
 						quote: 'We herewith proclaim the independence of Korea and the liberty of the Korean people.',
 						by: 'Korean Declaration of Independence, 1919',
-						body: 'In the story, a united Korea takes north China and Siberia. Southern China stays Chinese.',
-						map: { world: modern, period: 7, from: 3, spread: AT.paektu, focus: ['caliphate'] }
+						body: 'In the story, a united Korea takes all of Manchuria, north China, and Siberia. Southern China stays Chinese.',
+						map: { world: modern, period: 6, from: 3, spread: AT.paektu, focus: ['caliphate'] }
 					}
 				}
 			]
@@ -716,6 +769,7 @@
 				{
 					left: {
 						title: 'The Arab world',
+						flag: 'sa',
 						when: 'today',
 						quote: 'The vanquished always want to imitate the victor in his distinctive mark(s), his dress, his occupation, and all his other conditions and customs.',
 						by: 'Ibn Khaldun, Muqaddimah',
@@ -723,7 +777,6 @@
 						map: {
 							world: antique,
 							star: false,
-							borders: true,
 							marks: ARAB_WORLD_MARKS,
 							fromMarks: ARABIA_ALONE_MARKS,
 							spread: AT.medina,
@@ -733,10 +786,11 @@
 					},
 					right: {
 						title: 'The Koreanic world',
+						flag: 'kr',
 						when: 'the fiction',
 						quote: 'The speech of this country is different from that of China.',
 						by: 'King Sejong, 1446',
-						body: 'Siberia is the Maghreb: vast and thinly settled, so it takes the new language. China, like Iran, keeps its own.',
+						body: 'Siberia is the Maghreb: vast and thinly settled, so it takes the new language. All of Manchuria goes with it: the three northeastern provinces, eastern Inner Mongolia out to the Argun, and Outer Manchuria south of the Stanovoy. China proper, like Iran, keeps its own.',
 						map: {
 							world: modern,
 							star: false,
@@ -776,7 +830,389 @@
 						quote: 'Whosoever commands the sea commands the trade… and consequently the world itself.',
 						by: 'Sir Walter Raleigh',
 						body: 'With China worn down, the next rival is America, across the Pacific. No one wins outright.',
-						map: { world: modern, period: 7, focus: ['caliphate', 'romeEast'] }
+						map: { world: modern, period: 6, focus: ['caliphate', 'romeEast'] }
+					}
+				}
+			]
+		},
+		{
+			id: 'core',
+			kicker: 'The country',
+			line: 'Strip the empire away and the country is still there.',
+			pairs: [
+				{
+					left: {
+						title: 'Persia proper',
+						when: 'the plateau',
+						quote: 'I am a Persian, son of a Persian, an Aryan of Aryan stock.',
+						by: 'Darius I, Naqsh-e Rostam',
+						body: 'The plateau. Every Persian empire grew out of it and shrank back to it.',
+						map: {
+							world: antique,
+							star: false,
+							marks: PLATEAU_MARKS,
+							fromMarks: ACHAEMENID_MARKS,
+							focus: ['persia'],
+							frame: IRAN
+						}
+					},
+					right: {
+						title: 'China proper',
+						when: 'the old provinces',
+						quote: 'He built the Long Wall… from Lintao to Liaodong, more than ten thousand li.',
+						by: 'Sima Qian, Records of the Grand Historian',
+						body: 'The old provinces inside the Great Wall. Manchuria, Mongolia, and Tibet are the rim.',
+						map: {
+							world: modern,
+							star: false,
+							marks: CHINA_PROPER_MARKS,
+							fromMarks: QING_MARKS,
+							focus: ['persia'],
+							frame: CHINA
+						}
+					}
+				}
+			]
+		},
+		{
+			id: 'broken',
+			kicker: 'The neighbor',
+			line: 'A smaller people breaks the giant, once.',
+			pairs: [
+				{
+					left: {
+						title: 'Alexander',
+						when: '334–323 BC',
+						flag: 'sun',
+						quote: 'Is it not worthy of tears that, when the number of worlds is infinite, I have not yet become lord of one?',
+						by: 'Alexander, in Plutarch',
+						body: 'Macedon ends the Achaemenid empire in ten years. The empire splits when Alexander dies.',
+						map: {
+							world: antique,
+							star: false,
+							marks: ALEXANDER_MARKS,
+							fromMarks: MACEDON_MARKS,
+							spread: AT.pella,
+							focus: ['greece'],
+							frame: { lon0: 12, lon1: 66, lat0: 14, lat1: 46 }
+						}
+					},
+					right: {
+						title: 'Imperial Japan',
+						when: '1931–1945',
+						flag: 'rising',
+						quote: 'The eight corners of the world under one roof.',
+						by: 'Hakkō ichiu, the empire’s slogan',
+						body: 'Japan breaks the Qing’s succession and takes the coast. It does not keep China.',
+						map: {
+							world: modern,
+							star: false,
+							marks: JAPAN_EMPIRE_MARKS,
+							fromMarks: JAPAN_HOME_MARKS,
+							spread: AT.tokyo,
+							focus: ['greece'],
+							frame: EAST_ASIA
+						}
+					}
+				}
+			]
+		},
+		{
+			id: 'parthian',
+			kicker: 'The successor',
+			line: 'After the giant breaks, a smaller dynasty holds the country.',
+			pairs: [
+				{
+					left: {
+						title: 'The Parthians',
+						when: '247 BC – AD 224',
+						flag: 'arsacid',
+						quote: 'Having divided the world with the Romans, they held the empire of the east.',
+						by: 'Justin, Epitome 41.1',
+						body: 'The Arsacids take Iran and Mesopotamia back from Alexander’s successors. They stop at the Euphrates. Egypt is not theirs.',
+						map: {
+							world: antique,
+							star: false,
+							marks: PARTHIAN_MARKS,
+							fromMarks: PLATEAU_MARKS,
+							spread: AT.istakhr,
+							focus: ['persia'],
+							frame: { lon0: 32, lon1: 68, lat0: 24, lat1: 42 }
+						}
+					},
+					right: {
+						title: 'The Republic of China',
+						when: '1912–1949',
+						flag: 'roc',
+						quote: 'The revolution is not yet complete. Let all our comrades strive on.',
+						by: 'Sun Yat-sen, political testament, 1925',
+						body: 'After the Qing, the republic holds the country the People’s Republic holds, except Tibet. It spends itself in warlords, invasion, and civil war. The comeback dynasty is still ahead of it.',
+						map: {
+							world: modern,
+							star: false,
+							marks: ROC_MARKS,
+							fromMarks: QING_MARKS,
+							spread: AT.beijing,
+							focus: ['persia'],
+							frame: CHINA
+						}
+					}
+				}
+			]
+		},
+		{
+			id: 'caesar',
+			kicker: 'The man',
+			line: 'A republic, and the man who steps over its line.',
+			pairs: [
+				{
+					left: {
+						title: 'Caesar',
+						when: '49 BC',
+						flag: 'vexillum',
+						quote: 'The die is cast.',
+						by: 'Caesar, in Suetonius, Divus Julius 32',
+						body: 'A general brings his army across the Rubicon, which the law forbids, and a large part of the republic goes with him.',
+						map: {
+							world: antique,
+							star: false,
+							marks: ROMAN_SEA_MARKS,
+							focus: ['romeEast', 'romeWest'],
+							frame: ITALY
+						}
+					},
+					right: {
+						title: 'Trump',
+						when: '2016 –',
+						flag: 'us',
+						quote: 'I alone can fix it.',
+						by: 'Donald Trump, Republican National Convention, 2016',
+						body: 'The claim that the office and the man are the same thing, and that the republic’s limit does not bind him.',
+						map: {
+							world: modern,
+							period: 2,
+							focus: ['romeEast'],
+							frame: { lon0: -140, lon1: -52, lat0: 14, lat1: 62 }
+						}
+					}
+				}
+			]
+		},
+		{
+			id: 'conquest',
+			kicker: 'The conquest',
+			line: 'Rome takes Greece. The United States takes Japan.',
+			pairs: [
+				{
+					left: {
+						title: 'The Achaean War',
+						when: '146 BC',
+						flag: 'vexillum',
+						quote: 'I saw pictures thrown upon the ground, and soldiers playing at dice on them.',
+						by: 'Polybius, on the sack of Corinth, in Strabo 8.6.23',
+						body: 'Rome breaks the Achaean League and burns Corinth. Macedonia already has a Roman governor. Greece, which had taught Rome, is now ruled from Rome.',
+						map: {
+							world: antique,
+							star: false,
+							marks: ACHAEAN_WAR_MARKS,
+							fromMarks: GREECE_FREE_MARKS,
+							spread: [19.2, 38.6],
+							focus: ['romeEast'],
+							frame: { lon0: 19, lon1: 26.5, lat0: 35.2, lat1: 42 }
+						}
+					},
+					right: {
+						title: 'The Pacific War',
+						when: '1941–1945',
+						flag: 'us',
+						quote: 'Today the guns are silent. A great tragedy has ended. A great victory has been won.',
+						by: 'Douglas MacArthur, Tokyo Bay, 2 September 1945',
+						body: 'The United States fights Japan across the ocean and, in 1945, occupies the home islands. Korea and Taiwan leave the empire. Japan stays under American arms.',
+						map: {
+							world: modern,
+							star: false,
+							marks: PACIFIC_WAR_MARKS,
+							fromMarks: JAPAN_EMPIRE_MARKS,
+							spread: [147.5, 34.5],
+							focus: ['romeEast'],
+							frame: { lon0: 124, lon1: 152, lat0: 24, lat1: 46 }
+						}
+					}
+				}
+			]
+		},
+		{
+			id: 'philhellene',
+			kicker: 'The admirers',
+			line: 'Philhellene, and Japanophile.',
+			pairs: [
+				{
+					left: {
+						title: 'The philhellene',
+						when: 'after the conquest',
+						flag: 'gr',
+						quote: 'Captive Greece took her savage conqueror captive.',
+						by: 'Horace, Epistles 2.1',
+						body: 'Rome conquered Greece and then could not stop collecting it. Hadrian’s Greece had a face: Antinous, mourned across the empire.',
+						ratio: '3 / 4',
+						images: [
+							{
+								src: '/blog/caliphate/antinous.jpg',
+								alt: 'Marble bust of Antinous, a young man with curled hair, in profile',
+								title: 'Antinous. Hadrian’s companion, and the face of a Roman philhellene. National Archaeological Museum, Athens.'
+							}
+						]
+					},
+					right: {
+						title: 'The Japanophile',
+						when: 'after the war',
+						flag: 'jp',
+						quote: 'Japan has been reinventing its influence as a cultural power.',
+						by: 'Douglas McGray, 2002',
+						body: 'Japan lost the war, and the look traveled anyway. The weeaboo is the philhellene of this story: devoted to a culture his own country once beat.',
+						ratio: '16 / 9',
+						images: [
+							{
+								src: '/image_anime.jpeg',
+								alt: 'A lineup of famous anime heroes standing together',
+								title: 'The anime pantheon, which outlived the empire.'
+							}
+						]
+					}
+				}
+			]
+		},
+		{
+			id: 'tribes',
+			kicker: 'The peoples there',
+			line: 'Siberia is the Maghreb. The people were already on the ground.',
+			pairs: [
+				{
+					left: {
+						title: 'The Berber tribes',
+						when: 'before Islam',
+						quote: 'They are the most numerous of peoples, and their tribes and subtribes are beyond counting.',
+						by: 'Ibn Khaldun, on the Berbers',
+						body: 'Before Arabic, North Africa was Berber. On the Atlantic, the Mauri. Inland, Numidia, Massaesyli to the west and Massylii toward Carthage. South of the Atlas, the Gaetuli. In the Fezzan, the Garamantes. By the Gulf of Sidra, the Nasamones. The shapes are homelands, not surveyed borders.',
+						map: {
+							world: antique,
+							star: false,
+							marks: BERBER_TRIBE_MARKS,
+							fromMarks: NONE,
+							spread: [3, 36],
+							focus: ['people'],
+							frame: { lon0: -12, lon1: 25, lat0: 22, lat1: 38 }
+						},
+						ratio: '3 / 4',
+						images: [
+							{
+								src: '/blog/caliphate/kabyle.jpg',
+								alt: 'A Kabyle woman in a silver headdress and jewelry',
+								title: 'A Kabyle woman, Algeria. Kabyles are Amazigh, the people the Mauri and the Numidians became.'
+							},
+							{
+								src: '/blog/caliphate/tuareg.jpg',
+								alt: 'A nineteenth-century engraving of Tuareg men, one standing with a spear and one mounted on a camel',
+								title: 'Tuareg in the Sahara, from Le Tour du monde. The veiled Amazigh south of the Atlas.',
+								ratio: '4 / 3'
+							}
+						]
+					},
+					right: {
+						title: 'The peoples of Siberia',
+						when: 'inside Russia',
+						quote: 'The Yakut call themselves Sakha.',
+						by: 'The people’s own name, along the Lena',
+						body: 'The minority peoples still there: Nenets and Khanty-Mansi on the Ob, Evenks across the taiga, Sakha along the Lena, Altai, Tuvans, and Buryats around Baikal, Nanai on the Amur. Thinly settled, and still themselves. The shapes are homelands.',
+						map: {
+							world: modern,
+							star: false,
+							marks: SIBERIA_TRIBE_MARKS,
+							fromMarks: NONE,
+							spread: [129.7, 62.0],
+							focus: ['people'],
+							frame: { lon0: 60, lon1: 150, lat0: 46, lat1: 72 }
+						},
+						ratio: '4 / 3',
+						images: [
+							{
+								src: '/blog/caliphate/yakut.jpg',
+								alt: 'A nineteenth-century picture of Sakha people in fur and embroidered coats beside a river',
+								title: 'Sakha (Yakuts), a nineteenth-century view. One of the peoples on the Lena.'
+							},
+							{
+								src: '/blog/caliphate/khanty.jpg',
+								alt: 'A late nineteenth-century photograph of a Khanty family group with sleds and fishing nets',
+								title: 'Khanty on the Ob, late nineteenth century. The people once called Ostyaks.'
+							}
+						]
+					}
+				}
+			]
+		},
+		{
+			id: 'final-war',
+			kicker: 'The final war',
+			line: 'The last great war of antiquity, and the contest that would rhyme with it.',
+			pairs: [
+				{
+					left: {
+						title: 'Rome and Persia',
+						when: '602–628',
+						flag: 'kaviani',
+						quote: 'They captured Jerusalem and carried off the Lord’s Cross.',
+						by: 'Sebeos, on 614',
+						body: 'The Byzantine–Sasanian war, the last great war of antiquity. Persia takes Syria, Jerusalem, and Egypt. Heraclius reaches the heart of Persia. In 628 both sides accept the old border, and both are ruined.',
+						map: {
+							world: antique,
+							period: 3,
+							from: 2,
+							spread: AT.istakhr,
+							focus: ['persia', 'romeEast'],
+							frame: { lon0: 24, lon1: 64, lat0: 22, lat1: 44 }
+						}
+					},
+					right: {
+						title: 'America and China',
+						when: 'the contest',
+						flags: ['us', 'cn'],
+						quote: 'When a rising power threatens to displace a ruling one, alarm bells should sound.',
+						by: 'Graham Allison, Destined for War, 2017',
+						body: 'A long contest across the Pacific: fleets, chips, the island, sanctions. It is the rhyme of 602. It does not have to become an invasion.',
+						map: { world: modern, period: 3, focus: EYES, star: false }
+					}
+				}
+			]
+		},
+		{
+			id: 'predictions',
+			kicker: 'Further predictions',
+			line: 'What the new tongue would do to the old writing.',
+			pairs: [
+				{
+					left: {
+						title: 'Persian in Arabic letters',
+						when: 'after the conquest',
+						flag: 'ir',
+						quote: 'The vanquished always want to imitate the victor in his distinctive mark(s), his dress, his occupation, and all his other conditions and customs.',
+						by: 'Ibn Khaldun, Muqaddimah',
+						body: 'Persian kept its words and took the Arabic script. The language stayed. The letters changed.',
+						examples: [
+							{ from: 'زبان', to: 'zabān', gloss: 'language' },
+							{ from: 'ایران', to: 'Īrān', gloss: 'Iran' }
+						]
+					},
+					right: {
+						title: 'Chinese in Hangul',
+						when: 'the prediction',
+						flag: 'kr',
+						body: 'In the fiction, Chinese keeps its words and takes Hangul, the way Persian took the Arabic letters. These are Mandarin sounds spelled in Hangul. A sketch, not a reform.',
+						examples: [
+							{ from: '中国', to: '중궈', gloss: 'China' },
+							{ from: '北京', to: '베이징', gloss: 'Beijing' },
+							{ from: '你好', to: '니하오', gloss: 'hello' },
+							{ from: '中华民族伟大复兴', to: '중화 민쭈 웨이다 푸싱', gloss: 'the great rejuvenation' }
+						]
 					}
 				}
 			]
@@ -786,39 +1222,39 @@
 	const chapters = [
 		{
 			id: 'rome',
-			kicker: 'Rome → America',
-			line: 'A republic that took the sea, and the country that copies it.',
-			sections: ['seed', 'reach', 'claim', 'parent']
+			kicker: 'The Western Empire',
+			line: 'Rome and America.',
+			sections: ['parent', 'seed', 'reach', 'claim', 'caesar']
 		},
 		{
 			id: 'persia',
-			kicker: 'Persia → China',
-			line: 'The old land empire: widest, broken, reborn.',
-			sections: ['width', 'comeback']
-		},
-		{
-			id: 'wars',
-			kicker: 'Roman–Persian Wars → US–China Rivalry',
-			line: 'Two superpowers, centuries of standoff.',
-			sections: ['two-eyes']
+			kicker: 'The Eastern Realm',
+			line: 'Persia and China.',
+			sections: ['core', 'width', 'broken', 'parthian', 'comeback']
 		},
 		{
 			id: 'greece',
-			kicker: 'Greece → Japan',
-			line: 'The small neighbor that conquered once, and whose art won.',
-			sections: ['macedon', 'captive-culture']
+			kicker: 'The Archipelago',
+			line: 'Greece and Japan.',
+			sections: ['captive-culture', 'macedon', 'conquest', 'philhellene']
 		},
 		{
 			id: 'arabia',
-			kicker: 'Arabia → Korea',
-			line: 'A divided people between two empires.',
-			sections: ['hired-cousins', 'holy-place', 'union']
+			kicker: 'The Peninsula',
+			line: 'Arabia and Korea.',
+			sections: ['hired-cousins', 'holy-place', 'prophet', 'union', 'tribes', 'language']
+		},
+		{
+			id: 'wars',
+			kicker: 'The two eyes',
+			line: 'The standoff, then the final war.',
+			sections: ['two-eyes', 'final-war']
 		},
 		{
 			id: 'kaliphate',
 			kicker: 'The Kaliphate',
-			line: 'A fiction, for fun. Not a prediction.',
-			sections: ['third-power', 'language', 'long-war']
+			line: 'A fiction, and a few predictions.',
+			sections: ['third-power', 'language', 'long-war', 'predictions']
 		}
 	].map((chapter) => ({
 		...chapter,
@@ -828,10 +1264,15 @@
 
 {#snippet cell(item, tone)}
 	<article class={tone}>
-		<header class="colhead">
-			<strong>{item.title}</strong>
-			<span>{item.when}</span>
-		</header>
+	<header class="colhead">
+		<strong>
+			{#each item.flags ?? (item.flag ? [item.flag] : []) as id (id)}
+				<Flag {id} />
+			{/each}
+			{item.title}
+		</strong>
+		<span>{item.when}</span>
+	</header>
 		{#if item.map}
 			<Inset map={item.map} label="{item.title}, {item.when}" />
 		{/if}
@@ -839,10 +1280,29 @@
 			<FitImages images={item.images} ratio={item.ratio ?? '4 / 3'} />
 		{/if}
 		<p>{item.body}</p>
-		<blockquote>
-			<p>“{item.quote}”</p>
-			<cite>{item.by}</cite>
-		</blockquote>
+		{#if item.examples?.length}
+			<ul class="script">
+				{#each item.examples as row (`${row.from}-${row.to}`)}
+					<li>
+						<span class="from">{row.from}</span>
+						<span class="to">{row.to}</span>
+						<span class="gloss">{row.gloss}</span>
+					</li>
+				{/each}
+			</ul>
+		{/if}
+		{#if item.quote}
+			<blockquote>
+				<p>“{item.quote}”</p>
+				<cite>{item.by}</cite>
+			</blockquote>
+		{/if}
+		{#each item.more ?? [] as extra (`${extra.by}-${extra.quote}`)}
+			<blockquote>
+				<p>“{extra.quote}”</p>
+				<cite>{extra.by}</cite>
+			</blockquote>
+		{/each}
 		{#each item.links ?? [] as link (link.href)}
 			<a href={link.href}>{link.label}</a>
 		{/each}
@@ -853,8 +1313,8 @@
 	{#each chapters as chapter (chapter.id)}
 		<h2 id={chapter.id} class="chapter">{chapter.kicker}</h2>
 		<p class="thesis">{chapter.line}</p>
-		{#each chapter.sections as section (section.id)}
-			<h3 id={section.id} class="sub">{section.kicker}</h3>
+		{#each chapter.sections as section (`${chapter.id}-${section.id}`)}
+			<h3 id="{chapter.id}-{section.id}" class="sub">{section.kicker}</h3>
 			<p class="thesis nested">{section.line}</p>
 			{#each section.pairs as pair, i (`${section.id}-${i}`)}
 				{#if pair.sub}
@@ -950,6 +1410,38 @@
 		grid-template-columns: 1fr 1fr;
 		gap: 0.9rem;
 		margin-bottom: 1rem;
+	}
+
+	.script {
+		display: grid;
+		gap: 0.35rem;
+		margin: 0.2rem 0 0.8rem;
+		padding: 0;
+		list-style: none;
+	}
+
+	.script li {
+		display: grid;
+		grid-template-columns: auto 1fr auto;
+		gap: 0.7rem;
+		align-items: baseline;
+		padding: 0.35rem 0;
+		border-top: 1px solid color-mix(in srgb, var(--ink, #1c1b18) 12%, transparent);
+	}
+
+	.script .from {
+		font-size: 1.15rem;
+		letter-spacing: 0.01em;
+	}
+
+	.script .to {
+		font-size: 1.05rem;
+	}
+
+	.script .gloss {
+		color: var(--ink-3, #6d6860);
+		font-size: 0.75rem;
+		font-style: italic;
 	}
 
 	.compare article {

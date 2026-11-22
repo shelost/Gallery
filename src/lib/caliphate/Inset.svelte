@@ -1,5 +1,6 @@
 <script>
 	import MapModal from './MapModal.svelte';
+	import { mapView } from './view.svelte.js';
 	import { mountWindow } from './window.js';
 
 	/** @type {{ map: import('./window.js').MapSpec, label: string }} */
@@ -13,12 +14,14 @@
 
 <div class="map">
 	<button type="button" class="open" aria-label="Expand map: {label}" onclick={() => (open = true)}>
-		<canvas
-			{@attach (node) => {
-				canvas = node;
-			}}
-			{@attach (node) => mountWindow(node, { ...map, controls })}
-		></canvas>
+		{#key mapView.relief}
+			<canvas
+				{@attach (node) => {
+					canvas = node;
+				}}
+				{@attach (node) => mountWindow(node, { ...map, flat: !mapView.relief, controls })}
+			></canvas>
+		{/key}
 	</button>
 	<button type="button" class="replay" aria-label="Replay map" onclick={() => controls.replay()}>
 		<svg viewBox="0 0 16 16" aria-hidden="true">
@@ -50,8 +53,8 @@
 	canvas {
 		display: block;
 		width: 100%;
-		height: auto;
 		aspect-ratio: 1;
+		height: auto;
 		border-radius: 10px;
 		background: #9cb7d1;
 		transition: filter 200ms cubic-bezier(0.22, 0.61, 0.36, 1);

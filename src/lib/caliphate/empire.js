@@ -1469,16 +1469,27 @@ const MODERN = {
 		NORTH_CLIENT,
 		{ iso: 'JPN', color: 'greece' }
 	],
+	union: [
+		{ iso: 'RUS', color: 'steppe' },
+		{ iso: 'USA', color: 'romeEast' },
+		{ iso: 'TWN', color: 'romeEast' },
+		{ iso: 'CHN', color: 'persia' },
+		{ iso: 'MNG', color: 'persia', alpha: 0.42 },
+		{ iso: 'JPN', color: 'greece' },
+		{ iso: 'KOR', color: 'caliphate' },
+		{ iso: 'PRK', color: 'caliphate' }
+	],
 	war: [
 		{ iso: 'RUS', color: 'steppe' },
 		{ iso: 'USA', color: 'romeEast' },
-		SOUTH_CLIENT,
-		{ iso: 'TWN', color: 'romeEast', alpha: 0.58 },
-		{ iso: 'TWN', color: 'persia', alpha: 0.65, blur: 4 },
 		{ iso: 'CHN', color: 'persia' },
 		{ iso: 'MNG', color: 'persia', alpha: 0.42 },
-		NORTH_CLIENT,
-		{ iso: 'JPN', color: 'greece' }
+		{ iso: 'PRK', color: 'persia' },
+		{ iso: 'KOR', color: 'romeEast' },
+		{ iso: 'JPN', color: 'romeEast' },
+		{ iso: 'PHL', color: 'romeEast' },
+		{ iso: 'TWN', color: 'romeEast', alpha: 0.55 },
+		{ iso: 'TWN', color: 'persia', alpha: 0.6, blur: 4 }
 	],
 	caliphate: [
 		{ iso: 'RUS', color: 'caliphate' },
@@ -1487,6 +1498,7 @@ const MODERN = {
 		{ iso: 'CHN', color: 'persia' },
 		{ iso: 'MNG', color: 'persia', alpha: 0.35 },
 		{ rings: provinces.kaliphate, color: 'caliphate', blur: 3 },
+		{ rings: provinces.manchuria, color: 'caliphate' },
 		{ iso: 'JPN', color: 'greece' },
 		{ iso: 'KOR', color: 'caliphate' },
 		{ iso: 'PRK', color: 'caliphate' }
@@ -1753,19 +1765,74 @@ const ETRURIA = [
 	[10.1, 43.7]
 ];
 
-/** Rome after Actium: Italy and the islands, Gaul, Illyricum, Africa to the Ampsaga. */
+/**
+ * Hispania in 30 BC. The Cantabrian northwest is left out: it held until 19 BC.
+ * East from the Pyrenees, down the Mediterranean, around to Lisbon, then inland of Galicia.
+ */
+const HISPANIA_30BC = [
+	[3.15, 42.45],
+	[1.8, 42.3],
+	[0.6, 41.2],
+	[0.15, 40.0],
+	[-0.2, 39.0],
+	[-0.6, 38.0],
+	[-0.9, 37.4],
+	[-2.0, 36.7],
+	[-4.4, 36.5],
+	[-5.6, 36.0],
+	[-6.3, 36.5],
+	[-7.4, 37.0],
+	[-8.9, 37.1],
+	[-8.9, 38.8],
+	[-8.8, 40.2],
+	[-8.7, 41.15],
+	[-7.4, 41.55],
+	[-6.3, 41.15],
+	[-5.2, 41.3],
+	[-4.6, 42.15],
+	[-3.4, 42.7],
+	[-1.8, 43.3],
+	[0.2, 42.8],
+	[1.7, 42.7],
+	[3.15, 42.45]
+];
+
+/** Gaul in 30 BC: the Atlantic, the Channel, and the Rhine, stopping on the Alpine crest. */
+const GAUL_30BC = [
+	[-1.8, 43.35],
+	[-1.5, 46.3],
+	[-2.4, 47.4],
+	[-4.6, 47.8],
+	[-4.8, 48.5],
+	[-2.8, 48.7],
+	[-1.5, 48.5],
+	[-1.3, 49.7],
+	[1.6, 51.0],
+	[2.5, 51.1],
+	[4.3, 51.4],
+	[5.8, 51.5],
+	[6.2, 51.0],
+	[6.9, 50.2],
+	[7.1, 49.5],
+	[8.2, 48.8],
+	[7.6, 47.6],
+	[8.6, 47.2],
+	[7.6, 46.2],
+	[6.9, 45.2],
+	[7.0, 44.2],
+	[7.5, 43.6],
+	[6.2, 43.2],
+	[4.7, 43.3],
+	[3.1, 42.45],
+	[1.5, 42.8],
+	[-1.8, 43.35]
+];
+
+/** Rome after Actium: Italy and the islands, Hispania, Gaul, Illyricum, Africa to the Ampsaga. */
 const ROME_30BC_WEST = [
 	ITALY_ISLANDS,
-	[
-		[0.0, 42.5],
-		[3.2, 42.4],
-		...ALPS.slice(0, 5),
-		[9.5, 47.5],
-		[7.6, 47.6],
-		[8.2, 49.0],
-		[7.0, 51.0],
-		[0.0, 51.0]
-	],
+	GAUL_30BC,
+	HISPANIA_30BC,
 	[
 		[14.0, 45.4],
 		[15.0, 45.6],
@@ -1971,13 +2038,22 @@ const ROME_30BC_CLIENTS = [
 	]
 ];
 
+/** Mauretania, Rome's client from the Atlantic to the Ampsaga. */
 const MAURETANIA = [
-	[3.0, 37.0],
+	[-5.9, 35.8],
+	[-5.4, 35.15],
+	[-3.6, 35.2],
+	[-1.4, 35.15],
+	[1.2, 35.5],
+	[3.2, 36.4],
+	[5.0, 36.9],
 	[6.3, 37.5],
 	[6.3, 36.5],
-	[6.5, 35.8],
-	[5.0, 35.3],
-	[3.0, 35.0]
+	[4.8, 35.5],
+	[2.2, 34.9],
+	[-1.2, 34.7],
+	[-4.2, 34.7],
+	[-5.9, 35.25]
 ];
 
 /** @type {Region[]} */
@@ -2001,6 +2077,16 @@ export const QING_MARKS = [
 export const CHINA_PROPER_MARKS = [
 	...QING_MARKS.map((item) => ({ ...item, alpha: 0.28 })),
 	{ rings: provinces.chinaProper, color: 'persia' }
+];
+
+/**
+ * The republic's China: the same country as the People's Republic, with Tibet left uncolored.
+ * The Tibet ring is painted back to bare land, so the coast stays the country's own coast.
+ */
+/** @type {Region[]} */
+export const ROC_MARKS = [
+	{ iso: 'CHN', color: 'persia' },
+	{ rings: provinces.tibet, color: 'land' }
 ];
 
 /** @type {Region[]} */
@@ -2178,6 +2264,121 @@ export const JAPAN_1942_MARKS = [
 	{ ring: KARAFUTO, color: 'greece' }
 ];
 
+/** The kingdom Alexander left: Macedon proper, before the march. */
+const MACEDON_HOME = [
+	[20.5, 39.95],
+	[21.0, 40.7],
+	[21.5, 41.4],
+	[22.4, 41.9],
+	[23.6, 41.55],
+	[24.5, 41.15],
+	[24.4, 40.55],
+	[23.4, 40.15],
+	[22.4, 39.95],
+	[21.4, 39.85]
+];
+
+/** @type {Region[]} */
+export const MACEDON_MARKS = [{ ring: MACEDON_HOME, color: 'greece' }];
+
+/**
+ * Mainland Greece in 146 BC, from Macedonia to the Peloponnese. The coast is the real one;
+ * this ring only decides which land takes the color.
+ */
+const GREECE_146 = [
+	[19.7, 39.5],
+	[19.9, 40.5],
+	[20.8, 41.1],
+	[21.6, 41.4],
+	[22.8, 41.2],
+	[23.8, 40.8],
+	[23.4, 39.4],
+	[23.0, 38.6],
+	[24.2, 38.3],
+	[24.0, 37.4],
+	[23.2, 36.5],
+	[22.2, 36.6],
+	[21.4, 37.4],
+	[21.0, 38.2],
+	[20.4, 38.8],
+	[20.0, 39.3]
+];
+
+/** The leagues, still their own color, before Rome breaks them. */
+/** @type {Region[]} */
+export const GREECE_FREE_MARKS = [{ ring: GREECE_146, color: 'greece' }];
+
+/** After the Achaean War: the same Greece, in Rome's color. */
+/** @type {Region[]} */
+export const ACHAEAN_WAR_MARKS = [{ ring: GREECE_146, color: 'romeEast' }];
+
+/**
+ * 1945. The empire's color has left the continent. The home islands are occupied,
+ * in the sea power's color.
+ */
+/** @type {Region[]} */
+export const PACIFIC_WAR_MARKS = [
+	{ iso: 'CHN', color: 'persia', alpha: 0.25 },
+	{ iso: 'KOR', color: 'persia', alpha: 0.22 },
+	{ iso: 'PRK', color: 'persia', alpha: 0.22 },
+	{ iso: 'TWN', color: 'persia', alpha: 0.4 },
+	{ iso: 'JPN', color: 'romeEast' }
+];
+
+/** @type {Region[]} */
+export const ALEXANDER_MARKS = [{ ring: ALEXANDER, color: 'greece' }];
+
+/**
+ * The Sasanian realm at the peace of 591: Iran, Mesopotamia, and the gulf.
+ * The Egyptian and Syrian conquests of 620 belong to the war, not to this shape.
+ */
+/** @type {Region[]} */
+export const SASANIAN_MARKS = [
+	{ ring: persia(FRONTIER_591), color: 'persia' },
+	{ rings: [BAHRAIN, OMAN_COAST], color: 'persia', alpha: 0.5 }
+];
+
+/** The Arsacids, on the same ground, between Alexander's successors and the Sasanians. */
+/** @type {Region[]} */
+export const PARTHIAN_MARKS = [{ ring: persia(FRONTIER_591), color: 'persia' }];
+
+/** Egypt of the Nile: the old country Greece and Rome both learned from. */
+const EGYPT_HOME = [
+	[29.6, 31.4],
+	[29.9, 31.0],
+	[28.9, 31.0],
+	[29.4, 30.2],
+	[30.4, 26.4],
+	[30.9, 24.1],
+	[32.6, 22.0],
+	[34.4, 23.8],
+	[33.8, 27.4],
+	[33.0, 29.4],
+	[32.4, 31.2],
+	[31.6, 31.5],
+	[30.4, 31.5]
+];
+
+/** @type {Region[]} */
+export const EGYPT_MARKS = [{ ring: EGYPT_HOME, color: 'people' }];
+
+/** The People's Republic on its own. */
+/** @type {Region[]} */
+export const PRC_MARKS = MODERN.buffers.filter((region) => region.iso === 'CHN');
+
+/** Japan before the march: the home islands, beside a China that is not the subject. */
+/** @type {Region[]} */
+export const JAPAN_HOME_MARKS = [
+	{ iso: 'CHN', color: 'persia', alpha: 0.22 },
+	{ iso: 'JPN', color: 'greece' }
+];
+
+/** The 1942 empire, with the lands it crossed faded so Japan is the shape that reads. */
+/** @type {Region[]} */
+export const JAPAN_EMPIRE_MARKS = JAPAN_1942_MARKS.map((region) =>
+	region.color === 'greece' ? region : { ...region, alpha: Math.min(region.alpha ?? 1, 0.2) }
+);
+
 /** Japan in 1930, before the war: the home islands, Korea, Taiwan, Karafuto, by a whole China. */
 /** @type {Region[]} */
 export const JAPAN_1930_MARKS = [
@@ -2225,8 +2426,35 @@ export const KOREANIC_WORLD_MARKS = [
 	{ iso: 'TWN', color: 'romeEast' },
 	{ iso: 'JPN', color: 'greece' },
 	{ iso: 'RUS', color: 'caliphate' },
+	{ rings: provinces.manchuria, color: 'caliphate' },
 	...KOREA_UNITED
 ];
+
+MODERN.japan = JAPAN_1942_MARKS;
+MODERN.spread = [
+	{ iso: 'RUS', color: 'steppe' },
+	{ iso: 'USA', color: 'romeEast' },
+	{ iso: 'CHN', color: 'persia' },
+	{ iso: 'MNG', color: 'persia', alpha: 0.35 },
+	{ iso: 'JPN', color: 'greece' },
+	{ rings: provinces.manchuria, color: 'caliphate' },
+	{ iso: 'KOR', color: 'caliphate' },
+	{ iso: 'PRK', color: 'caliphate' }
+];
+MODERN.after = [
+	{ iso: 'RUS', color: 'steppe' },
+	{ iso: 'USA', color: 'romeEast' },
+	{ iso: 'CHN', color: 'persia' },
+	{ rings: provinces.manchuria, color: 'caliphate' },
+	{ rings: provinces.kaliphate, color: 'caliphate' },
+	{ iso: 'JPN', color: 'romeEast' },
+	{ iso: 'PHL', color: 'romeEast' },
+	{ iso: 'TWN', color: 'romeEast' },
+	{ iso: 'KOR', color: 'caliphate' },
+	{ iso: 'PRK', color: 'caliphate' }
+];
+MODERN.tongue = KOREANIC_WORLD_MARKS;
+ANTIQUE.arabWorld = ARAB_WORLD_MARKS;
 
 /** @type {Region[]} */
 export const KOREA_ALONE_MARKS = [
@@ -2236,6 +2464,81 @@ export const KOREA_ALONE_MARKS = [
 	{ iso: 'JPN', color: 'greece' },
 	{ iso: 'RUS', color: 'steppe' },
 	...KOREA_UNITED
+];
+
+// ---------------------------------------------------------------- the peoples already there
+
+/**
+ * Berber peoples before Islam, drawn as homelands rather than surveyed borders.
+ * West to east: Mauri, Numidia, Gaetuli, Garamantes, Nasamones.
+ */
+const MAURI = [
+	[-5.6, 35.8], [-5.2, 35.1], [-7.2, 33.4], [-9.2, 31.6], [-9.8, 30.2],
+	[-8.4, 29.4], [-6.2, 31.2], [-5.8, 33.6], [-4.2, 35.0], [-5.6, 35.9]
+];
+const NUMIDIA = [
+	[-2.2, 35.2], [2.4, 36.6], [7.6, 37.0], [9.6, 36.2], [9.2, 34.2],
+	[7.4, 33.0], [3.2, 32.6], [-0.6, 33.2], [-2.4, 34.2]
+];
+const GAETULI = [
+	[-8.6, 30.2], [-4.2, 31.4], [2.2, 32.2], [8.4, 32.4], [9.2, 30.2],
+	[4.6, 29.2], [-2.4, 28.6], [-7.4, 28.4]
+];
+const GARAMANTES = [
+	[11.4, 27.6], [14.2, 27.8], [15.6, 26.2], [14.6, 24.4], [12.2, 24.2], [11.2, 26.0]
+];
+const NASAMONES = [
+	[17.4, 31.2], [20.6, 31.0], [22.4, 29.6], [21.2, 27.6], [18.2, 27.8], [16.8, 29.4]
+];
+
+/** @type {Region[]} */
+export const BERBER_TRIBE_MARKS = [
+	{ ring: MAURI, color: 'people' },
+	{ ring: NUMIDIA, color: 'people', alpha: 0.72 },
+	{ ring: GAETULI, color: 'people', alpha: 0.5 },
+	{ ring: GARAMANTES, color: 'people' },
+	{ ring: NASAMONES, color: 'people', alpha: 0.8 }
+];
+
+/**
+ * Indigenous peoples of Siberia as they stand inside Russia.
+ * Homelands, not the full extent of every seasonal range.
+ */
+const NENETS = [
+	[66.5, 69.5], [73.5, 70.2], [78.5, 68.4], [76.5, 66.2], [68.5, 66.4], [65.5, 67.6]
+];
+const KHANTY = [
+	[64.5, 64.2], [72.5, 65.0], [80.5, 63.4], [78.5, 59.2], [68.5, 59.4], [63.5, 61.6]
+];
+const SAKHA = [
+	[118.5, 64.5], [128.5, 66.2], [138.5, 64.0], [140.5, 60.2], [132.5, 58.4], [122.5, 59.2]
+];
+const EVENK = [
+	[96.5, 64.5], [112.5, 65.2], [122.5, 62.4], [116.5, 58.2], [100.5, 58.4], [94.5, 61.2]
+];
+const ALTAI = [
+	[84.2, 51.6], [88.6, 51.8], [89.4, 49.6], [86.2, 48.8], [83.4, 49.8]
+];
+const TUVAN = [
+	[89.6, 52.2], [96.8, 52.4], [98.2, 50.4], [93.4, 49.8], [89.4, 50.6]
+];
+const BURYAT = [
+	[100.4, 54.2], [108.6, 54.6], [112.4, 52.2], [108.2, 50.6], [102.2, 50.8]
+];
+const NANAI = [
+	[133.4, 50.4], [138.6, 50.8], [139.4, 48.2], [135.2, 47.6], [132.6, 48.8]
+];
+
+/** @type {Region[]} */
+export const SIBERIA_TRIBE_MARKS = [
+	{ ring: NENETS, color: 'people' },
+	{ ring: KHANTY, color: 'people', alpha: 0.75 },
+	{ ring: EVENK, color: 'people', alpha: 0.45 },
+	{ ring: SAKHA, color: 'people' },
+	{ ring: ALTAI, color: 'people' },
+	{ ring: TUVAN, color: 'people', alpha: 0.85 },
+	{ ring: BURYAT, color: 'people' },
+	{ ring: NANAI, color: 'people', alpha: 0.8 }
 ];
 
 // ---------------------------------------------------------------- the parent

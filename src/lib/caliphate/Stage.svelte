@@ -4,6 +4,7 @@
 	import { COLORS, PERIODS, antique, modern } from './sheets.js';
 	import { glide } from './window.js';
 	import Sheet from './Sheet.svelte';
+	import { mapView } from './view.svelte.js';
 
 	let index = $state(0);
 	let origin = $state(0);
@@ -77,6 +78,22 @@
 		<Sheet world={modern} when={period.when.modern} {origin} {index} {t} />
 	</div>
 
+	<label class="scrub">
+		<span>Along the story</span>
+		<input
+			type="range"
+			min="0"
+			max={PERIODS.length - 1}
+			step="1"
+			value={index}
+			aria-valuetext={period.pair}
+			oninput={(event) => {
+				stop();
+				go(Number(event.currentTarget.value));
+			}}
+		/>
+	</label>
+
 	<div class="bar">
 		<div class="periods" role="tablist" aria-label="Periods">
 			{#each PERIODS as item, i (item.id)}
@@ -89,7 +106,7 @@
 						go(i);
 					}}
 				>
-					{item.title}
+					{item.pair}
 				</button>
 			{/each}
 		</div>
@@ -100,6 +117,14 @@
 			onclick={() => (playing ? stop() : play())}
 		>
 			{playing ? 'Pause' : 'Play'}
+		</button>
+		<button
+			type="button"
+			class="play"
+			aria-pressed={mapView.relief}
+			onclick={() => (mapView.relief = !mapView.relief)}
+		>
+			{mapView.relief ? '3D' : '2D'}
 		</button>
 	</div>
 
@@ -130,6 +155,21 @@
 		gap: 0.85rem;
 	}
 
+	.scrub {
+		display: grid;
+		gap: 0.3rem;
+		margin-top: 0.85rem;
+		color: var(--ink-3, #6d6860);
+		font-size: 0.72rem;
+		letter-spacing: 0.04em;
+		text-transform: uppercase;
+	}
+
+	.scrub input {
+		width: 100%;
+		accent-color: var(--ink, #1c1b18);
+	}
+
 	.bar {
 		display: flex;
 		flex-wrap: wrap;
@@ -151,7 +191,7 @@
 		color: var(--ink-2, #3a3834);
 		cursor: pointer;
 		font: inherit;
-		font-size: 0.82rem;
+		font-size: 0.74rem;
 		padding: 0.35rem 0.75rem;
 	}
 

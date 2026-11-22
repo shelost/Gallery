@@ -1,15 +1,15 @@
 <script>
 	/** @type {{
-	 *   images: { src: string, alt: string, title?: string }[],
+	 *   images: { src: string, alt: string, title?: string, ratio?: string }[],
 	 *   ratio?: string
 	 * }} */
 	let { images, ratio = '4 / 3' } = $props();
 </script>
 
-<div class="fits" style:--ratio={ratio}>
+<div class="fits">
 	{#each images as image (image.src)}
 		<figure>
-			<div class="frame">
+			<div class="frame" style:aspect-ratio={image.ratio ?? ratio}>
 				<img src={image.src} alt={image.alt} title={image.title} />
 			</div>
 			{#if image.title}
@@ -32,7 +32,6 @@
 
 	.frame {
 		position: relative;
-		aspect-ratio: var(--ratio);
 		overflow: hidden;
 		border-radius: 10px;
 		background: color-mix(in srgb, var(--ink) 10%, var(--paper-2, var(--card)));
@@ -49,8 +48,8 @@
 		border: 0;
 		border-radius: 0;
 		box-shadow: none;
-		object-fit: contain;
-		object-position: center;
+		object-fit: cover;
+		object-position: center 28%;
 		background: transparent;
 	}
 

@@ -2,6 +2,7 @@
 	import { cubicOut } from 'svelte/easing';
 	import { prefersReducedMotion } from 'svelte/motion';
 	import { fade } from 'svelte/transition';
+	import { mapView } from './view.svelte.js';
 	import { mountWindow } from './window.js';
 
 	/**
@@ -86,9 +87,12 @@
 		tabindex="-1"
 	>
 		<div class="frame" transition:zoom>
-			<canvas
-				{@attach (node) => mountWindow(node, { ...map, seed, autoplay: !seed, controls })}
-			></canvas>
+			{#key mapView.relief}
+				<canvas
+					{@attach (node) =>
+						mountWindow(node, { ...map, seed, autoplay: !seed, flat: !mapView.relief, controls })}
+				></canvas>
+			{/key}
 		</div>
 		<div class="bar" transition:fade={{ duration: still ? 0 : 260 }}>
 			<p>{label}</p>

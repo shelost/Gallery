@@ -2,9 +2,10 @@
 	import { browser } from '$app/environment';
 	import { Canvas } from '@threlte/core';
 	import { NeutralToneMapping } from 'three';
-	import { PERIODS, captionLabels } from './sheets.js';
+	import { PERIODS, captionLabels, paint } from './sheets.js';
 	import MapModal from './MapModal.svelte';
 	import View from './View.svelte';
+	import { mapView } from './view.svelte.js';
 
 	/** @type {{ world: import('./sheets.js').World, when: string, origin: number, index: number, t: number }} */
 	let { world, when, origin, index, t } = $props();
@@ -14,6 +15,26 @@
 
 	/** @type {HTMLButtonElement | undefined} */
 	let stage = $state();
+	/** @type {HTMLCanvasElement | undefined} */
+	let flat = $state();
+
+	$effect(() => {
+		if (!browser || mapView.relief || !flat) return;
+		const canvas = flat;
+		const draw = () => {
+			const width = canvas.clientWidth || 0;
+			if (width < 8) return;
+			canvas.width = Math.round(width);
+			canvas.height = Math.round(width);
+			const ctx = canvas.getContext('2d');
+			if (!ctx) return;
+			paint(ctx, world, origin, index, t, 0.35, { scale: 0.7 });
+		};
+		draw();
+		const observer = new ResizeObserver(draw);
+		observer.observe(canvas);
+		return () => observer.disconnect();
+	});
 	/** @type {import('./window.js').MapSpec | null} */
 	let opened = $state(null);
 
@@ -41,10 +62,17 @@
 		}}
 		onclick={expand}
 	>
-		{#if browser}
+		{#if browser && mapView.relief}
 			<Canvas toneMapping={NeutralToneMapping} {dpr}>
 				<View {world} {origin} {index} {t} />
 			</Canvas>
+		{:else if browser}
+			<canvas
+				class="flat"
+				{@attach (node) => {
+					flat = node;
+				}}
+			></canvas>
 		{/if}
 	</button>
 </figure>
@@ -85,6 +113,12 @@
 		color: var(--ink-3, #6d6860);
 		font-size: 0.72rem;
 		letter-spacing: 0.03em;
+	}
+
+	.flat {
+		display: block;
+		width: 100%;
+		height: 100%;
 	}
 
 	.stage {
