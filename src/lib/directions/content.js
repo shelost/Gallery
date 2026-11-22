@@ -177,6 +177,19 @@ export const WORKS = [
 		credit: 'Cornell University.'
 	},
 	{
+		id: 'caliphate',
+		section: 'writing',
+		kind: 'Essay',
+		title: 'The Kaliphate',
+		year: '2026',
+		kicker: 'Essay',
+		blurb: 'A speculative fiction. The Roman-Persian map, drawn again, with Jerusalem standing in for Paektu. The K is the joke.',
+		href: '/caliphate',
+		media: { kind: 'image', src: '/blog/persia/muslim-conquest-of-persia.png', alt: 'Map of the Muslim conquest of Persia' },
+		medium: 'Essay.',
+		credit: 'Read in the drawer.'
+	},
+	{
 		id: 'tribalism',
 		section: 'writing',
 		kind: 'Essay',

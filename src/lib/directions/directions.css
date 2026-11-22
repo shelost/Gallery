@@ -17,6 +17,10 @@
 	--card: #ffffff;
 	--card-2: #f4f2ee;
 	--card-soft: #fbfaf7;
+	--wash-gold: #c4a060;
+	--wash-rose: #c45a72;
+	--antique: color-mix(in srgb, var(--wash-gold) 26%, var(--card));
+	--fiction: color-mix(in srgb, var(--wash-rose) 16%, var(--card));
 
 	/* One measure for every full-width band on a page. */
 	--page-max: 80rem;
@@ -77,6 +81,8 @@
 	--card: #2a2926;
 	--card-2: #22211f;
 	--card-soft: #1b1a18;
+	--antique: color-mix(in srgb, var(--wash-gold) 34%, var(--card));
+	--fiction: color-mix(in srgb, var(--wash-rose) 26%, var(--card));
 }
 
 .dir :where(h1, h2, h3, h4, h5, h6, p, span, li, label, figure, figcaption, blockquote, dl, dd, ul, ol) {

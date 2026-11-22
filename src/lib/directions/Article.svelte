@@ -269,7 +269,7 @@
 		margin: 0 1px;
 		padding: 1px 5px;
 		border-radius: 5px;
-		background: rgba(28, 27, 24, 0.06);
+		background: color-mix(in srgb, var(--ink) 8%, transparent);
 		font-family: var(--mono);
 		font-size: 13.5px;
 		font-weight: 400;

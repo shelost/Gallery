@@ -165,6 +165,8 @@ So what does this mean for the US and China?
 
 My prediction is that the US-China conflict — which will undoubtedly dominate the next few decades of world affairs — will end with both nations trading hits back and forth, ultimately exhausting each other until new powers take their place.
 
+Who those powers are is the part I left out. I drew it later, as a fiction, because I could not stand to write it as a forecast: [The Kaliphate](/caliphate).
+
 The hard truth is: they simply cannot defeat each other.
 
 But again: this is all just the rambling of a random guy on the internet. Take it with a grain of salt.

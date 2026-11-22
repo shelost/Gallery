@@ -9,6 +9,8 @@
 	let { data } = $props();
 
 	const scrollKey = $derived(`scroll-${data.slug}`);
+	/** Posts built around side-by-side figures set `wide: true` for a broader column. */
+	const wide = $derived(Boolean(data.meta?.wide));
 	const headline = $derived(
 		data.meta?.subtitle ? `${data.meta.title}: ${data.meta.subtitle}` : data.meta?.title
 	);
@@ -41,7 +43,9 @@
 	}
 
 	function collectHeadings(root: HTMLElement) {
-		const elements = [...root.querySelectorAll<HTMLElement>('h1, h2, h3, h4, h5, h6')];
+		const elements = [
+			...root.querySelectorAll<HTMLElement>('h1, h2, h3, h4, h5, h6')
+		].filter((element) => !element.closest('.notoc'));
 		for (const element of elements) element.id ||= uniqueId(element.textContent ?? '');
 		const found = elements.map((element) => ({
 			id: element.id,
@@ -121,14 +125,14 @@
 	</ul>
 {/snippet}
 
-<nav class="rail sfumato" aria-label="Contents">
+<nav class={['rail sfumato', wide && 'wide']} aria-label="Contents">
 	<button type="button" class="back" onclick={() => history.back()}>← Back</button>
 	{#if headings.length > 0}
 		{@render contents('toc')}
 	{/if}
 </nav>
 
-<article class="article">
+<article class={['article', wide && 'wide']}>
 	{#key data.slug}
 		<Article meta={data.meta} content={data.content} attach={follow} />
 	{/key}
@@ -137,7 +141,7 @@
 {#if headings.length > 0}
 	<button
 		type="button"
-		class="fab"
+		class={['fab', wide && 'wide']}
 		aria-label={tocOpen ? 'Close contents' : 'Contents'}
 		aria-expanded={tocOpen}
 		onclick={() => (tocOpen = !tocOpen)}
@@ -172,6 +176,16 @@
 		margin: 0 auto;
 		padding: clamp(5rem, 14vh, 8rem) 1.5rem 12rem;
 		box-sizing: content-box;
+	}
+
+	/* A wide post widens the column for its figures; running text keeps a reading measure. */
+	.article.wide {
+		max-width: 960px;
+	}
+
+	.article.wide :global(:is(.head, .prose > :is(p, h2, h3, ul, ol, blockquote))) {
+		max-width: 680px;
+		margin-inline: auto;
 	}
 
 
@@ -304,6 +318,29 @@
 		margin: 0 0 1rem 0.85rem;
 		color: var(--ink-3);
 		font-size: 12px;
+	}
+
+	.rail.wide {
+		left: max(1.5rem, calc(50% - 480px - 15.5rem));
+	}
+
+	@media (max-width: 1430px) {
+		.rail.wide {
+			position: static;
+			width: auto;
+			max-width: 960px;
+			margin: 2rem auto -3rem;
+			padding: 0 1.5rem;
+			box-sizing: content-box;
+		}
+
+		.rail.wide .toc {
+			display: none;
+		}
+
+		.fab.wide {
+			display: grid;
+		}
 	}
 
 	@media (max-width: 1100px) {
