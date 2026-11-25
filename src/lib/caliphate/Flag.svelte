@@ -22,8 +22,11 @@
 		umayyad: 'umayyad.png',
 		vexillum: 'vexillum.png',
 		falcon: 'falcon.png',
-		kaviani: 'falcon.png',
-		arsacid: 'falcon.png'
+		kaviani: 'kaviani.png',
+		arsacid: 'falcon.png',
+		uk: 'uk.png',
+		fr: 'fr.png',
+		ru: 'ru.png'
 	};
 
 	const file = $derived(FILES[id] ?? 'us.png');

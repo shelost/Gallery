@@ -19,6 +19,7 @@ import {
 	Vector3,
 	WebGLRenderer
 } from 'three';
+import { createMarches, paintMarches } from './marches.js';
 import { insetAspect, NUDGE, paint, placesOf, project, reliefFor, sample, screenPins, squareFrame } from './sheets.js';
 import { groundHeight, loadRelief, metresAt } from './relief.js';
 
@@ -57,7 +58,11 @@ export function glide(t) {
  *   spread?: import('./sheets.js').Spread,
  *   focus?: (string | import('./empire.js').Region)[],
  *   borders?: boolean,
- *   labels?: { lon: number, lat: number, text: string }[]
+ *   solo?: boolean,
+ *   dramatic?: boolean,
+ *   cities?: string[] | false,
+ *   labels?: { lon: number, lat: number, text: string, flag?: string }[],
+ *   marches?: import('./marches.js').March[]
  * }} MapSpec
  */
 
@@ -92,7 +97,8 @@ const squared = (opts) => ({ ...opts, frame: opts.frame ? squareFrame(opts.frame
  */
 function paintBoard(ctx, opts, frame, progress, scale) {
 	const period = opts.period ?? 0;
-	paint(ctx, opts.world, opts.from ?? period, period, glide(progress), 0.35, {
+	const head = glide(progress);
+	paint(ctx, opts.world, opts.from ?? period, period, opts.dramatic ? Math.pow(head, 0.55) : head, 0.35, {
 		frame: frame ?? undefined,
 		scale,
 		star: opts.star,
@@ -103,6 +109,8 @@ function paintBoard(ctx, opts, frame, progress, scale) {
 		spread: opts.spread,
 		focus: opts.focus,
 		borders: opts.borders,
+		solo: opts.solo,
+		cities: opts.cities,
 		labels: opts.labels
 	});
 }
@@ -165,7 +173,10 @@ function paintFlat(canvas, opts, progress) {
 	const ctx = canvas.getContext('2d');
 	if (!ctx) return;
 	paintBoard(ctx, opts, opts.frame ?? null, progress, 0.7);
-	opts.onPins?.(screenPins(opts.world, opts.frame ?? null, width, height, opts.labels ?? []));
+	if (opts.marches?.length) {
+		paintMarches(ctx, opts.world, opts.frame ?? null, width, height, opts.marches, glide(progress));
+	}
+	opts.onPins?.(screenPins(opts.world, opts.frame ?? null, width, height, opts.labels ?? [], opts.cities));
 }
 
 /**
@@ -201,7 +212,7 @@ export function mountWindow(canvas, raw) {
 		show();
 		const step = (/** @type {number} */ now) => {
 			if (!mounted) return;
-			progress = Math.min(1, Math.max(0, (now - start) / DURATION));
+			progress = Math.min(1, Math.max(0, (now - start) / (opts.dramatic ? 5200 : DURATION)));
 			show();
 			if (progress < 1) tick = requestAnimationFrame(step);
 		};
@@ -317,6 +328,8 @@ function openWindow(display, opts, start) {
 	let meshSize = { width: 2, depth: 2 };
 	/** @type {import('./sheets.js').Frame | null} */
 	let sheet = null;
+	/** @type {ReturnType<typeof createMarches> | null} */
+	let marches = null;
 	let lastPins = '';
 
 	/**
@@ -329,7 +342,7 @@ function openWindow(display, opts, start) {
 	const emitPins = (spec, cam, box, size) => {
 		if (!spec.onPins) return;
 		const pins = [];
-		for (const place of placesOf(spec.world, spec.labels ?? [])) {
+		for (const place of placesOf(spec.world, spec.labels ?? [], spec.cities)) {
 			let x;
 			let z;
 			if (box) {
@@ -354,6 +367,7 @@ function openWindow(display, opts, start) {
 				name: place.name,
 				glow: place.glow,
 				kind: place.kind,
+				flag: place.flag,
 				x: sx,
 				y: sy
 			});
@@ -468,6 +482,15 @@ function openWindow(display, opts, start) {
 				new MeshStandardMaterial({ map: texture, roughness: 0.9, metalness: 0 })
 			);
 			scene.add(mesh);
+			if (marches) {
+				scene.remove(marches.group);
+				marches.dispose();
+				marches = null;
+			}
+			if (opts.marches?.length) {
+				marches = createMarches(opts.marches, built.place, built.visible);
+				scene.add(marches.group);
+			}
 			corners = built.corners;
 			bounds = built.bounds;
 			fill = built.fill;
@@ -476,6 +499,7 @@ function openWindow(display, opts, start) {
 		}
 		if (corners.length) fit(corners, bounds, fill);
 		display.dataset.cam = `${fill} ${camera.position.x.toFixed(2)},${camera.position.y.toFixed(2)},${camera.position.z.toFixed(2)}`;
+		marches?.update(glide(progress));
 		renderer.render(scene, camera);
 		display.width = glCanvas.width;
 		display.height = glCanvas.height;
@@ -509,6 +533,10 @@ function openWindow(display, opts, start) {
 			geometry?.dispose();
 			texture?.dispose();
 			if (mesh && !Array.isArray(mesh.material)) mesh.material.dispose();
+			if (marches) {
+				scene.remove(marches.group);
+				marches.dispose();
+			}
 			renderer.dispose();
 		}
 	};
@@ -611,6 +639,45 @@ function buildSheet(opts, size, progress) {
 				new Vector3(width / 2, 0.04, -depth / 2)
 			];
 
+	const viewX = view && box ? width * ((view.lon1 - view.lon0) / (box.lon1 - box.lon0)) : width;
+	const viewZ = view && box ? depth * ((view.lat1 - view.lat0) / (box.lat1 - box.lat0)) : depth;
+	const visible = Math.max(0.4, Math.min(viewX, viewZ));
+	const lift = visible * 0.006;
+
+	/**
+	 * A point of the campaign, on this sheet. Null when it falls off the ground.
+	 * @param {number} lon
+	 * @param {number} lat
+	 */
+	const place = (lon, lat) => {
+		let u;
+		let vNorth;
+		if (box) {
+			u = (lon - box.lon0) / (box.lon1 - box.lon0);
+			vNorth = (lat - box.lat0) / (box.lat1 - box.lat0);
+		} else {
+			const pt = project(world, lon, lat, 1, 1, null);
+			if (!pt) return null;
+			u = pt[0];
+			vNorth = 1 - pt[1];
+		}
+		if (u < -0.04 || u > 1.04 || vNorth < -0.04 || vNorth > 1.04) return null;
+		u = Math.min(1, Math.max(0, u));
+		vNorth = Math.min(1, Math.max(0, vNorth));
+		const at = locate(u, vNorth);
+		let metres = 0;
+		for (const [dx, dy] of [
+			[0, 0],
+			[0.06, 0],
+			[-0.06, 0],
+			[0, 0.06],
+			[0, -0.06]
+		]) {
+			metres = Math.max(metres, metresAt(regions, lon + dx, lat + dy) ?? 0);
+		}
+		return new Vector3(at.x, groundHeight(metres, span) + lift, at.z);
+	};
+
 	return {
 		geometry,
 		texture,
@@ -620,6 +687,8 @@ function buildSheet(opts, size, progress) {
 		bounds: { minX: -width / 2, maxX: width / 2, minZ: -depth / 2, maxZ: depth / 2 },
 		width,
 		depth,
-		box
+		box,
+		place,
+		visible
 	};
 }

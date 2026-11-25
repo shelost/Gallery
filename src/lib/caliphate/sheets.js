@@ -24,7 +24,17 @@ export const COLORS = {
 	steppe: { ink: '#6e6256', name: 'The steppe', twin: 'Russia' },
 	holy: { ink: '#e6c36a', name: 'Jerusalem', twin: 'Paektu' },
 	people: { ink: '#8a5a44', name: 'The peoples there', twin: '' },
-	land: { ink: '#e2d3bc', name: 'Other land', twin: '' }
+	land: { ink: '#e2d3bc', name: 'Other land', twin: '' },
+	han: { ink: '#e23b3b', name: 'Han', twin: 'Han' },
+	manchu: { ink: '#e2b423', name: 'Manchus', twin: 'Manchus' },
+	tibetan: { ink: '#6e6e6e', name: 'Tibet', twin: 'Tibet' },
+	xinjiang: { ink: '#d5d0c6', name: 'Xinjiang', twin: 'Mesopotamia' },
+	khorasan: { ink: '#1a1714', name: 'Khorasan', twin: 'Khorasan' },
+	warlord0: { ink: '#e6b01a', name: 'China', twin: 'China' },
+	warlord1: { ink: '#c47f0a', name: 'China', twin: 'China' },
+	warlord2: { ink: '#f3d78a', name: 'China', twin: 'China' },
+	warlord3: { ink: '#a8640c', name: 'China', twin: 'China' },
+	warlord4: { ink: '#7c520c', name: 'China', twin: 'China' }
 };
 
 const SEA = '#9cb7d1';
@@ -127,6 +137,23 @@ export const atlantic = {
 		{ lon: -97, lat: 40, text: 'America' },
 		{ lon: 10, lat: 48, text: 'Europe' }
 	]
+};
+
+/**
+ * The Pacific War without squeezing the ocean. East Asia on the left, the American
+ * west coast on the right, each at its own scale. The gap is the ocean that was left out.
+ */
+export const pacificWar = {
+	id: 'pacific-war',
+	sheet: 'modern',
+	mode: 'split',
+	title: 'The Pacific War',
+	gap: 0.07,
+	left: { lon0: 118, lon1: 146, lat0: 22, lat1: 48 },
+	right: { lon0: -125.5, lon1: -116.5, lat0: 32, lat1: 49 },
+	holy: modern.holy,
+	cities: [],
+	labels: []
 };
 
 export const facing = {
@@ -609,14 +636,34 @@ const NO_RING = [];
  * @param {Frame | null} frame
  * @param {number[] | null} clip
  */
-function shapeRing(world, ring, frame, clip) {
-	const view = viewClip(world, ring, frame);
+function shapeRing(world, ring, frame, clip, viewOverride = null) {
+	const view = viewOverride ?? viewClip(world, ring, frame);
 	const box = boundsOf(ring);
 	const wraps = box[2] - box[0] > 180;
 	if (!wraps && (box[2] < view[0] || box[0] > view[2] || box[3] < view[1] || box[1] > view[3])) return NO_RING;
 	let pts = unwrap(ring, view[2] > 0);
 	if (clip) pts = clipRect(pts, clip[0], clip[1], clip[2], clip[3]);
 	return clipRect(pts, view[0], view[1], view[2], view[3]);
+}
+
+/**
+ * A split sheet is two maps. A country's outline has to be cut to each panel it touches,
+ * or a ring centered on one continent never appears on the other.
+ * @param {import('./sheets.js').Worldish} world
+ * @param {number[][]} ring
+ * @param {Frame | null} frame
+ */
+function ringPieces(world, ring, frame) {
+	if (!frame && world.mode === 'split') {
+		const out = [];
+		for (const box of [world.left, world.right]) {
+			const shaped = shapeRing(world, ring, frame, null, [box.lon0, box.lat0, box.lon1, box.lat1]);
+			if (shaped.length >= 3) out.push(shaped);
+		}
+		return out;
+	}
+	const shaped = shapeRing(world, ring, frame, null);
+	return shaped.length >= 3 ? [shaped] : [];
 }
 
 /**
@@ -743,8 +790,10 @@ function letter(ctx, x, y, text, scale) {
  * @param {number} pulse
  * @param {number} scale
  */
-function drawCities(ctx, world, frame, w, h, pulse, scale) {
+function drawCities(ctx, world, frame, w, h, pulse, scale, cities) {
+	if (cities === false) return;
 	for (const city of world.cities ?? []) {
+		if (cities && !cities.includes(city.name)) continue;
 		const pt = project(world, city.lon, city.lat, w, h, frame);
 		if (!pt || pt[0] < 0 || pt[1] < 0 || pt[0] > w || pt[1] > h) continue;
 		const [x, y] = pt;
@@ -779,21 +828,25 @@ function drawCities(ctx, world, frame, w, h, pulse, scale) {
  * @param {{ cities?: { lon: number, lat: number, name: string, glow?: boolean }[] }} world
  * @param {{ lon: number, lat: number, text: string }[]} [extra]
  */
-export function placesOf(world, extra = []) {
+export function placesOf(world, extra = [], cities) {
+	const list = cities === false ? [] : world.cities ?? [];
 	return [
-		...(world.cities ?? []).map((city) => ({
-			lon: city.lon,
-			lat: city.lat,
-			name: city.name,
-			glow: Boolean(city.glow),
-			kind: 'city'
-		})),
+		...list
+			.filter((city) => !cities || cities.includes(city.name))
+			.map((city) => ({
+				lon: city.lon,
+				lat: city.lat,
+				name: city.name,
+				glow: Boolean(city.glow),
+				kind: 'city'
+			})),
 		...extra.map((label) => ({
 			lon: label.lon,
 			lat: label.lat,
 			name: label.text,
 			glow: false,
-			kind: 'region'
+			kind: label.flag ? 'flag' : 'region',
+			flag: label.flag
 		}))
 	];
 }
@@ -813,9 +866,9 @@ export const NUDGE = {
 	'New York': { x: 4.5, y: -3 }
 };
 
-export function screenPins(world, frame, w, h, extra = []) {
+export function screenPins(world, frame, w, h, extra = [], cities) {
 	const pins = [];
-	for (const place of placesOf(world, extra)) {
+	for (const place of placesOf(world, extra, cities)) {
 		const pt = project(world, place.lon, place.lat, w, h, frame);
 		if (!pt) continue;
 		const [x, y] = pt;
@@ -826,7 +879,8 @@ export function screenPins(world, frame, w, h, extra = []) {
 			glow: place.glow,
 			kind: place.kind,
 			x: (x / w) * 100 + shift.x,
-			y: (y / h) * 100 + shift.y
+			y: (y / h) * 100 + shift.y,
+			flag: place.flag
 		});
 	}
 	return pins;
@@ -872,8 +926,7 @@ function fillEarth(ctx, world, frame, w, h, hide = new Set()) {
 	for (const poly of earth) {
 		ctx.beginPath();
 		for (const ring of poly) {
-			const shaped = shapeRing(world, ring, frame, null);
-			if (shaped.length >= 3) trace(ctx, world, shaped, w, h, frame);
+			for (const shaped of ringPieces(world, ring, frame)) trace(ctx, world, shaped, w, h, frame);
 		}
 		ctx.fill('evenodd');
 	}
@@ -881,9 +934,9 @@ function fillEarth(ctx, world, frame, w, h, hide = new Set()) {
 	for (const [iso, rings] of Object.entries(land[sheetOf(world)])) {
 		if (hide.has(iso)) continue;
 		for (const ring of rings) {
-			const shaped = shapeRing(world, ring, frame, null);
-			if (shaped.length < 3) continue;
-			if (path(ctx, world, shaped, w, h, frame)) ctx.fill();
+			for (const shaped of ringPieces(world, ring, frame)) {
+				if (path(ctx, world, shaped, w, h, frame)) ctx.fill();
+			}
 		}
 	}
 }
@@ -1062,7 +1115,7 @@ function ringsOf(world, frame, region) {
 	const source =
 		region.rings ??
 		(region.ring ? [region.ring] : (sheet[iso] ?? land.modern[iso] ?? land.antique[iso] ?? []));
-	return source.map((ring) => shapeRing(world, ring, frame, null)).filter((ring) => ring.length >= 3);
+	return source.flatMap((ring) => ringPieces(world, ring, frame));
 }
 
 /** @param {string} hex @param {number} amount toward white */
@@ -1349,7 +1402,9 @@ const smoothstep = (edge0, edge1, x) => {
  *   spread?: Spread,
  *   focus?: (string | Region)[],
  *   borders?: boolean,
- *   labels?: { lon: number, lat: number, text: string }[]
+ *   solo?: boolean,
+ *   cities?: string[] | false,
+ *   labels?: { lon: number, lat: number, text: string, flag?: string }[]
  * }} [opts] `marks` replace the period's regions; `fromMarks` are what they grow out of;
  *   `spread` is where, or which way, the change comes in; `focus` is what the map is about;
  *   `borders` strokes today's countries on the antique side.
@@ -1364,7 +1419,10 @@ export function paint(ctx, world, origin, index, t, pulse, opts = {}) {
 	const hide = new Set(opts.hide ?? []);
 	const ground = groundLayers(world, frame, w, h);
 	ctx.clearRect(0, 0, w, h);
-	if (ground) ctx.drawImage(ground.sea, 0, 0);
+	if (opts.solo) {
+		ctx.fillStyle = '#f6f4ef';
+		ctx.fillRect(0, 0, w, h);
+	} else if (ground) ctx.drawImage(ground.sea, 0, 0);
 	else {
 		ctx.fillStyle = SEA;
 		ctx.fillRect(0, 0, w, h);
@@ -1397,10 +1455,12 @@ export function paint(ctx, world, origin, index, t, pulse, opts = {}) {
 		ctx.restore();
 	};
 
-	ctx.save();
-	ctx.fillStyle = PAPER;
-	fillEarth(ctx, world, frame, w, h, hide);
-	ctx.restore();
+	if (!opts.solo) {
+		ctx.save();
+		ctx.fillStyle = PAPER;
+		fillEarth(ctx, world, frame, w, h, hide);
+		ctx.restore();
+	}
 
 	const layer = (/** @type {Region[]} */ regions) => regionLayer(world, frame, w, h, scale, hide, regions);
 	const to = marks ? (opts.underlay ? underlaid(regionsAt(world, index), marks) : marks) : regionsAt(world, index);
@@ -1413,7 +1473,7 @@ export function paint(ctx, world, origin, index, t, pulse, opts = {}) {
 		strokeFrontiers(antiqueFrontiers(phaseFor(world, index)), t);
 	}
 
-	if (ground) {
+	if (ground && !opts.solo) {
 		ctx.save();
 		ctx.globalCompositeOperation = 'soft-light';
 		ctx.drawImage(ground.relief, 0, 0);
@@ -1468,7 +1528,7 @@ export function paint(ctx, world, origin, index, t, pulse, opts = {}) {
 		ctx.restore();
 	}
 
-	drawCities(ctx, world, frame, w, h, pulse, scale);
+	drawCities(ctx, world, frame, w, h, pulse, scale, opts.cities);
 
 	if (opts.star === false) return;
 	const holy = project(world, world.holy.lon, world.holy.lat, w, h, frame);

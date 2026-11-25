@@ -4,6 +4,7 @@
 		ALEXANDER_MARKS,
 		ARAB_WORLD_MARKS,
 		ARABIA_632_MARKS,
+		ARABIA_NATION_MARKS,
 		ARABIA_ALONE_MARKS,
 		ARABIA_BEFORE_MARKS,
 		BERBER_TRIBE_MARKS,
@@ -41,20 +42,36 @@
 		PRC_MARKS,
 		ROC_MARKS,
 		QING_MARKS,
+		QING_REGIONS_MARKS,
 		PARTHIAN_MARKS,
 		PERSIA_TRIBUTE_MARKS,
 		ROMAN_SEA_MARKS,
 		TRAJAN_MARKS,
 		SASANIAN_MARKS,
 		SELEUCID_MARKS,
-		SIBERIA_TRIBE_MARKS
+		SIBERIA_TRIBE_MARKS,
+		THREE_POWERS_MODERN
 	} from './empire.js';
 	import Flag from './Flag.svelte';
 	import FinalWar from './FinalWar.svelte';
-	import { PLACES as AT, antique, atlantic, modern } from './sheets.js';
+	import {
+		MARCH_ACHAEMENID,
+		MARCH_ALEXANDER,
+		MARCH_AMERICA,
+		MARCH_GREECE,
+		MARCH_JAPAN,
+		MARCH_PACIFIC,
+		MARCH_PARTHIAN,
+		MARCH_PRC,
+		MARCH_QING,
+		MARCH_ROME,
+		MARCH_SASANIAN
+	} from './marches.js';
+	import { PLACES as AT, antique, atlantic, modern, pacificWar } from './sheets.js';
 	import { lower48 } from './coasts.js';
 	import FitImages from './FitImages.svelte';
 	import Inset from './Inset.svelte';
+	import LeaningMaps from './LeaningMaps.svelte';
 
 	const lower48Marks = [{ rings: lower48, color: 'romeEast', outline: true }];
 
@@ -97,7 +114,7 @@
 		},
 		{
 			id: 'seed',
-			kicker: 'Seven hills',
+			kicker: 'Founding',
 			line: 'Both started small: a town on the Tiber, and a handful of colonies on the Atlantic coast.',
 			pairs: [
 				{
@@ -140,7 +157,7 @@
 		},
 		{
 			id: 'reach',
-			kicker: 'The republic',
+			kicker: 'Expansion',
 			line: 'Then both republics grew, Rome mostly by sea and America mostly by land.',
 			pairs: [
 				{
@@ -157,6 +174,7 @@
 							marks: ROMAN_SEA_MARKS,
 							fromMarks: LATIUM_MARKS,
 							spread: AT.rome,
+							marches: MARCH_ROME,
 							focus: ['romeEast'],
 							frame: MED
 						}
@@ -168,6 +186,13 @@
 						quote: 'Our manifest destiny to overspread the continent allotted by Providence.',
 						by: 'John L. O’Sullivan, 1845',
 						body: 'America expanded west across the continent until it reached the Pacific, and only after that started looking overseas.',
+						images: [
+							{
+								src: '/blog/caliphate/american-progress.jpg',
+								alt: 'John Gast, American Progress, 1872, a figure leading settlers west across the continent',
+								title: 'John Gast, American Progress, 1872.'
+							}
+						],
 						map: {
 							world: modern,
 							star: false,
@@ -175,6 +200,7 @@
 							marks: lower48Marks,
 							fromMarks: COLONIES_MARKS,
 							spread: 'west',
+							marches: MARCH_AMERICA,
 							focus: ['romeEast'],
 							frame: { lon0: -126, lon1: -66, lat0: 24, lat1: 50 }
 						}
@@ -243,8 +269,8 @@
 		},
 		{
 			id: 'house',
-			kicker: 'The house',
-			line: 'Both built their government buildings to look like temples.',
+			kicker: 'Liberty',
+			line: 'The buildings, the republic, and the colors people organize around.',
 			pairs: [
 				{
 					left: {
@@ -278,12 +304,76 @@
 							}
 						]
 					}
+				},
+				{
+					sub: 'The republic',
+					line: 'The religion changed. The claim to be a republic did not.',
+					left: {
+						title: 'From the Pantheon',
+						when: 'Rome',
+						flag: 'vexillum',
+						quote: 'In this sign, conquer.',
+						by: 'Eusebius, Life of Constantine 1.28',
+						more: [
+							{
+								quote: 'I transferred the republic from my power to the dominion of the senate and people of Rome.',
+								by: 'Augustus, Res Gestae 34'
+							}
+						],
+						body: 'Rome went from many gods to Christianity. Emperors kept saying they ruled a republic long after the assemblies had stopped mattering.'
+					},
+					right: {
+						title: 'Capital and the Constitution',
+						when: 'America',
+						flag: 'us',
+						quote: 'We hold these truths to be self-evident, that all men are created equal, that they are endowed by their Creator with certain unalienable Rights, that among these are Life, Liberty and the pursuit of Happiness.',
+						by: 'The Declaration of Independence, 1776',
+						more: [
+							{
+								quote: 'A republic, if you can keep it.',
+								by: 'Benjamin Franklin, 1787, as recorded by James McHenry'
+							}
+						],
+						body: 'What Americans are expected to share is the Constitution and the free market. Religion is a personal choice, but everyone who takes office swears an oath to the Constitution.'
+					}
+				},
+				{
+					sub: 'The colors',
+					line: 'Both had two team colors that people were willing to fight over.',
+					left: {
+						title: 'Blues and Greens',
+						when: 'Constantinople',
+						flag: 'vexillum',
+						quote: 'In every city the population has been divided for a long time past into two groups, the Blues and the Greens.',
+						by: 'Procopius, Wars 1.24',
+						more: [
+							{
+								quote: 'They care for nothing except the name of their colour, and for it they are ready to die.',
+								by: 'Procopius, Wars 1.24, on the circus factions'
+							}
+						],
+						body: 'The Blues and Greens started as chariot-racing fan clubs and turned into political gangs. In 532 they rioted and burned much of Constantinople. Justinian survived it, and so did the factions.'
+					},
+					right: {
+						title: 'Red and Blue',
+						when: 'America',
+						flag: 'us',
+						quote: 'Winning isn’t everything, it’s the only thing.',
+						by: 'Henry Russell Sanders, 1950; later Vince Lombardi’s line',
+						more: [
+							{
+								quote: 'There’s not a liberal America and a conservative America — there is the United States of America.',
+								by: 'Barack Obama, Democratic National Convention, 2004'
+							}
+						],
+						body: 'America has red and blue parties, plus huge sporting events like the Super Bowl. People identify with their side much the way Byzantines identified with their color.'
+					}
 				}
 			]
 		},
 		{
 			id: 'two-romes',
-			kicker: 'The two Romes',
+			kicker: 'The Split',
 			line: 'The empire split in two. Dark red is the eastern half and light red is the western half.',
 			pairs: [
 				{
@@ -325,8 +415,8 @@
 		},
 		{
 			id: 'west-falls',
-			kicker: 'Fall of Western Rome',
-			line: 'The western half fades while the eastern half carries on.',
+			kicker: 'Relocation',
+			line: 'The weight of the empire moves east, and the western half fades.',
 			pairs: [
 				{
 					left: {
@@ -367,7 +457,7 @@
 		},
 		{
 			id: 'width',
-			kicker: 'The widest empire',
+			kicker: 'The Peak Empire',
 			line: 'Each started out as one huge empire that eventually broke apart.',
 			pairs: [
 				{
@@ -384,7 +474,9 @@
 							marks: ACHAEMENID_MARKS,
 							fromMarks: PERSIA_PARTS_MARKS,
 							spread: 'west',
+							marches: MARCH_ACHAEMENID,
 							focus: ['persia'],
+							labels: [{ lon: 52.9, lat: 30.2, text: 'Persepolis' }],
 							frame: IRAN
 						},
 						images: [
@@ -408,7 +500,9 @@
 							marks: QING_MARKS,
 							fromMarks: CHINA_PARTS_MARKS,
 							spread: AT.mukden,
+							marches: MARCH_QING,
 							focus: ['persia'],
+							cities: ['Beijing'],
 							frame: CHINA
 						}
 					}
@@ -440,7 +534,9 @@
 							marks: SASANIAN_MARKS,
 							fromMarks: PARTHIAN_MARKS,
 							spread: AT.istakhr,
+							marches: MARCH_SASANIAN,
 							focus: ['persia'],
+							mood: 'triumph',
 							frame: { lon0: 28, lon1: 68, lat0: 14, lat1: 44 }
 						},
 						images: [
@@ -474,6 +570,7 @@
 							marks: PRC_MARKS,
 							fromMarks: ROC_MARKS,
 							spread: 'southwest',
+							marches: MARCH_PRC,
 							focus: ['persia'],
 							frame: { lon0: 73, lon1: 135, lat0: 18, lat1: 50 }
 						},
@@ -490,8 +587,8 @@
 		},
 		{
 			id: 'absorb',
-			kicker: 'Who rules',
-			line: 'Persia and China tend to absorb whoever conquers them. Rome and America are sea powers that let people from all over rise to the top.',
+			kicker: 'Bureaucracy',
+			line: 'The conquerors end up running the bureaucracy of the country they took.',
 			pairs: [
 				{
 					left: {
@@ -549,13 +646,7 @@
 							spread: AT.beijing,
 							focus: ['persia'],
 							borders: true,
-							labels: [
-								{ lon: 112, lat: 32, text: 'Yuan' },
-								{ lon: 126, lat: 46, text: 'Manchuria' },
-								{ lon: 104, lat: 46, text: 'Mongolia' },
-								{ lon: 86, lat: 41, text: 'Xinjiang' },
-								{ lon: 88, lat: 32, text: 'Tibet' }
-							],
+							labels: [{ lon: 112, lat: 32, text: 'Yuan' }],
 							frame: CHINA
 						},
 						ratio: '4 / 3',
@@ -567,7 +658,14 @@
 							}
 						]
 					}
-				},
+				}
+			]
+		},
+		{
+			id: 'peoples',
+			kicker: 'Peoples',
+			line: 'A sea power lets people from all over rise to the top.',
+			pairs: [
 				{
 					left: {
 						title: 'Rome’s many peoples',
@@ -620,7 +718,7 @@
 		},
 		{
 			id: 'tributary',
-			kicker: 'The tributary world',
+			kicker: 'Tributaries',
 			line: 'Some neighbors sent tribute without being ruled directly.',
 			pairs: [
 				{
@@ -638,7 +736,12 @@
 							fromMarks: ACHAEMENID_MARKS,
 							spread: AT.pasargadae,
 							focus: ['persia'],
-							frame: IRAN
+							labels: [
+								{ lon: 38, lat: 26, text: 'Arabs' },
+								{ lon: 33, lat: 18, text: 'Ethiopians' },
+								{ lon: 42.2, lat: 42.4, text: 'Colchians' }
+							],
+							frame: { lon0: 24, lon1: 66, lat0: 12, lat1: 46 }
 						}
 					},
 					right: {
@@ -655,7 +758,14 @@
 							fromMarks: QING_MARKS,
 							spread: AT.beijing,
 							focus: ['persia'],
-							frame: CHINA
+							labels: [
+								{ lon: 127.2, lat: 36.8, text: 'Korea' },
+								{ lon: 106, lat: 16, text: 'Vietnam' },
+								{ lon: 101, lat: 15, text: 'Siam' },
+								{ lon: 96, lat: 20, text: 'Burma' },
+								{ lon: 84, lat: 28, text: 'Nepal' }
+							],
+							frame: { lon0: 73, lon1: 145, lat0: 8, lat1: 54 }
 						}
 					}
 				}
@@ -663,7 +773,7 @@
 		},
 		{
 			id: 'macedon',
-			kicker: 'The conqueror next door',
+			kicker: 'Expansion',
 			line: 'A small military state on the edge beats the big empire, but can’t hold on to what it takes.',
 			pairs: [
 				{
@@ -680,6 +790,7 @@
 							marks: ALEXANDER_MARKS,
 							fromMarks: MACEDON_MARKS,
 							spread: 'east',
+							marches: MARCH_ALEXANDER,
 							focus: ['greece'],
 							frame: { lon0: 12, lon1: 66, lat0: 14, lat1: 46 }
 						},
@@ -705,6 +816,7 @@
 							marks: JAPAN_EMPIRE_MARKS,
 							fromMarks: JAPAN_HOME_MARKS,
 							spread: AT.tokyo,
+							marches: MARCH_JAPAN,
 							focus: ['greece'],
 							frame: EAST_ASIA
 						},
@@ -722,8 +834,8 @@
 		},
 		{
 			id: 'captive-culture',
-			kicker: 'The captive culture',
-			line: 'The side that lost the war ended up shaping the winner’s taste.',
+			kicker: 'Domains',
+			line: 'Greek poleis and Japanese domains: many small states, one culture.',
 			pairs: [
 				{
 					sub: 'The original',
@@ -763,14 +875,14 @@
 				},
 				{
 					sub: 'The early form',
-					line: 'What came before each style settled into its classic form.',
+					line: 'The poleis and the han were many small states inside one culture.',
 					left: {
-						title: 'Greece',
+						title: 'The poleis',
 						when: 'c. 1550 BC',
 						flag: 'gr',
 						quote: 'I have found the tombs which the tradition of the whole civilized world has attributed to Agamemnon, Cassandra, and their companions.',
 						by: 'Heinrich Schliemann, 1876',
-						body: 'Long before classical sculpture, Mycenaean Greece made gold funeral masks like this one.',
+						body: 'A polis was a city and its countryside, and classical Greece was a crowd of them. Long before that, Mycenaean Greece made gold funeral masks like this one.',
 						map: {
 							world: antique,
 							star: false,
@@ -788,12 +900,12 @@
 						]
 					},
 					right: {
-						title: 'Japan',
+						title: 'The domains',
 						when: '1868–1912',
 						flag: 'jp',
 						quote: 'We should leave the ranks of Asian nations and cast our lot with the civilized nations of the West.',
 						by: 'Fukuzawa Yukichi, 1885',
-						body: 'In the Meiji era, Japanese painters learned Western oil painting and adapted it to Japanese subjects. Anime later did the same thing with Western animation.',
+						body: 'A han was a domain under its own lord, and Japan was a crowd of them until the Meiji state swept them up. In that same era, Japanese painters learned Western oil painting and adapted it to Japanese subjects.',
 						map: {
 							world: modern,
 							star: false,
@@ -816,7 +928,7 @@
 		{
 			id: 'faith',
 			kicker: 'The faith',
-			line: 'Persia and China pair one ruler with an official belief system. Rome and America pair a republic with a civic religion.',
+			line: 'Persia and China pair one ruler with an official belief system.',
 			pairs: [
 				{
 					sub: 'The throne',
@@ -848,75 +960,6 @@
 							}
 						],
 						body: 'The Party has an official ideology and a monopoly on power. Its officials fill roughly the role the priests did in Persia, and the general secretary sits about where the king did.',
-					}
-				},
-				{
-					sub: 'The republic',
-					line: 'The religion changed over time, but the idea of the republic stuck around.',
-					left: {
-						title: 'From the Pantheon',
-						when: 'Rome',
-						flag: 'vexillum',
-						quote: 'In this sign, conquer.',
-						by: 'Eusebius, Life of Constantine 1.28',
-						more: [
-							{
-								quote: 'I transferred the republic from my power to the dominion of the senate and people of Rome.',
-								by: 'Augustus, Res Gestae 34'
-							}
-						],
-						body: 'Rome went from many gods to Christianity. Emperors kept saying they ruled a republic long after the assemblies had stopped mattering.',
-					},
-					right: {
-						title: 'Capital and the Constitution',
-						when: 'America',
-						flag: 'us',
-						quote: 'We hold these truths to be self-evident, that all men are created equal, that they are endowed by their Creator with certain unalienable Rights, that among these are Life, Liberty and the pursuit of Happiness.',
-						by: 'The Declaration of Independence, 1776',
-						more: [
-							{
-								quote: 'A republic, if you can keep it.',
-								by: 'Benjamin Franklin, 1787, as recorded by James McHenry'
-							}
-						],
-						body: 'What Americans are expected to share is the Constitution and the free market. Religion is a personal choice, but everyone who takes office swears an oath to the Constitution.',
-					}
-				}
-			]
-		},
-		{
-			id: 'factions',
-			kicker: 'The factions',
-			line: 'Both had two team colors that people were willing to fight over.',
-			pairs: [
-				{
-					left: {
-						title: 'Blues and Greens',
-						when: 'Constantinople',
-						flag: 'vexillum',
-						quote: 'In every city the population has been divided for a long time past into two groups, the Blues and the Greens.',
-						by: 'Procopius, Wars 1.24',
-						more: [
-							{
-								quote: 'They care for nothing except the name of their colour, and for it they are ready to die.',
-								by: 'Procopius, Wars 1.24, on the circus factions'
-							}
-						],
-						body: 'The Blues and Greens started as chariot-racing fan clubs and turned into political gangs. In 532 they rioted and burned much of Constantinople. Justinian survived it, and so did the factions.',
-					},
-					right: {
-						title: 'Red and Blue',
-						when: 'America',
-						flag: 'us',
-						quote: 'Winning isn’t everything, it’s the only thing.',
-						by: 'Henry Russell Sanders, 1950; later Vince Lombardi’s line',
-						more: [
-							{
-								quote: 'There’s not a liberal America and a conservative America — there is the United States of America.',
-								by: 'Barack Obama, Democratic National Convention, 2004'
-							}
-						],
-						body: 'America has red and blue parties, plus huge sporting events like the Super Bowl. People identify with their side much the way Byzantines identified with their color.'
 					}
 				}
 			]
@@ -1080,7 +1123,7 @@
 		{
 			id: 'third-power',
 			kicker: 'The third power',
-			line: 'A newcomer takes the land the two superpowers had worn themselves out over.',
+			line: 'The three powers as they stood, before the newcomer took anything.',
 			pairs: [
 				{
 					left: {
@@ -1089,8 +1132,14 @@
 						when: '632–750',
 						quote: 'Peace be upon you, O Syria, a farewell that will know no return.',
 						by: 'Heraclius, as reported by al-Tabari',
-						body: 'Within a century, Arab armies hold Syria, Egypt, North Africa, Spain, and nearly all of Persia.',
-						map: { world: antique, period: 7, from: 4, spread: AT.medina, focus: ['caliphate'] }
+						body: 'This is the map before that century. Rome and Persia are still the two powers, and Arabia is only the peninsula.',
+						map: {
+							world: antique,
+							star: false,
+							marks: ARABIA_632_MARKS,
+							focus: ['romeEast', 'persia', 'caliphate'],
+							frame: { lon0: -8, lon1: 68, lat0: 12, lat1: 48 }
+						}
 					},
 					right: {
 						title: 'The Kaliphate',
@@ -1098,8 +1147,13 @@
 						when: 'the fiction',
 						quote: 'We herewith proclaim the independence of Korea and the liberty of the Korean people.',
 						by: 'Korean Declaration of Independence, 1919',
-						body: 'In the story, a united Korea takes all of Manchuria, north China, and Siberia. Southern China stays Chinese.',
-						map: { world: modern, period: 7, from: 4, spread: AT.paektu, focus: ['caliphate'] }
+						body: 'In the story this is the same moment: America and China are the two powers, and Korea is only the peninsula. Nothing has been taken yet.',
+						map: {
+							world: modern,
+							star: false,
+							marks: THREE_POWERS_MODERN,
+							focus: ['romeEast', 'persia', 'caliphate']
+						}
 					}
 				}
 			]
@@ -1133,7 +1187,7 @@
 						when: 'the fiction',
 						quote: 'The speech of this country is different from that of China.',
 						by: 'King Sejong, 1446',
-						body: 'Siberia is thinly populated, like the Maghreb was, so it switches to Korean, and so do Manchuria and Mongolia. China keeps Chinese, the way Iran kept Persian, but writes it in Hangul.',
+						body: 'The new language stays on the Pacific coast, the thinly settled shore, the way Arabic took the Maghreb and not the Iranian plateau. China keeps Chinese, the way Iran kept Persian, but writes it in Hangul.',
 						map: {
 							world: modern,
 							star: false,
@@ -1141,7 +1195,7 @@
 							fromMarks: KOREA_ALONE_MARKS,
 							spread: AT.paektu,
 							focus: ['caliphate', 'persia'],
-							frame: { lon0: 92, lon1: 176, lat0: 30, lat1: 74 }
+							frame: { lon0: 118, lon1: 152, lat0: 30, lat1: 58 }
 						}
 					}
 				},
@@ -1210,7 +1264,7 @@
 		},
 		{
 			id: 'core',
-			kicker: 'The country',
+			kicker: 'Core',
 			line: 'Under each empire is a core country that survives when the empire doesn’t.',
 			pairs: [
 				{
@@ -1258,44 +1312,31 @@
 		},
 		{
 			id: 'parts',
-			kicker: 'The provinces',
-			line: 'The regions each empire usually held, and the ones it fought over.',
+			kicker: 'The regions',
+			line: 'Five regions on the Qing map, and the lands Persian empires kept coming back to.',
 			pairs: [
 				{
 					left: {
-						title: 'Persia’s limbs',
+						title: 'Persia’s regions',
 						when: 'the usual map',
 						flag: 'ir',
 						quote: 'I am Darius, the great king, king of kings… king of the countries containing all kinds of men.',
 						by: 'Darius I, Behistun',
-						body: 'Around the plateau are the regions that Persian empires kept gaining and losing.',
-						points: [
-							'Persia proper — the plateau',
-							'Mesopotamia',
-							'Eastern Arabia',
-							'The Caucasus',
-							'Khorasan',
-							'In contention with Rome: Levant, Egypt, Anatolia, Armenia'
-						],
+						body: 'Persia is about the modern border of Iran. Mesopotamia is the river plain, the Levant and the Caucasus are the west and the north, and Khorasan is the whole east, Afghanistan included.',
+						points: ['Persia', 'Mesopotamia', 'Khorasan', 'Levant', 'Caucasus'],
 						map: {
 							world: antique,
 							star: false,
 							marks: PERSIA_PARTS_MARKS,
-							fromMarks: PLATEAU_MARKS,
-							spread: AT.istakhr,
-							focus: ['persia'],
 							borders: true,
 							labels: [
 								{ lon: 54, lat: 32, text: 'Persia' },
-								{ lon: 44, lat: 33, text: 'Mesopotamia' },
-								{ lon: 55, lat: 23, text: 'E. Arabia' },
-								{ lon: 44, lat: 41, text: 'Caucasus' },
-								{ lon: 61, lat: 35.5, text: 'Khorasan' },
-								{ lon: 35.5, lat: 33.5, text: 'Levant' },
-								{ lon: 30, lat: 27, text: 'Egypt' },
-								{ lon: 32, lat: 39, text: 'Anatolia' }
+								{ lon: 43.5, lat: 33, text: 'Mesopotamia' },
+								{ lon: 36.6, lat: 33.6, text: 'Levant' },
+								{ lon: 45, lat: 41.3, text: 'Caucasus' },
+								{ lon: 66, lat: 33.5, text: 'Khorasan' }
 							],
-							frame: { lon0: 20, lon1: 72, lat0: 12, lat1: 46 }
+							frame: { lon0: 30, lon1: 78, lat0: 23, lat1: 44 }
 						},
 						ratio: '4 / 3',
 						images: [
@@ -1307,40 +1348,26 @@
 						]
 					},
 					right: {
-						title: 'China’s limbs',
-						when: 'the usual map',
+						title: 'China’s regions',
+						when: 'the Qing',
 						flag: 'cn',
 						quote: 'All under Heaven is the king’s land; the people on the shores are the king’s subjects.',
 						by: 'Classic of Poetry, Xiaoya',
-						body: 'Around China proper are the outer regions China governs today. The island chain offshore is about influence, not territory.',
-						points: [
-							'China proper',
-							'Manchuria',
-							'Inner Mongolia',
-							'Xinjiang',
-							'Tibet',
-							'In contention with America (influence): Taiwan, Korea, Japan, Philippines'
-						],
+						body: 'The Qing realm in five regions. China proper in red, Manchuria in yellow, Mongolia in blue, Tibet in gray, Xinjiang in light gray.',
+						points: ['China proper', 'Manchuria', 'Mongolia', 'Tibet', 'Xinjiang'],
 						map: {
 							world: modern,
 							star: false,
-							marks: CHINA_PARTS_MARKS,
-							fromMarks: CHINA_PROPER_MARKS,
-							spread: AT.beijing,
-							focus: ['persia'],
+							marks: QING_REGIONS_MARKS,
 							borders: true,
 							labels: [
-								{ lon: 112, lat: 31, text: 'China' },
+								{ lon: 112, lat: 31, text: 'China proper' },
 								{ lon: 126, lat: 46, text: 'Manchuria' },
-								{ lon: 112, lat: 43, text: 'Inner Mongolia' },
-								{ lon: 85, lat: 41, text: 'Xinjiang' },
+								{ lon: 102, lat: 46, text: 'Mongolia' },
 								{ lon: 88, lat: 32, text: 'Tibet' },
-								{ lon: 121, lat: 23.5, text: 'Taiwan' },
-								{ lon: 127.5, lat: 36.5, text: 'Korea' },
-								{ lon: 138, lat: 36, text: 'Japan' },
-								{ lon: 122, lat: 12, text: 'Philippines' }
+								{ lon: 85, lat: 41, text: 'Xinjiang' }
 							],
-							frame: EAST_ASIA
+							frame: CHINA
 						},
 						ratio: '4 / 3',
 						images: [
@@ -1373,7 +1400,10 @@
 							marks: ALEXANDER_MARKS,
 							fromMarks: ACHAEMENID_MARKS,
 							spread: 'east',
+							marches: MARCH_ALEXANDER,
 							focus: ['greece'],
+							dramatic: true,
+							mood: 'fire',
 							frame: { lon0: 12, lon1: 66, lat0: 14, lat1: 46 }
 						},
 						ratio: '3 / 4',
@@ -1398,7 +1428,10 @@
 							marks: JAPAN_1942_ALONE_MARKS,
 							fromMarks: QING_MARKS,
 							spread: AT.tokyo,
+							marches: MARCH_JAPAN,
 							focus: ['greece'],
+							dramatic: true,
+							mood: 'fire',
 							frame: EAST_ASIA
 						},
 						ratio: '3 / 4',
@@ -1420,25 +1453,27 @@
 			pairs: [
 				{
 					left: {
-						title: 'The Seleucids',
-						when: '312–141 BC',
+						title: 'The Hellenistic period',
+						when: '323–141 BC',
 						flag: 'sun',
 						quote: 'Antiochus, the great king, the legitimate king, king of the world, king of Babylon, king of the lands.',
 						by: 'Antiochus I, the Antiochus Cylinder, 268 BC',
-						body: 'After Alexander died, one of his generals kept Persia. For about 170 years, Greek kings ruled it from Syria and Babylon. The other Greek kingdoms are pale blue.',
+						body: 'After Alexander died, his generals split the empire and Greek kings ruled the old Persian lands for more than a century. The Seleucids held Iran, Mesopotamia, and Syria. The Ptolemies held Egypt. Macedon held Greece. The east was lost to the Mauryas. Persia did not forget it.',
 						map: {
 							world: antique,
 							star: false,
 							marks: SELEUCID_MARKS,
 							fromMarks: ALEXANDER_MARKS,
 							focus: ['greece'],
+							dramatic: true,
+							mood: 'rain',
 							labels: [
-								{ lon: 51, lat: 33, text: 'Seleucids' },
-								{ lon: 30.5, lat: 27, text: 'Ptolemies' },
-								{ lon: 22.5, lat: 38.8, text: 'Macedon' },
-								{ lon: 66, lat: 29, text: 'Mauryas' }
+								{ lon: 48, lat: 34, text: 'Seleucids', flag: 'sun' },
+								{ lon: 31, lat: 28, text: 'P' },
+								{ lon: 22.5, lat: 40, text: 'Macedon', flag: 'sun' },
+								{ lon: 66, lat: 29, text: 'M' }
 							],
-							frame: { lon0: 18, lon1: 70, lat0: 20, lat1: 46 }
+							frame: { lon0: 18, lon1: 72, lat0: 18, lat1: 46 }
 						}
 					},
 					right: {
@@ -1447,21 +1482,22 @@
 						flag: 'qing',
 						quote: 'The Island of Hongkong, to be possessed in perpetuity by Her Britannic Majesty, Her Heirs and Successors.',
 						by: 'Treaty of Nanking, Article III, 1842',
-						body: 'After the Opium Wars and the unequal treaties, Britain, France, Russia, and Japan carved off China’s edges. China proper survived, and China still remembers.',
+						body: 'After the Opium Wars and the unequal treaties, Britain, France, Russia, and Japan carved off the edges. Inside what was left, warlords held their own shades of the country. China was not one state, and it did not forget.',
 						map: {
 							world: modern,
 							star: false,
 							marks: HUMILIATION_MARKS,
 							fromMarks: QING_TRIBUTARY_MARKS,
 							focus: ['greece', 'romeWest', 'steppe'],
+							dramatic: true,
+							mood: 'rain',
 							labels: [
-								{ lon: 136, lat: 52, text: 'Russia, 1860' },
-								{ lon: 127, lat: 47.5, text: 'Manchukuo, 1932' },
-								{ lon: 121.5, lat: 23.6, text: 'Japan, 1895' },
-								{ lon: 96, lat: 23.5, text: 'Britain, 1886' },
-								{ lon: 106, lat: 15.5, text: 'France, 1885' }
+								{ lon: 132, lat: 50, text: 'Russia', flag: 'ru' },
+								{ lon: 126, lat: 44, text: 'Japan', flag: 'jp' },
+								{ lon: 96, lat: 22, text: 'Britain', flag: 'uk' },
+								{ lon: 106, lat: 14, text: 'France', flag: 'fr' }
 							],
-							frame: CHINA
+							frame: { lon0: 73, lon1: 145, lat0: 8, lat1: 54 }
 						}
 					}
 				}
@@ -1469,8 +1505,8 @@
 		},
 		{
 			id: 'parthian',
-			kicker: 'The successor',
-			line: 'After the big empire falls, a smaller state holds the core together.',
+			kicker: 'The Restoration',
+			line: 'After the humiliation, a successor puts the old country back together.',
 			pairs: [
 				{
 					left: {
@@ -1486,6 +1522,7 @@
 							marks: PARTHIAN_MARKS,
 							fromMarks: SELEUCID_MARKS,
 							spread: AT.nisa,
+							marches: MARCH_PARTHIAN,
 							focus: ['persia'],
 							frame: { lon0: 32, lon1: 68, lat0: 24, lat1: 42 }
 						},
@@ -1528,8 +1565,8 @@
 		},
 		{
 			id: 'conquest',
-			kicker: 'The Greco-Roman wars',
-			line: 'Rome fought the Greek states on and off for about a century and ended up conquering all of Greece.',
+			kicker: 'Conquest → Ally',
+			line: 'The war ends with the loser inside the winner’s order.',
 			pairs: [
 				{
 					left: {
@@ -1545,6 +1582,7 @@
 							marks: GRECO_ROMAN_WAR_MARKS,
 							fromMarks: ROME_BEFORE_GREECE_MARKS,
 							spread: [15.5, 41.5],
+							marches: MARCH_GREECE,
 							focus: ['romeEast'],
 							frame: { lon0: -8, lon1: 30, lat0: 32, lat1: 46 }
 						},
@@ -1571,13 +1609,15 @@
 						],
 						body: 'Japan struck first and won the early battles, but couldn’t replace the ships and planes it lost. It surrendered in 1945, was occupied, and has stayed under American military protection ever since, much as Greece stayed under Rome.',
 						map: {
-							world: modern,
+							world: pacificWar,
 							star: false,
 							marks: PACIFIC_WAR_MARKS,
 							fromMarks: JAPAN_EMPIRE_MARKS,
-							spread: [147.5, 34.5],
+							spread: [139.7, 35.7],
+							marches: MARCH_PACIFIC,
 							focus: ['romeEast'],
-							frame: { lon0: 124, lon1: 152, lat0: 24, lat1: 46 }
+							dramatic: true,
+							mood: 'fire'
 						},
 						ratio: '4 / 3',
 						images: [
@@ -1593,7 +1633,7 @@
 		},
 		{
 			id: 'philhellene',
-			kicker: 'The admirers',
+			kicker: 'Soft Power',
 			line: 'The winners became fans of the culture they had beaten.',
 			pairs: [
 				{
@@ -1627,6 +1667,85 @@
 								alt: 'A lineup of famous anime heroes standing together',
 								title: 'Anime characters that became popular worldwide after the war.'
 							}
+						]
+					}
+				}
+			]
+		},
+		{
+			id: 'cults',
+			kicker: 'The gods',
+			line: 'Both peninsulas were crowded with cults before a later faith tried to tidy them up.',
+			pairs: [
+				{
+					left: {
+						title: 'Arab polytheism',
+						when: 'before Islam',
+						flag: 'sa',
+						quote: 'Have you considered al-Lat and al-Uzza, and Manat, the third, the other?',
+						by: 'Quran 53:19–20, naming the three goddesses of the old pilgrimage',
+						body: 'Arabia was not an empty desert waiting for a religion. Hubal stood in the Kaaba, the three goddesses had shrines along the pilgrimage roads, and tribes kept sacred stones. Soothsayers and seasonal fairs held the peninsula together before any empire did.',
+						images: [
+							{
+								src: '/blog/caliphate/betyl.jpg',
+								alt: 'A Nabataean betyl, a standing sacred stone',
+								title: 'A Nabataean betyl. The old Arabian cults worshipped the stone itself.'
+							},
+							{
+								src: '/blog/caliphate/allat.jpg',
+								alt: 'The lion of al-Lat, from the temple of the goddess at Palmyra',
+								title: 'The lion of al-Lat, guardian of her temple at Palmyra.'
+							}
+						]
+					},
+					right: {
+						title: 'The popular cults',
+						when: 'Korea',
+						flags: ['kr', 'kp'],
+						quote: 'The spirits of the mountains and rivers are not to be neglected.',
+						by: 'a standing line of Korean state ritual, from the Chinese-style sacrifice to the landscape',
+						body: 'Korea kept a dense popular religion beside whatever the court adopted. Mountain gods, village guardians, and mudang rites sat under Buddhism and Confucianism. The later teachings never cleared them out.',
+						images: [
+							{
+								src: '/blog/caliphate/mudang.jpg',
+								alt: 'A Korean mudang performing a gut',
+								title: 'A mudang performing a gut, the shaman rite that never left the villages.'
+							}
+						]
+					}
+				}
+			]
+		},
+		{
+			id: 'between',
+			kicker: 'Between the empires',
+			line: 'Each peninsula took its manners from the two powers on either side, and kept its own language.',
+			pairs: [
+				{
+					left: {
+						title: 'Rome on one side, Persia on the other',
+						when: 'the client kings',
+						flag: 'sa',
+						quote: '…and bestowed upon him the dignity of king, a thing which among the Romans had never before been done.',
+						by: 'Procopius 1.17, on the Ghassanid phylarch',
+						body: 'Arabic sat between two imperial cultures. The Ghassanids took ranks, churches, and Aramaic from Rome. The Lakhmids sat at the Persian court, and the poets of al-Hira knew both. The script, the cavalry, and a great deal of the vocabulary came from the empires. The language stayed Arabic.',
+						points: [
+							'Ghassanids — Roman pay, Roman rank, Arab kings',
+							'Lakhmids — a Persian client court at al-Hira',
+							'Loanwords and the script from both sides'
+						]
+					},
+					right: {
+						title: 'China on one side, America on the other',
+						when: 'Korea',
+						flags: ['kr', 'kp'],
+						quote: 'The speech of this country is different from that of China.',
+						by: 'King Sejong, 1446',
+						body: 'Korea took its writing, its law, its Buddhism, and the shape of its court from China, and later its republic, its army, and a great deal of its public life from America. Hangul is the refusal in the middle: the language stayed Korean under both.',
+						points: [
+							'From China — characters, law, Buddhism, the civil service',
+							'From America — the republic, the armed forces, the postwar public culture',
+							'Hangul, so the language did not become either empire’s'
 						]
 					}
 				}
@@ -1783,7 +1902,7 @@
 		{
 			id: 'final-war',
 			kicker: 'The final war',
-			line: 'In the story, China moves first, America pushes back, and the border ends up about where it started. Use the slider to step through the years.',
+			line: 'In the story, China moves first, America pushes back, and the border ends up about where it started. Pick a year.',
 			pairs: []
 		},
 		{
@@ -1925,39 +2044,112 @@
 	const chapters = [
 		{
 			id: 'rome',
-			kicker: 'Rome and America',
+			kicker: 'The Western Empire',
+			sub: 'Rome and America',
 			line: 'Each grows from a small republic into a superpower, splits into two halves, and watches its western half decline.',
-			sections: ['seed', 'reach', 'claim', 'two-romes', 'west-falls', 'house']
+			sections: ['seed', 'reach', 'peoples', 'claim', 'two-romes', 'west-falls', 'house'],
+			maps: [
+				{
+					world: antique,
+					star: false,
+					marks: TRAJAN_MARKS,
+					focus: ['romeEast'],
+					frame: { lon0: -12, lon1: 48, lat0: 20, lat1: 58 }
+				},
+				{
+					world: modern,
+					star: false,
+					marks: [{ iso: 'USA', color: 'romeEast' }],
+					focus: ['romeEast'],
+					frame: { lon0: -126, lon1: -66, lat0: 24, lat1: 50 }
+				}
+			]
 		},
 		{
 			id: 'persia',
 			kicker: 'The Eastern Realm',
-			line: 'Persia and China.',
-			sections: ['core', 'parts', 'width', 'tributary', 'broken', 'humiliation', 'parthian', 'comeback', 'absorb']
+			sub: 'Persia and China',
+			line: 'The land empire, from the country at its center out to the bureaucracy that outlasts its conquerors.',
+			sections: ['core', 'parts', 'tributary', 'width', 'broken', 'humiliation', 'parthian', 'comeback', 'absorb'],
+			maps: [
+				{
+					world: antique,
+					star: false,
+					marks: ACHAEMENID_MARKS,
+					focus: ['persia'],
+					frame: { lon0: 20, lon1: 78, lat0: 14, lat1: 46 }
+				},
+				{
+					world: modern,
+					star: false,
+					marks: PRC_MARKS,
+					focus: ['persia'],
+					frame: CHINA
+				}
+			]
 		},
 		{
 			id: 'greece',
 			kicker: 'The Archipelago',
-			line: 'Greece and Japan.',
-			sections: ['captive-culture', 'macedon', 'conquest', 'philhellene']
-		},
-		{
-			id: 'arabia',
-			kicker: 'The Peninsula',
-			line: 'Arabia and Korea.',
-			sections: ['hired-cousins', 'holy-place', 'prophet', 'union', 'tribes', 'language']
+			sub: 'Greece and Japan',
+			line: 'Small states in the water, then a conqueror, then an ally, then a culture that outlasts the defeat.',
+			sections: ['captive-culture', 'macedon', 'conquest', 'philhellene'],
+			maps: [
+				{
+					world: antique,
+					star: false,
+					marks: GREECE_FREE_MARKS,
+					focus: ['greece'],
+					frame: { lon0: 19, lon1: 29, lat0: 34, lat1: 42 }
+				},
+				{
+					world: modern,
+					star: false,
+					marks: [{ iso: 'JPN', color: 'greece' }],
+					focus: ['greece'],
+					frame: { lon0: 128, lon1: 146, lat0: 30, lat1: 46 }
+				}
+			]
 		},
 		{
 			id: 'wars',
 			kicker: 'The two eyes',
 			line: 'The long standoff, and the war that leaves both sides exhausted.',
-			sections: ['two-eyes', 'faith', 'factions', 'final-war']
+			sections: ['two-eyes', 'faith', 'final-war']
 		},
 		{
-			id: 'kaliphate',
-			kicker: 'The Kaliphate',
-			line: 'The made-up part, plus a few predictions.',
-			sections: ['third-power', 'long-war', 'predictions']
+			id: 'arabia',
+			kicker: 'The Peninsula',
+			sub: 'Arabia and Korea',
+			line: 'A people between two empires, with its own holy place and its own language.',
+			sections: ['hired-cousins', 'holy-place', 'prophet', 'union', 'cults', 'between', 'tribes'],
+			maps: [
+				{
+					world: antique,
+					star: false,
+					solo: true,
+					marks: ARABIA_NATION_MARKS,
+					focus: ['caliphate'],
+					frame: { lon0: 32, lon1: 62, lat0: 12, lat1: 33 }
+				},
+				{
+					world: modern,
+					star: false,
+					solo: true,
+					marks: [
+						{ iso: 'KOR', color: 'caliphate' },
+						{ iso: 'PRK', color: 'caliphate' }
+					],
+					focus: ['caliphate'],
+					frame: { lon0: 124, lon1: 131, lat0: 33, lat1: 43.5 }
+				}
+			]
+		},
+		{
+			id: 'predictions',
+			kicker: 'Predictions',
+			line: 'The made-up part. Every guess about what happens next lives here.',
+			sections: ['third-power', 'language', 'long-war', 'predictions']
 		}
 	].map((chapter) => ({
 		...chapter,
@@ -1965,7 +2157,7 @@
 	}));
 </script>
 
-{#snippet cell(item, tone)}
+{#snippet cell(item, tone, frame = '4 / 3')}
 	<article class={tone}>
 		<header class="slot-head">
 			<strong>
@@ -1991,7 +2183,7 @@
 		</div>
 		<div class="slot-images">
 			{#if item.images?.length}
-				<FitImages images={item.images} ratio={item.ratio ?? '4 / 3'} />
+				<FitImages images={item.images} ratio={frame} />
 			{/if}
 		</div>
 		<div class="slot-body">
@@ -2030,9 +2222,23 @@
 	</article>
 {/snippet}
 
+<svelte:head>
+	<link
+		rel="stylesheet"
+		href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&display=swap"
+	/>
+</svelte:head>
+
 <section class="compare" aria-label="Parallels">
 	{#each chapters as chapter (chapter.id)}
+		<div class="chapter-block">
+		{#if chapter.maps}
+			<LeaningMaps maps={chapter.maps} label={chapter.kicker} />
+		{/if}
 		<h2 id={chapter.id} class="chapter">{chapter.kicker}</h2>
+		{#if chapter.sub}
+			<p class="subtitle">{chapter.sub}</p>
+		{/if}
 		<p class="thesis">{chapter.line}</p>
 		{#each chapter.sections as section (`${chapter.id}-${section.id}`)}
 			<h3 id="{chapter.id}-{section.id}" class="sub">{section.kicker}</h3>
@@ -2041,6 +2247,7 @@
 				<FinalWar />
 			{:else}
 				{#each section.pairs as pair, i (`${section.id}-${i}`)}
+					{@const frame = pair.left.ratio ?? pair.right.ratio ?? '4 / 3'}
 					{#if pair.sub}
 						<h4 class="minor notoc">{pair.sub}</h4>
 						{#if pair.line}
@@ -2048,12 +2255,13 @@
 						{/if}
 					{/if}
 					<div class="row">
-						{@render cell(pair.left, 'antique')}
-						{@render cell(pair.right, 'fiction')}
+						{@render cell(pair.left, 'antique', frame)}
+						{@render cell(pair.right, 'fiction', frame)}
 					</div>
 				{/each}
 			{/if}
 		{/each}
+		</div>
 	{/each}
 </section>
 
@@ -2062,13 +2270,33 @@
 		margin: 1.5rem 0 2rem;
 	}
 
-	.chapter {
-		margin: 2.4rem 0 0.4rem;
+	.chapter-block {
+		margin-top: 3.1rem;
+	}
+
+	.chapter-block:first-child {
+		margin-top: 0.4rem;
+	}
+
+	.compare h2.chapter {
+		margin: 0.35rem 0 0.15rem;
+		padding: 0.2rem 0 0;
 		text-align: center;
-		font-size: 1.45rem;
+		font-family: 'Playfair Display', Iowan Old Style, Palatino, Georgia, serif;
+		font-size: clamp(1.85rem, 3.1vw, 2.55rem);
 		font-weight: 600;
 		letter-spacing: -0.03em;
-		line-height: 1.2;
+		line-height: 1.05;
+	}
+
+	.subtitle {
+		margin: 0 0 0.45rem;
+		text-align: center;
+		font-family: 'Playfair Display', Iowan Old Style, Palatino, Georgia, serif;
+		font-size: clamp(1.05rem, 1.6vw, 1.28rem);
+		font-weight: 500;
+		letter-spacing: -0.01em;
+		color: var(--ink-2, #4a4640);
 	}
 
 	.sub {

@@ -9,6 +9,7 @@
 	} from './empire.js';
 	import Flag from './Flag.svelte';
 	import Inset from './Inset.svelte';
+	import { MARCH_AMERICA_BACK, MARCH_CHINA_WAR, MARCH_HERACLIUS, MARCH_PERSIA_WAR } from './marches.js';
 	import { antique, modern } from './sheets.js';
 
 	const FRAME = { lon0: 18, lon1: 62, lat0: 20, lat1: 46 };
@@ -22,8 +23,8 @@
 	 *   year: number,
 	 *   modernWhen: string,
 	 *   line: string,
-	 *   antique: { from: import('./empire.js').Region[], to: import('./empire.js').Region[], spread?: import('./sheets.js').Spread },
-	 *   modern: { from: import('./empire.js').Region[], to: import('./empire.js').Region[], spread?: import('./sheets.js').Spread }
+	 *   antique: { from: import('./empire.js').Region[], to: import('./empire.js').Region[], spread?: import('./sheets.js').Spread, marches?: import('./marches.js').March[] },
+	 *   modern: { from: import('./empire.js').Region[], to: import('./empire.js').Region[], spread?: import('./sheets.js').Spread, marches?: import('./marches.js').March[] }
 	 * }[]}
 	 */
 	const STEPS = [
@@ -38,8 +39,8 @@
 			year: 614,
 			modernWhen: 'the first island',
 			line: 'Persia takes Jerusalem. In the story, China pulls the first island chain into its orbit.',
-			antique: { from: DUAL_600_MARKS, to: WAR_620_MARKS, spread: 'west' },
-			modern: { from: TODAY_EAST_ASIA_MARKS, to: CHINA_STEAMROLL_MARKS, spread: 'east' }
+			antique: { from: DUAL_600_MARKS, to: WAR_620_MARKS, spread: 'west', marches: MARCH_PERSIA_WAR },
+			modern: { from: TODAY_EAST_ASIA_MARKS, to: CHINA_STEAMROLL_MARKS, spread: 'east', marches: MARCH_CHINA_WAR }
 		},
 		{
 			year: 620,
@@ -52,8 +53,8 @@
 			year: 627,
 			modernWhen: 'the comeback',
 			line: 'Heraclius pushes into Mesopotamia, and America wins its allies back.',
-			antique: { from: WAR_620_MARKS, to: HERACLIUS_MARKS, spread: 'east' },
-			modern: { from: CHINA_STEAMROLL_MARKS, to: AMERICA_COMEBACK_MARKS, spread: 'west' }
+			antique: { from: WAR_620_MARKS, to: HERACLIUS_MARKS, spread: 'east', marches: MARCH_HERACLIUS },
+			modern: { from: CHINA_STEAMROLL_MARKS, to: AMERICA_COMEBACK_MARKS, spread: 'west', marches: MARCH_AMERICA_BACK }
 		},
 		{
 			year: 628,
@@ -84,6 +85,7 @@
 	</div>
 
 	<p class="line">{step.line}</p>
+	<p class="key"><span class="gold">Gold</span> advances. <span class="red">Red</span> pushes back.</p>
 
 	<div class="row">
 		<article class="antique">
@@ -103,6 +105,7 @@
 						marks: step.antique.to,
 						fromMarks: step.antique.from,
 						spread: step.antique.spread,
+						marches: step.antique.marches,
 						focus: ['persia', 'romeEast'],
 						frame: FRAME,
 						autoplay: step.antique.from !== step.antique.to
@@ -128,6 +131,7 @@
 						marks: step.modern.to,
 						fromMarks: step.modern.from,
 						spread: step.modern.spread,
+						marches: step.modern.marches,
 						focus: ['persia', 'romeEast'],
 						autoplay: step.modern.from !== step.modern.to
 					}}
@@ -177,11 +181,26 @@
 	}
 
 	.line {
-		margin: 0.35rem 0 0.85rem;
+		margin: 0.35rem 0 0.35rem;
 		font-family: Iowan Old Style, Palatino, Georgia, serif;
 		font-size: 1.02rem;
 		font-style: italic;
 		text-align: center;
+	}
+
+	.key {
+		margin: 0 0 0.85rem;
+		color: var(--ink-3, #6d6860);
+		font-size: 0.78rem;
+		text-align: center;
+	}
+
+	.gold {
+		color: #8a5a12;
+	}
+
+	.red {
+		color: #8e1028;
 	}
 
 	.row {

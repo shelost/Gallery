@@ -289,7 +289,7 @@
 		background: none;
 	}
 
-	.prose :global(img:not(.flag)) {
+	.prose :global(img:not(.flag):not(.fit)) {
 		width: 100%;
 		height: auto;
 		margin: 1.75rem 0;

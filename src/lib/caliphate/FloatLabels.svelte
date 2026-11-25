@@ -2,7 +2,7 @@
 	/**
 	 * Screen-space names for map cities. The canvas keeps the dots; these
 	 * float above the relief so the letters never warp with the hills.
-	 * @type {{ pins?: { name: string, x: number, y: number, glow?: boolean, kind?: string }[] }}
+	 * @type {{ pins?: { name: string, x: number, y: number, glow?: boolean, kind?: string, flag?: string }[] }}
 	 */
 	let { pins = [] } = $props();
 </script>
@@ -15,6 +15,9 @@
 				style:left="{pin.x}%"
 				style:top="{pin.y}%"
 			>
+				{#if pin.flag}
+					<img class="mark flag" src="/blog/caliphate/flags/{pin.flag}.png" alt="" />
+				{/if}
 				<em>{pin.name}</em>
 				<i></i>
 			</span>
@@ -42,6 +45,16 @@
 
 	.pin.region {
 		transform: translate(-50%, -50%);
+	}
+
+	.mark {
+		display: block;
+		width: 1.15rem;
+		height: 0.76rem;
+		margin-bottom: 0.15rem;
+		object-fit: cover;
+		border-radius: 2px;
+		box-shadow: 0 0 0 1px rgb(0 0 0 / 0.35);
 	}
 
 	.pin em {

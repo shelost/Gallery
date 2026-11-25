@@ -15,17 +15,19 @@
 	let pins = $state.raw([]);
 </script>
 
-<div class="map">
+	<div class="map">
 	<button type="button" class="open" aria-label="Expand map: {label}" onclick={() => (open = true)}>
 		{#key mapView.relief}
 			<canvas
+				class:solo={map.solo}
 				{@attach (node) => {
 					canvas = node;
 				}}
 				{@attach (node) =>
 					mountWindow(node, {
 						...map,
-						flat: !mapView.relief,
+						cities: map.cities ?? false,
+						flat: map.solo || !mapView.relief,
 						controls,
 						onPins: (next) => {
 							pins = next;
@@ -34,6 +36,9 @@
 			></canvas>
 		{/key}
 		<FloatLabels {pins} />
+		{#if map.mood}
+			<div class={['mood', map.mood]} aria-hidden="true"></div>
+		{/if}
 	</button>
 	<button type="button" class="replay" aria-label="Replay map" onclick={() => controls.replay()}>
 		<svg viewBox="0 0 16 16" aria-hidden="true">
@@ -72,6 +77,52 @@
 		border-radius: 10px;
 		background: #9cb7d1;
 		transition: filter 200ms cubic-bezier(0.22, 0.61, 0.36, 1);
+	}
+
+	canvas.solo {
+		background: transparent;
+	}
+
+	.mood {
+		position: absolute;
+		inset: 0;
+		border-radius: 10px;
+		pointer-events: none;
+		overflow: hidden;
+	}
+
+	.mood.rain {
+		background:
+			repeating-linear-gradient(105deg, transparent 0 10px, rgba(180, 200, 220, 0.28) 11px 12px),
+			linear-gradient(180deg, rgba(40, 60, 80, 0.18), transparent 40%);
+		animation: rain 0.7s linear infinite;
+	}
+
+	.mood.fire {
+		background:
+			radial-gradient(circle at 20% 80%, rgba(255, 120, 30, 0.45), transparent 28%),
+			radial-gradient(circle at 70% 90%, rgba(255, 60, 20, 0.4), transparent 24%),
+			radial-gradient(circle at 50% 70%, rgba(255, 200, 80, 0.25), transparent 30%);
+		animation: fire 1.4s ease-in-out infinite;
+		mix-blend-mode: screen;
+	}
+
+	.mood.triumph {
+		background: radial-gradient(circle at 50% 40%, rgba(230, 195, 106, 0.38), transparent 55%);
+		animation: triumph 2.8s ease-in-out infinite;
+	}
+
+	@keyframes rain {
+		from { background-position: 0 0, 0 0; }
+		to { background-position: -18px 28px, 0 0; }
+	}
+
+	@keyframes fire {
+		50% { opacity: 0.55; transform: translateY(-4%); }
+	}
+
+	@keyframes triumph {
+		50% { opacity: 0.45; }
 	}
 
 	.open:hover canvas {

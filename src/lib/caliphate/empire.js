@@ -2225,14 +2225,39 @@ export const QING_TRIBUTARY_MARKS = [
 	{ iso: 'NPL', color: 'persia', alpha: 0.45 }
 ];
 
+/** A ring's middle, so China proper can be split into unlabeled warlord shades. */
+function ringCenter(ring) {
+	let lon = 0;
+	let lat = 0;
+	for (const point of ring) {
+		lon += point[0];
+		lat += point[1];
+	}
+	return [lon / ring.length, lat / ring.length];
+}
+
 /**
- * The century of humiliation, about 1932: China keeps its core. Russia holds the lands north of
- * the Amur and Lake Balkhash, Japan holds Taiwan, Korea, and Manchukuo, France holds Indochina,
- * and Britain holds Burma.
+ * Five yellows, far enough apart that the relief does not blend them into one gold.
+ * The factions are not named. The point is that the country is not one color.
+ * @param {number[][]} ring
+ */
+function warlordColor(ring) {
+	const [lon, lat] = ringCenter(ring);
+	if (lat > 35 && lon < 114) return 'warlord0';
+	if (lon < 108) return 'warlord1';
+	if (lat < 26) return 'warlord2';
+	if (lon > 114) return 'warlord3';
+	return 'warlord4';
+}
+
+/**
+ * The century of humiliation, about 1932. China proper is broken into warlord shades.
+ * Russia holds the lands north of the Amur and Lake Balkhash, Japan holds Taiwan, Korea,
+ * and Manchukuo, France holds Indochina, and Britain holds Burma.
  */
 /** @type {Region[]} */
 export const HUMILIATION_MARKS = [
-	{ iso: 'CHN', color: 'persia' },
+	...provinces.chinaProper.map((ring) => ({ ring, color: warlordColor(ring) })),
 	{ rings: provinces.manchuria, color: 'greece', alpha: CLIENT },
 	{ iso: 'MNG', color: 'steppe', alpha: 0.5 },
 	{ rings: [OUTER_MANCHURIA, BALKHASH], color: 'steppe' },
@@ -2514,6 +2539,10 @@ const ARABIA_632 = [
 /** @type {Region[]} */
 export const ARABIA_632_MARKS = [...ANTIQUE.dual600, { ring: ARABIA_632, color: 'caliphate' }];
 
+/** The peninsula alone, for the chapter portrait. */
+/** @type {Region[]} */
+export const ARABIA_NATION_MARKS = [{ ring: ARABIA_632, color: 'caliphate' }];
+
 /** @type {Region[]} */
 export const ARABIA_BEFORE_MARKS = ANTIQUE.dual600;
 
@@ -2717,6 +2746,7 @@ export const PYRRHUS_MARKS = [
  */
 /** @type {Region[]} */
 export const PACIFIC_WAR_MARKS = [
+	{ iso: 'USA', color: 'romeEast' },
 	{ iso: 'CHN', color: 'persia', alpha: 0.25 },
 	{ iso: 'KOR', color: 'persia', alpha: 0.22 },
 	{ iso: 'PRK', color: 'persia', alpha: 0.22 },
@@ -2877,15 +2907,32 @@ export const ARABIA_ALONE_MARKS = [
  * new tongue the way the Maghreb took Arabic. China keeps its own, as Iran kept Persian.
  */
 /** @type {Region[]} */
+/** The Russian Pacific shore and Sakhalin. Not Siberia, and not Mongolia. */
+const FAR_EAST_COAST = [
+	[130.4, 42.3], [131.8, 43.4], [134.2, 44.6], [136.4, 45.6], [138.6, 47.2],
+	[140.8, 49.2], [142.6, 51.4], [143.4, 53.6], [142.2, 54.6], [140.2, 53.4],
+	[137.6, 50.8], [135.2, 48.2], [133.4, 46.2], [131.6, 44.2], [130.2, 42.8]
+];
+const SAKHALIN = [
+	[141.8, 45.8], [143.2, 46.6], [144.0, 48.4], [143.6, 51.6], [142.6, 53.6],
+	[141.6, 53.2], [141.9, 50.4], [141.6, 47.4], [141.8, 45.8]
+];
+
 export const KOREANIC_WORLD_MARKS = [
 	{ iso: 'CHN', color: 'persia' },
 	{ iso: 'TWN', color: 'romeEast' },
 	JAPAN_CLIENT,
-	{ iso: 'RUS', color: 'caliphate', alpha: 0.58 },
-	{ iso: 'MNG', color: 'caliphate', alpha: 0.58 },
-	{ ring: INNER_MONGOLIA, color: 'caliphate', alpha: 0.58 },
-	{ rings: provinces.manchuria, color: 'caliphate', alpha: 0.58 },
+	{ rings: [FAR_EAST_COAST, SAKHALIN], color: 'caliphate', alpha: 0.72 },
 	...KOREA_UNITED
+];
+
+/** America, China, and Korea, before the Kaliphate takes anything else. */
+/** @type {Region[]} */
+export const THREE_POWERS_MODERN = [
+	{ iso: 'USA', color: 'romeEast' },
+	{ iso: 'CHN', color: 'persia' },
+	{ iso: 'KOR', color: 'caliphate' },
+	{ iso: 'PRK', color: 'caliphate' }
 ];
 
 MODERN.empire = QING_MARKS;
@@ -3101,53 +3148,24 @@ const XINJIANG = [
 ];
 
 /**
- * The eastern realm in pieces: the plateau and its usual limbs, with the Rome-facing
- * borderlands in lighter gold.
+ * The lands Persian empires kept coming back to, in the same palette as the Qing regions.
+ * Persia is about the modern border of Iran. Khorasan is the whole east, Afghanistan included.
  */
 /** @type {Region[]} */
 export const PERSIA_PARTS_MARKS = [
-	{ ring: IRAN_PLATEAU, color: 'persia' },
-	{ ring: MESOPOTAMIA_TRAJAN, color: 'persia', alpha: 0.85 },
-	{ rings: [BAHRAIN, OMAN_COAST, YEMEN], color: 'persia', alpha: 0.7 },
-	{ ring: ARMENIA_SATRAPY, color: 'persia', alpha: 0.55 },
-	{
-		ring: [
-			[55.0, 37.5],
-			[60.0, 38.5],
-			[66.0, 38.0],
-			[68.0, 36.0],
-			[66.0, 33.0],
-			[60.0, 32.5],
-			[55.0, 34.0]
-		],
-		color: 'persia',
-		alpha: 0.75
-	},
-	// Contested with Rome: Levant, Egypt, Anatolia — pale gold on the map.
-	{
-		ring: [
-			[32.0, 31.5],
-			[34.5, 31.2],
-			[35.5, 33.5],
-			[36.5, 36.0],
-			[35.0, 36.8],
-			[33.0, 36.0],
-			[32.0, 34.0]
-		],
-		color: 'persia',
-		alpha: 0.42
-	},
-	{
-		ring: [
-			[25.0, 31.5],
-			...EGYPT_SOUTH.slice().reverse(),
-			[32.5, 31.0],
-			[29.0, 31.5]
-		],
-		color: 'persia',
-		alpha: 0.4
-	},
-	{ ring: ANATOLIA, color: 'persia', alpha: 0.35 }
+	{ iso: 'IRN', color: 'han' },
+	{ iso: 'IRQ', color: 'xinjiang' },
+	{ iso: 'AFG', color: 'khorasan' },
+	{ iso: 'TJK', color: 'khorasan' },
+	{ iso: 'TKM', color: 'khorasan' },
+	{ iso: 'SYR', color: 'manchu' },
+	{ iso: 'LBN', color: 'manchu' },
+	{ iso: 'ISR', color: 'manchu' },
+	{ iso: 'JOR', color: 'manchu' },
+	{ iso: 'PSX', color: 'manchu' },
+	{ iso: 'ARM', color: 'mongol' },
+	{ iso: 'GEO', color: 'mongol' },
+	{ iso: 'AZE', color: 'mongol' }
 ];
 
 /**
@@ -3169,6 +3187,19 @@ export const CHINA_PARTS_MARKS = [
 	{ iso: 'JPN', color: 'persia', alpha: 0.3, blur: 3 },
 	{ iso: 'PHL', color: 'romeEast', alpha: 0.4 },
 	{ iso: 'PHL', color: 'persia', alpha: 0.3, blur: 3 }
+];
+
+/**
+ * Qing China as five regions. China proper, Manchuria, Mongolia, Tibet, Xinjiang.
+ */
+/** @type {Region[]} */
+export const QING_REGIONS_MARKS = [
+	{ rings: provinces.chinaProper, color: 'han' },
+	{ rings: provinces.manchuria, color: 'manchu' },
+	{ iso: 'MNG', color: 'mongol' },
+	{ ring: INNER_MONGOLIA, color: 'mongol' },
+	{ rings: provinces.tibet, color: 'tibetan' },
+	{ ring: XINJIANG, color: 'xinjiang' }
 ];
 
 /**
