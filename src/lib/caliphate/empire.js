@@ -2225,6 +2225,28 @@ export const QING_TRIBUTARY_MARKS = [
 	{ iso: 'NPL', color: 'persia', alpha: 0.45 }
 ];
 
+/**
+ * The century of humiliation, about 1932: China keeps its core. Russia holds the lands north of
+ * the Amur and Lake Balkhash, Japan holds Taiwan, Korea, and Manchukuo, France holds Indochina,
+ * and Britain holds Burma.
+ */
+/** @type {Region[]} */
+export const HUMILIATION_MARKS = [
+	{ iso: 'CHN', color: 'persia' },
+	{ rings: provinces.manchuria, color: 'greece', alpha: CLIENT },
+	{ iso: 'MNG', color: 'steppe', alpha: 0.5 },
+	{ rings: [OUTER_MANCHURIA, BALKHASH], color: 'steppe' },
+	{ ring: TUVA, color: 'steppe', alpha: 0.5 },
+	{ iso: 'TWN', color: 'greece' },
+	{ iso: 'KOR', color: 'greece' },
+	{ iso: 'PRK', color: 'greece' },
+	{ iso: 'JPN', color: 'greece' },
+	{ iso: 'VNM', color: 'romeWest' },
+	{ iso: 'LAO', color: 'romeWest' },
+	{ iso: 'KHM', color: 'romeWest' },
+	{ iso: 'MMR', color: 'romeWest' }
+];
+
 /** @type {Region[]} */
 export const CHINA_PROPER_MARKS = [
 	...QING_MARKS.map((item) => ({ ...item, alpha: 0.28 })),
@@ -2738,6 +2760,64 @@ const EGYPT_HOME = [
 
 /** @type {Region[]} */
 export const EGYPT_MARKS = [{ ring: EGYPT_HOME, color: 'people' }];
+
+/** Ptolemaic Coele-Syria: Phoenicia, Judea, and the coast south of the Eleutherus. */
+const COELE_SYRIA = [
+	[34.2, 31.2],
+	[34.9, 33.0],
+	[35.6, 34.6],
+	[36.4, 34.6],
+	[36.6, 33.4],
+	[36.3, 31.5],
+	[35.6, 29.6],
+	[34.9, 29.5]
+];
+
+/** Alexander's European homeland, west of the straits: Antigonid Macedon and Greece. */
+const MACEDON_EUROPE = [
+	[18.5, 43.2],
+	[29.2, 43.2],
+	[29.0, 41.2],
+	[26.6, 40.3],
+	[26.0, 40.0],
+	[25.0, 39.0],
+	[24.0, 36.0],
+	[18.5, 36.0]
+];
+
+/** Bithynia and Pontus, the north Anatolian kingdoms the Seleucids never held. */
+const PONTUS_BITHYNIA = [
+	[29.2, 40.3],
+	[31.5, 40.2],
+	[34.0, 40.2],
+	[36.5, 39.8],
+	[38.8, 39.6],
+	[41.5, 40.4],
+	[41.5, 42.2],
+	[29.2, 42.2]
+];
+
+/** Arachosia, Gedrosia, and the Paropamisadae, ceded to Chandragupta Maurya in 305 BC. */
+const MAURYAN_WEST = [
+	[61.5, 24.0],
+	[61.5, 29.5],
+	[64.0, 32.0],
+	[66.0, 34.5],
+	[68.0, 35.6],
+	[69.0, 36.0],
+	[69.0, 24.0]
+];
+
+/**
+ * The Seleucids about 281 BC: Greek kings over Persia, Mesopotamia, and Syria. The other
+ * Greek houses, the Ptolemies and Macedon, in faded blue; the lost east and north bare.
+ */
+/** @type {Region[]} */
+export const SELEUCID_MARKS = [
+	{ ring: ALEXANDER, color: 'greece' },
+	{ rings: [EGYPT_HOME, CYRENE_ALLY, CYPRUS, COELE_SYRIA, MACEDON_EUROPE], color: 'greece', alpha: 0.45 },
+	{ rings: [PONTUS_BITHYNIA, ARMENIA_SATRAPY, MAURYAN_WEST], color: 'land' }
+];
 
 /** The People's Republic on its own. */
 /** @type {Region[]} */

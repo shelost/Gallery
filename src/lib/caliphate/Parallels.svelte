@@ -17,6 +17,7 @@
 		AMERICA_HALF_MARKS,
 		GRECO_ROMAN_WAR_MARKS,
 		GREECE_FREE_MARKS,
+		HUMILIATION_MARKS,
 		ILKHANATE_MARKS,
 		ILKHANATE_PERSIAN_MARKS,
 		ROME_BEFORE_GREECE_MARKS,
@@ -45,6 +46,7 @@
 		ROMAN_SEA_MARKS,
 		TRAJAN_MARKS,
 		SASANIAN_MARKS,
+		SELEUCID_MARKS,
 		SIBERIA_TRIBE_MARKS
 	} from './empire.js';
 	import Flag from './Flag.svelte';
@@ -1412,6 +1414,60 @@
 			]
 		},
 		{
+			id: 'humiliation',
+			kicker: 'The humiliation',
+			line: 'Foreigners rule the old country, or carve off its edges, for more than a century. It does not forget.',
+			pairs: [
+				{
+					left: {
+						title: 'The Seleucids',
+						when: '312–141 BC',
+						flag: 'sun',
+						quote: 'Antiochus, the great king, the legitimate king, king of the world, king of Babylon, king of the lands.',
+						by: 'Antiochus I, the Antiochus Cylinder, 268 BC',
+						body: 'After Alexander died, one of his generals kept Persia. For about 170 years, Greek kings ruled it from Syria and Babylon. The other Greek kingdoms are pale blue.',
+						map: {
+							world: antique,
+							star: false,
+							marks: SELEUCID_MARKS,
+							fromMarks: ALEXANDER_MARKS,
+							focus: ['greece'],
+							labels: [
+								{ lon: 51, lat: 33, text: 'Seleucids' },
+								{ lon: 30.5, lat: 27, text: 'Ptolemies' },
+								{ lon: 22.5, lat: 38.8, text: 'Macedon' },
+								{ lon: 66, lat: 29, text: 'Mauryas' }
+							],
+							frame: { lon0: 18, lon1: 70, lat0: 20, lat1: 46 }
+						}
+					},
+					right: {
+						title: 'The century of humiliation',
+						when: '1839–1949',
+						flag: 'qing',
+						quote: 'The Island of Hongkong, to be possessed in perpetuity by Her Britannic Majesty, Her Heirs and Successors.',
+						by: 'Treaty of Nanking, Article III, 1842',
+						body: 'After the Opium Wars and the unequal treaties, Britain, France, Russia, and Japan carved off China’s edges. China proper survived, and China still remembers.',
+						map: {
+							world: modern,
+							star: false,
+							marks: HUMILIATION_MARKS,
+							fromMarks: QING_TRIBUTARY_MARKS,
+							focus: ['greece', 'romeWest', 'steppe'],
+							labels: [
+								{ lon: 136, lat: 52, text: 'Russia, 1860' },
+								{ lon: 127, lat: 47.5, text: 'Manchukuo, 1932' },
+								{ lon: 121.5, lat: 23.6, text: 'Japan, 1895' },
+								{ lon: 96, lat: 23.5, text: 'Britain, 1886' },
+								{ lon: 106, lat: 15.5, text: 'France, 1885' }
+							],
+							frame: CHINA
+						}
+					}
+				}
+			]
+		},
+		{
 			id: 'parthian',
 			kicker: 'The successor',
 			line: 'After the big empire falls, a smaller state holds the core together.',
@@ -1428,7 +1484,7 @@
 							world: antique,
 							star: false,
 							marks: PARTHIAN_MARKS,
-							fromMarks: ALEXANDER_MARKS,
+							fromMarks: SELEUCID_MARKS,
 							spread: AT.nisa,
 							focus: ['persia'],
 							frame: { lon0: 32, lon1: 68, lat0: 24, lat1: 42 }
@@ -1877,7 +1933,7 @@
 			id: 'persia',
 			kicker: 'The Eastern Realm',
 			line: 'Persia and China.',
-			sections: ['core', 'parts', 'width', 'tributary', 'broken', 'parthian', 'comeback', 'absorb']
+			sections: ['core', 'parts', 'width', 'tributary', 'broken', 'humiliation', 'parthian', 'comeback', 'absorb']
 		},
 		{
 			id: 'greece',
