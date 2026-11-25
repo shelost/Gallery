@@ -1349,7 +1349,7 @@ const ANTIQUE = {
 		{ ring: romeAsia(FRONTIER_565), color: 'romeEast' },
 		{ ring: BALKANS, color: 'romeEast' },
 		{ ring: CRIMEA_COAST, color: 'romeEast' },
-		{ rings: [ITALY_ISLANDS, DALMATIA, AFRICA_EXARCHATE, TRIPOLITANIA], color: 'romeWest' }
+		{ rings: [ITALY_ISLANDS, DALMATIA, AFRICA_EXARCHATE, TRIPOLITANIA], color: 'romeEast' }
 	],
 	dual600: [
 		{ ring: STEPPE, color: 'steppe', alpha: 0.5 },
@@ -1361,7 +1361,7 @@ const ANTIQUE = {
 		{ ring: romeAsia(FRONTIER_591), color: 'romeEast' },
 		{ ring: BALKANS, color: 'romeEast' },
 		{ ring: CHERSON, color: 'romeEast' },
-		{ rings: [...EXARCHATE_600, DALMATIA, AFRICA_EXARCHATE, TRIPOLITANIA], color: 'romeWest' }
+		{ rings: [...EXARCHATE_600, DALMATIA, AFRICA_EXARCHATE, TRIPOLITANIA], color: 'romeEast' }
 	],
 	sasanian620: [
 		{ ring: STEPPE, color: 'steppe', alpha: 0.5 },
@@ -1369,7 +1369,7 @@ const ANTIQUE = {
 		{ rings: [ANATOLIA, THRACE_COAST, GREEK_COAST, ADRIATIC_TOWNS, CYPRUS, CHERSON], color: 'romeEast' },
 		{ ring: PERSIA_620, color: 'persia' },
 		{ rings: [BAHRAIN, OMAN_COAST, YEMEN], color: 'persia', alpha: 0.6 },
-		{ rings: [...EXARCHATE_600, AFRICA_EXARCHATE, TRIPOLITANIA], color: 'romeWest' }
+		{ rings: [...EXARCHATE_600, AFRICA_EXARCHATE, TRIPOLITANIA], color: 'romeEast' }
 	],
 	rashidun655: [
 		{ ring: STEPPE, color: 'steppe', alpha: 0.5 },
@@ -1379,15 +1379,14 @@ const ANTIQUE = {
 		{ ring: ARMINIYA, color: 'caliphate', alpha: 0.55 },
 		{ ring: CASPIAN_HOLDOUTS, color: 'persia' },
 		{ ring: CYPRUS, color: 'romeEast', alpha: 0.5 },
-		{ rings: [...EXARCHATE_655, AFRICA_EXARCHATE], color: 'romeWest' }
+		{ rings: [...EXARCHATE_655, AFRICA_EXARCHATE], color: 'romeEast' }
 	],
 	byzantine863: [
 		{ ring: STEPPE_1025, color: 'steppe', alpha: 0.45 },
 		{ ring: ISLAMIC_EAST, color: 'caliphate', alpha: 0.78 },
 		{ rings: [IFRIQIYA, SICILY], color: 'caliphate', alpha: 0.78 },
 		{ ring: FATIMID, color: 'caliphate' },
-		{ rings: [BYZANTIUM_1025, CRETE, CYPRUS, CHERSON], color: 'romeEast' },
-		{ ring: CATEPANATE, color: 'romeWest' }
+		{ rings: [BYZANTIUM_1025, CRETE, CYPRUS, CHERSON, CATEPANATE], color: 'romeEast' }
 	],
 	umayyad740: [
 		{ ring: STEPPE_740, color: 'steppe', alpha: 0.5 },
@@ -1422,7 +1421,7 @@ const ANTIQUE = {
 		{ ring: ARMINIYA, color: 'caliphate', alpha: 0.85 },
 		{ ring: CASPIAN_HOLDOUTS, color: 'persia' },
 		{ ring: CYPRUS, color: 'romeEast', alpha: 0.5 },
-		{ rings: EXARCHATE_740, color: 'romeWest' }
+		{ rings: EXARCHATE_740, color: 'romeEast' }
 	]
 };
 
@@ -1448,8 +1447,38 @@ export const antiqueFrontiers = (phase) => FRONTIERS[phase] ?? [];
 
 // ---------------------------------------------------------------- the modern sheet
 
+/** Inner Mongolia: south of the Gobi, west of the Xing'an, north of the Yellow River loop. */
+const INNER_MONGOLIA = [
+	[97.4, 41.9],
+	[99.2, 42.7],
+	[102.0, 42.4],
+	[105.5, 42.0],
+	[108.8, 42.6],
+	[111.5, 44.0],
+	[114.2, 45.2],
+	[117.0, 46.4],
+	[119.6, 48.2],
+	[121.8, 50.6],
+	[123.4, 51.5],
+	[125.2, 51.0],
+	[124.0, 48.4],
+	[121.6, 45.5],
+	[119.2, 43.2],
+	[116.4, 41.4],
+	[113.0, 40.5],
+	[109.5, 39.8],
+	[106.2, 39.0],
+	[103.4, 37.9],
+	[101.0, 38.2],
+	[98.6, 39.4],
+	[97.4, 40.6]
+];
+
 const SOUTH_CLIENT = { iso: 'KOR', color: 'romeEast', alpha: CLIENT };
 const NORTH_CLIENT = { iso: 'PRK', color: 'persia', alpha: CLIENT };
+
+/** Japan after 1945: an American client, in the east’s light red. */
+const JAPAN_CLIENT = { iso: 'JPN', color: 'romeEast', alpha: 0.55 };
 
 /** The client kings on each side: the Ghassanids and Lakhmids, the two Koreas. */
 export const CLIENTS = {
@@ -1467,7 +1496,7 @@ const MODERN = {
 		{ iso: 'CHN', color: 'persia' },
 		{ iso: 'MNG', color: 'persia', alpha: 0.42 },
 		NORTH_CLIENT,
-		{ iso: 'JPN', color: 'greece' }
+		JAPAN_CLIENT
 	],
 	union: [
 		{ iso: 'RUS', color: 'steppe' },
@@ -1475,7 +1504,7 @@ const MODERN = {
 		{ iso: 'TWN', color: 'romeEast' },
 		{ iso: 'CHN', color: 'persia' },
 		{ iso: 'MNG', color: 'persia', alpha: 0.42 },
-		{ iso: 'JPN', color: 'greece' },
+		JAPAN_CLIENT,
 		{ iso: 'KOR', color: 'caliphate' },
 		{ iso: 'PRK', color: 'caliphate' }
 	],
@@ -1492,14 +1521,15 @@ const MODERN = {
 		{ iso: 'TWN', color: 'persia', alpha: 0.6, blur: 4 }
 	],
 	caliphate: [
-		{ iso: 'RUS', color: 'caliphate' },
 		{ iso: 'USA', color: 'romeEast' },
 		{ iso: 'TWN', color: 'romeEast' },
 		{ iso: 'CHN', color: 'persia' },
-		{ iso: 'MNG', color: 'persia', alpha: 0.35 },
-		{ rings: provinces.kaliphate, color: 'caliphate', blur: 3 },
-		{ rings: provinces.manchuria, color: 'caliphate' },
-		{ iso: 'JPN', color: 'greece' },
+		JAPAN_CLIENT,
+		{ iso: 'RUS', color: 'caliphate', alpha: 0.58 },
+		{ iso: 'MNG', color: 'caliphate', alpha: 0.58 },
+		{ ring: INNER_MONGOLIA, color: 'caliphate', alpha: 0.58 },
+		{ rings: provinces.kaliphate, color: 'caliphate', alpha: 0.58 },
+		{ rings: provinces.manchuria, color: 'caliphate', alpha: 0.58 },
 		{ iso: 'KOR', color: 'caliphate' },
 		{ iso: 'PRK', color: 'caliphate' }
 	]
@@ -2056,8 +2086,117 @@ const MAURETANIA = [
 	[-5.9, 35.25]
 ];
 
+/** Britain under Trajan: the Wall country, Wales, and the Channel shore. */
+const BRITAIN_TRAJAN = [
+	[-5.6, 50.1],
+	[-5.0, 51.7],
+	[-4.2, 53.4],
+	[-3.2, 54.6],
+	[-2.0, 55.8],
+	[-1.5, 55.9],
+	[-0.8, 55.0],
+	[0.2, 53.6],
+	[1.4, 52.8],
+	[1.6, 52.0],
+	[1.3, 51.2],
+	[0.8, 50.8],
+	[-0.2, 50.6],
+	[-1.8, 50.4],
+	[-3.4, 50.2],
+	[-4.8, 50.1],
+	[-5.6, 50.1]
+];
+
+/** Dacia under Trajan: the Carpathians and the lower Danube. */
+const DACIA_TRAJAN = [
+	[22.4, 44.7],
+	[23.5, 45.6],
+	[24.8, 46.8],
+	[26.0, 47.6],
+	[27.5, 47.4],
+	[28.2, 46.6],
+	[28.6, 45.4],
+	[28.8, 44.6],
+	[27.9, 44.1],
+	[26.5, 43.9],
+	[24.9, 43.7],
+	[23.2, 43.9],
+	[22.5, 44.3],
+	[22.4, 44.7]
+];
+
+/**
+ * Trajan's Mesopotamia at the high water of 116–117: the Euphrates and Tigris down to the Gulf.
+ */
+const MESOPOTAMIA_TRAJAN = [
+	[38.2, 36.3],
+	[39.5, 37.0],
+	[41.0, 37.2],
+	[43.0, 36.8],
+	[45.0, 35.5],
+	[47.2, 33.5],
+	[48.2, 31.5],
+	[48.0, 30.0],
+	[47.0, 29.6],
+	[45.5, 30.2],
+	[44.0, 31.5],
+	[42.5, 33.0],
+	[40.5, 34.5],
+	[39.0, 35.5],
+	[38.2, 36.3]
+];
+
+/** Colchis: the east Black Sea, gift of boys and girls every few years. */
+const COLCHIS = [
+	[39.8, 41.6],
+	[40.6, 43.0],
+	[41.8, 43.6],
+	[42.6, 43.2],
+	[42.4, 42.0],
+	[41.6, 41.4],
+	[40.4, 41.2]
+];
+
+/** Kush, south of Egypt: gold, ebony, ivory. */
+const KUSH = [
+	[30.2, 24.0],
+	[32.0, 23.6],
+	[34.4, 22.4],
+	[35.6, 21.0],
+	[35.2, 18.4],
+	[34.0, 16.2],
+	[32.6, 15.4],
+	[31.2, 16.8],
+	[30.6, 19.2],
+	[30.4, 21.8]
+];
+
+/** Qedar and the north-Arabian frankincense gift. */
+const ARAB_GIFTS = [
+	[35.0, 31.2],
+	[36.6, 30.8],
+	[38.4, 30.2],
+	[40.2, 29.4],
+	[41.0, 27.8],
+	[39.4, 26.6],
+	[37.2, 27.2],
+	[35.6, 28.6],
+	[34.8, 30.0]
+];
+
 /** @type {Region[]} */
 export const ACHAEMENID_MARKS = [{ ring: ACHAEMENID, color: 'persia' }];
+
+/** The empire in gold. Arabs, Ethiopians, and Colchians in faded gold: gifts, not satrapies. */
+/** @type {Region[]} */
+export const PERSIA_TRIBUTE_MARKS = [
+	{ ring: ACHAEMENID, color: 'persia' },
+	{ ring: ARAB_GIFTS, color: 'persia', alpha: 0.5 },
+	{ ring: KUSH, color: 'persia', alpha: 0.5 },
+	{ ring: COLCHIS, color: 'persia', alpha: 0.5 }
+];
+
+ANTIQUE.empire = ACHAEMENID_MARKS;
 
 /** @type {Region[]} */
 export const PLATEAU_MARKS = [
@@ -2071,6 +2210,19 @@ export const QING_MARKS = [
 	{ iso: 'MNG', color: 'persia' },
 	{ iso: 'TWN', color: 'persia' },
 	{ rings: [OUTER_MANCHURIA, TUVA, BALKHASH], color: 'persia' }
+];
+
+/** Qing China in gold; tributary neighbors in faded gold. They come to court. They are not provinces. */
+/** @type {Region[]} */
+export const QING_TRIBUTARY_MARKS = [
+	...QING_MARKS,
+	{ iso: 'KOR', color: 'persia', alpha: 0.5 },
+	{ iso: 'PRK', color: 'persia', alpha: 0.5 },
+	{ iso: 'JPN', color: 'persia', alpha: 0.45 },
+	{ iso: 'VNM', color: 'persia', alpha: 0.5 },
+	{ iso: 'THA', color: 'persia', alpha: 0.45 },
+	{ iso: 'MMR', color: 'persia', alpha: 0.45 },
+	{ iso: 'NPL', color: 'persia', alpha: 0.45 }
 ];
 
 /** @type {Region[]} */
@@ -2095,13 +2247,204 @@ export const LATIUM_MARKS = [{ ring: LATIUM, color: 'romeEast' }];
 /** @type {Region[]} */
 export const ETRURIA_MARKS = [{ ring: ETRURIA, color: 'romeWest' }];
 
-/** @type {Region[]} */
-export const ROMAN_SEA_MARKS = [
-	{ rings: [...ROME_30BC_CLIENTS], color: 'romeEast', alpha: 0.4 },
-	{ ring: MAURETANIA, color: 'romeWest', alpha: 0.4 },
-	{ rings: ROME_30BC_WEST, color: 'romeWest' },
-	{ rings: ROME_30BC_EAST, color: 'romeEast' }
+/**
+ * One closed frontier, so the wash has no holes between provinces.
+ * The land mask keeps the real coast; the ring only decides which land is inside.
+ * Actium: the Mediterranean lake, without Britain, Dacia, or Mesopotamia.
+ */
+const ROMAN_SEA_REALM = [
+	[-9.4, 37.0],
+	[-9.2, 42.0],
+	[-8.2, 43.4],
+	[-2.2, 43.4],
+	[-1.6, 46.2],
+	[-4.7, 47.8],
+	[-4.6, 48.6],
+	[-1.4, 49.6],
+	[1.6, 51.0],
+	[3.2, 51.2],
+	[5.6, 51.4],
+	[7.1, 50.0],
+	[8.2, 48.6],
+	[7.7, 47.3],
+	[9.2, 46.6],
+	[12.4, 46.6],
+	[16.2, 47.6],
+	[19.4, 47.8],
+	[22.2, 45.6],
+	[24.8, 44.2],
+	[27.4, 44.4],
+	[29.6, 45.1],
+	[32.2, 45.2],
+	[35.2, 44.6],
+	[38.4, 43.6],
+	[41.2, 42.2],
+	[42.4, 40.2],
+	[41.2, 38.4],
+	[40.2, 36.6],
+	[38.6, 35.6],
+	[36.4, 33.4],
+	[35.2, 31.2],
+	[34.4, 28.0],
+	[33.2, 24.0],
+	[31.2, 22.2],
+	[29.2, 24.6],
+	[25.2, 31.6],
+	[18.5, 32.2],
+	[10.2, 32.4],
+	[3.2, 33.4],
+	[-2.2, 34.4],
+	[-5.8, 35.2],
+	[-9.4, 37.0]
 ];
+
+/** Trajan, AD 117: the same lake, plus Britain, Dacia, and Mesopotamia to the Gulf. */
+const TRAJAN_REALM = [
+	[-5.3, 50.0],
+	[-5.6, 51.5],
+	[-4.6, 53.4],
+	[-3.2, 54.8],
+	[-1.6, 55.8],
+	[-0.4, 54.6],
+	[0.4, 53.2],
+	[1.5, 52.2],
+	[1.6, 51.1],
+	[0.6, 50.6],
+	[1.6, 50.9],
+	[3.4, 51.3],
+	[6.0, 51.6],
+	[7.4, 50.2],
+	[8.3, 48.4],
+	[8.0, 47.2],
+	[10.4, 47.0],
+	[13.4, 47.4],
+	[16.6, 48.2],
+	[20.2, 48.2],
+	[23.2, 47.8],
+	[26.2, 47.6],
+	[28.4, 46.2],
+	[29.2, 45.2],
+	[33.0, 45.4],
+	[36.2, 44.8],
+	[39.4, 43.8],
+	[42.2, 42.6],
+	[44.6, 41.2],
+	[46.2, 39.2],
+	[47.2, 36.8],
+	[48.0, 33.6],
+	[48.2, 30.6],
+	[47.2, 29.6],
+	[44.2, 30.4],
+	[39.5, 32.2],
+	[35.4, 29.6],
+	[34.2, 27.4],
+	[32.8, 22.4],
+	[30.4, 22.0],
+	[25.2, 31.6],
+	[18.0, 32.2],
+	[10.0, 32.4],
+	[2.4, 33.6],
+	[-2.4, 34.6],
+	[-6.2, 35.4],
+	[-9.5, 37.2],
+	[-9.2, 42.4],
+	[-8.4, 43.5],
+	[-4.8, 43.6],
+	[-2.0, 43.5],
+	[-1.8, 46.4],
+	[-4.8, 48.0],
+	[-4.6, 48.8],
+	[-2.2, 49.2],
+	[-5.3, 50.0]
+];
+
+/** Theodosius’s west, 395: Britain through Africa, Italy included, Greece not. */
+const WEST_395 = [
+	[-5.4, 50.0],
+	[-5.5, 52.0],
+	[-4.2, 54.2],
+	[-2.2, 55.6],
+	[-0.2, 54.2],
+	[1.5, 52.4],
+	[1.6, 51.0],
+	[2.4, 50.8],
+	[4.6, 51.4],
+	[7.2, 50.4],
+	[8.2, 48.2],
+	[7.8, 46.8],
+	[10.6, 46.4],
+	[13.8, 45.8],
+	[16.4, 44.6],
+	[18.6, 42.6],
+	[19.4, 41.2],
+	[18.2, 40.2],
+	[16.2, 38.6],
+	[15.2, 36.8],
+	[12.4, 36.2],
+	[10.2, 37.2],
+	[9.2, 37.6],
+	[6.4, 37.4],
+	[3.2, 37.0],
+	[0.4, 36.2],
+	[-2.6, 35.2],
+	[-6.0, 35.4],
+	[-9.4, 37.2],
+	[-9.2, 42.2],
+	[-5.0, 43.6],
+	[-2.0, 43.5],
+	[-4.6, 47.6],
+	[-4.4, 48.8],
+	[-1.6, 49.6],
+	[-5.4, 50.0]
+];
+
+/** Theodosius’s east, 395: the Danube, Greece, Anatolia, the Levant, Egypt. No Dacia. */
+const EAST_395 = [
+	[16.2, 46.8],
+	[19.2, 47.4],
+	[22.4, 45.2],
+	[25.2, 43.8],
+	[28.2, 44.2],
+	[29.6, 45.0],
+	[33.4, 45.0],
+	[36.6, 44.2],
+	[40.2, 42.8],
+	[42.6, 41.0],
+	[42.2, 39.2],
+	[40.4, 37.0],
+	[38.8, 35.8],
+	[36.6, 33.6],
+	[35.2, 31.0],
+	[34.2, 27.6],
+	[32.6, 23.4],
+	[30.6, 22.2],
+	[29.4, 25.4],
+	[25.4, 31.4],
+	[20.4, 32.4],
+	[18.6, 32.8],
+	[19.2, 39.4],
+	[19.6, 41.6],
+	[16.2, 46.8]
+];
+
+/** Rome as one power: Actium-era holdings, one red, with no gaps between the provinces. */
+/** @type {Region[]} */
+export const ROMAN_SEA_MARKS = [{ ring: ROMAN_SEA_REALM, color: 'romeEast' }];
+
+/** Trajan at the peak, AD 117: Britain, Dacia, and Mesopotamia added, still one red. */
+/** @type {Region[]} */
+export const TRAJAN_MARKS = [{ ring: TRAJAN_REALM, color: 'romeEast' }];
+
+/** AD 395. West is Italy, Gaul, Spain, Britain, Africa. East is Greece, the Balkans, Anatolia, the Levant, Egypt. */
+/** @type {Region[]} */
+export const TWO_ROMES_MARKS = [
+	{ ring: WEST_395, color: 'romeWest' },
+	{ ring: EAST_395, color: 'romeEast' }
+];
+
+/** After 476: the west is unpainted. What is left of Rome is the east. */
+/** @type {Region[]} */
+export const EAST_REMAINS_MARKS = [{ ring: EAST_395, color: 'romeEast' }];
 
 /** The later country stays an outline; the colonies are the only fill. */
 /** @type {Region[]} */
@@ -2264,6 +2607,10 @@ export const JAPAN_1942_MARKS = [
 	{ ring: KARAFUTO, color: 'greece' }
 ];
 
+/** The same empire without the Soviet north, for the close-up beside Alexander, which has no steppe. */
+/** @type {Region[]} */
+export const JAPAN_1942_ALONE_MARKS = JAPAN_1942_MARKS.filter((region) => region.color !== 'steppe');
+
 /** The kingdom Alexander left: Macedon proper, before the march. */
 const MACEDON_HOME = [
 	[20.5, 39.95],
@@ -2311,6 +2658,36 @@ export const GREECE_FREE_MARKS = [{ ring: GREECE_146, color: 'greece' }];
 /** After the Achaean War: the same Greece, in Rome's color. */
 /** @type {Region[]} */
 export const ACHAEAN_WAR_MARKS = [{ ring: GREECE_146, color: 'romeEast' }];
+
+/** Pyrrhus in Italy: Epirus and the Greek cities of the south, against Rome's hills. */
+const EPIRUS = [
+	[19.6, 40.6],
+	[20.2, 40.8],
+	[20.8, 40.5],
+	[21.0, 39.7],
+	[20.6, 39.1],
+	[20.0, 39.0],
+	[19.5, 39.4],
+	[19.4, 40.0]
+];
+
+const MAGNA_GRAECIA = [
+	[16.4, 40.6],
+	[17.2, 40.7],
+	[18.4, 40.5],
+	[18.3, 39.8],
+	[17.2, 39.4],
+	[16.6, 38.2],
+	[15.6, 38.0],
+	[15.3, 38.9],
+	[16.0, 39.6]
+];
+
+/** @type {Region[]} */
+export const PYRRHUS_MARKS = [
+	{ ring: LATIUM, color: 'romeEast' },
+	{ rings: [EPIRUS, MAGNA_GRAECIA], color: 'greece' }
+];
 
 /**
  * 1945. The empire's color has left the continent. The home islands are occupied,
@@ -2422,31 +2799,36 @@ export const ARABIA_ALONE_MARKS = [
 /** @type {Region[]} */
 export const KOREANIC_WORLD_MARKS = [
 	{ iso: 'CHN', color: 'persia' },
-	{ iso: 'MNG', color: 'persia', alpha: 0.42 },
 	{ iso: 'TWN', color: 'romeEast' },
-	{ iso: 'JPN', color: 'greece' },
-	{ iso: 'RUS', color: 'caliphate' },
-	{ rings: provinces.manchuria, color: 'caliphate' },
+	JAPAN_CLIENT,
+	{ iso: 'RUS', color: 'caliphate', alpha: 0.58 },
+	{ iso: 'MNG', color: 'caliphate', alpha: 0.58 },
+	{ ring: INNER_MONGOLIA, color: 'caliphate', alpha: 0.58 },
+	{ rings: provinces.manchuria, color: 'caliphate', alpha: 0.58 },
 	...KOREA_UNITED
 ];
 
+MODERN.empire = QING_MARKS;
 MODERN.japan = JAPAN_1942_MARKS;
 MODERN.spread = [
-	{ iso: 'RUS', color: 'steppe' },
 	{ iso: 'USA', color: 'romeEast' },
 	{ iso: 'CHN', color: 'persia' },
-	{ iso: 'MNG', color: 'persia', alpha: 0.35 },
-	{ iso: 'JPN', color: 'greece' },
-	{ rings: provinces.manchuria, color: 'caliphate' },
+	JAPAN_CLIENT,
+	{ iso: 'RUS', color: 'caliphate', alpha: 0.58 },
+	{ iso: 'MNG', color: 'caliphate', alpha: 0.58 },
+	{ ring: INNER_MONGOLIA, color: 'caliphate', alpha: 0.58 },
+	{ rings: provinces.manchuria, color: 'caliphate', alpha: 0.58 },
 	{ iso: 'KOR', color: 'caliphate' },
 	{ iso: 'PRK', color: 'caliphate' }
 ];
 MODERN.after = [
-	{ iso: 'RUS', color: 'steppe' },
 	{ iso: 'USA', color: 'romeEast' },
 	{ iso: 'CHN', color: 'persia' },
-	{ rings: provinces.manchuria, color: 'caliphate' },
-	{ rings: provinces.kaliphate, color: 'caliphate' },
+	{ iso: 'RUS', color: 'caliphate', alpha: 0.58 },
+	{ iso: 'MNG', color: 'caliphate', alpha: 0.58 },
+	{ ring: INNER_MONGOLIA, color: 'caliphate', alpha: 0.58 },
+	{ rings: provinces.manchuria, color: 'caliphate', alpha: 0.58 },
+	{ rings: provinces.kaliphate, color: 'caliphate', alpha: 0.58 },
 	{ iso: 'JPN', color: 'romeEast' },
 	{ iso: 'PHL', color: 'romeEast' },
 	{ iso: 'TWN', color: 'romeEast' },
@@ -2461,7 +2843,7 @@ export const KOREA_ALONE_MARKS = [
 	{ iso: 'CHN', color: 'persia' },
 	{ iso: 'MNG', color: 'persia', alpha: 0.42 },
 	{ iso: 'TWN', color: 'romeEast' },
-	{ iso: 'JPN', color: 'greece' },
+	JAPAN_CLIENT,
 	{ iso: 'RUS', color: 'steppe' },
 	...KOREA_UNITED
 ];
@@ -2546,7 +2928,7 @@ export const SIBERIA_TRIBE_MARKS = [
 const EUROPE = [
 	'PRT', 'ESP', 'FRA', 'BEL', 'NLD', 'LUX', 'DEU', 'CHE', 'AUT', 'ITA', 'MLT', 'GBR', 'IMN', 'IRL',
 	'ISL', 'DNK', 'NOR', 'SWE', 'FIN', 'EST', 'LVA', 'LTU', 'POL', 'CZE', 'SVK', 'HUN', 'SVN', 'HRV',
-	'ROU', 'BGR', 'GRC', 'CYP'
+	'BIH', 'SRB', 'MNE', 'MKD', 'ALB', 'ROU', 'BGR', 'GRC', 'CYP', 'MDA'
 ];
 
 /** Europe today in the lighter red, Russia as the steppe. */
@@ -2555,3 +2937,250 @@ export const EUROPE_MARKS = [
 	{ iso: 'RUS', color: 'steppe' },
 	...EUROPE.map((iso) => ({ iso, color: 'romeWest' }))
 ];
+
+/** The two surviving halves of one West: Europe in the lighter red, America in the deeper. */
+/** @type {Region[]} */
+export const ATLANTIC_MARKS = [
+	{ iso: 'RUS', color: 'steppe' },
+	{ iso: 'USA', color: 'romeEast' },
+	...EUROPE.map((iso) => ({ iso, color: 'romeWest' }))
+];
+
+/** America's eastward face: the Pacific sheet, Europe left off it. */
+/** @type {Region[]} */
+export const PIVOT_ASIA_MARKS = [
+	{ iso: 'USA', color: 'romeEast' },
+	{ iso: 'CHN', color: 'persia' },
+	JAPAN_CLIENT,
+	{ iso: 'KOR', color: 'romeEast', alpha: 0.45 },
+	{ iso: 'PRK', color: 'persia', alpha: 0.45 }
+];
+
+/** Europe still on the map, faded. America is the color that is left. */
+/** @type {Region[]} */
+export const EUROPE_FALL_MARKS = [
+	{ iso: 'RUS', color: 'steppe' },
+	{ iso: 'USA', color: 'romeEast' },
+	...EUROPE.map((iso) => ({ iso, color: 'romeWest', alpha: 0.5 }))
+];
+
+/** China stays China. Taiwan, Korea, Japan, the Philippines in the same light gold as the northern client. */
+/** @type {Region[]} */
+export const CHINA_STEAMROLL_MARKS = [
+	{ iso: 'USA', color: 'romeEast' },
+	{ iso: 'CHN', color: 'persia' },
+	{ iso: 'MNG', color: 'persia', alpha: 0.4 },
+	{ iso: 'PRK', color: 'persia', alpha: 0.45 },
+	{ iso: 'KOR', color: 'persia', alpha: 0.45 },
+	{ iso: 'JPN', color: 'persia', alpha: 0.45 },
+	{ iso: 'PHL', color: 'persia', alpha: 0.45 },
+	{ iso: 'TWN', color: 'persia', alpha: 0.45 }
+];
+
+/** The comeback: those same countries in light red, American clients again. China is still China. */
+/** @type {Region[]} */
+export const AMERICA_COMEBACK_MARKS = [
+	{ iso: 'USA', color: 'romeEast' },
+	{ iso: 'CHN', color: 'persia' },
+	{ iso: 'MNG', color: 'persia', alpha: 0.4 },
+	{ iso: 'JPN', color: 'romeEast', alpha: 0.45 },
+	{ iso: 'KOR', color: 'romeEast', alpha: 0.45 },
+	{ iso: 'PRK', color: 'romeEast', alpha: 0.45 },
+	{ iso: 'PHL', color: 'romeEast', alpha: 0.45 },
+	{ iso: 'TWN', color: 'romeEast', alpha: 0.45 }
+];
+
+/** Heraclius in 627: Rome holds the east again, and a campaign reaches Mesopotamia. */
+/** @type {Region[]} */
+export const HERACLIUS_MARKS = [
+	{ ring: persia(FRONTIER_591), color: 'persia' },
+	{ rings: [BAHRAIN, OMAN_COAST], color: 'persia', alpha: 0.5 },
+	{ ring: romeAsia(FRONTIER_591), color: 'romeEast' },
+	{ ring: BALKANS, color: 'romeEast' },
+	{ rings: [...EXARCHATE_600, DALMATIA, AFRICA_EXARCHATE, TRIPOLITANIA], color: 'romeEast' },
+	{ ring: MESOPOTAMIA_TRAJAN, color: 'romeEast', alpha: 0.5 }
+];
+
+/** Phase snapshots for the final-war year scrubber. */
+export const DUAL_600_MARKS = ANTIQUE.dual600;
+export const WAR_620_MARKS = ANTIQUE.sasanian620;
+export const TODAY_EAST_ASIA_MARKS = MODERN.buffers;
+
+/** Xinjiang: the Tarim and the Dzungar basin. */
+const XINJIANG = [
+	[73.5, 40.5],
+	[78.0, 44.5],
+	[86.0, 46.0],
+	[94.0, 44.5],
+	[96.5, 42.0],
+	[96.0, 37.5],
+	[90.0, 35.0],
+	[82.0, 35.5],
+	[76.0, 37.0],
+	[73.5, 39.0]
+];
+
+/**
+ * The eastern realm in pieces: the plateau and its usual limbs, with the Rome-facing
+ * borderlands in lighter gold.
+ */
+/** @type {Region[]} */
+export const PERSIA_PARTS_MARKS = [
+	{ ring: IRAN_PLATEAU, color: 'persia' },
+	{ ring: MESOPOTAMIA_TRAJAN, color: 'persia', alpha: 0.85 },
+	{ rings: [BAHRAIN, OMAN_COAST, YEMEN], color: 'persia', alpha: 0.7 },
+	{ ring: ARMENIA_SATRAPY, color: 'persia', alpha: 0.55 },
+	{
+		ring: [
+			[55.0, 37.5],
+			[60.0, 38.5],
+			[66.0, 38.0],
+			[68.0, 36.0],
+			[66.0, 33.0],
+			[60.0, 32.5],
+			[55.0, 34.0]
+		],
+		color: 'persia',
+		alpha: 0.75
+	},
+	// Contested with Rome: Levant, Egypt, Anatolia — pale gold on the map.
+	{
+		ring: [
+			[32.0, 31.5],
+			[34.5, 31.2],
+			[35.5, 33.5],
+			[36.5, 36.0],
+			[35.0, 36.8],
+			[33.0, 36.0],
+			[32.0, 34.0]
+		],
+		color: 'persia',
+		alpha: 0.42
+	},
+	{
+		ring: [
+			[25.0, 31.5],
+			...EGYPT_SOUTH.slice().reverse(),
+			[32.5, 31.0],
+			[29.0, 31.5]
+		],
+		color: 'persia',
+		alpha: 0.4
+	},
+	{ ring: ANATOLIA, color: 'persia', alpha: 0.35 }
+];
+
+/**
+ * China in pieces: the old provinces, then the rim, then the first island chain as influence.
+ */
+/** @type {Region[]} */
+export const CHINA_PARTS_MARKS = [
+	{ rings: provinces.chinaProper, color: 'persia' },
+	{ rings: provinces.manchuria, color: 'persia', alpha: 0.78 },
+	{ ring: INNER_MONGOLIA, color: 'persia', alpha: 0.72 },
+	{ ring: XINJIANG, color: 'persia', alpha: 0.72 },
+	{ rings: provinces.tibet, color: 'persia', alpha: 0.68 },
+	{ iso: 'TWN', color: 'romeEast', alpha: 0.55 },
+	{ iso: 'TWN', color: 'persia', alpha: 0.45, blur: 3 },
+	{ iso: 'KOR', color: 'romeEast', alpha: 0.4 },
+	{ iso: 'KOR', color: 'persia', alpha: 0.35, blur: 3 },
+	{ iso: 'PRK', color: 'persia', alpha: 0.45 },
+	{ iso: 'JPN', color: 'romeEast', alpha: 0.55 },
+	{ iso: 'JPN', color: 'persia', alpha: 0.3, blur: 3 },
+	{ iso: 'PHL', color: 'romeEast', alpha: 0.4 },
+	{ iso: 'PHL', color: 'persia', alpha: 0.3, blur: 3 }
+];
+
+/**
+ * The republic on the eve of the Macedonian wars: Italy and the islands, Hispania,
+ * and the Adriatic shore. Greece is still its own color.
+ */
+/** @type {Region[]} */
+export const ROME_BEFORE_GREECE_MARKS = [
+	{ ring: ITALY_ISLANDS, color: 'romeEast' },
+	{ ring: HISPANIA_30BC, color: 'romeEast' },
+	{ ring: DALMATIA, color: 'romeEast' },
+	{ ring: GREECE_146, color: 'greece' }
+];
+
+/** After the Macedonian and Achaean wars: that same Rome, plus Africa, and all of Greece. */
+/** @type {Region[]} */
+export const GRECO_ROMAN_WAR_MARKS = [
+	{ ring: ITALY_ISLANDS, color: 'romeEast' },
+	{ ring: HISPANIA_30BC, color: 'romeEast' },
+	{ ring: DALMATIA, color: 'romeEast' },
+	{ ring: AFRICA_EXARCHATE, color: 'romeEast' },
+	{ ring: GREECE_146, color: 'romeEast' }
+];
+
+/**
+ * The Ilkhanate at its widest: Iraq, Iran, the Caucasus, Khorasan to the Oxus,
+ * and Anatolia as a vassal. Not Egypt.
+ */
+const ILKHANATE = [
+	[35.8, 37.2],
+	[38.2, 39.6],
+	[41.0, 41.8],
+	[45.0, 42.6],
+	[50.0, 42.2],
+	[56.5, 42.4],
+	[63.0, 41.6],
+	[68.2, 39.8],
+	[67.2, 36.2],
+	[63.5, 33.4],
+	[62.0, 29.5],
+	[61.2, 25.4],
+	[57.2, 25.4],
+	[54.5, 26.6],
+	[50.5, 28.2],
+	[48.2, 29.8],
+	[45.2, 30.4],
+	[42.5, 32.6],
+	[39.2, 34.6],
+	[37.2, 36.2],
+	[35.8, 37.2]
+];
+
+const ILKHAN_ANATOLIA = [
+	[28.2, 37.4],
+	[30.4, 38.6],
+	[33.2, 41.2],
+	[36.4, 41.4],
+	[38.6, 39.8],
+	[36.2, 37.6],
+	[33.4, 36.4],
+	[30.2, 36.2],
+	[28.2, 37.4]
+];
+
+/** The conquest, still a Mongol color. */
+/** @type {Region[]} */
+export const ILKHANATE_MARKS = [
+	{ ring: ILKHANATE, color: 'mongol' },
+	{ ring: ILKHAN_ANATOLIA, color: 'mongol', alpha: 0.72 }
+];
+
+/** The same borders after the court has become Persian. */
+/** @type {Region[]} */
+export const ILKHANATE_PERSIAN_MARKS = [
+	{ ring: ILKHANATE, color: 'persia' },
+	{ ring: ILKHAN_ANATOLIA, color: 'persia', alpha: 0.72 }
+];
+
+/** Yuan at Kublai’s death: China, Manchuria, Mongolia, Tibet, and the western oases. */
+/** @type {Region[]} */
+export const YUAN_MARKS = [
+	{ rings: provinces.chinaProper, color: 'mongol' },
+	{ rings: provinces.manchuria, color: 'mongol' },
+	{ ring: INNER_MONGOLIA, color: 'mongol' },
+	{ ring: XINJIANG, color: 'mongol', alpha: 0.85 },
+	{ rings: provinces.tibet, color: 'mongol' },
+	{ iso: 'MNG', color: 'mongol' }
+];
+
+/** @type {Region[]} */
+export const YUAN_CHINESE_MARKS = YUAN_MARKS.map((region) => ({ ...region, color: 'persia' }));
+
+/** America alone, before Europe takes the lighter red on the split sheet. */
+/** @type {Region[]} */
+export const AMERICA_HALF_MARKS = [{ iso: 'USA', color: 'romeEast' }];

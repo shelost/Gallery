@@ -14,11 +14,12 @@ import { terrain } from './shade.js';
 /** @typedef {import('./empire.js').Region} Region */
 
 export const COLORS = {
-	romeEast: { ink: '#b4233a', name: 'Eastern Rome', twin: 'America' },
-	romeWest: { ink: '#d25c69', name: 'Western Rome', twin: 'the Atlantic shore' },
+	romeEast: { ink: '#8e1028', name: 'Eastern Rome', twin: 'America' },
+	romeWest: { ink: '#f0b4b8', name: 'Western Rome', twin: 'Europe' },
 	rome: { ink: '#b4233a', name: 'Rome', twin: 'America and its clients' },
 	persia: { ink: '#d4890f', name: 'Persia', twin: 'China' },
 	greece: { ink: '#3c6fb5', name: 'Greece', twin: 'Japan' },
+	mongol: { ink: '#7eb0d4', name: 'The Mongols', twin: 'The Mongols' },
 	caliphate: { ink: '#1e7a46', name: 'The Caliphate', twin: 'The Kaliphate' },
 	steppe: { ink: '#6e6256', name: 'The steppe', twin: 'Russia' },
 	holy: { ink: '#e6c36a', name: 'Jerusalem', twin: 'Paektu' },
@@ -38,7 +39,8 @@ const INK = '#2a241c';
 const PACIFIC = {
 	pinched: { A0: 97, A1: 155, B0: 155, B1: 235, BW: 12, C0: 235, C1: 262, USW: 22 },
 	wide: { A0: 100, A1: 148, B0: 148, B1: 237, BW: 42, C0: 237, C1: 294, USW: 62 },
-	continent: { A0: 90, A1: 146, B0: 146, B1: 215, BW: 14, C0: 215, C1: 308, USW: 48 }
+	// West coast only on the right; Pacific band keeps its width; Alaska and the far north are out.
+	continent: { A0: 90, A1: 146, B0: 146, B1: 215, BW: 14, C0: 234, C1: 258, USW: 24 }
 };
 
 /** @param {{ span?: keyof typeof PACIFIC }} world */
@@ -55,7 +57,7 @@ export const antique = {
 	frame: { lon0: 6, lon1: 64, lat0: 6, lat1: 56 },
 	holy: { lon: 35.16, lat: 31.78, name: 'Jerusalem' },
 	cities: [
-		{ lon: 12.5, lat: 41.9, name: 'Rome' },
+		{ lon: 12.5, lat: 41.9, name: 'Rome', glow: true },
 		{ lon: 28.98, lat: 41.01, name: 'Constantinople', glow: true },
 		{ lon: 23.73, lat: 37.98, name: 'Athens' },
 		{ lon: 29.92, lat: 31.2, name: 'Alexandria' },
@@ -76,11 +78,11 @@ export const modern = {
 	title: 'The fiction',
 	mode: 'pacific',
 	span: 'continent',
-	lat0: 8,
-	lat1: 72,
+	lat0: 14,
+	lat1: 55,
 	holy: { lon: 128.07, lat: 42.01, name: 'Paektu' },
 	cities: [
-		{ lon: -77.04, lat: 38.91, name: 'Washington' },
+		{ lon: -77.04, lat: 38.91, name: 'Washington', glow: true },
 		{ lon: -122.42, lat: 37.77, name: 'San Francisco', glow: true },
 		{ lon: -74.01, lat: 40.71, name: 'New York' },
 		{ lon: 116.41, lat: 39.9, name: 'Beijing' },
@@ -99,9 +101,34 @@ export const modern = {
 };
 
 /**
- * China and America in one square. The Pacific is cut out, and a line marks the cut.
- * Each country keeps its own scale, so neither one is stretched to meet the other.
+ * America on the left, Europe on the right. Each keeps its own scale.
+ * The Atlantic is the gap, not a squeezed ocean.
  */
+export const atlantic = {
+	id: 'atlantic',
+	sheet: 'modern',
+	title: 'America and Europe',
+	mode: 'split',
+	gap: 0.04,
+	left: { lon0: -130, lon1: -52, lat0: 14, lat1: 58 },
+	right: { lon0: -15, lon1: 42, lat0: 34, lat1: 68 },
+	holy: { lon: -77.04, lat: 38.91, name: 'Washington' },
+	cities: [
+		{ lon: -122.42, lat: 37.77, name: 'San Francisco', glow: true },
+		{ lon: -77.04, lat: 38.91, name: 'Washington', glow: true },
+		{ lon: -74.01, lat: 40.71, name: 'New York' },
+		{ lon: -9.14, lat: 38.72, name: 'Lisbon' },
+		{ lon: 2.35, lat: 48.86, name: 'Paris' },
+		{ lon: 12.5, lat: 41.9, name: 'Rome', glow: true },
+		{ lon: 28.98, lat: 41.01, name: 'Constantinople', glow: true },
+		{ lon: -0.13, lat: 51.5, name: 'London' }
+	],
+	labels: [
+		{ lon: -97, lat: 40, text: 'America' },
+		{ lon: 10, lat: 48, text: 'Europe' }
+	]
+};
+
 export const facing = {
 	id: 'facing',
 	sheet: 'modern',
@@ -141,24 +168,70 @@ function splitPanels(world) {
 }
 
 export const PERIOD_INDEX = {
-	alexander: 0,
-	justinian: 1,
-	dual600: 2,
-	sasanian620: 3,
-	rashidun655: 4,
-	byzantine863: 5,
-	umayyad740: 6,
-	kaliphate: 7
+	empire: 0,
+	alexander: 1,
+	justinian: 2,
+	dual600: 3,
+	sasanian620: 4,
+	rashidun655: 5,
+	byzantine863: 6,
+	umayyad740: 7,
+	kaliphate: 8
 };
 
-/** Where each power's color spreads from when a period paints in. */
-const FROM = {
+/** Shared camera boxes for the stage. */
+const VIEW = {
+	persia: { lon0: 22, lon1: 74, lat0: 12, lat1: 46 },
+	china: { lon0: 73, lon1: 145, lat0: 18, lat1: 54 },
+	eastWar: { lon0: 12, lon1: 72, lat0: 10, lat1: 46 },
+	japanWar: { lon0: 100, lon1: 152, lat0: 14, lat1: 50 },
+	rome: { lon0: -12, lon1: 45, lat0: 22, lat1: 56 },
+	america: { lon0: -126, lon1: -66, lat0: 24, lat1: 50 },
+	arabia: { lon0: 10, lon1: 62, lat0: 8, lat1: 44 },
+	korea: { lon0: 110, lon1: 150, lat0: 20, lat1: 56 },
+	eyesAntique: { lon0: 6, lon1: 64, lat0: 10, lat1: 52 },
+	eyesModern: null
+};
+
+/**
+ * Where a change can spread from: the conqueror's home, as lon/lat. A change that came from
+ * one direction across the whole map takes a heading instead.
+ */
+export const PLACES = {
+	rome: [12.5, 41.9],
+	etruria: [11.3, 43.0],
+	jamestown: [-76.8, 37.2],
+	washington: [-77.0, 38.9],
+	pasargadae: [53.2, 30.2],
+	istakhr: [52.9, 29.9],
+	nisa: [58.2, 37.9],
+	wuchang: [114.3, 30.6],
+	mukden: [123.4, 41.8],
+	beijing: [116.4, 39.9],
 	pella: [22.5, 40.8],
-	constantinople: [28.98, 41.01],
-	ctesiphon: [44.58, 33.09],
+	tokyo: [139.7, 35.7],
 	medina: [39.61, 24.47],
 	damascus: [36.29, 33.51],
+	constantinople: [28.98, 41.01],
+	pyongyang: [125.75, 39.03],
 	paektu: [128.07, 42.0]
+};
+
+/**
+ * @typedef {'north' | 'south' | 'east' | 'west' | 'northeast' | 'northwest' | 'southeast' | 'southwest'} Heading
+ * @typedef {number[] | Heading} Spread a place grows out as a disc; a heading sweeps a front
+ */
+
+/** Canvas directions, y growing south. */
+const HEADINGS = {
+	north: [0, -1],
+	south: [0, 1],
+	east: [1, 0],
+	west: [-1, 0],
+	northeast: [Math.SQRT1_2, -Math.SQRT1_2],
+	northwest: [-Math.SQRT1_2, -Math.SQRT1_2],
+	southeast: [Math.SQRT1_2, Math.SQRT1_2],
+	southwest: [-Math.SQRT1_2, Math.SQRT1_2]
 };
 
 /** The two eyes, lit together, and the single powers. One array each, so a glow can hold still. */
@@ -167,109 +240,156 @@ const GREEN = ['caliphate'];
 const GOLD = ['persia'];
 
 /**
- * Each moment on both sheets. `spread` is the lon/lat a new color grows out from; `focus` is
- * the powers the moment is about, outlined and lit.
+ * Each moment on both sheets. `name` is the scrubber label; `view` pans each map.
+ * `spread` is where, or which way, a new color comes in; `focus` is lit.
  * @type {{
  *   id: string,
+ *   name: string,
  *   title: string,
  *   pair: string,
  *   antiquePhase: string,
  *   modernPhase: string,
  *   when: { antique: string, modern: string },
  *   line: string,
- *   spread?: { antique?: number[], modern?: number[] },
+ *   view: { antique: Frame | null, modern: Frame | null },
+ *   spread?: { antique?: Spread, modern?: Spread },
  *   focus: { antique: string[], modern: string[] }
  * }[]}
  */
 export const PERIODS = [
 	{
+		id: 'empire',
+		name: 'The Empire',
+		title: 'The Empire',
+		pair: 'Achaemenid / Qing',
+		antiquePhase: 'empire',
+		modernPhase: 'empire',
+		when: { antique: '550–330 BC', modern: '1644–1912' },
+		line: 'Where it starts: Persia under the Achaemenids and China under the Qing.',
+		view: { antique: VIEW.persia, modern: VIEW.china },
+		spread: { antique: 'west', modern: PLACES.mukden },
+		focus: { antique: GOLD, modern: GOLD }
+	},
+	{
 		id: 'alexander',
+		name: 'The Invasion',
 		title: 'Alexander',
 		pair: 'Alexander / Imperial Japan',
 		antiquePhase: 'alexander',
 		modernPhase: 'japan',
 		when: { antique: '334 BC', modern: '1931–1945' },
-		line: 'Alexander takes Persia in ten years. Imperial Japan takes the China coast, and does not keep it.',
-		spread: { antique: FROM.pella, modern: [139.7, 35.7] },
+		line: 'Alexander conquers Persia in about ten years. Imperial Japan takes China’s coast but can’t hold it.',
+		view: { antique: VIEW.eastWar, modern: VIEW.japanWar },
+		spread: { antique: 'east', modern: PLACES.tokyo },
 		focus: { antique: ['greece'], modern: ['greece'] }
 	},
 	{
 		id: 'justinian',
+		name: 'The Union',
 		title: 'Justinian',
 		pair: 'Justinian / the union',
 		antiquePhase: 'justinian',
 		modernPhase: 'union',
 		when: { antique: '565', modern: 'the fiction' },
-		line: 'Rome, in two halves, is put back together one last time. Korea, in the fiction, becomes one country.',
-		spread: { antique: FROM.constantinople, modern: FROM.paektu },
-		focus: { antique: ['romeEast', 'romeWest'], modern: GREEN }
+		line: 'Justinian wins back much of the old western half of the Roman empire, for the last time. In the story, Korea becomes one country.',
+		view: { antique: VIEW.rome, modern: VIEW.korea },
+		spread: { antique: 'west', modern: 'south' },
+		focus: { antique: ['romeEast'], modern: GREEN }
 	},
 	{
 		id: 'buffers',
+		name: 'The Standoff',
 		title: 'The standoff',
 		pair: 'Rome & Persia / America & China',
 		antiquePhase: 'dual600',
 		modernPhase: 'buffers',
 		when: { antique: 'c. 600', modern: 'today' },
-		line: 'Two superpowers face off. Arab client kings sit between them, like the two Koreas.',
+		line: 'Two superpowers face off, with Arab client kingdoms between them, much like the two Koreas today.',
+		view: { antique: VIEW.eyesAntique, modern: VIEW.eyesModern },
 		focus: { antique: EYES, modern: EYES }
 	},
 	{
 		id: 'war',
+		name: 'The Contest',
 		title: 'The last war',
 		pair: '602–628 / the contest',
 		antiquePhase: 'sasanian620',
 		modernPhase: 'war',
 		when: { antique: '602–628', modern: 'ahead' },
-		line: 'The last great war of antiquity wears out both eyes. The guess ahead is a long American–Chinese contest, and it does not have to be an invasion.',
-		spread: { antique: FROM.ctesiphon },
+		line: 'The last big war of antiquity exhausts both Rome and Persia. My guess for today is a long American–Chinese rivalry, not necessarily an invasion.',
+		view: { antique: VIEW.eyesAntique, modern: VIEW.eyesModern },
+		spread: { antique: 'west' },
 		focus: { antique: EYES, modern: EYES }
 	},
 	{
 		id: 'rashidun',
+		name: 'The Exodus',
 		title: 'Out of Arabia',
 		pair: 'Out of Arabia / out of Korea',
 		antiquePhase: 'rashidun655',
 		modernPhase: 'spread',
 		when: { antique: '655', modern: 'imagined' },
-		line: 'In twenty years, Arabia takes Syria, Egypt, and nearly all of Persia. Korea comes out of the peninsula into all of Manchuria.',
-		spread: { antique: FROM.medina, modern: FROM.paektu },
+		line: 'Within twenty years the Arabs take Syria, Egypt, and almost all of Persia. In the story, Korea expands off the peninsula and takes Manchuria.',
+		view: { antique: VIEW.arabia, modern: VIEW.korea },
+		spread: { antique: PLACES.medina, modern: PLACES.paektu },
 		focus: { antique: GREEN, modern: GREEN }
 	},
 	{
 		id: 'resurgence',
+		name: 'The Long War',
 		title: 'The long war',
 		pair: 'Rome & the Caliphate / America after',
 		antiquePhase: 'byzantine863',
 		modernPhase: 'after',
 		when: { antique: '863–1025', modern: 'imagined' },
-		line: 'Rome strikes back into Anatolia. America holds Japan and the islands, and the Kaliphate holds Manchuria and the north.',
-		spread: { antique: FROM.constantinople, modern: [-122.4, 37.8] },
+		line: 'Rome pushes back into Anatolia. America keeps Japan and the islands, and the Kaliphate keeps Manchuria and the north.',
+		view: { antique: VIEW.rome, modern: VIEW.america },
+		spread: { antique: 'east', modern: [-122.4, 37.8] },
 		focus: { antique: ['romeEast', 'caliphate'], modern: ['romeEast', 'caliphate'] }
 	},
 	{
 		id: 'umayyad',
+		name: 'The Widest',
 		title: 'Umayyad',
 		pair: 'The widest reach',
 		antiquePhase: 'umayyad740',
 		modernPhase: 'caliphate',
 		when: { antique: '740', modern: 'the fiction' },
 		line: 'The Caliphate at its widest, from Spain to India.',
-		spread: { antique: FROM.damascus, modern: FROM.paektu },
+		view: { antique: VIEW.arabia, modern: VIEW.korea },
+		spread: { antique: PLACES.damascus, modern: PLACES.paektu },
 		focus: { antique: GREEN, modern: GREEN }
 	},
 	{
 		id: 'caliphate',
+		name: 'The Tongue',
 		title: 'The Kaliphate',
 		pair: 'The third power',
 		antiquePhase: 'arabWorld',
 		modernPhase: 'tongue',
 		when: { antique: 'after', modern: 'the fiction' },
-		line: 'The tongue stays where the people were thin. Arabic across the old Berber lands. Hangul across Siberia and all of Manchuria. China keeps Chinese, as Iran kept Persian.',
-		spread: { antique: FROM.medina, modern: FROM.paektu },
+		line: 'The language sticks where the population was thin: Arabic across the old Berber lands, and Korean across Siberia and Manchuria. China keeps Chinese, the way Iran kept Persian.',
+		view: { antique: VIEW.arabia, modern: VIEW.korea },
+		spread: { antique: PLACES.medina, modern: PLACES.paektu },
 		focus: { antique: GREEN, modern: GREEN }
 	}
 ];
+
+/** The camera box for a sheet at a period index, squared so the land is not stretched. */
+export function periodView(world, periodIndex) {
+	const meta = PERIODS[periodIndex] ?? PERIODS[PERIOD_INDEX.dual600];
+	const box = meta.view?.[sheetOf(world)] ?? null;
+	if (!box) return null;
+	const squared = squareFrame(box);
+	if (sheetOf(world) !== 'modern') return squared;
+	// Keep Alaska and the high Arctic out of every modern close-up.
+	return {
+		lon0: squared.lon0,
+		lon1: squared.lon1,
+		lat0: Math.max(squared.lat0, 14),
+		lat1: Math.min(squared.lat1, 55)
+	};
+}
 
 /** @param {typeof antique | typeof modern} world @param {number} periodIndex */
 function phaseFor(world, periodIndex) {
@@ -377,9 +497,10 @@ export function reliefBoxes(world, frame) {
  */
 export const reliefFor = (world, frame) => regionsFor(reliefBoxes(world, frame));
 
-/** @param {import('./sheets.js').Worldish} world */
-export function reliefGeometry(world) {
-	if (world.mode === 'split' || world.mode === 'pacific') return { width: 2.5, height: 2.5, segs: 160 };
+/** @param {import('./sheets.js').Worldish} world @param {Frame | null} [frame] */
+export function reliefGeometry(world, frame = null) {
+	if (frame || world.mode === 'split' || world.mode === 'pacific')
+		return { width: 2.5, height: 2.5, segs: 160 };
 	const { x, y } = span(world);
 	const width = 2.5;
 	return { width, height: width * (y / x), segs: 200 };
@@ -389,9 +510,16 @@ export function reliefGeometry(world) {
  * @param {import('./sheets.js').Worldish} world
  * @param {number} u
  * @param {number} v
+ * @param {Frame | null} [frame]
  * @returns {[number, number]}
  */
-export function sample(world, u, v) {
+export function sample(world, u, v, frame = null) {
+	if (frame) {
+		return [
+			frame.lon0 + u * (frame.lon1 - frame.lon0),
+			frame.lat0 + v * (frame.lat1 - frame.lat0)
+		];
+	}
 	if (world.mode === 'split') {
 		const down = 1 - v;
 		for (const panel of splitPanels(world)) {
@@ -415,10 +543,10 @@ export function sample(world, u, v) {
 		const lat = world.lat0 + v * (world.lat1 - world.lat0);
 		return [lon, lat];
 	}
-	const { frame } = world;
+	const { frame: box } = world;
 	return [
-		frame.lon0 + u * (frame.lon1 - frame.lon0),
-		frame.lat0 + v * (frame.lat1 - frame.lat0)
+		box.lon0 + u * (box.lon1 - box.lon0),
+		box.lat0 + v * (box.lat1 - box.lat0)
 	];
 }
 /**
@@ -529,7 +657,7 @@ function unwrap(ring, east) {
  * @param {Frame | null} frame
  * @returns {[number, number] | null}
  */
-function project(world, lon, lat, w, h, frame) {
+export function project(world, lon, lat, w, h, frame) {
 	if (!frame && world.mode === 'split') {
 		for (const panel of splitPanels(world)) {
 			const { box, x0, y0, drawW, drawH } = panel;
@@ -605,8 +733,8 @@ function letter(ctx, x, y, text, scale) {
 }
 
 /**
- * Capitals as dots. The paired cities glow: Constantinople with San Francisco,
- * Mecca with Pyongyang, Medina with Seoul.
+ * Capitals as dots only. Names float in HTML so they never warp with the hills.
+ * Constantinople pairs with San Francisco; Rome pairs with Washington.
  * @param {CanvasRenderingContext2D} ctx
  * @param {{ cities?: { lon: number, lat: number, name: string, glow?: boolean }[] }} world
  * @param {Frame | null} frame
@@ -638,17 +766,70 @@ function drawCities(ctx, world, frame, w, h, pulse, scale) {
 			ctx.arc(x, y, 2.5 * scale, 0, Math.PI * 2);
 			ctx.fillStyle = INK;
 			ctx.fill();
+			ctx.lineWidth = 0.8 * scale;
+			ctx.strokeStyle = 'rgba(239,228,212,0.85)';
+			ctx.stroke();
 		}
-		ctx.font = `600 ${Math.round((city.glow ? 12 : 10) * scale)}px Iowan Old Style, Palatino, Georgia, serif`;
-		ctx.textAlign = 'left';
-		ctx.textBaseline = 'middle';
-		ctx.lineWidth = 3 * scale;
-		ctx.strokeStyle = 'rgba(239,228,212,0.9)';
-		ctx.strokeText(city.name, x + 6 * scale, y - (city.glow ? 1 : 0));
-		ctx.fillStyle = city.glow ? '#6d5014' : INK;
-		ctx.fillText(city.name, x + 6 * scale, y - (city.glow ? 1 : 0));
 		ctx.restore();
 	}
+}
+
+/**
+ * Cities on the sheet, plus any extra place names a map asked for.
+ * @param {{ cities?: { lon: number, lat: number, name: string, glow?: boolean }[] }} world
+ * @param {{ lon: number, lat: number, text: string }[]} [extra]
+ */
+export function placesOf(world, extra = []) {
+	return [
+		...(world.cities ?? []).map((city) => ({
+			lon: city.lon,
+			lat: city.lat,
+			name: city.name,
+			glow: Boolean(city.glow),
+			kind: 'city'
+		})),
+		...extra.map((label) => ({
+			lon: label.lon,
+			lat: label.lat,
+			name: label.text,
+			glow: false,
+			kind: 'region'
+		}))
+	];
+}
+
+/**
+ * City and region pins in percent of the painted board, y down.
+ * @param {import('./sheets.js').Worldish} world
+ * @param {Frame | null} frame
+ * @param {number} w
+ * @param {number} h
+ * @param {{ lon: number, lat: number, text: string }[]} [extra]
+ */
+/** Keep crowded names off each other and off the west edge. */
+export const NUDGE = {
+	'San Francisco': { x: 5.5, y: -1 },
+	Washington: { x: -1.5, y: 3.5 },
+	'New York': { x: 4.5, y: -3 }
+};
+
+export function screenPins(world, frame, w, h, extra = []) {
+	const pins = [];
+	for (const place of placesOf(world, extra)) {
+		const pt = project(world, place.lon, place.lat, w, h, frame);
+		if (!pt) continue;
+		const [x, y] = pt;
+		if (x < 8 || y < 8 || x > w - 8 || y > h - 8) continue;
+		const shift = NUDGE[place.name] ?? { x: 0, y: 0 };
+		pins.push({
+			name: place.name,
+			glow: place.glow,
+			kind: place.kind,
+			x: (x / w) * 100 + shift.x,
+			y: (y / h) * 100 + shift.y
+		});
+	}
+	return pins;
 }
 
 /** @param {CanvasRenderingContext2D} ctx @param {number} x @param {number} y @param {number} pulse @param {number} scale */
@@ -876,7 +1057,11 @@ function remember(sizes, key, build) {
  * @param {Region} region
  */
 function ringsOf(world, frame, region) {
-	const source = region.rings ?? (region.ring ? [region.ring] : (land[sheetOf(world)][region.iso ?? ''] ?? []));
+	const iso = region.iso ?? '';
+	const sheet = land[sheetOf(world)] ?? {};
+	const source =
+		region.rings ??
+		(region.ring ? [region.ring] : (sheet[iso] ?? land.modern[iso] ?? land.antique[iso] ?? []));
 	return source.map((ring) => shapeRing(world, ring, frame, null)).filter((ring) => ring.length >= 3);
 }
 
@@ -1017,18 +1202,55 @@ function scratch(node, w, h) {
 	return out;
 }
 
+/** @typedef {{ point: number[] } | { heading: number[] }} Front canvas x, y, or a unit direction */
+
+/**
+ * How far the new color has come at t, as a soft-edged mask: a disc growing out of a point, or
+ * a straight front crossing the canvas along a heading. Behind the edge is opaque.
+ * @param {CanvasRenderingContext2D} g
+ * @param {number} w
+ * @param {number} h
+ * @param {number} t
+ * @param {Front} front
+ */
+function reveal(g, w, h, t, front) {
+	if ('point' in front) {
+		const [x, y] = front.point;
+		const far = Math.max(Math.hypot(x, y), Math.hypot(w - x, y), Math.hypot(x, h - y), Math.hypot(w - x, h - y));
+		const soft = far * 0.24;
+		const r = t * (far + soft);
+		const disc = g.createRadialGradient(x, y, Math.max(0, r - soft), x, y, Math.max(1e-3, r));
+		disc.addColorStop(0, '#000');
+		disc.addColorStop(1, 'rgba(0,0,0,0)');
+		return disc;
+	}
+	const [dx, dy] = front.heading;
+	const reach = (Math.abs(dx) * w + Math.abs(dy) * h) / 2;
+	const soft = reach * 0.48;
+	const edge = -reach + t * (2 * reach + soft);
+	const line = g.createLinearGradient(
+		w / 2 + dx * (edge - soft),
+		h / 2 + dy * (edge - soft),
+		w / 2 + dx * edge,
+		h / 2 + dy * edge
+	);
+	line.addColorStop(0, '#000');
+	line.addColorStop(1, 'rgba(0,0,0,0)');
+	return line;
+}
+
 /**
  * Draws one phase turning into the next. Additive blending of the two weighted layers is an
- * exact linear mix, so land owned in only one phase fades instead of popping. With a point, the
- * weight is a soft-edged disc growing from it instead of one number, so the new color spreads
- * out over the map from where it started.
+ * exact linear mix, so land owned in only one phase fades instead of popping. With a front, the
+ * weight is a moving soft edge instead of one number, so the new color comes in the way it came
+ * in history.
  * @param {CanvasRenderingContext2D} ctx
  * @param {HTMLCanvasElement} from
  * @param {HTMLCanvasElement} to
  * @param {number} t
- * @param {number[] | null} point canvas x, y
+ * @param {Front | null} front
  */
-function crossfade(ctx, from, to, t, point) {
+function crossfade(ctx, from, to, t, front) {
 	if (from === to || t >= 0.999) {
 		ctx.drawImage(to, 0, 0);
 		return;
@@ -1042,7 +1264,7 @@ function crossfade(ctx, from, to, t, point) {
 	blend = scratch(blend, w, h);
 	const g = blend.getContext('2d');
 	if (!g) return;
-	if (!point) {
+	if (!front) {
 		g.globalAlpha = 1 - t;
 		g.drawImage(from, 0, 0);
 		g.globalCompositeOperation = 'lighter';
@@ -1053,26 +1275,20 @@ function crossfade(ctx, from, to, t, point) {
 		ctx.drawImage(blend, 0, 0);
 		return;
 	}
-	const [x, y] = point;
-	const far = Math.max(Math.hypot(x, y), Math.hypot(w - x, y), Math.hypot(x, h - y), Math.hypot(w - x, h - y));
-	const soft = far * 0.24;
-	const r = t * (far + soft);
-	const disc = g.createRadialGradient(x, y, Math.max(0, r - soft), x, y, Math.max(1e-3, r));
-	disc.addColorStop(0, '#000');
-	disc.addColorStop(1, 'rgba(0,0,0,0)');
+	const mask = reveal(g, w, h, t, front);
 
 	incoming = scratch(incoming, w, h);
 	const n = incoming.getContext('2d');
 	if (!n) return;
 	n.drawImage(to, 0, 0);
 	n.globalCompositeOperation = 'destination-in';
-	n.fillStyle = disc;
+	n.fillStyle = mask;
 	n.fillRect(0, 0, w, h);
 	n.globalCompositeOperation = 'source-over';
 
 	g.drawImage(from, 0, 0);
 	g.globalCompositeOperation = 'destination-out';
-	g.fillStyle = disc;
+	g.fillStyle = mask;
 	g.fillRect(0, 0, w, h);
 	g.globalCompositeOperation = 'lighter';
 	g.drawImage(incoming, 0, 0);
@@ -1097,6 +1313,18 @@ function canvasPoint(world, [lon, lat], w, h, frame) {
 	return [(pacificU(world, lon) ?? 0.5) * w, ((world.lat1 - lat) / (world.lat1 - world.lat0)) * h];
 }
 
+/**
+ * The moving edge a spread draws on this canvas.
+ * @param {typeof antique | typeof modern} world
+ * @param {Spread} spread
+ * @param {number} w
+ * @param {number} h
+ * @param {Frame | null} frame
+ * @returns {Front}
+ */
+const frontOf = (world, spread, w, h, frame) =>
+	typeof spread === 'string' ? { heading: HEADINGS[spread] } : { point: canvasPoint(world, spread, w, h, frame) };
+
 /** @param {number} edge0 @param {number} edge1 @param {number} x */
 const smoothstep = (edge0, edge1, x) => {
 	const k = Math.max(0, Math.min(1, (x - edge0) / (edge1 - edge0)));
@@ -1118,11 +1346,12 @@ const smoothstep = (edge0, edge1, x) => {
  *   underlay?: boolean,
  *   marks?: Region[],
  *   fromMarks?: Region[],
- *   spread?: number[],
+ *   spread?: Spread,
  *   focus?: (string | Region)[],
- *   borders?: boolean
+ *   borders?: boolean,
+ *   labels?: { lon: number, lat: number, text: string }[]
  * }} [opts] `marks` replace the period's regions; `fromMarks` are what they grow out of;
- *   `spread` is the lon/lat the change grows from; `focus` is what the map is about;
+ *   `spread` is where, or which way, the change comes in; `focus` is what the map is about;
  *   `borders` strokes today's countries on the antique side.
  */
 export function paint(ctx, world, origin, index, t, pulse, opts = {}) {
@@ -1177,8 +1406,8 @@ export function paint(ctx, world, origin, index, t, pulse, opts = {}) {
 	const to = marks ? (opts.underlay ? underlaid(regionsAt(world, index), marks) : marks) : regionsAt(world, index);
 	const from = opts.fromMarks ?? (marks ? to : regionsAt(world, origin));
 	const at = opts.spread ?? (marks ? null : PERIODS[index]?.spread?.[sheetOf(world)]) ?? null;
-	const point = at && from !== to ? canvasPoint(world, at, w, h, frame) : null;
-	crossfade(ctx, layer(from), layer(to), t, point);
+	const front = at && from !== to ? frontOf(world, at, w, h, frame) : null;
+	crossfade(ctx, layer(from), layer(to), t, front);
 	if (!marks) {
 		strokeFrontiers(antiqueFrontiers(phaseFor(world, origin)), opts.fromMarks ? 0 : 1 - t);
 		strokeFrontiers(antiqueFrontiers(phaseFor(world, index)), t);
@@ -1198,7 +1427,7 @@ export function paint(ctx, world, origin, index, t, pulse, opts = {}) {
 		ctx.drawImage(focusLayer(world, frame, w, h, scale, hide, regions, focus), 0, 0);
 		ctx.restore();
 	};
-	const arriving = point ? smoothstep(0.5, 1, t) : t;
+	const arriving = front ? smoothstep(0.5, 1, t) : t;
 	if (opts.focus !== undefined || marks || opts.fromMarks) {
 		// A close-up lights its subject as it plays, so a replay shows the highlight too.
 		glow(to, opts.focus ?? null, arriving);
@@ -1212,8 +1441,20 @@ export function paint(ctx, world, origin, index, t, pulse, opts = {}) {
 		}
 	}
 
-	// Country lines are not drawn. A wash sits on the real coast, and where two washes meet
-	// is only a change of color.
+	if (opts.borders) {
+		ctx.save();
+		ctx.lineJoin = 'round';
+		ctx.lineWidth = Math.max(1.15, 1.45 * scale);
+		ctx.strokeStyle = INK;
+		ctx.globalAlpha = 0.72;
+		for (const region of to) {
+			if (region.blur) continue;
+			for (const ring of ringsOf(world, frame, region)) {
+				if (path(ctx, world, ring, w, h, frame)) ctx.stroke();
+			}
+		}
+		ctx.restore();
+	}
 
 	if (!frame && world.mode === 'split') {
 		ctx.save();

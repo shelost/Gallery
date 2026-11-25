@@ -2,8 +2,8 @@
 series: History
 type: blog
 title: The Kaliphate
-description: A speculative fiction. The K is for Korean, and it is a joke.
-blurb: "A speculative fiction. The Roman-Persian map, drawn again, with Jerusalem standing in for Paektu. The K is the joke."
+description: A speculative fiction. The K stands for Korean, and it's a joke.
+blurb: "A speculative fiction that redraws the Roman-Persian map with today's countries, with Mount Paektu standing in for Jerusalem. The K stands for Korean, and it's a joke."
 card: null
 preview: null
 date: '2026-11-17'
@@ -23,66 +23,61 @@ published: true
   import Parallels from '$lib/caliphate/Parallels.svelte'
 </script>
 
-This is fiction. Not a prediction, not a hope, not a plan. It replays an old story with today's countries in the costumes. The real history is in [the Roman-Persian essay](/persia).
+This is fiction. I'm not predicting it, hoping for it, or planning it. It's an old story replayed with today's countries in the roles. The real history is in [the Roman-Persian essay](/persia).
 
-The story goes like this. Around 600 AD, Rome and Persia were the world's two superpowers. They wore each other out in a long war. Then a third power nobody expected came out of Arabia and took half of both. That was the Caliphate.
+Here's the story. Around 600 AD, Rome and Persia were the world's two superpowers, and they wore each other out in a long war. Then a third power that nobody saw coming came out of Arabia and took about half of each. That was the Caliphate.
 
-Swap in today's cast. America is Rome. China is Persia. Japan is Greece. Korea is Arabia. The third power in this story is the Kaliphate. The K is for Korean, and it's a joke.
+Now recast it with today's countries. America plays Rome, China plays Persia, Japan plays Greece, and Korea plays Arabia. Europe plays the western Roman empire: older, more crowded, and no longer at the center of things, the same way western Rome dropped out of the picture once Constantinople's main concern became Persia. The third power in this version is the Kaliphate. The K stands for Korean, and it's a joke.
 
-**Same color, same role.** Persia and China share gold. Rome and America share red. Greece and Japan share blue. The Caliphate and the Kaliphate share green. Jerusalem and Mount Paektu share the star.
+**Matching colors mean matching roles.** Persia and China are both gold. Eastern Rome and America share the darker red, and western Rome and Europe share the lighter red. Greece and Imperial Japan are blue. After the Pacific War, Japan becomes an American client and turns light red, like Greece did under Rome. The Caliphate and the Kaliphate are both green, and Jerusalem and Mount Paektu both get the star.
 
 <Stage />
 
-Press play, or pick a moment. The right-hand map squeezes the Pacific so China and America fit in one picture. The coasts are real. The ocean is the cheat. Click any map to enlarge it, and use the arrow button to replay it.
+Press play, or pick a moment. The right-hand map squeezes the Pacific so China and America fit in one picture. The coastlines are accurate, but the ocean is much narrower than it really is. Click any map to enlarge it, and use the arrow button to replay it.
 
 
 ## The cast
 
-**Persia → China.** The Persian Empire of Cyrus and Darius was the first giant. It fell to Alexander. Five centuries later the Sasanians rebuilt it. China's Qing dynasty was the giant. It broke apart, Japan invaded, and the People's Republic rebuilt it. So the Achaemenids are the Qing, and the Sasanians are the People's Republic.
+**Persia → China.** The Persian Empire of Cyrus and Darius was the first huge empire. Alexander conquered it, and about five centuries later the Sasanians rebuilt it. China's Qing dynasty was similarly huge. It fell apart, Japan invaded, and the People's Republic put it back together. So the Achaemenids line up with the Qing, and the Sasanians line up with the People's Republic.
 
-**Greece → Japan.** Macedon was a small, tough neighbor on Greece's edge. Alexander took all of Persia in ten years, and the empire fell apart when he died. Imperial Japan did the same thing to China and Southeast Asia, and collapsed in 1945. Afterward Greek art conquered Rome, and anime conquered America.
+**Greece → Japan.** Macedon was a small, tough kingdom on Greece's northern edge. Alexander conquered all of Persia in about ten years, and his empire fell apart when he died. Imperial Japan did something similar to China and Southeast Asia, and collapsed in 1945. After that, Japan became an American client, the way Greece ended up under Rome, so it gets the same light red. In both cases the loser's culture won over the winner: Greek art in Rome, and anime in America.
 
-**Arabia → Korea.** Before the Caliphate, the Arabs were split. Rome paid one Arab kingdom and Persia paid another to guard the desert. Korea today is the same: one people, two client states, two patrons.
+**Arabia → Korea.** Before the Caliphate, the Arabs were divided. Rome paid one Arab kingdom and Persia paid another to guard the desert frontier. Korea today looks a lot like that, with one people split into two states, each backed by a different superpower.
 
 
 ## The star
 
-Mecca was always Arabia's. Jerusalem was not. It belonged to Rome, then Persia, then Rome again, and then the third power took it from both.
+Mecca was always Arabia's, but Jerusalem wasn't. It went from Rome to Persia and back to Rome, and then the Arabs took it from both.
 
-Paektu fits that role. It is the sacred mountain of the Koreans and of the Manchus, who ruled China as the Qing. The border between China and North Korea still runs through its crater lake. In the story, Seoul and Pyongyang become shrines, the way Mecca and Medina did. Real power moves north, the way the Caliphate's capital moved to Damascus and then Baghdad.
-
-
-## Siberia is the Maghreb
-
-The Caliphate conquered Persia, but Persia stayed Persian. Iranians took up Islam and kept their own language. Arabic spread where local identity was thinner: Iraq, Syria, Egypt, and North Africa, which Arabs call the Maghreb, "the west." That is why the Arab world today is Arabia and North Africa, not Iran.
-
-The fiction follows the same rule. China would stay Chinese, as Iran stayed Iranian. Siberia would be the Maghreb: vast, thinly settled, and loosely held, so it would take the new language. The "Koreanic world" would be the peninsula and most of Siberia.
+Mount Paektu fits that role. It's sacred to Koreans and also to the Manchus, who ruled China as the Qing, and the border between China and North Korea still runs through its crater lake. In the story, Seoul and Pyongyang become religious centers the way Mecca and Medina did, while real political power moves north, the way the Caliphate's capital moved to Damascus and then to Baghdad.
 
 
 ## Side by side
 
-The left column is what happened. The right is the costume. Every map has a partner on the other side.
+The left column is what actually happened, and the right column is the modern version. Every map has a partner on the other side.
 
 <Parallels />
 
 
 ## How the story goes
 
-It starts in the north. The North has the intensity, and the South has the factories, the media, and the ports. Together they are one green.
+It starts in the north. North Korea brings the zeal, and South Korea brings the factories, the media, and the ports. Once they unify, they show up as one green.
 
-There is no prophet. What spreads is a way of life and a set of tools.
+Unlike the original, there's no prophet in this version. What spreads is a way of life and a set of technologies.
 
-The green covers the peninsula, northeast China, Beijing, Shanghai, and Siberia. It stops there. China south of it stays gold, the way Persia stayed Persian. Taiwan stays red, like Sicily, the island the sea power keeps. Japan stays blue.
+The green covers the peninsula, northeast China, Inner Mongolia, Mongolia, Beijing, Shanghai, and Siberia, with everything outside the peninsula in a lighter shade. That's as far as it goes. Southern China stays gold, the way Iran stayed Persian. Taiwan stays red, like Sicily, the island the sea power held on to. Japan stays light red as an American client, the way Greece stayed under Rome.
 
-Then it goes wrong, the way the real Caliphate did. Newcomers are promised equality and treated as second-class. The founders can't run a continent, so old imperial engineers end up running it. Once China is no longer a threat, the movement splits.
+Then things go wrong, the same way they did for the real Caliphate. New members are promised equality and treated as second-class. The founders don't know how to run a continent, so the old imperial engineers end up running it. And once China stops being a threat, the movement splits.
 
-Who settles Siberia with a birthrate this low? Robots. Korea already has about a thousand industrial robots for every ten thousand factory workers.
+Who would settle Siberia with a birth rate this low? Robots. Korea already has about a thousand industrial robots for every ten thousand factory workers.
+
+The rest is in the last few boxes. There's a "North Korean incident" that mirrors Khosrow getting rid of the Lakhmid kings. There's a final American–Chinese war that mirrors the war of 602–628: China makes huge gains early, America fights back the way Heraclius did, and the border ends up about where it started. After the Kaliphate, America is still around, like Byzantium was, but past its peak.
 
 
 ## Disclaimer
 
-None of this will happen. South Korea's fertility rate was 0.80 in 2025, the lowest of any country that reports one. Nuclear weapons rule out a war of conquest. A TV show is not a language. Russia's Far East is being tied more tightly to China, not less. Northeast China has about ninety million people, nearly all Han Chinese.
+None of this will happen. South Korea's fertility rate was 0.80 in 2025, the lowest of any country that reports one. Nuclear weapons make a war of conquest unrealistic. Exporting TV shows doesn't make other people adopt your language. Russia's Far East is becoming more tied to China, not less. And Northeast China has about ninety million people, nearly all of them Han Chinese.
 
-I drew it anyway, because a picture can hold a resemblance that a forecast can't. What I trust is the position: a divided people between two superpowers, with a holy place on the border. What I don't trust is the green. The green is the wish.
+I drew it anyway, because a map can show a resemblance that a forecast can't. The part I actually believe is the setup: a divided people stuck between two superpowers, with a holy site on the border. The part I don't believe is the green, which is mostly wishful thinking.
 
-This is just a random guy on the internet. Take it with a grain of salt.
+I'm just a random guy on the internet, so take all of this with a grain of salt.

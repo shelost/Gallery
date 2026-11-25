@@ -1,4 +1,5 @@
 <script>
+	import FloatLabels from './FloatLabels.svelte';
 	import MapModal from './MapModal.svelte';
 	import { mapView } from './view.svelte.js';
 	import { mountWindow } from './window.js';
@@ -10,6 +11,8 @@
 	/** @type {HTMLCanvasElement | undefined} */
 	let canvas = $state();
 	let open = $state(false);
+	/** @type {import('./window.js').Pin[]} */
+	let pins = $state.raw([]);
 </script>
 
 <div class="map">
@@ -19,9 +22,18 @@
 				{@attach (node) => {
 					canvas = node;
 				}}
-				{@attach (node) => mountWindow(node, { ...map, flat: !mapView.relief, controls })}
+				{@attach (node) =>
+					mountWindow(node, {
+						...map,
+						flat: !mapView.relief,
+						controls,
+						onPins: (next) => {
+							pins = next;
+						}
+					})}
 			></canvas>
 		{/key}
+		<FloatLabels {pins} />
 	</button>
 	<button type="button" class="replay" aria-label="Replay map" onclick={() => controls.replay()}>
 		<svg viewBox="0 0 16 16" aria-hidden="true">
@@ -41,10 +53,12 @@
 	}
 
 	.open {
+		position: relative;
 		display: block;
 		width: 100%;
 		padding: 0;
 		border: 0;
+		overflow: hidden;
 		border-radius: 10px;
 		background: none;
 		cursor: zoom-in;
@@ -66,6 +80,7 @@
 
 	.replay {
 		position: absolute;
+		z-index: 3;
 		top: 0.5rem;
 		right: 0.5rem;
 		display: grid;

@@ -19,7 +19,7 @@ import {
 	Vector3,
 	WebGLRenderer
 } from 'three';
-import { insetAspect, paint, reliefFor, sample, squareFrame } from './sheets.js';
+import { insetAspect, NUDGE, paint, placesOf, project, reliefFor, sample, screenPins, squareFrame } from './sheets.js';
 import { groundHeight, loadRelief, metresAt } from './relief.js';
 
 const SEA = '#9cb7d1';
@@ -54,10 +54,15 @@ export function glide(t) {
  *   underlay?: boolean,
  *   marks?: import('./empire.js').Region[],
  *   fromMarks?: import('./empire.js').Region[],
- *   spread?: number[],
+ *   spread?: import('./sheets.js').Spread,
  *   focus?: (string | import('./empire.js').Region)[],
- *   borders?: boolean
+ *   borders?: boolean,
+ *   labels?: { lon: number, lat: number, text: string }[]
  * }} MapSpec
+ */
+
+/**
+ * @typedef {{ name: string, x: number, y: number, glow?: boolean, kind?: string }} Pin
  */
 
 /**
@@ -65,7 +70,8 @@ export function glide(t) {
  *   seed?: HTMLCanvasElement,
  *   autoplay?: boolean,
  *   controls?: { replay: () => void },
- *   flat?: boolean
+ *   flat?: boolean,
+ *   onPins?: (pins: Pin[]) => void
  * }} WindowOpts
  */
 
@@ -96,7 +102,8 @@ function paintBoard(ctx, opts, frame, progress, scale) {
 		fromMarks: opts.fromMarks,
 		spread: opts.spread,
 		focus: opts.focus,
-		borders: opts.borders
+		borders: opts.borders,
+		labels: opts.labels
 	});
 }
 
@@ -158,6 +165,7 @@ function paintFlat(canvas, opts, progress) {
 	const ctx = canvas.getContext('2d');
 	if (!ctx) return;
 	paintBoard(ctx, opts, opts.frame ?? null, progress, 0.7);
+	opts.onPins?.(screenPins(opts.world, opts.frame ?? null, width, height, opts.labels ?? []));
 }
 
 /**
@@ -223,13 +231,27 @@ export function mountWindow(canvas, raw) {
 		{ rootMargin: '240px' }
 	);
 	near.observe(canvas);
+	let armed = true;
 	const seen = new IntersectionObserver(
 		(entries) => {
-			if (!entries.some((entry) => entry.isIntersecting)) return;
-			seen.disconnect();
-			if (opts.autoplay !== false) play();
+			const entry = entries[0];
+			if (!entry) return;
+			const rootH = entry.rootBounds?.height ?? 0;
+			const fits = entry.boundingClientRect.height <= rootH * 0.98;
+			const full = fits
+				? entry.intersectionRatio >= 0.92
+				: entry.intersectionRatio >= 0.7 && entry.intersectionRect.height >= rootH * 0.85;
+			if (full && armed && opts.autoplay !== false) {
+				armed = false;
+				play();
+			} else if (entry.intersectionRatio === 0) {
+				cancelAnimationFrame(tick);
+				progress = 0;
+				show();
+				armed = true;
+			}
 		},
-		{ threshold: 0.5 }
+		{ threshold: [0, 0.92, 1] }
 	);
 	seen.observe(canvas);
 	const resize = new ResizeObserver(() => {
@@ -292,6 +314,55 @@ function openWindow(display, opts, start) {
 	let bounds = { minX: -1, maxX: 1, minZ: -1, maxZ: 1 };
 	/** @type {'frame' | 'sheet'} */
 	let fill = 'sheet';
+	let meshSize = { width: 2, depth: 2 };
+	/** @type {import('./sheets.js').Frame | null} */
+	let sheet = null;
+	let lastPins = '';
+
+	/**
+	 * Project city dots from mesh space into the cell, as percent.
+	 * @param {WindowOpts} spec
+	 * @param {PerspectiveCamera} cam
+	 * @param {import('./sheets.js').Frame | null} box
+	 * @param {{ width: number, depth: number }} size
+	 */
+	const emitPins = (spec, cam, box, size) => {
+		if (!spec.onPins) return;
+		const pins = [];
+		for (const place of placesOf(spec.world, spec.labels ?? [])) {
+			let x;
+			let z;
+			if (box) {
+				const u = (place.lon - box.lon0) / (box.lon1 - box.lon0);
+				const vNorth = (place.lat - box.lat0) / (box.lat1 - box.lat0);
+				if (u < -0.02 || u > 1.02 || vNorth < -0.02 || vNorth > 1.02) continue;
+				x = (u - 0.5) * size.width;
+				z = (0.5 - vNorth) * size.depth;
+			} else {
+				const pt = project(spec.world, place.lon, place.lat, 1, 1, null);
+				if (!pt) continue;
+				x = (pt[0] - 0.5) * size.width;
+				z = (pt[1] - 0.5) * size.depth;
+			}
+			const clip = new Vector3(x, 0.06, z).project(cam);
+			if (clip.z > 1 || clip.z < -1) continue;
+			const shift = NUDGE[place.name] ?? { x: 0, y: 0 };
+			const sx = (clip.x * 0.5 + 0.5) * 100 + shift.x;
+			const sy = (-clip.y * 0.5 + 0.5) * 100 + shift.y;
+			if (sx < 1.5 || sx > 98.5 || sy < 2 || sy > 98) continue;
+			pins.push({
+				name: place.name,
+				glow: place.glow,
+				kind: place.kind,
+				x: sx,
+				y: sy
+			});
+		}
+		const key = pins.map((pin) => `${pin.name}:${pin.x.toFixed(1)}:${pin.y.toFixed(1)}`).join('|');
+		if (key === lastPins) return;
+		lastPins = key;
+		spec.onPins(pins);
+	};
 
 	const target = new Vector3(0, 0.03, 0);
 	/** @param {number} dist */
@@ -400,6 +471,8 @@ function openWindow(display, opts, start) {
 			corners = built.corners;
 			bounds = built.bounds;
 			fill = built.fill;
+			meshSize = { width: built.width, depth: built.depth };
+			sheet = built.box;
 		}
 		if (corners.length) fit(corners, bounds, fill);
 		display.dataset.cam = `${fill} ${camera.position.x.toFixed(2)},${camera.position.y.toFixed(2)},${camera.position.z.toFixed(2)}`;
@@ -408,6 +481,7 @@ function openWindow(display, opts, start) {
 		display.height = glCanvas.height;
 		const ctx = display.getContext('2d');
 		if (ctx) ctx.drawImage(glCanvas, 0, 0);
+		emitPins(opts, camera, sheet, meshSize);
 	};
 
 	const observer = new ResizeObserver(draw);
@@ -543,6 +617,9 @@ function buildSheet(opts, size, progress) {
 		repaint,
 		corners,
 		fill: opts.frame ? 'frame' : 'sheet',
-		bounds: { minX: -width / 2, maxX: width / 2, minZ: -depth / 2, maxZ: depth / 2 }
+		bounds: { minX: -width / 2, maxX: width / 2, minZ: -depth / 2, maxZ: depth / 2 },
+		width,
+		depth,
+		box
 	};
 }

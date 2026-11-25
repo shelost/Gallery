@@ -2,6 +2,7 @@
 	import { cubicOut } from 'svelte/easing';
 	import { prefersReducedMotion } from 'svelte/motion';
 	import { fade } from 'svelte/transition';
+	import FloatLabels from './FloatLabels.svelte';
 	import { mapView } from './view.svelte.js';
 	import { mountWindow } from './window.js';
 
@@ -19,6 +20,8 @@
 	let { map, source, seed = undefined, label, onclose } = $props();
 
 	const controls = { replay: () => {} };
+	/** @type {import('./window.js').Pin[]} */
+	let pins = $state.raw([]);
 
 	/**
 	 * Fixed-position content inside the essay would sit in the prose's animated layer, so the
@@ -90,9 +93,19 @@
 			{#key mapView.relief}
 				<canvas
 					{@attach (node) =>
-						mountWindow(node, { ...map, seed, autoplay: !seed, flat: !mapView.relief, controls })}
+						mountWindow(node, {
+							...map,
+							seed,
+							autoplay: !seed,
+							flat: !mapView.relief,
+							controls,
+							onPins: (next) => {
+								pins = next;
+							}
+						})}
 				></canvas>
 			{/key}
+			<FloatLabels {pins} />
 		</div>
 		<div class="bar" transition:fade={{ duration: still ? 0 : 260 }}>
 			<p>{label}</p>
@@ -133,6 +146,7 @@
 	}
 
 	.frame {
+		position: relative;
 		aspect-ratio: 1;
 		overflow: hidden;
 		border-radius: 14px;

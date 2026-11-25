@@ -2,11 +2,18 @@
 	import { onDestroy } from 'svelte';
 	import { T, useTask, useThrelte } from '@threlte/core';
 	import { CanvasTexture, Color, PerspectiveCamera, PlaneGeometry, SRGBColorSpace, Vector3 } from 'three';
-	import { paint, reliefFor, reliefGeometry, sample } from './sheets.js';
+	import { NUDGE, paint, placesOf, project, reliefFor, reliefGeometry, sample } from './sheets.js';
 	import { groundHeight, loadRelief, metresAt } from './relief.js';
 
-	/** @type {{ world: import('./sheets.js').World, origin: number, index: number, t: number }} */
-	let { world, origin, index, t } = $props();
+	/** @type {{
+	 *   world: import('./sheets.js').World,
+	 *   origin: number,
+	 *   index: number,
+	 *   t: number,
+	 *   frame?: import('./sheets.js').Frame | null,
+	 *   onpins?: (pins: import('./window.js').Pin[]) => void
+	 * }} */
+	let { world, origin, index, t, frame = null, onpins = undefined } = $props();
 
 	const { camera, invalidate, scene } = useThrelte();
 	scene.background = new Color('#9cb7d1');
@@ -21,10 +28,11 @@
 	const EL = 1.12;
 
 	let last = '';
+	let lastPins = '';
 	let alive = true;
 
 	$effect(() => {
-		loadRelief(reliefFor(world, null)).then(() => {
+		loadRelief(reliefFor(world, frame)).then(() => {
 			if (!alive) return;
 			geometry?.dispose();
 			texture?.dispose();
@@ -38,16 +46,17 @@
 
 	/**
 	 * @param {import('./sheets.js').World} map
+	 * @param {import('./sheets.js').Frame | null} box
 	 */
-	function build(map) {
-		const shape = reliefGeometry(map);
+	function build(map, box) {
+		const shape = reliefGeometry(map, box);
 		const geo = new PlaneGeometry(shape.width, shape.height, shape.segs, shape.segs);
 		const position = geo.attributes.position;
 		const uv = geo.attributes.uv;
 		const span = Math.min(shape.width, shape.height);
-		const regions = reliefFor(map, null);
+		const regions = reliefFor(map, box);
 		for (let i = 0; i < position.count; i++) {
-			const [lon, lat] = sample(map, uv.getX(i), uv.getY(i));
+			const [lon, lat] = sample(map, uv.getX(i), uv.getY(i), box);
 			position.setZ(i, groundHeight(metresAt(regions, lon, lat), span));
 		}
 		geo.computeVertexNormals();
@@ -109,7 +118,7 @@
 
 	useTask(() => {
 		if (!geometry) {
-			const built = build(world);
+			const built = build(world, frame);
 			geometry = built.geo;
 			texture = built.tex;
 			context = built.context;
@@ -118,11 +127,38 @@
 		const current = camera.current;
 		if (current instanceof PerspectiveCamera) cover(current);
 		const pulse = (Math.sin(performance.now() / 480) + 1) / 2;
-		const key = `${origin}:${index}:${t.toFixed(3)}:${pulse.toFixed(2)}`;
+		const key = `${origin}:${index}:${t.toFixed(3)}:${pulse.toFixed(2)}:${frame?.lon0}:${frame?.lat0}`;
 		if (key === last || !context || !texture) return;
 		last = key;
-		paint(context, world, origin, index, t, pulse);
+		paint(context, world, origin, index, t, pulse, { frame });
 		texture.needsUpdate = true;
+		if (onpins && current instanceof PerspectiveCamera) {
+			const pins = [];
+			for (const place of placesOf(world)) {
+				const pt = project(world, place.lon, place.lat, 1, 1, frame);
+				if (!pt) continue;
+				const x = (pt[0] - 0.5) * view.halfW * 2;
+				const y = (0.5 - pt[1]) * view.halfH * 2;
+				const clip = new Vector3(x, y, 0.05).project(current);
+				if (clip.z > 1 || clip.z < -1) continue;
+				const shift = NUDGE[place.name] ?? { x: 0, y: 0 };
+				const sx = (clip.x * 0.5 + 0.5) * 100 + shift.x;
+				const sy = (-clip.y * 0.5 + 0.5) * 100 + shift.y;
+				if (sx < 1.5 || sx > 98.5 || sy < 2 || sy > 98) continue;
+				pins.push({
+					name: place.name,
+					glow: place.glow,
+					kind: place.kind,
+					x: sx,
+					y: sy
+				});
+			}
+			const pinKey = pins.map((pin) => `${pin.name}:${pin.x.toFixed(1)}:${pin.y.toFixed(1)}`).join('|');
+			if (pinKey !== lastPins) {
+				lastPins = pinKey;
+				onpins(pins);
+			}
+		}
 		invalidate();
 	});
 

@@ -2,7 +2,8 @@
 	import { browser } from '$app/environment';
 	import { Canvas } from '@threlte/core';
 	import { NeutralToneMapping } from 'three';
-	import { PERIODS, captionLabels, paint } from './sheets.js';
+	import { PERIODS, captionLabels, paint, periodView, screenPins } from './sheets.js';
+	import FloatLabels from './FloatLabels.svelte';
 	import MapModal from './MapModal.svelte';
 	import View from './View.svelte';
 	import { mapView } from './view.svelte.js';
@@ -11,16 +12,23 @@
 	let { world, when, origin, index, t } = $props();
 
 	const dpr = browser ? Math.min(devicePixelRatio, 2) : 1;
-	const names = $derived(captionLabels(world, null, t > 0.5 ? index : origin));
+	const frame = $derived(periodView(world, t > 0.5 ? index : origin));
+	const names = $derived(captionLabels(world, frame, t > 0.5 ? index : origin));
 
 	/** @type {HTMLButtonElement | undefined} */
 	let stage = $state();
 	/** @type {HTMLCanvasElement | undefined} */
 	let flat = $state();
+	/** @type {import('./window.js').Pin[]} */
+	let pins = $state.raw([]);
 
 	$effect(() => {
 		if (!browser || mapView.relief || !flat) return;
 		const canvas = flat;
+		const box = frame;
+		const from = origin;
+		const to = index;
+		const progress = t;
 		const draw = () => {
 			const width = canvas.clientWidth || 0;
 			if (width < 8) return;
@@ -28,7 +36,8 @@
 			canvas.height = Math.round(width);
 			const ctx = canvas.getContext('2d');
 			if (!ctx) return;
-			paint(ctx, world, origin, index, t, 0.35, { scale: 0.7 });
+			paint(ctx, world, from, to, progress, 0.35, { scale: 0.7, frame: box });
+			pins = screenPins(world, box, canvas.width, canvas.height);
 		};
 		draw();
 		const observer = new ResizeObserver(draw);
@@ -64,7 +73,18 @@
 	>
 		{#if browser && mapView.relief}
 			<Canvas toneMapping={NeutralToneMapping} {dpr}>
-				<View {world} {origin} {index} {t} />
+				{#key `${world.id}:${frame?.lon0}:${frame?.lat0}:${frame?.lon1}:${frame?.lat1}`}
+					<View
+						{world}
+						{origin}
+						{index}
+						{t}
+						{frame}
+						onpins={(next) => {
+							pins = next;
+						}}
+					/>
+				{/key}
 			</Canvas>
 		{:else if browser}
 			<canvas
@@ -74,6 +94,7 @@
 				}}
 			></canvas>
 		{/if}
+		<FloatLabels {pins} />
 	</button>
 </figure>
 
@@ -122,6 +143,7 @@
 	}
 
 	.stage {
+		position: relative;
 		display: block;
 		width: 100%;
 		aspect-ratio: 1;

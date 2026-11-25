@@ -55,8 +55,9 @@
 
 	figcaption {
 		margin-top: 0.35rem;
+		min-height: 2.3em;
 		color: var(--ink-3, #6d6860);
 		font-size: 0.72rem;
-		line-height: 1.35;
+		line-height: 1.15;
 	}
 </style>

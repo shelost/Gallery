@@ -18,6 +18,8 @@
 	let headings = $state.raw<Heading[]>([]);
 	let activeId = $state('');
 	let tocOpen = $state(false);
+	/** The chapter whose children are open. One at a time. */
+	let openId = $state('');
 
 	/** Set while a contents click scrolls the page, so the headings it passes don't steal the mark. */
 	let jumping = false;
@@ -73,12 +75,37 @@
 				}
 				if (jumping) return;
 				const top = elements.find((element) => seen.has(element.id));
-				if (top) activeId = top.id;
+				if (top) {
+					activeId = top.id;
+					const chapter = chapterOf(top.id);
+					if (chapter) openId = chapter;
+				}
 			},
 			{ rootMargin: '-100px 0px -66%', threshold: [0, 1] }
 		);
 		for (const element of elements) observer.observe(element);
 		return () => observer.disconnect();
+	}
+
+	type Chapter = Heading & { children: Heading[] };
+
+	const toc = $derived.by(() => {
+		const groups: Chapter[] = [];
+		for (const item of headings) {
+			if (item.level <= 2 || groups.length === 0) groups.push({ ...item, children: [] });
+			else groups[groups.length - 1].children.push(item);
+		}
+		return groups;
+	});
+
+	function chapterOf(id: string) {
+		return toc.find((group) => group.id === id || group.children.some((child) => child.id === id))?.id ?? '';
+	}
+
+	function toggleChapter(id: string) {
+		const opening = openId !== id;
+		openId = opening ? id : '';
+		if (opening) scrollToHeading(id);
 	}
 
 	function scrollToHeading(id: string) {
@@ -110,16 +137,38 @@
 
 {#snippet contents(className: string)}
 	<ul class={className}>
-		{#each headings as item (item.id)}
-			<li style:--level={item.level - 1}>
+		{#each toc as chapter (chapter.id)}
+			<li>
 				<button
 					type="button"
-					class={[item.id === activeId && 'on']}
-					aria-current={item.id === activeId ? 'location' : undefined}
-					onclick={() => scrollToHeading(item.id)}
+					class={['chapter', (chapter.id === activeId || chapter.children.some((child) => child.id === activeId)) && 'on']}
+					aria-expanded={chapter.children.length > 0 ? openId === chapter.id : undefined}
+					aria-current={chapter.id === activeId ? 'location' : undefined}
+					onclick={() => (chapter.children.length ? toggleChapter(chapter.id) : scrollToHeading(chapter.id))}
 				>
-					{item.text}
+					{#if chapter.children.length}
+						<span class={['chev', openId === chapter.id && 'open']} aria-hidden="true"></span>
+					{/if}
+					{chapter.text}
 				</button>
+				{#if chapter.children.length}
+					<div class={['fold', openId === chapter.id && 'open']} inert={openId !== chapter.id ? true : undefined}>
+						<ul class="nest">
+							{#each chapter.children as child (child.id)}
+								<li>
+									<button
+										type="button"
+										class={[child.id === activeId && 'on']}
+										aria-current={child.id === activeId ? 'location' : undefined}
+										onclick={() => scrollToHeading(child.id)}
+									>
+										{child.text}
+									</button>
+								</li>
+							{/each}
+						</ul>
+					</div>
+				{/if}
 			</li>
 		{/each}
 	</ul>
@@ -227,11 +276,109 @@
 	.drawer-list button {
 		position: relative;
 		display: block;
-		padding: 0.2rem 0 0.2rem calc(0.85rem + var(--level) * 0.7rem);
+		width: 100%;
+		padding: 0.2rem 0 0.2rem 0.85rem;
 		color: var(--ink-3);
 		font-size: 12.5px;
 		line-height: 1.3;
+		text-align: left;
 		transition: color 160ms var(--ease-out);
+	}
+
+	.toc .chapter,
+	.drawer-list .chapter {
+		padding-left: 0.95rem;
+	}
+
+	.toc .nest button,
+	.drawer-list .nest button {
+		padding-left: 1.35rem;
+		font-size: 12px;
+	}
+
+	.fold {
+		display: grid;
+		grid-template-rows: 0fr;
+		transition: grid-template-rows 0.46s cubic-bezier(0.22, 1, 0.36, 1);
+	}
+
+	.fold.open {
+		grid-template-rows: 1fr;
+	}
+
+	.fold > .nest {
+		overflow: hidden;
+		min-height: 0;
+		margin: 0;
+		padding: 0.08rem 0 0.28rem;
+	}
+
+	.nest li {
+		opacity: 0;
+		transform: translateY(-0.35rem);
+		transition:
+			opacity 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+			transform 0.36s cubic-bezier(0.22, 1, 0.36, 1);
+	}
+
+	.fold.open .nest li {
+		opacity: 1;
+		transform: none;
+	}
+
+	.fold.open .nest li:nth-child(1) {
+		transition-delay: 0.04s;
+	}
+	.fold.open .nest li:nth-child(2) {
+		transition-delay: 0.07s;
+	}
+	.fold.open .nest li:nth-child(3) {
+		transition-delay: 0.1s;
+	}
+	.fold.open .nest li:nth-child(4) {
+		transition-delay: 0.13s;
+	}
+	.fold.open .nest li:nth-child(5) {
+		transition-delay: 0.16s;
+	}
+	.fold.open .nest li:nth-child(6) {
+		transition-delay: 0.19s;
+	}
+	.fold.open .nest li:nth-child(7) {
+		transition-delay: 0.22s;
+	}
+	.fold.open .nest li:nth-child(8) {
+		transition-delay: 0.25s;
+	}
+
+	.fold:not(.open) .nest li {
+		transition-delay: 0s;
+		transition-duration: 0.16s;
+	}
+
+	.chev {
+		position: absolute;
+		left: 0.15rem;
+		top: 0.45rem;
+		width: 0;
+		height: 0;
+		border-top: 3px solid transparent;
+		border-bottom: 3px solid transparent;
+		border-left: 4px solid currentColor;
+		transform-origin: 40% 50%;
+		transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+	}
+
+	.chev.open {
+		transform: rotate(90deg);
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.fold,
+		.nest li,
+		.chev {
+			transition: none;
+		}
 	}
 
 	.toc button:hover,
